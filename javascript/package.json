@@ -1,0 +1,29 @@
+{
+  "name": "jsonlogic-test",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch"
+  },
+  "dependencies": {
+    "deep-equal": "^2.0.5",
+    "fs-readdir-recursive": "^1.1.0",
+    "json-logic-js": "^2.0.1"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.18",
+    "@types/deep-equal": "^1.0.1",
+    "@types/fs-readdir-recursive": "^1.0.0",
+    "@types/json-logic-js": "^1.2.1",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^15.3.0",
+    "ajv": "^8.5.0",
+    "ajv-cli": "^5.0.0",
+    "ajv-formats": "^2.1.0",
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0",
+    "typescript": "^4.2.4"
+  }
+}
