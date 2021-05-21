@@ -39,7 +39,21 @@ Code is written in TypeScript, with typings serving as documentation.
 
 Run
 
-    $ npm run watch
+    $ npm run build-watch
 
-(or `$ yarn watch`) to continually (and incrementally) compile all TypeScript code.
+(or `$ yarn build-watch`) to continually (and incrementally) compile all TypeScript code.
+
+Run
+
+    $ npm test
+
+(or `$ yarn test`) to run unit tests once.
+
+Run
+
+    $ npm run test-watch
+
+(or `$ yarn test-watch`) to run unit tests once.
+
+For testing, make sure to build first, or build in watch-mode.
 

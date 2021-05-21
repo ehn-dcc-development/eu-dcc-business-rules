@@ -6,7 +6,9 @@
   "scripts": {
     "postinstall": "mkdir -p out",
     "build": "tsc",
-    "watch": "tsc --watch --incremental"
+    "build-watch": "tsc --watch --incremental",
+    "test": "mocha dist/test",
+    "test-watch": "mocha --watch dist/test"
   },
   "dependencies": {
     "deep-equal": "^2.0.5",
