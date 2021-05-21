@@ -4,7 +4,7 @@
 
 All members of the project community must abide by the [Contributor Covenant, version 2.0](CODE_OF_CONDUCT.md).
 Only by respecting each other can we develop a productive, collaborative community.
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting [opensource@telekom.de](mailto:opensource@telekom.de) and/or a project maintainer.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported by contacting a project maintainer.
 
 We appreciate your courtesy of avoiding political questions here. Issues which are not related to the project itself will be closed by our community managers.
 
@@ -14,11 +14,11 @@ We use GitHub to manage reviews of pull requests.
 
 * If you are a new contributor, see: [Steps to Contribute](#steps-to-contribute)
 
-* If you have a trivial fix or improvement, go ahead and create a pull request, addressing (with `@...`) a suitable maintainer of this repository (see [CODEOWNERS](CODEOWNERS) of the  repository you want to contribute to) in the description of the pull request.
+[comment]: <> (* If you have a trivial fix or improvement, go ahead and create a pull request, addressing &#40;with `@...`&#41; a suitable maintainer of this repository &#40;see [CODEOWNERS]&#40;CODEOWNERS&#41; of the  repository you want to contribute to&#41; in the description of the pull request.)
 
-* If you plan to do something more involved, please reach out to us and send an [email](mailto:opensource@telekom.de). This will avoid unnecessary work and surely give you and us a good deal of inspiration.
+[comment]: <> (* If you plan to do something more involved, please reach out to us and send an [email]&#40;mailto:opensource@telekom.de&#41;. This will avoid unnecessary work and surely give you and us a good deal of inspiration.)
 
-* Relevant coding style guidelines are available in the respective sub-repositories as they are programming language-dependent.
+[comment]: <> (* Relevant coding style guidelines are available in the respective sub-repositories as they are programming language-dependent.)
 
 ## Steps to Contribute
 
@@ -35,7 +35,9 @@ You are welcome to contribute code in order to fix a bug or to implement a new f
 The following rule governs code contributions:
 
 * Contributions must be licensed under the [Apache 2.0 License](./LICENSE)
-* Newly created files must be opened by an instantiated version of the file 'templates/file-header.txt'
+
+[comment]: <> (* Newly created files must be opened by an instantiated version of the file 'templates/file-header.txt')
+
 * At least if you add a new file to the repository, add your name into the contributor section of the file NOTICE (please respect the preset entry structure)
 
 ## Contributing Documentation
@@ -72,4 +74,4 @@ The following rule governs documentation contributions:
 
 * When creating an issue, try using one of our issue templates which already contain some guidelines on which content is expected to process the issue most efficiently. If no template applies, you can of course also create an issue from scratch.
 
-* Please apply one or more applicable [labels](/../../labels) to your issue so that all community members are able to cluster the issues better.
+[comment]: <> (* Please apply one or more applicable [labels]&#40;/../../labels&#41; to your issue so that all community members are able to cluster the issues better.)
