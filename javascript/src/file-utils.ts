@@ -1,3 +1,7 @@
+/**
+ * Reading and writing JSON in UTF-8.
+ */
+
 import { PathLike, readFileSync, writeFileSync } from "fs"
 
 export const readJson = (path: PathLike) => {

@@ -1,3 +1,9 @@
+/**
+ * Map a JS function over all DGC payloads in the dgc-testdata repo,
+ * which is assumed to exist right next to this dgc-business-rules repo.
+ */
+
+
 import { PathLike } from "fs"
 const readdirRecursive = require("fs-readdir-recursive")
 import { join } from "path"
@@ -32,6 +38,10 @@ const testFiles = readdirRecursive(testDataPath).filter((path: string) => path.m
 
 type MapResults<RT> = MapResult<RT>[]
 
+/**
+ * Map the given `func` on all DGC payloads in the dgc-testdata repo,
+ * gathering the results as a {@see MapResults}.
+ */
 export function mapTestFiles<RT>(func: (dgc: any) => RT): MapResults<RT> {
     return testFiles.map((path: string) => mapTestFile(join(testDataPath, path), func))
 }

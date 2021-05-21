@@ -1,3 +1,9 @@
+/**
+ * Run all rules against all DGC payloads in the dgc-testdata repo,
+ * and output to out/testData-results.json.
+ */
+
+
 import { join } from "path"
 
 import { ExtendedRulesLogic, applyLogic } from "./extend-json-logic"

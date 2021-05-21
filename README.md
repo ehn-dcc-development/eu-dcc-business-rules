@@ -20,7 +20,15 @@ This repository collects “various” relevant artifacts pertaining to business
 
 - If you found any problems, please create an [Issue](/../../issues).
 - Please make sure to review the issues to see if any other members states found issues with your provided test data.
-- Current status: _very_ Work-In-Progress. 
+- Current status: _very_ much a Work-In-Progress. 
+
+
+## Code organization
+
+- [JavaScript “stuff”](./javascript): see [that README](./javascript/README.md) for pointers
+- Prelimary implementation of the [rules](./rules) in the [JsonLogic](https://jsonlogic.com/) format.
+  _Note:_ this has currently **no official status!**.
+  [This Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+Level+Business+Rules) is leading, and discussions should be conducted there.
 
 
 ## How to contribute  

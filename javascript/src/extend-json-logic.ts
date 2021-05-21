@@ -1,7 +1,13 @@
+/**
+ * Extend JsonLogic with custom operations.
+ */
+
+
 import { RulesLogic, add_operation, apply } from "json-logic-js"
 
 
 export type ExtendedRulesLogic = RulesLogic | { "varx": ExtendedRulesLogic[] }
+
 
 export const extendJsonLogic = () => {
     add_operation("varx", function (this: any, ...pathParts: (string | number)[]) {
@@ -15,6 +21,7 @@ export const extendJsonLogic = () => {
         return value
     })
 }
+
 
 export const applyLogic = (jsonLogicExpression: ExtendedRulesLogic, data: any) => apply(jsonLogicExpression as RulesLogic, data)
 

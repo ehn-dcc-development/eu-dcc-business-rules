@@ -4,8 +4,9 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
+    "postinstall": "mkdir -p out",
     "build": "tsc",
-    "watch": "tsc --watch"
+    "watch": "tsc --watch --incremental"
   },
   "dependencies": {
     "deep-equal": "^2.0.5",
