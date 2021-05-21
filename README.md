@@ -28,7 +28,7 @@ This repository collects “various” relevant artifacts pertaining to business
 - [JavaScript “stuff”](./javascript): see [that README](./javascript/README.md) for pointers
 - Prelimary implementation of the [rules](./rules) in the [JsonLogic](https://jsonlogic.com/) format.
   _Note:_ this has currently **no official status!**.
-  [This Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+Level+Business+Rules) is leading, and discussions should be conducted there.
+  [This Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+DGC+Validation+Rules) is leading, and discussions should be conducted there.
 
 
 ## How to contribute  
