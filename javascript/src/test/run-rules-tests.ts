@@ -1,4 +1,5 @@
 const { deepEqual } = require("chai").assert
+import { existsSync } from "fs"
 import { join } from "path"
 
 import { extendJsonLogic } from "../extend-JsonLogic"
@@ -32,6 +33,12 @@ export const runTestsOn = (testCase: TestCase) => {
 }
 
 
-const rulesTestsPath = join(__dirname, "../../../rules/test")
-runTestsOn(readJson(join(rulesTestsPath, "GR-EU-0001.json")))
+const rulesTestsPath = join(__dirname, "../../../rules/test");
+rules.map((rule) => rule.name)
+    .map((ruleId) => join(rulesTestsPath, `${ruleId}.json`))
+    .filter(existsSync)
+    .forEach((path) => {
+        runTestsOn(readJson(path))
+    })
+// TODO  test file name should be enough to specify ruleId + check for "superfluous" test files
 

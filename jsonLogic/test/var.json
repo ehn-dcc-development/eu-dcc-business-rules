@@ -1,5 +1,5 @@
 {
-  "name": "array operations",
+  "name": "use of var",
   "cases": [
     {
       "name": "var-ing non-existing array elements",

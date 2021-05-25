@@ -1,3 +1,4 @@
+import { readdirSync } from "fs"
 import { join } from "path"
 const { deepEqual } = require("chai").assert
 
@@ -35,8 +36,8 @@ export const runTestsOn = (testSuite: TestSuite) => {
 }
 
 
-const testDefinitionsPath = join(__dirname, "../../../jsonLogic/test")
-;[ "base", "comparison", "dates", "patched-reduce" ].forEach((testSuiteName) => {
-    runTestsOn(readJson(join(testDefinitionsPath, `${testSuiteName}.json`)))
-})
+const testSuitsPath = join(__dirname, "../../../jsonLogic/test")
+readdirSync(testSuitsPath)
+    .filter((path) => path.endsWith(".json"))
+    .forEach((path) => runTestsOn(readJson(join(testSuitsPath, path))))
 

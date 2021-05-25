@@ -1,0 +1,38 @@
+{
+  "ruleId": "VR-EU-0001",
+  "assertions": [
+    {
+      "name": "empty DGC",
+      "hcert": {
+      },
+      "expected": true
+    },
+    {
+      "name": "v == empty array",
+      "hcert": {
+        "v": []
+      },
+      "expected": true
+    },
+    {
+      "hcert": {
+        "v": [
+          {
+            "mp": "Pfizer"
+          }
+        ]
+      },
+      "expected": false
+    },
+    {
+      "hcert": {
+        "v": [
+          {
+            "mp": "EU/1/20/1528"
+          }
+        ]
+      },
+      "expected": true
+    }
+  ]
+}

@@ -1,0 +1,54 @@
+{
+  "ruleId": "TR-EU-0002",
+  "assertions": [
+    {
+      "name": "empty DGC",
+      "hcert": {
+      },
+      "expected": true
+    },
+    {
+      "name": "t == empty array",
+      "hcert": {
+        "t": []
+      },
+      "expected": true
+    },
+    {
+      "name": "a RAT from an approved test manufacturer",
+      "hcert": {
+        "t": [
+          {
+            "tt": "LP6464-4",
+            "ma": "344"
+          }
+        ]
+      },
+      "expected": true
+    },
+    {
+      "name": "a RAT, but not an approved test manufacturer",
+      "hcert": {
+        "t": [
+          {
+            "tt": "LP6464-4",
+            "ma": "???"
+          }
+        ]
+      },
+      "expected": false
+    },
+    {
+      "name": "not a RAT, so anything goes",
+      "hcert": {
+        "t": [
+          {
+            "tt": "LP217198-3",
+            "ma": "???"
+          }
+        ]
+      },
+      "expected": true
+    }
+  ]
+}
