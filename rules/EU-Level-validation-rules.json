@@ -288,7 +288,7 @@
           "var": "hcert.t.0"
         },
         {
-          ">=": [
+          ">": [
             {
               "addDays": [
                 {
@@ -326,7 +326,7 @@
               "var": "hcert.t.0.tr"
             },
             {
-              "var": "external.valueSets.covid-19-lab-result.0"
+              "var": "external.valueSets.covid-19-lab-result.1"
             }
           ]
         },

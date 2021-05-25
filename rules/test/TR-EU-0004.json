@@ -1,0 +1,40 @@
+{
+  "ruleId": "TR-EU-0004",
+  "assertions": [
+    {
+      "name": "empty DGC",
+      "hcert": {
+      },
+      "expected": true
+    },
+    {
+      "name": "t == empty array",
+      "hcert": {
+        "t": []
+      },
+      "expected": true
+    },
+    {
+      "name": "a positive test",
+      "hcert": {
+        "t": [
+          {
+            "tr": "260373001"
+          }
+        ]
+      },
+      "expected": false
+    },
+    {
+      "name": "a negative test",
+      "hcert": {
+        "t": [
+          {
+            "tr": "260415000"
+          }
+        ]
+      },
+      "expected": true
+    }
+  ]
+}
