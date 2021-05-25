@@ -5,7 +5,6 @@
 <p align="center">
     <a href="#about">About</a> •
     <a href="#testing--status">Testing & Status</a> •
-    <a href="#how-to-contribute">How to Contribute</a> •
     <a href="#licensing">Licensing</a>
 </p>
 
@@ -29,12 +28,6 @@ This repository collects “various” relevant artifacts pertaining to business
 - Prelimary implementation of the [rules](./rules) in the [JsonLogic](https://jsonlogic.com/) format.
   _Note:_ this has currently **no official status!**.
   [This Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+DGC+Validation+Rules) is leading, and discussions should be conducted there.
-
-
-## How to contribute  
-
-Contribution and feedback is encouraged and always welcome. For more information about how to contribute, the project structure, as well as additional contribution information, see our [Contribution Guidelines](./CONTRIBUTING.md). By participating in this project, you agree to abide by its [Code of Conduct](./CODE_OF_CONDUCT.md) at all times.
-
 
 ## Licensing
 
