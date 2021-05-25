@@ -1,0 +1,452 @@
+[
+  {
+    "name": "GR-EU-0001",
+    "active": true,
+    "description": "The \"disease or  agent targeted\" must be COVID-19 of the value set list.",
+    "inputParameter": "Entire HCert JSON (\"v\",\"t\",\"r\",\"..\") + Valuesets + \"tg\"",
+    "jsonLogicExpression": {
+      "and": [
+        {
+          "reduce": [
+            {
+              "var": "hcert.r"
+            },
+            {
+              "and": [
+                {
+                  "var": "accumulator"
+                },
+                {
+                  "in": [
+                    {
+                      "var": "current.tg"
+                    },
+                    {
+                      "var": "data.external.valueSets.disease-agent-targeted"
+                    }
+                  ]
+                }
+              ]
+            },
+            true
+          ]
+        },
+        {
+          "reduce": [
+            {
+              "var": "hcert.t"
+            },
+            {
+              "and": [
+                {
+                  "var": "accumulator"
+                },
+                {
+                  "in": [
+                    {
+                      "var": "current.tg"
+                    },
+                    {
+                      "var": "data.external.valueSets.disease-agent-targeted"
+                    }
+                  ]
+                }
+              ]
+            },
+            true
+          ]
+        },
+        {
+          "reduce": [
+            {
+              "var": "hcert.v"
+            },
+            {
+              "and": [
+                {
+                  "var": "accumulator"
+                },
+                {
+                  "in": [
+                    {
+                      "var": "current.tg"
+                    },
+                    {
+                      "var": "data.external.valueSets.disease-agent-targeted"
+                    }
+                  ]
+                }
+              ]
+            },
+            true
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "GR-EU-0002",
+    "active": true,
+    "description": "At most one r-event.",
+    "inputParameter": "Entire HCert JSON (\"r\")",
+    "jsonLogicExpression": {
+      "!": [ { "var": "hcert.r.1" } ]
+    }
+  },
+  {
+    "name": "GR-EU-0003",
+    "active": true,
+    "description": "At most one type of t-event.",
+    "inputParameter": "Entire HCert JSON (\"t\")",
+    "jsonLogicExpression": {
+      "!": [ { "var": "hcert.t.1" } ]
+    }
+  },
+  {
+    "name": "GR-EU-0004",
+    "active": true,
+    "description": "At most one type of event.",
+    "inputParameter": "Entire HCert JSON (\"r\", \"t\", \"v\")",
+    "jsonLogicExpression": {
+      "<=": [
+        {
+          "reduce": [
+            [
+              { "var": "hcert.r" },
+              { "var": "hcert.t" },
+              { "var": "hcert.v" }
+            ],
+            {
+              "+": [
+                { "var": "accumulator" },
+                {
+                  "if": [
+                    { "!": [ { "var": "current" } ] },
+                    0,
+                    1
+                  ]
+                }
+              ]
+            },
+            0
+          ]
+        },
+        1
+      ]
+    }
+  },
+  {
+    "name": "VR-EU-0001",
+    "businessDescription": "EMA must approve allowed vaccines.",
+    "description": "Only vaccines in the allowed valueset are allowed.",
+    "inputParameter": "Vaccination Part of the HCert (\"v\")+ Valuesets + (\"v\")+\"mp\"",
+    "jsonLogicExpression": {
+      "if": [
+        {
+          "!": {
+            "var": "hcert.v.0"
+          }
+        },
+        true,
+        {
+          "all": [
+            {
+              "var": "hcert.v"
+            },
+            {
+              "in": [
+                {
+                  "var": "mp"
+                },
+                [
+                  "BBIBP-CorV",
+                  "CVnCoV",
+                  "Convidecia",
+                  "CoronaVac",
+                  "Covaxin",
+                  "EU/1/20/1507",
+                  "EU/1/20/1525",
+                  "EU/1/20/1528",
+                  "EU/1/21/1529",
+                  "EpiVacCorona",
+                  "Inactivated-SARS-CoV-2-Vero-Cell",
+                  "Sputnik-V"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "VR-EU-0002",
+    "businessDescription": "The vaccination course must be completed to provide enough protection.",
+    "description": "Vaccination doses must be equal or greater than expected doses.",
+    "inputParameter": "Vaccination Part of the HCert (\"v\")+ Valuesets + \"dn\"+\"sd\"",
+    "jsonLogicExpression": {
+      "some": [
+        {
+          "var": "hcert.v"
+        },
+        {
+          ">=": [
+            {
+              "var": "dn"
+            },
+            {
+              "var": "sd"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "VR-EU-0003",
+    "businessDescription": "The full vaccination protection starts up 14 days after vaccination and is valid for 365 days.",
+    "description": "Verification Datetime must be more than 14 days and less than 365 days after the last date of vaccination.",
+    "inputParameter": "Vaccination Part of the HCert (\"v\")+ Valuesets + +\"dt\"",
+    "jsonLogicExpression": {
+      "if": [
+        {
+          "var": "hcert.v.0"
+        },
+        {
+          "<=": [
+            {
+              "addDays": [
+                {
+                  "var": "hcert.v.0.dt"
+                },
+                14
+              ]
+            },
+            {
+              "addDays": [
+                {
+                  "var": "external.validationClock"
+                },
+                0
+              ]
+            },
+            {
+              "addDays": [
+                {
+                  "var": "hcert.v.0.dt"
+                },
+                365
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "name": "TR-EU-0001",
+    "businessDescription": "The test type (tt) can be RAT or NAA",
+    "description": "The test type must be one of the value set list (RAT OR NAA).",
+    "inputParameter": "Test Part of the HCert (\"t\")+ Valuesets + \"tt\"",
+    "jsonLogicExpression": {
+      "if": [
+        {
+          "!": {
+            "var": "hcert.t.0"
+          }
+        },
+        true,
+        {
+          "all": [
+            {
+              "var": "hcert.t"
+            },
+            {
+              "in": [
+                {
+                  "var": "tt"
+                },
+                [
+                  "LP217198-3",
+                  "LP6464-4"
+                ]
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "name": "TR-EU-0002",
+    "businessDescription": "If the test type is \"RAT\" then the test must be in the list of accepted RAT tests",
+    "description": "If the test type is \"RAT\" then the \"test product and manufacturer\" MUST be in the valueset list, if it's NAA return true.",
+    "inputParameter": "Test Part of the HCert (\"t\")+ Valuesets +\"tt\" + \"ma\"",
+    "jsonLogicExpression": {
+      "if": [
+        {
+          "==": [
+            {
+              "var": "hcert.t.0.tt"
+            },
+            "LP6464-4"
+          ]
+        },
+        {
+          "in": [
+            {
+              "var": "hcert.t.0.ma"
+            },
+            {
+              "var": "external.valueSets.covid-19-lab-test-manufacturer-and-name"
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "name": "TR-EU-0003",
+    "businessDescription": "The test must be performed ",
+    "description": "DateTime of Sample Collection must be less than 72 hours before the Verification Datetime.",
+    "inputParameter": "Test Part of the HCert (\"t\")+ validation date (timestamp)+ Valuesets +\"sc\"",
+    "jsonLogicExpression": {
+      "if": [
+        {
+          "var": "hcert.t.0"
+        },
+        {
+          ">=": [
+            {
+              "addDays": [
+                {
+                  "var": "hcert.t.0.sc"
+                },
+                3
+              ]
+            },
+            {
+              "addDays": [
+                {
+                  "var": "external.validationClock"
+                },
+                0
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "name": "TR-EU-0004",
+    "description": "Test result must be negative(\"not detected\").",
+    "inputParameter": "Test Part of the HCert (\"t\")+ Valuesets +\"tr\"",
+    "jsonLogicExpression": {
+      "if": [
+        {
+          "var": "hcert.t.0"
+        },
+        {
+          "==": [
+            {
+              "var": "hcert.t.0.tr"
+            },
+            {
+              "var": "external.valueSets.covid-19-lab-result.0"
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "name": "RR-EU-0001",
+    "businessDescription": "The certificate must be valid.",
+    "description": "The Verification Datetime must be between \"Certificate Valid From\" and \"Certificate Valid Until\"",
+    "inputParameter": "Recovery Part of the HCert (\"r\")+ validation date (timestamp)+ Valuesets +\"df\" +\"du\"",
+    "jsonLogicExpression": {
+      "if": [
+        {
+          "var": "hcert.r.0"
+        },
+        {
+          "<=": [
+            {
+              "var": "hcert.r.0.df"
+            },
+            {
+              "var": "external.validationClock"
+            },
+            {
+              "var": "hcert.r.0.du"
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "name": "RR-EU-0002",
+    "businessDescription": "The validity period of the certificate must be checked.",
+    "description": "The validity start date must be greater than or equal to the first positive test date  +11 days and validity end date must be less than or equal to the first postive test date +180.",
+    "inputParameter": "Recovery Part of the HCert (\"r\")+ Valuesets +\n\n(\"fr\" +11 days) + ( fr+180 days)",
+    "jsonLogicExpression": {
+      "if": [
+        {
+          "var": "hcert.r.0"
+        },
+        {
+          "and": [
+            {
+              ">=": [
+                {
+                  "addDays": [
+                    {
+                      "var": "hcert.r.0.df"
+                    },
+                    0
+                  ]
+                },
+                {
+                  "addDays": [
+                    {
+                      "var": "hcert.r.0.fr"
+                    },
+                    11
+                  ]
+                }
+              ]
+            },
+            {
+              "<=": [
+                {
+                  "addDays": [
+                    {
+                      "var": "hcert.r.0.du"
+                    },
+                    0
+                  ]
+                },
+                {
+                  "addDays": [
+                    {
+                      "var": "hcert.r.0.fr"
+                    },
+                    180
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  }
+]

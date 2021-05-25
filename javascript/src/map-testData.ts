@@ -17,7 +17,7 @@ export interface MapResult<RT> {
     result?: RT
 }
 
-function mapTestFile<RT>(path: PathLike, func: (dgc: any) => RT): MapResult<RT> {
+function mapTestFile<RT>(path: PathLike, func: (json: any) => RT): MapResult<RT> {
     const testJson = readJson(path)
     if (!testJson) {
         return {
@@ -25,15 +25,14 @@ function mapTestFile<RT>(path: PathLike, func: (dgc: any) => RT): MapResult<RT> 
             notJson: true
         }
     }
-    const dgc = testJson.JSON
     return {
         file: path,
-        result: func(dgc)
+        result: func(testJson)
     }
 }
 
 const testDataPath = join(__dirname, "../../../dgc-testdata")
-const testFiles = readdirRecursive(testDataPath).filter((path: string) => path.match(/\/raw\/\d+\.json$/))
+const testFiles = readdirRecursive(testDataPath).filter((path: string) => path.match(/\/raw\/(.+?)\.json$/))
 
 
 type MapResults<RT> = MapResult<RT>[]

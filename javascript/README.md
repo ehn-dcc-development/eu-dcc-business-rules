@@ -9,13 +9,13 @@ or
 
     $ yarn
 
-to download NPM-dependencies, and set up the [`out`](./out/) temporary directory.
+to download NPM-dependencies, and set up the [out](./out/) temporary directory.
 
 Most important/interesting thing is to run
 
-    $ node dist/run-rules.js
+    $ npm start
 
-to run all [these rules](../rules/EU-Level-business-rules.json) on all DGC payloads in the [dgc-testdata](https://github.com/eu-digital-green-certificates/dgc-testdata) repo.
+to run all [these rules](../rules/EU-Level-validation-rules.json) on all DGC payloads in the [dgc-testdata](https://github.com/eu-digital-green-certificates/dgc-testdata) repo.
 
 Code is written in TypeScript, with typings serving as documentation.
 
@@ -32,7 +32,7 @@ Code is written in TypeScript, with typings serving as documentation.
 * `src/`: TypeScript code.
     Run `tsc` to compile that (non-bundled) to `dist/`.
     See comments in those files to find out their purposes.
-    Entrypoints are: [run-rules](./src/run-rules.ts), [run-query](./src/run-query.ts).
+    Entrypoints are: [run-rules-on-testData](./src/run-rules-on-testData.ts), [validate-testData-dgc](./src/validate-testData-dgc.ts) and [run-query](./src/run-query.ts).
 
 
 ## Development

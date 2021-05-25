@@ -2,7 +2,7 @@
  * Provide development convenience by running some JsonLogic query on all DGC payloads in the dgc-testdata repo.
  */
 
-import { applyLogic } from "./extend-json-logic"
+import { applyLogic } from "./extend-JsonLogic"
 import { readJson, writeJson } from "./file-utils"
 import { mapTestFiles } from "./map-testData"
 
