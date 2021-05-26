@@ -11,22 +11,35 @@ import { join } from "path"
 import { readJson } from "./file-utils"
 
 
+export interface TestFileIdentification {
+    memberState: string
+    fileName: string
+}
+
 export interface MapResult<RT> {
-    file: PathLike
+    testFileId: TestFileIdentification
     notJson?: boolean
     result?: RT
 }
 
 function mapTestFile<RT>(path: PathLike, func: (json: any) => RT): MapResult<RT> {
     const testJson = readJson(path)
+    const fileMatch = path.toString().match(/.+?dgc-testdata\/(\w+)\/2DCode\/raw\/(.+?)\.json$/)
+    if (!fileMatch) {
+        throw new Error(`could no disassemble path "${path}"`)
+    }
+    const testFileId: TestFileIdentification = {
+        memberState: fileMatch[1],
+        fileName: fileMatch[2]
+    }
     if (!testJson) {
         return {
-            file: path,
+            testFileId,
             notJson: true
         }
     }
     return {
-        file: path,
+        testFileId,
         result: func(testJson)
     }
 }
