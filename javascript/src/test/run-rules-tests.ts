@@ -1,4 +1,4 @@
-const { deepEqual } = require("chai").assert
+const { deepEqual, fail } = require("chai").assert
 import { existsSync, readdirSync } from "fs"
 import { join } from "path"
 
@@ -13,10 +13,6 @@ interface Assertion {
     validationClock?: string
     expected: any
     message?: string
-}
-interface TestCase {
-    ruleId: string
-    assertions: Assertion[]
 }
 
 
@@ -39,7 +35,11 @@ rules.forEach((rule) => {
     if (existsSync(path)) {
         runTests(rule, readJson(path))
     } else {
-        console.error(`no test case file for rule with id '${ruleId}'`)
+        describe(`rule: "${ruleId}"`, () => {
+            it(`no assertions file`, () => {
+                fail()
+            })
+        })
     }
 })
 
