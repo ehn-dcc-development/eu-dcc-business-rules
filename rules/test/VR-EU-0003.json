@@ -1,126 +1,122 @@
-{
-  "ruleId": "VR-EU-0003",
-  "assertions": [
-    {
-      "name": "empty DGC",
-      "hcert": {
-      },
-      "expected": true
+[
+  {
+    "name": "empty DGC",
+    "hcert": {},
+    "expected": true
+  },
+  {
+    "name": "v == empty array",
+    "hcert": {
+      "v": []
     },
-    {
-      "name": "v == empty array",
-      "hcert": {
-        "v": []
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "name": "too early",
+    "hcert": {
+      "v": [
+        {
+          "dt": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "too early",
-      "hcert": {
-        "v": [
-          {
-            "dt": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-01T00:00:00+00:00",
-      "expected": false
+    "validationClock": "2021-06-01T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "just too early",
+    "hcert": {
+      "v": [
+        {
+          "dt": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "just too early",
-      "hcert": {
-        "v": [
-          {
-            "dt": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-14T00:00:00+00:00",
-      "expected": false
+    "validationClock": "2021-06-14T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "just in time",
+    "hcert": {
+      "v": [
+        {
+          "dt": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "just in time",
-      "hcert": {
-        "v": [
-          {
-            "dt": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-15T00:00:00+00:00",
-      "expected": true
+    "validationClock": "2021-06-15T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "28 days later :D",
+    "hcert": {
+      "v": [
+        {
+          "dt": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "28 days later :D",
-      "hcert": {
-        "v": [
-          {
-            "dt": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-29T00:00:00+00:00",
-      "expected": true
+    "validationClock": "2021-06-29T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "a month has passed...",
+    "hcert": {
+      "v": [
+        {
+          "dt": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "a month has passed...",
-      "hcert": {
-        "v": [
-          {
-            "dt": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-07-01T00:00:00+00:00",
-      "expected": true
+    "validationClock": "2021-07-01T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "almost a year",
+    "hcert": {
+      "v": [
+        {
+          "dt": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "almost a year",
-      "hcert": {
-        "v": [
-          {
-            "dt": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2022-05-31T00:00:00+00:00",
-      "expected": true
+    "validationClock": "2022-05-31T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "a year",
+    "hcert": {
+      "v": [
+        {
+          "dt": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "a year",
-      "hcert": {
-        "v": [
-          {
-            "dt": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2022-06-01T00:00:00+00:00",
-      "expected": true
+    "validationClock": "2022-06-01T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "just more than a year",
+    "hcert": {
+      "v": [
+        {
+          "dt": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "just more than a year",
-      "hcert": {
-        "v": [
-          {
-            "dt": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2022-06-02T13:00:00+00:00",
-      "expected": false
+    "validationClock": "2022-06-02T13:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "more than a year",
+    "hcert": {
+      "v": [
+        {
+          "dt": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "more than a year",
-      "hcert": {
-        "v": [
-          {
-            "dt": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2022-06-02T00:00:00+00:00",
-      "expected": false
-    }
-  ]
-}
+    "validationClock": "2022-06-02T00:00:00+00:00",
+    "expected": false
+  }
+]

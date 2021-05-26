@@ -1,72 +1,123 @@
-{
-  "ruleId": "GR-EU-0002",
-  "assertions": [
-    {
-      "name": "empty DGC",
-      "hcert": {
-      },
-      "expected": true
+[
+  {
+    "name": "empty DGC",
+    "hcert": {},
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "hcert": {
+      "r": []
     },
-    {
-      "name": "r == empty array",
-      "hcert": {
-        "r": []
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "hcert": {
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "t": [ { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "hcert": {
+      "v": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "v": [ { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "840539006" } ],
-        "t": [ { "tg": "840539006" } ]
-      },
-      "expected": false
+    "expected": false
+  },
+  {
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "v": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "840539006" } ],
-        "v": [ { "tg": "840539006" } ]
-      },
-      "expected": false
+    "expected": false
+  },
+  {
+    "hcert": {
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "v": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "t": [ { "tg": "840539006" } ],
-        "v": [ { "tg": "840539006" } ]
-      },
-      "expected": false
+    "expected": false
+  },
+  {
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "v": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "840539006" } ],
-        "t": [ { "tg": "840539006" } ],
-        "v": [ { "tg": "840539006" } ]
-      },
-      "expected": false
+    "expected": false
+  },
+  {
+    "name": "not fooled by multiple events of one type",
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        },
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "name": "not fooled by multiple events of one type",
-      "hcert": {
-        "r": [ { "tg": "840539006" }, { "tg": "840539006" } ]
-      },
-      "expected": true
-    }
-  ]
-}
+    "expected": true
+  }
+]

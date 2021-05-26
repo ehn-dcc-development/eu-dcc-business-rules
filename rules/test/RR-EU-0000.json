@@ -1,43 +1,39 @@
-{
-  "ruleId": "RR-EU-0000",
-  "assertions": [
-    {
-      "name": "empty DGC",
-      "hcert": {
-      },
-      "expected": true
+[
+  {
+    "name": "empty DGC",
+    "hcert": {},
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "hcert": {
+      "r": []
     },
-    {
-      "name": "r == empty array",
-      "hcert": {
-        "r": []
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "name": "1 r-event",
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "name": "1 r-event",
-      "hcert": {
-        "r": [
-          {
-            "tg": "840539006"
-          }
-        ]
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "name": "2 r-events",
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        },
+        {
+          "tg": "840539006"
+        }
+      ]
     },
-    {
-      "name": "2 r-events",
-      "hcert": {
-        "r": [
-          {
-            "tg": "840539006"
-          },
-          {
-            "tg": "840539006"
-          }
-        ]
-      },
-      "expected": false
-    }
-  ]
-}
+    "expected": false
+  }
+]

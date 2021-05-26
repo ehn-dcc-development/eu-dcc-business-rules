@@ -1,86 +1,82 @@
-{
-  "ruleId": "TR-EU-0003",
-  "assertions": [
-    {
-      "name": "empty DGC",
-      "hcert": {
-      },
-      "expected": true
+[
+  {
+    "name": "empty DGC",
+    "hcert": {},
+    "expected": true
+  },
+  {
+    "name": "t == empty array",
+    "hcert": {
+      "t": []
     },
-    {
-      "name": "t == empty array",
-      "hcert": {
-        "t": []
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "hcert": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "t": [
-          {
-            "sc": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-05T00:00:00+00:00",
-      "expected": false
+    "validationClock": "2021-06-05T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "hcert": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "t": [
-          {
-            "sc": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-04T13:00:00+00:00",
-      "expected": false
+    "validationClock": "2021-06-04T13:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "exactly 72 hours ago",
+    "hcert": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "exactly 72 hours ago",
-      "hcert": {
-        "t": [
-          {
-            "sc": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-04T00:00:00+00:00",
-      "expected": false
+    "validationClock": "2021-06-04T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "just within 72 hours",
+    "hcert": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "name": "just within 72 hours",
-      "hcert": {
-        "t": [
-          {
-            "sc": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-03T23:59:59+00:00",
-      "expected": true
+    "validationClock": "2021-06-03T23:59:59+00:00",
+    "expected": true
+  },
+  {
+    "hcert": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "t": [
-          {
-            "sc": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-03T00:00:00+00:00",
-      "expected": true
+    "validationClock": "2021-06-03T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "hcert": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
     },
-    {
-      "hcert": {
-        "t": [
-          {
-            "sc": "2021-06-01T00:00:00+00:00"
-          }
-        ]
-      },
-      "validationClock": "2021-06-02T00:00:00+00:00",
-      "expected": true
-    }
-  ]
-}
+    "validationClock": "2021-06-02T00:00:00+00:00",
+    "expected": true
+  }
+]

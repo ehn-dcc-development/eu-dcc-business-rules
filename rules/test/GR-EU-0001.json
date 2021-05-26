@@ -1,106 +1,103 @@
-{
-  "ruleId": "GR-EU-0001",
-  "assertions": [
-    {
-      "name": "empty DGC",
-      "hcert": {
-      },
-      "expected": true
+[
+  {
+    "name": "empty DGC",
+    "hcert": {
     },
-    {
-      "name": "r == empty array",
-      "hcert": {
-        "r": []
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "hcert": {
+      "r": []
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": true
+  },
+  {
+    "hcert": {
+      "r": [ { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "COVID-19" } ]
-      },
-      "expected": false
+    "expected": true
+  },
+  {
+    "hcert": {
+      "r": [ { "tg": "COVID-19" } ]
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "840539006" }, { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": false
+  },
+  {
+    "hcert": {
+      "r": [ { "tg": "840539006" }, { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "COVID-19" }, { "tg": "840539006" } ]
-      },
-      "expected": false
+    "expected": true
+  },
+  {
+    "hcert": {
+      "r": [ { "tg": "COVID-19" }, { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "t": [ { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": false
+  },
+  {
+    "hcert": {
+      "t": [ { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "t": [ { "tg": "COVID-19" } ]
-      },
-      "expected": false
+    "expected": true
+  },
+  {
+    "hcert": {
+      "t": [ { "tg": "COVID-19" } ]
     },
-    {
-      "hcert": {
-        "t": [ { "tg": "840539006" }, { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": false
+  },
+  {
+    "hcert": {
+      "t": [ { "tg": "840539006" }, { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "t": [ { "tg": "COVID-19" }, { "tg": "840539006" } ]
-      },
-      "expected": false
+    "expected": true
+  },
+  {
+    "hcert": {
+      "t": [ { "tg": "COVID-19" }, { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "v": [ { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": false
+  },
+  {
+    "hcert": {
+      "v": [ { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "v": [ { "tg": "COVID-19" } ]
-      },
-      "expected": false
+    "expected": true
+  },
+  {
+    "hcert": {
+      "v": [ { "tg": "COVID-19" } ]
     },
-    {
-      "hcert": {
-        "v": [ { "tg": "840539006" }, { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": false
+  },
+  {
+    "hcert": {
+      "v": [ { "tg": "840539006" }, { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "v": [ { "tg": "COVID-19" }, { "tg": "840539006" } ]
-      },
-      "expected": false
+    "expected": true
+  },
+  {
+    "hcert": {
+      "v": [ { "tg": "COVID-19" }, { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "840539006" } ],
-        "t": [ { "tg": "840539006" } ],
-        "v": [ { "tg": "840539006" } ]
-      },
-      "expected": true
+    "expected": false
+  },
+  {
+    "hcert": {
+      "r": [ { "tg": "840539006" } ],
+      "t": [ { "tg": "840539006" } ],
+      "v": [ { "tg": "840539006" } ]
     },
-    {
-      "hcert": {
-        "r": [ { "tg": "840539006" } ],
-        "t": [ { "tg": "840539006" } ],
-        "v": [ { "tg": "COVID-19" } ]
-      },
-      "expected": false
-    }
-  ]
-}
+    "expected": true
+  },
+  {
+    "hcert": {
+      "r": [ { "tg": "840539006" } ],
+      "t": [ { "tg": "840539006" } ],
+      "v": [ { "tg": "COVID-19" } ]
+    },
+    "expected": false
+  }
+]
