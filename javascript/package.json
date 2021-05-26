@@ -10,7 +10,8 @@
     "build-watch": "tsc --watch --incremental",
     "test": "mocha dist/test",
     "test-watch": "mocha --watch dist/test",
-    "start": "node dist/run-rules-on-testData.js"
+    "start": "node dist/run-rules-on-testData.js",
+    "validate": "node dist/validate-testData-dgc.js"
   },
   "dependencies": {
     "deep-equal": "^2.0.5",

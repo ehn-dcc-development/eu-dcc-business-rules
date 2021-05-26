@@ -4,6 +4,7 @@ import { join } from "path"
 
 import { extendJsonLogic } from "../extend-JsonLogic"
 import { readJson } from "../file-utils"
+import { rulesPath } from "../paths"
 import { Rule, rules, runRule } from "../rules"
 
 
@@ -28,7 +29,7 @@ export const runTests = (rule: Rule, assertions: Assertion[]) => {
 }
 
 
-const rulesTestsPath = join(__dirname, "../../../rules/test");
+const rulesTestsPath = join(rulesPath, "test");
 rules.forEach((rule) => {
     const ruleId = rule.name
     const path = join(rulesTestsPath, `${ruleId}.json`)

@@ -6,14 +6,15 @@
 
 import { join } from "path"
 
-import { extendJsonLogic } from "./extend-JsonLogic"
-import { writeJson } from "./file-utils"
+import { extendJsonLogic } from "../extend-JsonLogic"
+import { writeJson } from "../file-utils"
 import { mapTestFiles } from "./map-testData"
+import { outPath } from "../paths"
 
 
 extendJsonLogic()
 
-import { rules, runRule } from "./rules"
+import { rules, runRule } from "../rules"
 
 
 const validateAgainstRules = (testJson: any) => {
@@ -28,7 +29,7 @@ const validateAgainstRules = (testJson: any) => {
 
 const validationResults = mapTestFiles(validateAgainstRules)
 
-writeJson(join(__dirname, "../../out/testData-rules-validation-js.json"), validationResults)
+writeJson(join(outPath, "testData-rules-validation-js.json"), validationResults)
 
 console.log(`validated ${validationResults.length} DGCs against business rules`)
 

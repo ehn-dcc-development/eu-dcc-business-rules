@@ -32,7 +32,7 @@ Code is written in TypeScript, with typings serving as documentation.
 * `src/`: TypeScript code.
     Run `tsc` to compile that (non-bundled) to `dist/`.
     See comments in those files to find out their purposes.
-    Entrypoints are: [run-rules-on-testData](./src/run-rules-on-testData.ts), [validate-testData-dgc](./src/validate-testData-dgc.ts) and [run-query](./src/run-query.ts).
+    Entrypoints are: [run-rules-on-testData](./src/testData/run-rules-on-testData.ts), [validate-testData-dgc](./src/testData/validate-testData-dgc.ts), and [run-query](./src/testData/run-query.ts).
 
 
 ## Development

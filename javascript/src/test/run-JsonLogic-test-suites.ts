@@ -4,6 +4,7 @@ const { deepEqual } = require("chai").assert
 
 import { applyLogic, extendJsonLogic, JsonLogicRule } from "../extend-JsonLogic"
 import { readJson } from "../file-utils"
+import { jsonLogicPath } from "../paths"
 
 
 interface Assertion {
@@ -36,7 +37,7 @@ export const runTestsOn = (testSuite: TestSuite) => {
 }
 
 
-const testSuitsPath = join(__dirname, "../../../jsonLogic/test")
+const testSuitsPath = join(jsonLogicPath, "test")
 readdirSync(testSuitsPath)
     .filter((path) => path.endsWith(".json"))
     .forEach((path) => runTestsOn(readJson(join(testSuitsPath, path))))

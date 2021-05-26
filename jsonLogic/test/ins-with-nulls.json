@@ -1,0 +1,55 @@
+{
+  "name": "ins with nulls",
+  "cases": [
+    {
+      "name": "null-safety",
+      "jsonLogicRule": { "in": [ { "var": "x" }, { "var": "y" } ] },
+      "assertions": [
+        {
+          "data": null,
+          "expected": false
+        },
+        {
+          "data": {},
+          "expected": false
+        },
+        {
+          "data": { "x": null },
+          "expected": false
+        },
+        {
+          "data": { "x": null, "y": null },
+          "expected": false
+        },
+        {
+          "data": { "x": null, "y": [] },
+          "expected": false
+        }
+      ]
+    },
+    {
+      "name": "in on a null doesn't eval to true",
+      "jsonLogicRule": { "in": [ { "var": "x" }, { "var": "y" } ] },
+      "assertions": [
+        {
+          "data": { "x": null, "y": [ "a", "b" ] },
+          "expected": false
+        }
+      ]
+    },
+    {
+      "name": "works as expected without nulls",
+      "jsonLogicRule": { "in": [ { "var": "x" }, { "var": "y" } ] },
+      "assertions": [
+        {
+          "data": { "x": "a", "y": [ "a", "b" ] },
+          "expected": true
+        },
+        {
+          "data": { "x": "c", "y": [ "a", "b" ] },
+          "expected": false
+        }
+      ]
+    }
+  ]
+}

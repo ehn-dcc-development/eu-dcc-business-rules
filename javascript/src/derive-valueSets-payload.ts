@@ -2,9 +2,10 @@ import { readdirSync } from "fs"
 import { join } from "path"
 
 import { readJson, writeJson } from "./file-utils"
+import { repoPath, rulesPath } from "./paths"
 
 
-const valueSetsPath = join(__dirname, "../../../ehn-dgc-schema/valuesets")
+const valueSetsPath = join(repoPath, "../ehn-dgc-schema/valuesets")
 const testFiles = readdirSync(valueSetsPath)
 
 
@@ -19,5 +20,5 @@ testFiles.forEach((path) => {
     valueSets[valueSet.valueSetId] = Object.keys(valueSet.valueSetValues)
 })
 
-writeJson(join(__dirname, "../../rules/valueSets.json"), valueSets)
+writeJson(join(rulesPath, "valueSets.json"), valueSets)
 

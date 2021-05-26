@@ -1,8 +1,8 @@
 import { join } from "path"
 import { applyLogic, JsonLogicRule } from "./extend-JsonLogic"
 import { readJson } from "./file-utils"
+import { rulesPath } from "./paths"
 
-const configPath = join(__dirname, "../../rules/")
 
 export interface Rule {
     name: string
@@ -12,10 +12,10 @@ export interface Rule {
     jsonLogicExpression: JsonLogicRule
 }
 export type Rules = Rule[]
-export const rules: Rules = readJson(join(configPath, "EU-Level-validation-rules.json"))
+export const rules: Rules = readJson(join(rulesPath, "EU-Level-validation-rules.json"))
 
 
-const valueSets = readJson(join(configPath, "valueSets.json"))
+const valueSets = readJson(join(rulesPath, "valueSets.json"))
 
 
 export const runRule = (rule: Rule, hcert: any, validationClock?: string) => {

@@ -1,7 +1,6 @@
 [
   {
     "name": "GR-EU-0001",
-    "active": true,
     "description": "The \"disease or  agent targeted\" must be COVID-19 of the value set list.",
     "inputParameter": "Entire HCert JSON (\"v\",\"t\",\"r\",\"..\") + Valuesets + \"tg\"",
     "jsonLogicExpression": {

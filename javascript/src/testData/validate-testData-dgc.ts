@@ -6,9 +6,10 @@
 
 import { join } from "path"
 
-import { extendJsonLogic } from "./extend-JsonLogic"
-import { readJson, writeJson } from "./file-utils"
+import { extendJsonLogic } from "../extend-JsonLogic"
+import { readJson, writeJson } from "../file-utils"
 import { mapTestFiles } from "./map-testData"
+import { outPath, repoPath } from "../paths"
 
 
 extendJsonLogic()
@@ -23,7 +24,7 @@ const ajv = new Ajv({
 const addFormats = require("ajv-formats")
 addFormats(ajv)
 
-const schemaValidator = ajv.compile(readJson(join(__dirname, "../../../ehn-dgc-schema/DGC.combined-schema.json")))
+const schemaValidator = ajv.compile(readJson(join(repoPath, "../ehn-dgc-schema/DGC.combined-schema.json")))
 
 
 const validateAgainstSchema = (testJson: any) => {
@@ -35,7 +36,7 @@ const validateAgainstSchema = (testJson: any) => {
 const schemaValidationResults = mapTestFiles(validateAgainstSchema).filter((result) => "notJson" in result || result["result"] !== undefined)
 
 
-writeJson(join(__dirname, "../../out/testData-schema-validation.json"), schemaValidationResults)
+writeJson(join(outPath, "testData-schema-validation.json"), schemaValidationResults)
 
 console.log(`${schemaValidationResults.length} DGCs are not JSON, or have validation errors`)
 

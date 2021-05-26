@@ -8,8 +8,8 @@ import { PathLike } from "fs"
 const readdirRecursive = require("fs-readdir-recursive")
 import { join } from "path"
 
-import { readJson } from "./file-utils"
-
+import { readJson } from "../file-utils"
+import { repoPath } from "../paths"
 
 export interface TestFileIdentification {
     memberState: string
@@ -44,7 +44,7 @@ function mapTestFile<RT>(path: PathLike, func: (json: any) => RT): MapResult<RT>
     }
 }
 
-const testDataPath = join(__dirname, "../../../dgc-testdata")
+const testDataPath = join(repoPath, "../dgc-testdata")
 const testFiles = readdirRecursive(testDataPath).filter((path: string) => path.match(/\/raw\/(.+?)\.json$/))
 
 
