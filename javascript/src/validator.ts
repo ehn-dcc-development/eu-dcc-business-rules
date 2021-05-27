@@ -17,8 +17,8 @@ addFormats(ajv)
 const schemaValidator = ajv.compile(readJson(join(repoPath, "../ehn-dgc-schema/DGC.combined-schema.json")))
 
 
-export const schemaValidationErrorsFor = (dgc: any): ErrorObject[] => {
-    const valid = schemaValidator(dgc)
+export const schemaValidationErrorsFor = (testJSON: any): ErrorObject[] => {
+    const valid = schemaValidator(testJSON.JSON)
     return valid ? [] : schemaValidator.errors!!
 }
 

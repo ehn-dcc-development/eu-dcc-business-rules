@@ -35,5 +35,19 @@ describe("missing required fields are detected by schema validator", () => {
         equal(missingRequiredPropertyErrors(errors).length, 3 + 10)
     })
 
+    it("minimal DGC", () => {
+        const errors = schemaValidationErrorsFor({
+            "ver": "1.0.0",
+            "nam": {
+                "fn": "Musterfrau-Gößinger",
+                "fnt": "MUSTERFRAU<GOESSINGER",
+                "gn": "Gabriele",
+                "gnt": "GABRIELE"
+            },
+            "dob": "1998-02-26"
+        })
+        equal(missingRequiredPropertyErrors(errors).length, 0)
+    })
+
 })
 
