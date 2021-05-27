@@ -67,7 +67,7 @@
     "description": "At most one type of event.",
     "inputParameter": "Entire HCert JSON (\"r\", \"t\", \"v\")",
     "jsonLogicExpression": {
-      "<=": [
+      "===": [
         {
           "reduce": [
             [

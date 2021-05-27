@@ -2,14 +2,14 @@
   {
     "name": "empty DCC",
     "hcert": {},
-    "expected": true
+    "expected": false
   },
   {
     "name": "r == empty array",
     "hcert": {
       "r": []
     },
-    "expected": true
+    "expected": false
   },
   {
     "hcert": {
