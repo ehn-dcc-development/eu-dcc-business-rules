@@ -10,33 +10,33 @@ describe("missing required fields are detected by schema validator", () => {
         errors.filter((error) => error.message?.startsWith("must have required property "))
 
     it("empty DGC", () => {
-        const errors = schemaValidationErrorsFor({})
+        const errors = schemaValidationErrorsFor({ JSON: {} })
         equal(missingRequiredPropertyErrors(errors).length, 3)
     })
 
     it("empty r-event", () => {
-        const errors = schemaValidationErrorsFor({
+        const errors = schemaValidationErrorsFor({ JSON: {
             r: [ {} ]
-        })
+        }})
         equal(missingRequiredPropertyErrors(errors).length, 3 + 7)
     })
 
     it("empty t-event", () => {
-        const errors = schemaValidationErrorsFor({
-            t: [ {} ]
-        })
+        const errors = schemaValidationErrorsFor({ JSON: {
+            t: [{}]
+        }})
         equal(missingRequiredPropertyErrors(errors).length, 3 + 8)
     })
 
     it("empty v-event", () => {
-        const errors = schemaValidationErrorsFor({
-            v: [ {} ]
-        })
+        const errors = schemaValidationErrorsFor({ JSON: {
+            v: [{}]
+        }})
         equal(missingRequiredPropertyErrors(errors).length, 3 + 10)
     })
 
     it("minimal DGC", () => {
-        const errors = schemaValidationErrorsFor({
+        const errors = schemaValidationErrorsFor({ JSON: {
             "ver": "1.0.0",
             "nam": {
                 "fn": "Musterfrau-Gößinger",
@@ -45,7 +45,7 @@ describe("missing required fields are detected by schema validator", () => {
                 "gnt": "GABRIELE"
             },
             "dob": "1998-02-26"
-        })
+        }})
         equal(missingRequiredPropertyErrors(errors).length, 0)
     })
 

@@ -28,10 +28,12 @@ function mapTestFile<RT>(path: PathLike, func: (json: any) => RT): MapResult<RT>
     if (!fileMatch) {
         throw new Error(`could no disassemble path "${path}"`)
     }
-    const testFileId: TestFileIdentification = {
-        memberState: fileMatch[1],
-        fileName: fileMatch[2]
+    const memberState = fileMatch[1]
+    const fileName = fileMatch[2]
+    if (!fileName.match(/^\d+$/)) {
+        console.warn(`test data file with unconforming name found for member state ${memberState}: '${fileName}'`)
     }
+    const testFileId: TestFileIdentification = { memberState, fileName }
     if (!testJson) {
         return {
             testFileId,
