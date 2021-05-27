@@ -36,6 +36,17 @@
     "expected": false
   },
   {
+    "name": "a RAT, but approved test manufacturer field is missing",
+    "hcert": {
+      "t": [
+        {
+          "tt": "LP6464-4"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
     "name": "not a RAT, so anything goes",
     "hcert": {
       "t": [

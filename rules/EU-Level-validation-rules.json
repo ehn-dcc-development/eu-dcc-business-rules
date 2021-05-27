@@ -64,7 +64,6 @@
   },
   {
     "name": "GR-EU-0002",
-    "active": true,
     "description": "At most one type of event.",
     "inputParameter": "Entire HCert JSON (\"r\", \"t\", \"v\")",
     "jsonLogicExpression": {
@@ -107,7 +106,6 @@
   },
   {
     "name": "VR-EU-0000",
-    "active": true,
     "description": "At most one type of v-event.",
     "inputParameter": "Entire HCert JSON (\"v\")",
     "jsonLogicExpression": {
@@ -210,7 +208,6 @@
   },
   {
     "name": "TR-EU-0000",
-    "active": true,
     "description": "At most one type of t-event.",
     "inputParameter": "Entire HCert JSON (\"t\")",
     "jsonLogicExpression": {
@@ -223,7 +220,7 @@
   },
   {
     "name": "TR-EU-0001",
-    "businessDescription": "The test type (tt) can be RAT or NAA",
+    "businessDescription": "The test type (tt) can be RAT or NAA.",
     "description": "The test type must be one of the value set list (RAT OR NAA).",
     "inputParameter": "Test Part of the HCert (\"t\")+ Valuesets + \"tt\"",
     "jsonLogicExpression": {
@@ -247,7 +244,7 @@
   },
   {
     "name": "TR-EU-0002",
-    "businessDescription": "If the test type is \"RAT\" then the test must be in the list of accepted RAT tests",
+    "businessDescription": "If the test type is \"RAT\" then the test must be in the list of accepted RAT tests.",
     "description": "If the test type is \"RAT\" then the \"test product and manufacturer\" MUST be in the valueset list, if it's NAA return true.",
     "inputParameter": "Test Part of the HCert (\"t\")+ Valuesets +\"tt\" + \"ma\"",
     "jsonLogicExpression": {
@@ -287,21 +284,21 @@
           "var": "hcert.t.0"
         },
         {
-          ">": [
-            {
-              "addDays": [
-                {
-                  "var": "hcert.t.0.sc"
-                },
-                3
-              ]
-            },
+          "<": [
             {
               "addDays": [
                 {
                   "var": "external.validationClock"
                 },
                 0
+              ]
+            },
+            {
+              "addDays": [
+                {
+                  "var": "hcert.t.0.sc"
+                },
+                3
               ]
             }
           ]
@@ -335,7 +332,6 @@
   },
   {
     "name": "RR-EU-0000",
-    "active": true,
     "description": "At most one r-event.",
     "inputParameter": "Entire HCert JSON (\"r\")",
     "jsonLogicExpression": {
@@ -349,7 +345,7 @@
   {
     "name": "RR-EU-0001",
     "businessDescription": "The certificate must be valid.",
-    "description": "The Verification Datetime must be between \"Certificate Valid From\" and \"Certificate Valid Until\"",
+    "description": "The Verification Datetime must be between \"Certificate Valid From\" and \"Certificate Valid Until\".",
     "inputParameter": "Recovery Part of the HCert (\"r\")+ validation date (timestamp)+ Valuesets +\"df\" +\"du\"",
     "jsonLogicExpression": {
       "if": [
@@ -377,7 +373,7 @@
     "name": "RR-EU-0002",
     "businessDescription": "The validity period of the certificate must be checked.",
     "description": "The validity start date must be greater than or equal to the first positive test date  +11 days and validity end date must be less than or equal to the first postive test date +180.",
-    "inputParameter": "Recovery Part of the HCert (\"r\")+ Valuesets +\n\n(\"fr\" +11 days) + ( fr+180 days)",
+    "inputParameter": "Recovery Part of the HCert (\"r\")+ Valuesets + (\"fr\" +11 days) + ( fr+180 days)",
     "jsonLogicExpression": {
       "if": [
         {

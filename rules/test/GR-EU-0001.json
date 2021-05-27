@@ -1,8 +1,7 @@
 [
   {
     "name": "empty DGC",
-    "hcert": {
-    },
+    "hcert": {},
     "expected": true
   },
   {
@@ -14,89 +13,101 @@
   },
   {
     "hcert": {
-      "r": [ { "tg": "840539006" } ]
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
     "expected": true
   },
   {
     "hcert": {
-      "r": [ { "tg": "COVID-19" } ]
+      "r": [
+        {
+          "tg": "COVID-19"
+        }
+      ]
     },
     "expected": false
   },
   {
     "hcert": {
-      "r": [ { "tg": "840539006" }, { "tg": "840539006" } ]
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
     "expected": true
   },
   {
     "hcert": {
-      "r": [ { "tg": "COVID-19" }, { "tg": "840539006" } ]
+      "t": [
+        {
+          "tg": "COVID-19"
+        }
+      ]
     },
     "expected": false
   },
   {
     "hcert": {
-      "t": [ { "tg": "840539006" } ]
+      "v": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
     "expected": true
   },
   {
     "hcert": {
-      "t": [ { "tg": "COVID-19" } ]
+      "v": [
+        {
+          "tg": "COVID-19"
+        }
+      ]
     },
     "expected": false
   },
   {
     "hcert": {
-      "t": [ { "tg": "840539006" }, { "tg": "840539006" } ]
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "v": [
+        {
+          "tg": "840539006"
+        }
+      ]
     },
     "expected": true
   },
   {
     "hcert": {
-      "t": [ { "tg": "COVID-19" }, { "tg": "840539006" } ]
-    },
-    "expected": false
-  },
-  {
-    "hcert": {
-      "v": [ { "tg": "840539006" } ]
-    },
-    "expected": true
-  },
-  {
-    "hcert": {
-      "v": [ { "tg": "COVID-19" } ]
-    },
-    "expected": false
-  },
-  {
-    "hcert": {
-      "v": [ { "tg": "840539006" }, { "tg": "840539006" } ]
-    },
-    "expected": true
-  },
-  {
-    "hcert": {
-      "v": [ { "tg": "COVID-19" }, { "tg": "840539006" } ]
-    },
-    "expected": false
-  },
-  {
-    "hcert": {
-      "r": [ { "tg": "840539006" } ],
-      "t": [ { "tg": "840539006" } ],
-      "v": [ { "tg": "840539006" } ]
-    },
-    "expected": true
-  },
-  {
-    "hcert": {
-      "r": [ { "tg": "840539006" } ],
-      "t": [ { "tg": "840539006" } ],
-      "v": [ { "tg": "COVID-19" } ]
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "v": [
+        {
+          "tg": "COVID-19"
+        }
+      ]
     },
     "expected": false
   }
