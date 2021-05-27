@@ -1,5 +1,5 @@
 /**
- * Run all rules against all DGC payloads in the dgc-testdata repo,
+ * Run all rules against all payloads in the dgc-testdata repo,
  * and output to out/testData-results.json.
  */
 
@@ -31,5 +31,5 @@ const validationResults = mapTestFiles(validateAgainstRules)
 
 writeJson(join(outPath, "testData-rules-validation-js.json"), validationResults)
 
-console.log(`validated ${validationResults.length} DGCs against business rules`)
+console.log(`validated ${validationResults.length} DCCs against business rules`)
 

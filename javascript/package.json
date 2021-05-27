@@ -10,7 +10,7 @@
     "test": "mocha dist/test",
     "test-watch": "mocha --watch dist/test",
     "start": "node dist/testData/run-rules-on-testData.js",
-    "validate": "node dist/testData/validate-testData-dgc.js"
+    "validate": "node dist/testData/validate-testData-dcc.js"
   },
   "dependencies": {
     "fs-readdir-recursive": "^1.1.0",

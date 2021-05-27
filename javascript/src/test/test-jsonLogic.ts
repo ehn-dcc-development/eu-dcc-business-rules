@@ -13,7 +13,7 @@ describe("all operation", () => {
     })
 
 
-    const dgc = {
+    const dcc = {
         "ver": "1.0.0",
         "nam": {
             "fn": "Achternaam",
@@ -48,7 +48,7 @@ describe("all operation", () => {
                 }
             ]
         }
-        isTrue(applyLogic(jlExpr, dgc))
+        isTrue(applyLogic(jlExpr, dcc))
     })
 
     it("in-GR-EU-0001 (just v, which is missing)", () => {
@@ -71,7 +71,7 @@ describe("all operation", () => {
                 true
             ]
         }
-        isTrue(applyLogic(jlExpr, dgc))
+        isTrue(applyLogic(jlExpr, dcc))
     })
 
 })

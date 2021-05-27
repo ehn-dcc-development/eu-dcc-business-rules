@@ -1,5 +1,5 @@
 /**
- * Run all rules against all DGC payloads in the dgc-testdata repo,
+ * Run all rules against all payloads in the dgc-testdata repo,
  * and output to out/testData-results.json.
  */
 
@@ -17,5 +17,5 @@ const schemaValidationResults = mapTestFiles(schemaValidationErrorsFor).filter((
 
 writeJson(join(outPath, "testData-schema-validation.json"), schemaValidationResults)
 
-console.log(`${schemaValidationResults.length} DGCs are not JSON, or have validation errors`)
+console.log(`${schemaValidationResults.length} DCCs are not JSON, or have validation errors`)
 

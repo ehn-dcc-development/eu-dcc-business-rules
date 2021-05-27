@@ -9,7 +9,7 @@ describe("missing required fields are detected by schema validator", () => {
     const missingRequiredPropertyErrors = (errors: ErrorObject[]) =>
         errors.filter((error) => error.message?.startsWith("must have required property "))
 
-    it("empty DGC", () => {
+    it("empty DCC", () => {
         const errors = schemaValidationErrorsFor({ JSON: {} })
         equal(missingRequiredPropertyErrors(errors).length, 3)
     })
@@ -35,7 +35,7 @@ describe("missing required fields are detected by schema validator", () => {
         equal(missingRequiredPropertyErrors(errors).length, 3 + 10)
     })
 
-    it("minimal DGC", () => {
+    it("minimal DCC", () => {
         const errors = schemaValidationErrorsFor({ JSON: {
             "ver": "1.0.0",
             "nam": {

@@ -12,7 +12,7 @@
 
 ## About
 
-To be able to make decisions based on DGC instances, business rules have to be implemented.
+To be able to make decisions based on DCC instances, business rules have to be implemented.
 This repository collects “various” relevant artifacts pertaining to business rules.
 
 

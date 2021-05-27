@@ -14,7 +14,7 @@ const ajv = new Ajv({
 const addFormats = require("ajv-formats")
 addFormats(ajv)
 
-const schemaValidator = ajv.compile(readJson(join(repoPath, "../ehn-dgc-schema/DGC.combined-schema.json")))
+const schemaValidator = ajv.compile(readJson(join(repoPath, "../ehn-dgc-schema/DCC.combined-schema.json")))
 
 
 export const schemaValidationErrorsFor = (testJSON: any): ErrorObject[] => {
