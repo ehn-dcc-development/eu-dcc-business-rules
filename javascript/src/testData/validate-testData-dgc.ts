@@ -6,34 +6,13 @@
 
 import { join } from "path"
 
-import { extendJsonLogic } from "../extend-JsonLogic"
-import { readJson, writeJson } from "../file-utils"
 import { mapTestFiles } from "./map-testData"
-import { outPath, repoPath } from "../paths"
+import { writeJson } from "../file-utils"
+import { outPath } from "../paths"
+import { schemaValidationErrorsFor } from "../validator"
 
 
-extendJsonLogic()
-
-
-import Ajv from "ajv"
-const ajv = new Ajv({
-    allErrors: true,        // don't stop after 1st error
-    strict: false,          // TODO  define own "valueset-uri" keyword
-    validateSchema: false   // prevent that AJV throws with 'no schema with key or ref "https://json-schema.org/draft/2020-12/schema"'
-})
-const addFormats = require("ajv-formats")
-addFormats(ajv)
-
-const schemaValidator = ajv.compile(readJson(join(repoPath, "../ehn-dgc-schema/DGC.combined-schema.json")))
-
-
-const validateAgainstSchema = (testJson: any) => {
-    const valid = schemaValidator(testJson.JSON)
-    return valid ? undefined : schemaValidator.errors
-}
-
-
-const schemaValidationResults = mapTestFiles(validateAgainstSchema).filter((result) => "notJson" in result || result["result"] !== undefined)
+const schemaValidationResults = mapTestFiles(schemaValidationErrorsFor).filter((result) => "notJson" in result || result["result"] && result["result"].length > 0)
 
 
 writeJson(join(outPath, "testData-schema-validation.json"), schemaValidationResults)
