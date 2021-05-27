@@ -1,7 +1,7 @@
 import { ErrorObject } from "ajv"
 const { equal } = require("chai").assert
 
-import { schemaValidationErrorsFor } from "../validator"
+import { schemaValidationErrorsFor } from "../schema-validator"
 
 
 describe("missing required fields are detected by schema validator", () => {

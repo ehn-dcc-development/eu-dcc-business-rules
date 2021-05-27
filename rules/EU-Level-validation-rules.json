@@ -177,7 +177,7 @@
         {
           "<=": [
             {
-              "addDays": [
+              "plusDays": [
                 {
                   "var": "hcert.v.0.dt"
                 },
@@ -185,7 +185,7 @@
               ]
             },
             {
-              "addDays": [
+              "plusDays": [
                 {
                   "var": "external.validationClock"
                 },
@@ -193,7 +193,7 @@
               ]
             },
             {
-              "addDays": [
+              "plusDays": [
                 {
                   "var": "hcert.v.0.dt"
                 },
@@ -286,7 +286,7 @@
         {
           "<": [
             {
-              "addDays": [
+              "plusDays": [
                 {
                   "var": "external.validationClock"
                 },
@@ -294,7 +294,7 @@
               ]
             },
             {
-              "addDays": [
+              "plusDays": [
                 {
                   "var": "hcert.t.0.sc"
                 },
@@ -355,7 +355,7 @@
         {
           "<=": [
             {
-              "addDays": [
+              "plusDays": [
                 {
                   "var": "hcert.r.0.df"
                 },
@@ -363,7 +363,7 @@
               ]
             },
             {
-              "addDays": [
+              "plusDays": [
                 {
                   "var": "external.validationClock"
                 },
@@ -371,7 +371,7 @@
               ]
             },
             {
-              "addDays": [
+              "plusDays": [
                 {
                   "var": "hcert.r.0.du"
                 },
@@ -399,7 +399,7 @@
             {
               ">=": [
                 {
-                  "addDays": [
+                  "plusDays": [
                     {
                       "var": "hcert.r.0.df"
                     },
@@ -407,7 +407,7 @@
                   ]
                 },
                 {
-                  "addDays": [
+                  "plusDays": [
                     {
                       "var": "hcert.r.0.fr"
                     },
@@ -419,7 +419,7 @@
             {
               "<=": [
                 {
-                  "addDays": [
+                  "plusDays": [
                     {
                       "var": "hcert.r.0.du"
                     },
@@ -427,7 +427,7 @@
                   ]
                 },
                 {
-                  "addDays": [
+                  "plusDays": [
                     {
                       "var": "hcert.r.0.fr"
                     },

@@ -230,9 +230,9 @@ describe("date extensions", () => {
     it("addDays", () => {
         isTrue(applyLogic({
                 "<=": [
-                    { "addDays": [ { "var": "certificate.date" }, 12 ] },
-                    { "addDays": [ { "var": "dateObject.current" }, 0 ] },
-                    { "addDays": [ { "var": "certificate.date" }, 365 ] }
+                    { "plusDays": [ { "var": "certificate.date" }, 12 ] },
+                    { "plusDays": [ { "var": "dateObject.current" }, 0 ] },
+                    { "plusDays": [ { "var": "certificate.date" }, 365 ] }
                 ]
             }, {
                 "dateObject": { "current": "2022-05-02T00:00:00Z" }, "certificate": { "date": "2021-05-03T00:00:00Z" }

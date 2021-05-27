@@ -35,5 +35,5 @@ However, that set is not complete, especially with regards to edge case behaviou
 The representation of date(+time)s is string-based, conforming to ISO 8601.
 That also implies date(+time)s can be sorted as strings.
 
-The custom `addDays` operation returns an ISO 8601 date+time string.
+The custom `plusDays` operation returns an ISO 8601 date+time string.
 

@@ -9,7 +9,7 @@ import { join } from "path"
 import { mapTestFiles } from "./map-testData"
 import { writeJson } from "../file-utils"
 import { outPath } from "../paths"
-import { schemaValidationErrorsFor } from "../validator"
+import { schemaValidationErrorsFor } from "../schema-validator"
 
 
 const schemaValidationResults = mapTestFiles(schemaValidationErrorsFor).filter((result) => "notJson" in result || result["result"] && result["result"].length > 0)
