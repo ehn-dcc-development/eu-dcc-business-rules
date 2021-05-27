@@ -250,7 +250,7 @@
     "jsonLogicExpression": {
       "if": [
         {
-          "==": [
+          "===": [
             {
               "var": "hcert.t.0.tt"
             },
@@ -317,7 +317,7 @@
           "var": "hcert.t.0"
         },
         {
-          "==": [
+          "===": [
             {
               "var": "hcert.t.0.tr"
             },
@@ -355,13 +355,28 @@
         {
           "<=": [
             {
-              "var": "hcert.r.0.df"
+              "addDays": [
+                {
+                  "var": "hcert.r.0.df"
+                },
+                0
+              ]
             },
             {
-              "var": "external.validationClock"
+              "addDays": [
+                {
+                  "var": "external.validationClock"
+                },
+                0
+              ]
             },
             {
-              "var": "hcert.r.0.du"
+              "addDays": [
+                {
+                  "var": "hcert.r.0.du"
+                },
+                0
+              ]
             }
           ]
         },
