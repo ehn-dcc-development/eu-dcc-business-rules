@@ -1,5 +1,6 @@
 {
   "name": "patched operations",
+  "inactive": true,
   "cases": [
     {
       "name": "patched reduce knows about global data",

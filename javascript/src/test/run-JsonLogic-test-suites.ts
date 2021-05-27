@@ -19,21 +19,24 @@ interface TestCase {
 }
 interface TestSuite {
     name: string
+    inactive?: boolean
     cases: TestCase[]
 }
 
 
 export const runTestsOn = (testSuite: TestSuite) => {
     extendJsonLogic()
-    describe(testSuite.name, () => {
-        testSuite.cases.forEach(({ name, jsonLogicRule, assertions }) => {
-            it(name, () => {
-                assertions.forEach(({ data, expected, message}) => {
-                    deepEqual(applyLogic(jsonLogicRule, data), expected, message || JSON.stringify(data))
+    if (!testSuite.inactive) {
+        describe(testSuite.name, () => {
+            testSuite.cases.forEach(({name, jsonLogicRule, assertions}) => {
+                it(name, () => {
+                    assertions.forEach(({data, expected, message}) => {
+                        deepEqual(applyLogic(jsonLogicRule, data), expected, message || JSON.stringify(data))
+                    })
                 })
             })
         })
-    })
+    }
 }
 
 
