@@ -6,18 +6,22 @@
       "jsonLogicRule": { "in": [ { "var": "x" }, { "var": "y" } ] },
       "assertions": [
         {
+          "directive": "skip",
           "data": null,
           "expected": false
         },
         {
+          "directive": "skip",
           "data": {},
           "expected": false
         },
         {
+          "directive": "skip",
           "data": { "x": null },
           "expected": false
         },
         {
+          "directive": "skip",
           "data": { "x": null, "y": null },
           "expected": false
         },

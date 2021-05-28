@@ -9,7 +9,7 @@
     "build-watch": "tsc --watch --incremental",
     "test": "mocha dist/test",
     "test-watch": "mocha --watch dist/test",
-    "start": "node dist/testData/run-rules-on-testData.js",
+    "start": "node dist/testData/run-rules-on-testData-with-CertLogic.js && node dist/testData/run-rules-on-testData-with-JsonLogic.js",
     "validate": "node dist/testData/validate-testData-dcc.js"
   },
   "dependencies": {

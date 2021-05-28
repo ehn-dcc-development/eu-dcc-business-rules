@@ -89,7 +89,7 @@
                 {
                   "if": [
                     {
-                      "var": "current"
+                      "var": "current.0"
                     },
                     1,
                     0

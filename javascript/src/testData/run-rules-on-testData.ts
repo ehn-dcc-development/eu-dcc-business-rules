@@ -6,18 +6,13 @@
 
 import { join } from "path"
 
-import { extendJsonLogic } from "../extend-JsonLogic"
 import { writeJson } from "../file-utils"
 import { mapTestFiles } from "./map-testData"
 import { outPath } from "../paths"
-import { runRule } from "../ruleRunner-JsonLogic"
-import { rules } from "../rules"
+import { RuleRunner, rules } from "../rules"
 
 
-extendJsonLogic()
-
-
-const validateAgainstRules = (testJson: any) => {
+const validateAgainstRules = (runRule: RuleRunner) => (testJson: any) => {
     const result: any = {}
     rules.forEach((rule) => {
         result[rule.name] = runRule(rule, testJson.JSON, testJson["TESTCTX"]["VALIDATIONCLOCK"])
@@ -27,9 +22,9 @@ const validateAgainstRules = (testJson: any) => {
 }
 
 
-const validationResults = mapTestFiles(validateAgainstRules)
-
-writeJson(join(outPath, "testData-rules-validation-js.json"), validationResults)
-
-console.log(`validated ${validationResults.length} DCCs against business rules`)
+export const runRulesOnTestDataWith = (runRule: RuleRunner, resultsFileName: string) => {
+    const validationResults = mapTestFiles(validateAgainstRules(runRule))
+    writeJson(join(outPath, resultsFileName), validationResults)
+    console.log(`validated ${validationResults.length} DCCs against business rules`)
+}
 

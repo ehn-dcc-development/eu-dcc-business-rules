@@ -3,6 +3,7 @@
   "cases": [
     {
       "name": "offsetting dates",
+      "directive": "skip",
       "jsonLogicRule": {
         "plusDays": [
           {

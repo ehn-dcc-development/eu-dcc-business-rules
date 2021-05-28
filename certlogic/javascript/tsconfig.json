@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "declarationMap": true,
+    "strict": true,
+    "target": "ES5",
+    "sourceMap": true,
+    "outDir": "dist",
+    "lib": [ "ES2015" ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

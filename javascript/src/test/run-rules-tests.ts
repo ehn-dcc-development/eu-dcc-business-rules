@@ -2,11 +2,9 @@ const { deepEqual, fail } = require("chai").assert
 import { existsSync, readdirSync } from "fs"
 import { join } from "path"
 
-import { extendJsonLogic } from "../extend-JsonLogic"
 import { readJson } from "../file-utils"
 import { rulesPath } from "../paths"
-import { Rule, rules } from "../rules"
-import { runRule } from "../ruleRunner-JsonLogic"
+import { Rule, RuleRunner, rules } from "../rules"
 
 
 interface Assertion {
@@ -18,11 +16,11 @@ interface Assertion {
 }
 
 
-export const runTests = (rule: Rule, assertions: Assertion[]) => {
-    extendJsonLogic()
+const runTests = (rule: Rule, assertions: Assertion[], runRule: RuleRunner) => {
     describe(`rule: "${rule.name}"`, () => {
         assertions.forEach(({ name, payload, validationClock, expected, message }, index) => {
-            it(name || `assertion ${index + 1}`, () => {
+            const assertionText = `assertion ${index + 1}`
+            it(name ? `${name} (${assertionText})` : assertionText, () => {
                 deepEqual(runRule(rule, payload, validationClock), expected)
             })
         })
@@ -30,28 +28,30 @@ export const runTests = (rule: Rule, assertions: Assertion[]) => {
 }
 
 
-const rulesTestsPath = join(rulesPath, "test");
-rules.forEach((rule) => {
-    const ruleId = rule.name
-    const path = join(rulesTestsPath, `${ruleId}.json`)
-    if (existsSync(path)) {
-        runTests(rule, readJson(path))
-    } else {
-        describe(`rule: "${ruleId}"`, () => {
-            it(`no assertions file`, () => {
-                fail()
+export const runTestsWith = (runRule: RuleRunner) => {
+    const rulesTestsPath = join(rulesPath, "test");
+    rules.forEach((rule) => {
+        const ruleId = rule.name
+        const path = join(rulesTestsPath, `${ruleId}.json`)
+        if (existsSync(path)) {
+            runTests(rule, readJson(path), runRule)
+        } else {
+            describe(`rule: "${ruleId}"`, () => {
+                it(`no assertions file`, () => {
+                    fail()
+                })
             })
-        })
-    }
-})
+        }
+    })
 
-const assertionsFilesForNonExistingRules = readdirSync(rulesTestsPath)
-    .filter((path) => path.endsWith(".json"))
-    .map((path) => path.substring(path.lastIndexOf("/") + 1, path.length - ".json".length))
-    .filter((ruleId) => !rules.find((rule) => rule.name === ruleId))
-if (assertionsFilesForNonExistingRules.length === 0) {
-    console.log(`no assertions files for non-existing rules`)
-} else {
-    console.log(`JSON files (apparently) for non-existing rules found: rule IDs would be ${assertionsFilesForNonExistingRules.map((ruleId) => `'${ruleId}'`).join(", ")}`)
+    const assertionsFilesForNonExistingRules = readdirSync(rulesTestsPath)
+        .filter((path) => path.endsWith(".json"))
+        .map((path) => path.substring(path.lastIndexOf("/") + 1, path.length - ".json".length))
+        .filter((ruleId) => !rules.find((rule) => rule.name === ruleId))
+    if (assertionsFilesForNonExistingRules.length === 0) {
+        console.log(`no assertions files for non-existing rules`)
+    } else {
+        console.log(`JSON files (apparently) for non-existing rules found: rule IDs would be ${assertionsFilesForNonExistingRules.map((ruleId) => `'${ruleId}'`).join(", ")}`)
+    }
 }
 

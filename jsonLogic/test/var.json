@@ -3,7 +3,7 @@
   "cases": [
     {
       "name": "var-ing non-existing array elements",
-      "jsonLogicRule": { "var": 1 },
+      "jsonLogicRule": { "var": "1" },
       "assertions": [
         {
           "data": null,
@@ -25,7 +25,7 @@
     },
     {
       "name": "determine #array <= 1",
-      "jsonLogicRule": { "!": [ { "var": 1 } ] },
+      "jsonLogicRule": { "!": [ { "var": "1" } ] },
       "assertions": [
         {
           "data": null,
@@ -48,10 +48,12 @@
           "expected": true
         },
         {
+          "directive": "skip",
           "data": [1, 2],
           "expected": false
         },
         {
+          "directive": "skip",
           "data": [1, 2, 3],
           "expected": false
         }

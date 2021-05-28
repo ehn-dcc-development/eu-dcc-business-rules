@@ -1,8 +1,7 @@
-import { applyLogic, extendJsonLogic } from "./extend-JsonLogic"
+import { CertLogicExpression, evaluate } from "certlogic-js"
+
 import { Rule, RuleRunner, valueSets } from "./rules"
 
-
-extendJsonLogic()
 
 export const runRule: RuleRunner = (rule: Rule, payload: any, validationClock?: string) => {
     const data = {
@@ -14,6 +13,6 @@ export const runRule: RuleRunner = (rule: Rule, payload: any, validationClock?: 
         },
         payload
     }
-    return applyLogic(rule.certLogicExpression, data)
+    return evaluate(rule.certLogicExpression as CertLogicExpression, data)
 }
 
