@@ -1,0 +1,61 @@
+{
+  "name": "use of var",
+  "cases": [
+    {
+      "name": "var-ing non-existing array elements",
+      "jsonLogicRule": { "var": 1 },
+      "assertions": [
+        {
+          "data": null,
+          "expected": null
+        },
+        {
+          "data": [],
+          "expected": null
+        },
+        {
+          "data": [1],
+          "expected": null
+        },
+        {
+          "data": [1, 2],
+          "expected": 2
+        }
+      ]
+    },
+    {
+      "name": "determine #array <= 1",
+      "jsonLogicRule": { "!": [ { "var": 1 } ] },
+      "assertions": [
+        {
+          "data": null,
+          "expected": true
+        },
+        {
+          "data": [],
+          "expected": true
+        },
+        {
+          "data": [null],
+          "expected": true
+        },
+        {
+          "data": [null, null],
+          "expected": true
+        },
+        {
+          "data": [1],
+          "expected": true
+        },
+        {
+          "data": [1, 2],
+          "expected": false
+        },
+        {
+          "data": [1, 2, 3],
+          "expected": false
+        }
+      ]
+    }
+  ]
+}

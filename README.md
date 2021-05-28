@@ -11,8 +11,16 @@
 
 ## About
 
-To be able to make decisions based on DGC instances, business rules have to be implemented.
+To be able to make decisions based on DCC instances, business rules have to be implemented.
 This repository collects “various” relevant artifacts pertaining to business rules.
+
+
+## Assumptions
+
+Various code in this repo assumes that the following two repos are cloned right next to where this repo's cloned:
+
+* [dgc-testdata](https://github.com/eu-digital-green-certificates/dgc-testdata)
+* [ehn-dgc-schema](https://github.com/ehn-digital-green-development/ehn-dgc-schema)
 
 
 ## Testing & Status
@@ -24,10 +32,11 @@ This repository collects “various” relevant artifacts pertaining to business
 
 ## Code organization
 
-- [JavaScript “stuff”](./javascript): see [that README](./javascript/README.md) for pointers
-- Prelimary implementation of the [rules](./rules) in the [JsonLogic](https://jsonlogic.com/) format.
+- [`javascript/`](./javascript): JavaScript “stuff” - see [the README there](./javascript/README.md) for pointers
+- [`rules/`](./rules): prelimary implementation of the  in the [JsonLogic](https://jsonlogic.com/) format.
   _Note:_ this has currently **no official status!**.
   [This Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+DGC+Validation+Rules) is leading, and discussions should be conducted there.
+- [`jsonLogic/`](jsonLogic): unit tests for testing semantics of JsonLogic + notes.
 
 ## Licensing
 

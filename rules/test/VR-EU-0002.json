@@ -1,0 +1,50 @@
+[
+  {
+    "name": "empty DCC",
+    "hcert": {},
+    "expected": true
+  },
+  {
+    "name": "v == empty array",
+    "hcert": {
+      "v": []
+    },
+    "expected": true
+  },
+  {
+    "name": "not enough doses",
+    "hcert": {
+      "v": [
+        {
+          "sd": 2,
+          "dn": 1
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "name": "enough doses",
+    "hcert": {
+      "v": [
+        {
+          "sd": 2,
+          "dn": 2
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "name": "more than enough doses",
+    "hcert": {
+      "v": [
+        {
+          "sd": 2,
+          "dn": 3
+        }
+      ]
+    },
+    "expected": true
+  }
+]

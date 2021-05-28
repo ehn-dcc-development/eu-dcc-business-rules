@@ -1,0 +1,39 @@
+[
+  {
+    "name": "empty DCC",
+    "hcert": {},
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "hcert": {
+      "r": []
+    },
+    "expected": true
+  },
+  {
+    "name": "1 r-event",
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "name": "2 r-events",
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        },
+        {
+          "tg": "840539006"
+        }
+      ]
+    },
+    "expected": false
+  }
+]

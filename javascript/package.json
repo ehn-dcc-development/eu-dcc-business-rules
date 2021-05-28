@@ -2,22 +2,23 @@
   "name": "jsonlogic-test",
   "version": "0.1.0",
   "description": "",
-  "main": "dist/index.js",
+  "main": "dist/run-rules.js",
   "scripts": {
-    "postinstall": "mkdir -p out",
     "build": "tsc",
+    "postbuild": "node dist/derive-valueSets-payload.js",
     "build-watch": "tsc --watch --incremental",
     "test": "mocha dist/test",
-    "test-watch": "mocha --watch dist/test"
+    "test-watch": "mocha --watch dist/test",
+    "start": "node dist/testData/run-rules-on-testData.js",
+    "validate": "node dist/testData/validate-testData-dcc.js"
   },
   "dependencies": {
-    "deep-equal": "^2.0.5",
     "fs-readdir-recursive": "^1.1.0",
     "json-logic-js": "^2.0.1"
   },
   "devDependencies": {
+    "@types/ajv": "^1.0.0",
     "@types/chai": "^4.2.18",
-    "@types/deep-equal": "^1.0.1",
     "@types/fs-readdir-recursive": "^1.0.0",
     "@types/json-logic-js": "^1.2.1",
     "@types/mocha": "^8.2.2",

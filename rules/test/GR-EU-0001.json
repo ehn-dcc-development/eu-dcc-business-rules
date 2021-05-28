@@ -1,0 +1,114 @@
+[
+  {
+    "name": "empty DCC",
+    "hcert": {},
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "hcert": {
+      "r": []
+    },
+    "expected": true
+  },
+  {
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "hcert": {
+      "r": [
+        {
+          "tg": "COVID-19"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "hcert": {
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "hcert": {
+      "t": [
+        {
+          "tg": "COVID-19"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "hcert": {
+      "v": [
+        {
+          "tg": "840539006"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "hcert": {
+      "v": [
+        {
+          "tg": "COVID-19"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "v": [
+        {
+          "tg": "840539006"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "hcert": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "t": [
+        {
+          "tg": "840539006"
+        }
+      ],
+      "v": [
+        {
+          "tg": "COVID-19"
+        }
+      ]
+    },
+    "expected": false
+  }
+]

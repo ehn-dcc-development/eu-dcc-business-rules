@@ -1,9 +1,9 @@
 /**
- * Provide development convenience by running some JsonLogic query on all DGC payloads in the dgc-testdata repo.
+ * Provide development convenience by running some JsonLogic query on all payloads in the dgc-testdata repo.
  */
 
-import { applyLogic } from "./extend-json-logic"
-import { readJson, writeJson } from "./file-utils"
+import { applyLogic } from "../extend-JsonLogic"
+import { readJson, writeJson } from "../file-utils"
 import { mapTestFiles } from "./map-testData"
 
 
@@ -18,8 +18,8 @@ const queryResultsPath = process.argv[3]
 
 const jsonLogicExpression = readJson(jsonLogicExpressionPath)
 
-const queryResults = mapTestFiles((dgc) => applyLogic(jsonLogicExpression, dgc))
+const queryResults = mapTestFiles((dcc) => applyLogic(jsonLogicExpression, dcc))
 
 writeJson(queryResultsPath, queryResults)
-console.log(`queried over ${queryResults.length} DGCs -> ${queryResultsPath}`)
+console.log(`queried over ${queryResults.length} DCCs -> ${queryResultsPath}`)
 

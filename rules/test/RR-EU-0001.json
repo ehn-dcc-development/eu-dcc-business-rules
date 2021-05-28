@@ -1,0 +1,131 @@
+[
+  {
+    "name": "empty DCC",
+    "hcert": {},
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "hcert": {
+      "r": []
+    },
+    "expected": true
+  },
+  {
+    "name": "day too early",
+    "hcert": {
+      "r": [
+        {
+          "df": "2021-06-01T00:00:00+00:00",
+          "du": "2021-06-04T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-05-31T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "a second too early",
+    "hcert": {
+      "r": [
+        {
+          "df": "2021-06-01T00:00:00+00:00",
+          "du": "2021-06-04T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-05-31T23:59:59+00:00",
+    "expected": false
+  },
+  {
+    "name": "just in time",
+    "hcert": {
+      "r": [
+        {
+          "df": "2021-06-01T00:00:00+00:00",
+          "du": "2021-06-04T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-01T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "halfway",
+    "hcert": {
+      "r": [
+        {
+          "df": "2021-06-01T00:00:00+00:00",
+          "du": "2021-06-04T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T13:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "nearly too late - 1s to spare",
+    "hcert": {
+      "r": [
+        {
+          "df": "2021-06-01T00:00:00+00:00",
+          "du": "2021-06-04T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T23:59:59+00:00",
+    "expected": true
+  },
+  {
+    "name": "nearly too late - on the second",
+    "hcert": {
+      "r": [
+        {
+          "df": "2021-06-01T00:00:00+00:00",
+          "du": "2021-06-04T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "a second too late",
+    "hcert": {
+      "r": [
+        {
+          "df": "2021-06-01T00:00:00+00:00",
+          "du": "2021-06-04T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-04T00:00:01+00:00",
+    "expected": false
+  },
+  {
+    "name": "too late",
+    "hcert": {
+      "r": [
+        {
+          "df": "2021-06-01T00:00:00+00:00",
+          "du": "2021-06-04T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-04T13:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "really too late",
+    "hcert": {
+      "r": [
+        {
+          "df": "2021-06-01T00:00:00+00:00",
+          "du": "2021-06-04T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-07-01T00:00:00+00:00",
+    "expected": false
+  }
+]

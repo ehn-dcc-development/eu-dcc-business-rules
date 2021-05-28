@@ -1,0 +1,72 @@
+{
+  "name": "custom date operations (extensions)",
+  "cases": [
+    {
+      "name": "offsetting dates",
+      "jsonLogicRule": {
+        "plusDays": [
+          {
+            "var": "d0"
+          },
+          {
+            "var": "dPlus"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": { "d0": "2021-05-02T00:00:00+00:00", "dPlus": 1 },
+          "expected": "2021-05-03T00:00:00+00:00"
+        }
+      ]
+    },
+    {
+      "name": "compare offset dates (e.g., for VR-EU-0003)",
+      "jsonLogicRule": {
+        "<=": [
+          { "plusDays": [ { "var": "vaccination.date" }, 14 ] },
+          { "plusDays": [ { "var": "dateObject.current" }, 0 ] },
+          { "plusDays": [ { "var": "vaccination.date" }, 365 ] }
+        ]
+      },
+      "assertions": [
+        {
+          "data": {
+            "dateObject": { "current": "2021-05-02T00:00:00+00:00" }, "vaccination": { "date": "2021-05-01T00:00:00+00:00" }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "dateObject": { "current": "2021-05-14T00:00:00+00:00" }, "vaccination": { "date": "2021-05-01T00:00:00+00:00" }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "dateObject": { "current": "2021-05-15T00:00:00+00:00" }, "vaccination": { "date": "2021-05-01T00:00:00+00:00" }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "dateObject": { "current": "2022-04-30T00:00:00+00:00" }, "vaccination": { "date": "2021-05-01T00:00:00+00:00" }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "dateObject": { "current": "2022-05-01T00:00:00+00:00" }, "vaccination": { "date": "2021-05-01T00:00:00+00:00" }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "dateObject": { "current": "2022-05-02T00:00:00+00:00" }, "vaccination": { "date": "2021-05-01T00:00:00+00:00" }
+          },
+          "expected": false
+        }
+      ]
+    }
+  ]
+}
