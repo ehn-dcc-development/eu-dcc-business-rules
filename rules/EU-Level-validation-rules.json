@@ -63,7 +63,7 @@
     }
   },
   {
-    "name": "GR-EU-0002",
+    "name": "GR-EU-0000",
     "description": "Exactly one type of event.",
     "inputParameter": "Entire HCert JSON (\"r\", \"t\", \"v\")",
     "jsonLogicExpression": {
