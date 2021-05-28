@@ -322,12 +322,12 @@ describe("in", () => {
     it("can be used i.c.w. an all reduction (surrounded by an if)", () => {
         const jlExpr: JsonLogicRule = {
             "if": [
-                {"!": [{"var": "hcert.r.0"}]},
+                {"!": [{"var": "payload.r.0"}]},
                 true,
                 {
                     "all": [
                         {
-                            "var": "hcert.r"
+                            "var": "payload.r"
                         },
                         {
                             "in": [
@@ -348,11 +348,11 @@ describe("in", () => {
                 "disease-agent-targeted": "COVID-19"
             }
         }
-        isTrue(applyLogic(jlExpr, { hcert: {}, ...external }))
-        isTrue(applyLogic(jlExpr, { hcert: { r: [] }, ...external }))
-        isTrue(applyLogic(jlExpr, { hcert: { r: [ null ] }, ...external }))
-        isFalse(applyLogic(jlExpr, { hcert: { r: [ { tg: null } ] }, ...external }))
-        isTrue(applyLogic(jlExpr, { hcert: { r: [ { tg: "840539006" } ] }, ...external }))
+        isTrue(applyLogic(jlExpr, { payload: {}, ...external }))
+        isTrue(applyLogic(jlExpr, { payload: { r: [] }, ...external }))
+        isTrue(applyLogic(jlExpr, { payload: { r: [ null ] }, ...external }))
+        isFalse(applyLogic(jlExpr, { payload: { r: [ { tg: null } ] }, ...external }))
+        isTrue(applyLogic(jlExpr, { payload: { r: [ { tg: "840539006" } ] }, ...external }))
     })
 
 })

@@ -1,19 +1,19 @@
 [
   {
     "name": "empty DCC",
-    "hcert": {},
+    "payload": {},
     "expected": true
   },
   {
     "name": "r == empty array",
-    "hcert": {
+    "payload": {
       "r": []
     },
     "expected": true
   },
   {
     "name": "1 r-event",
-    "hcert": {
+    "payload": {
       "r": [
         {
           "tg": "840539006"
@@ -24,7 +24,7 @@
   },
   {
     "name": "2 r-events",
-    "hcert": {
+    "payload": {
       "r": [
         {
           "tg": "840539006"

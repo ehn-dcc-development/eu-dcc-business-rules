@@ -1,19 +1,19 @@
 [
   {
     "name": "empty DCC",
-    "hcert": {},
+    "payload": {},
     "expected": true
   },
   {
     "name": "v == empty array",
-    "hcert": {
+    "payload": {
       "v": []
     },
     "expected": true
   },
   {
     "name": "not enough doses",
-    "hcert": {
+    "payload": {
       "v": [
         {
           "sd": 2,
@@ -25,7 +25,7 @@
   },
   {
     "name": "enough doses",
-    "hcert": {
+    "payload": {
       "v": [
         {
           "sd": 2,
@@ -37,7 +37,7 @@
   },
   {
     "name": "more than enough doses",
-    "hcert": {
+    "payload": {
       "v": [
         {
           "sd": 2,

@@ -9,7 +9,7 @@ export interface Rule {
     active: boolean
     businessDescription?: string
     description: string
-    jsonLogicExpression: JsonLogicRule
+    certLogicExpression: JsonLogicRule
 }
 export type Rules = Rule[]
 export const rules: Rules = readJson(join(rulesPath, "EU-Level-validation-rules.json"))
@@ -18,5 +18,5 @@ export const rules: Rules = readJson(join(rulesPath, "EU-Level-validation-rules.
 export const valueSets = readJson(join(rulesPath, "valueSets.json"))
 
 
-export type RuleRunner = (rule: Rule, hcert: any, validationClock?: string) => any
+export type RuleRunner = (rule: Rule, payload: any, validationClock?: string) => any
 

@@ -1,18 +1,18 @@
 [
   {
     "name": "empty DCC",
-    "hcert": {},
+    "payload": {},
     "expected": true
   },
   {
     "name": "t == empty array",
-    "hcert": {
+    "payload": {
       "t": []
     },
     "expected": true
   },
   {
-    "hcert": {
+    "payload": {
       "t": [
         {
           "tt": "LP6464-4"
@@ -22,7 +22,7 @@
     "expected": true
   },
   {
-    "hcert": {
+    "payload": {
       "t": [
         {
           "tt": "LP217198-3"
@@ -32,7 +32,7 @@
     "expected": true
   },
   {
-    "hcert": {
+    "payload": {
       "t": [
         {
           "tt": "TUT"

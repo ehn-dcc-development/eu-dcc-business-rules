@@ -1,19 +1,19 @@
 [
   {
     "name": "empty DCC",
-    "hcert": {},
+    "payload": {},
     "expected": true
   },
   {
     "name": "t == empty array",
-    "hcert": {
+    "payload": {
       "t": []
     },
     "expected": true
   },
   {
     "name": "a RAT from an approved test manufacturer",
-    "hcert": {
+    "payload": {
       "t": [
         {
           "tt": "LP6464-4",
@@ -25,7 +25,7 @@
   },
   {
     "name": "a RAT, but not an approved test manufacturer",
-    "hcert": {
+    "payload": {
       "t": [
         {
           "tt": "LP6464-4",
@@ -37,7 +37,7 @@
   },
   {
     "name": "a RAT, but approved test manufacturer field is missing",
-    "hcert": {
+    "payload": {
       "t": [
         {
           "tt": "LP6464-4"
@@ -48,7 +48,7 @@
   },
   {
     "name": "not a RAT, so anything goes",
-    "hcert": {
+    "payload": {
       "t": [
         {
           "tt": "LP217198-3",

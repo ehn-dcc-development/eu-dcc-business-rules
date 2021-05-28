@@ -11,7 +11,7 @@ import { runRule } from "../ruleRunner-JsonLogic"
 
 interface Assertion {
     name?: string
-    hcert: any
+    payload: any
     validationClock?: string
     expected: any
     message?: string
@@ -21,9 +21,9 @@ interface Assertion {
 export const runTests = (rule: Rule, assertions: Assertion[]) => {
     extendJsonLogic()
     describe(`rule: "${rule.name}"`, () => {
-        assertions.forEach(({ name, hcert, validationClock, expected, message }, index) => {
+        assertions.forEach(({ name, payload, validationClock, expected, message }, index) => {
             it(name || `assertion ${index + 1}`, () => {
-                deepEqual(runRule(rule, hcert, validationClock), expected)
+                deepEqual(runRule(rule, payload, validationClock), expected)
             })
         })
     })

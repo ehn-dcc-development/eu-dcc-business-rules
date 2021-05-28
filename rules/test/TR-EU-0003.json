@@ -1,18 +1,18 @@
 [
   {
     "name": "empty DCC",
-    "hcert": {},
+    "payload": {},
     "expected": true
   },
   {
     "name": "t == empty array",
-    "hcert": {
+    "payload": {
       "t": []
     },
     "expected": true
   },
   {
-    "hcert": {
+    "payload": {
       "t": [
         {
           "sc": "2021-06-01T00:00:00+00:00"
@@ -23,7 +23,7 @@
     "expected": false
   },
   {
-    "hcert": {
+    "payload": {
       "t": [
         {
           "sc": "2021-06-01T00:00:00+00:00"
@@ -35,7 +35,7 @@
   },
   {
     "name": "exactly 72 hours ago",
-    "hcert": {
+    "payload": {
       "t": [
         {
           "sc": "2021-06-01T00:00:00+00:00"
@@ -47,7 +47,7 @@
   },
   {
     "name": "just within 72 hours",
-    "hcert": {
+    "payload": {
       "t": [
         {
           "sc": "2021-06-01T00:00:00+00:00"
@@ -58,7 +58,7 @@
     "expected": true
   },
   {
-    "hcert": {
+    "payload": {
       "t": [
         {
           "sc": "2021-06-01T00:00:00+00:00"
@@ -69,7 +69,7 @@
     "expected": true
   },
   {
-    "hcert": {
+    "payload": {
       "t": [
         {
           "sc": "2021-06-01T00:00:00+00:00"

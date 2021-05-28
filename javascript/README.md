@@ -9,7 +9,7 @@ or
 
     $ yarn
 
-to download NPM-dependencies, and set up the [out](./out/) temporary directory.
+to download NPM-dependencies.
 
 Most important/interesting thing is to run
 

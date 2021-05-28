@@ -1,18 +1,18 @@
 [
   {
     "name": "empty DCC",
-    "hcert": {},
+    "payload": {},
     "expected": true
   },
   {
     "name": "v == empty array",
-    "hcert": {
+    "payload": {
       "v": []
     },
     "expected": true
   },
   {
-    "hcert": {
+    "payload": {
       "v": [
         {
           "mp": "Pfizer"
@@ -22,7 +22,7 @@
     "expected": false
   },
   {
-    "hcert": {
+    "payload": {
       "v": [
         {
           "mp": "EU/1/20/1528"

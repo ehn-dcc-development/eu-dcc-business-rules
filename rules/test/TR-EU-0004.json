@@ -1,19 +1,19 @@
 [
   {
     "name": "empty DCC",
-    "hcert": {},
+    "payload": {},
     "expected": true
   },
   {
     "name": "t == empty array",
-    "hcert": {
+    "payload": {
       "t": []
     },
     "expected": true
   },
   {
     "name": "a positive test",
-    "hcert": {
+    "payload": {
       "t": [
         {
           "tr": "260373001"
@@ -24,7 +24,7 @@
   },
   {
     "name": "a negative test",
-    "hcert": {
+    "payload": {
       "t": [
         {
           "tr": "260415000"

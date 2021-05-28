@@ -60,7 +60,7 @@ describe("in", () => {
         const jlExpr: JsonLogicRule = {
             "all": [
                 {
-                    "var": "hcert.r"
+                    "var": "payload.r"
                 },
                 {
                     "in": [
@@ -79,8 +79,8 @@ describe("in", () => {
                 "disease-agent-targeted": "COVID-19"
             }
         }
-        isFalse(applyLogic(jlExpr, { hcert: { r: [ { tg: null } ] }, ...external }))
-        isFalse(applyLogic(jlExpr, { hcert: { r: [ { tg: external.valueSets["disease-agent-targeted"] } ] }, ...external }))  // But should be true!
+        isFalse(applyLogic(jlExpr, { payload: { r: [ { tg: null } ] }, ...external }))
+        isFalse(applyLogic(jlExpr, { payload: { r: [ { tg: external.valueSets["disease-agent-targeted"] } ] }, ...external }))  // But should be true!
     })
 
 })

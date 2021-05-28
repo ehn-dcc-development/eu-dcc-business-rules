@@ -1,19 +1,19 @@
 [
   {
     "name": "empty DCC",
-    "hcert": {},
+    "payload": {},
     "expected": true
   },
   {
     "name": "v == empty array",
-    "hcert": {
+    "payload": {
       "v": []
     },
     "expected": true
   },
   {
     "name": "1 v-event",
-    "hcert": {
+    "payload": {
       "v": [
         {
           "mp": "EU/1/20/1528"
@@ -24,7 +24,7 @@
   },
   {
     "name": "2 v-events",
-    "hcert": {
+    "payload": {
       "v": [
         {
           "mp": "EU/1/20/1528"

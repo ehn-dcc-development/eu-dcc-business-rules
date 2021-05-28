@@ -66,5 +66,5 @@ export const extendJsonLogic = () => {
 }
 
 
-export const applyLogic = (jsonLogicExpression: JsonLogicRule, data: any) => apply(jsonLogicExpression as RulesLogic, data)
+export const applyLogic = (jsonLogicRule: JsonLogicRule, data: any) => apply(jsonLogicRule as RulesLogic, data)
 
