@@ -4,7 +4,7 @@
     {
       "name": "offsetting dates",
       "jsonLogicRule": {
-        "addDays": [
+        "plusDays": [
           {
             "var": "d0"
           },
@@ -24,9 +24,9 @@
       "name": "compare offset dates (e.g., for VR-EU-0003)",
       "jsonLogicRule": {
         "<=": [
-          { "addDays": [ { "var": "vaccination.date" }, 14 ] },
-          { "addDays": [ { "var": "dateObject.current" }, 0 ] },
-          { "addDays": [ { "var": "vaccination.date" }, 365 ] }
+          { "plusDays": [ { "var": "vaccination.date" }, 14 ] },
+          { "plusDays": [ { "var": "dateObject.current" }, 0 ] },
+          { "plusDays": [ { "var": "vaccination.date" }, 365 ] }
         ]
       },
       "assertions": [

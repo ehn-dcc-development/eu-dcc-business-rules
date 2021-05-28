@@ -5,7 +5,8 @@ import { join } from "path"
 import { extendJsonLogic } from "../extend-JsonLogic"
 import { readJson } from "../file-utils"
 import { rulesPath } from "../paths"
-import { Rule, rules, runRule } from "../rules"
+import { Rule, rules } from "../rules"
+import { runRule } from "../ruleRunner-JsonLogic"
 
 
 interface Assertion {

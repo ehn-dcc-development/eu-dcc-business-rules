@@ -10,11 +10,11 @@ import { extendJsonLogic } from "../extend-JsonLogic"
 import { writeJson } from "../file-utils"
 import { mapTestFiles } from "./map-testData"
 import { outPath } from "../paths"
+import { runRule } from "../ruleRunner-JsonLogic"
+import { rules } from "../rules"
 
 
 extendJsonLogic()
-
-import { rules, runRule } from "../rules"
 
 
 const validateAgainstRules = (testJson: any) => {

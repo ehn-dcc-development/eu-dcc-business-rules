@@ -227,7 +227,7 @@ describe("some operation", () => {
 
 describe("date extensions", () => {
 
-    it("addDays", () => {
+    it("plusDays", () => {
         isTrue(applyLogic({
                 "<=": [
                     { "plusDays": [ { "var": "certificate.date" }, 12 ] },
