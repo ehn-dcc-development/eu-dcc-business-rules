@@ -64,7 +64,7 @@
   },
   {
     "name": "GR-EU-0002",
-    "description": "At most one type of event.",
+    "description": "Exactly one type of event.",
     "inputParameter": "Entire HCert JSON (\"r\", \"t\", \"v\")",
     "jsonLogicExpression": {
       "===": [
@@ -106,7 +106,7 @@
   },
   {
     "name": "VR-EU-0000",
-    "description": "At most one type of v-event.",
+    "description": "At most one v-event.",
     "inputParameter": "Entire HCert JSON (\"v\")",
     "jsonLogicExpression": {
       "!": [
@@ -168,7 +168,7 @@
     "name": "VR-EU-0003",
     "businessDescription": "The full vaccination protection starts up 14 days after vaccination and is valid for 365 days.",
     "description": "Verification Datetime must be more than 14 days and less than 365 days after the last date of vaccination.",
-    "inputParameter": "Vaccination Part of the HCert (\"v\")+ Valuesets + +\"dt\"",
+    "inputParameter": "Vaccination Part of the HCert (\"v\") + Valuesets + +\"dt\"",
     "jsonLogicExpression": {
       "if": [
         {
@@ -208,7 +208,7 @@
   },
   {
     "name": "TR-EU-0000",
-    "description": "At most one type of t-event.",
+    "description": "At most one t-event.",
     "inputParameter": "Entire HCert JSON (\"t\")",
     "jsonLogicExpression": {
       "!": [
@@ -309,7 +309,7 @@
   },
   {
     "name": "TR-EU-0004",
-    "description": "Test result must be negative(\"not detected\").",
+    "description": "Test result must be negative (\"not detected\").",
     "inputParameter": "Test Part of the HCert (\"t\")+ Valuesets +\"tr\"",
     "jsonLogicExpression": {
       "if": [
