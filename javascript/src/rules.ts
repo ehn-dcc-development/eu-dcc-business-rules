@@ -20,3 +20,16 @@ export const valueSets = readJson(join(rulesPath, "valueSets.json"))
 
 export type RuleRunner = (rule: Rule, payload: any, validationClock?: string) => any
 
+export const ruleRunner = <T>(evaluate: (expr: T, data: any) => any): RuleRunner => (rule: Rule, payload: any, validationClock?: string) => {
+    const data = {
+        external: {
+            valueSets,
+            validationClock,
+            "countryCode": "CZ",
+            "exp": "2022-10-21T18:25:43-05:00"
+        },
+        payload
+    }
+    return evaluate(rule.certLogicExpression as unknown as T, data)
+}
+
