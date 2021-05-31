@@ -22,6 +22,7 @@ export type CertLogicExpression =
     | boolean
     | number    // ...which should be an integer...
     | string
+    | null
     | CertLogicExpression[]
 
 
@@ -39,21 +40,134 @@ export const isFalsy = (value: any) => value === false || value === null
 export const isTruthy = (value: any) => value === true || (Array.isArray(value) ? value.length > 0 : (typeof value === "object" && value !== null))
 
 
-const op2binOp: { [op: string]: (l: any, r: any) => any } = {
-    "===": (l: any, r: any) => l === r,
-    // no "and": handled separately
-    "<": (l: number, r: number) => l < r,
-    ">": (l: number, r: number) => l > r,
-    "<=": (l: number, r: number) => l <= r,
-    ">=": (l: number, r: number) => l >= r,
-    "in": (l: string, r: any) => {
-        if (!Array.isArray(r)) {
-            throw new Error(`right-hand side of "in" operation must be an array`)
+const evaluateVar = (args: any, data: any): any => {
+    if (data === null) {
+        return null
+    }
+    if (typeof args !== "string") {
+        throw new Error(`not of the form { "var": "<path>" }`)
+    }
+    const path = args
+    if (path === "") {  // "it"
+        return data
+    }
+    return path.split(".").reduce((acc, fragment) => {
+        if (acc === null) {
+            return null
         }
-        return r.indexOf(l) > -1
-    },
-    "+": (l: any, r: any) => l + r
+        const index = parseInt(fragment, 10)
+        const value = isNaN(index) ? acc[fragment] : acc[index]
+        return value === undefined ? null : value
+    }, data)
 }
+
+
+const evaluateIf = (guard: CertLogicExpression, then: CertLogicExpression, else_: CertLogicExpression, data: any): any => {
+    const evalGuard = evaluate(guard, data)
+    if (isTruthy(evalGuard)) {
+        return evaluate(then, data)
+    }
+    if (isFalsy(evalGuard)) {
+        return evaluate(else_, data)
+    }
+    throw new Error(`if-guard evaluates to something neither truthy, nor falsy: ${evalGuard}`)
+}
+
+
+type Comparable = number | Date
+
+const isDate = (value: any): value is Date => typeof value === "object" && "toISOString" in value
+const isComparable = (value: any): value is Comparable => typeof value === "number" || isDate(value)
+
+const withComparables = (opFunc: (l: Comparable, r: Comparable) => boolean) => (l: any, r: any) => {
+    if (!isComparable(l) || !isComparable(r)) {
+        throw new Error(`operands of this operation must both be comparable`)
+    }
+    return opFunc(l, r)
+}
+
+const op2binOp: { [op: string]: (l: any, r: any) => boolean } = {
+    "<": withComparables((l, r) => l < r),
+    ">": withComparables((l, r) => l > r),
+    "<=": withComparables((l, r) => l <= r),
+    ">=": withComparables((l, r) => l >= r),
+}
+
+const evaluateBinOp = (operator: string, args: CertLogicExpression[], data: any): any => {
+    const evalArg = (index: number) => evaluate(args[index], data)
+    switch (operator) {
+        case "===": return evalArg(0) === evalArg(1)
+        case "in": {
+            const r = evalArg(1)
+            if (!Array.isArray(r)) {
+                throw new Error(`right-hand side of "in" operation must be an array`)
+            }
+            return r.indexOf(evalArg(0)) > -1
+        }
+        case "+": {
+            const l = evalArg(0)
+            const r = evalArg(1)
+            if (typeof l !== "number" || typeof r !== "number") {
+                throw new Error(`operands of this operation must both be numbers`)
+            }
+            return l + r
+        }
+        case "and": return args.reduce(
+            (acc: any, current: CertLogicExpression) => isFalsy(acc) ? acc : evaluate(current, data),
+            true
+        )
+        case "<":
+        case ">":
+        case "<=":
+        case ">=": {
+            const opFunc = op2binOp[operator]
+            if (args.length === 2) {
+                return opFunc(evalArg(0), evalArg(1))
+            } else if (args.length === 3) {
+                const evalMiddleArg = evalArg(1)
+                return opFunc(evalArg(0), evalMiddleArg) && opFunc(evalMiddleArg, evalArg(2))
+            }
+            throw new Error(`invalid number of operands to "${operator}" operation`)
+        }
+    }
+}
+
+
+const evaluateNot = (operandExpr: CertLogicExpression, data: any): any => {
+    const operand = evaluate(operandExpr, data)
+    if (isFalsy(operand)) {
+        return true
+    }
+    if (isTruthy(operand)) {
+        return false
+    }
+    throw new Error(`operand of ! evaluates to something neither truthy, nor falsy: ${operand}`)
+}
+
+
+const evaluatePlusDays = (dateOperand: CertLogicExpression, nDays: number, data: any): Date => {
+    const date = new Date(evaluate(dateOperand, data))
+    date.setDate(date.getDate() + nDays)
+    return date
+}
+
+
+const evaluateReduce = (operand: CertLogicExpression, lambda: CertLogicExpression, initial: CertLogicExpression, data: any): any => {
+    const evalOperand = evaluate(operand, data)
+    const evalInitial = () => evaluate(initial, data)
+    if (evalOperand === null) {
+        return evalInitial()
+    }
+    if (!Array.isArray(evalOperand)) {
+        throw new Error(`operand of reduce evaluated to a non-null non-array`)
+    }
+    return (evalOperand as any[])
+        .reduce(
+            (accumulator, current) => evaluate(lambda, { accumulator, current /* (patch:) , data */ }),
+            evalInitial()
+        )
+}
+
 
 export const evaluate = (expr: CertLogicExpression, data: any): any => {
     if (typeof expr === "string" || typeof expr === "number" || typeof expr === "boolean" || expr === null) {
@@ -70,95 +184,29 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
         const operator = keys[0]
         const args = (expr as any)[operator]
         if (operator === "var") {
-            if (data === null) {
-                return null
-            }
-            if (typeof args === "string") {
-                if (args === "") {  // "it"
-                    return data
-                }
-                return args.split(".").reduce((acc, current) => {
-                    if (acc === null) {
-                        return null
-                    }
-                    const index = parseInt(current, 10)
-                    const value = isNaN(index) ? acc[current] : acc[index]
-                    return value === undefined ? null : value
-                }, data)
-            }
-            throw new Error(`not of the form { "var": "<path>" }`)
+            return evaluateVar(args, data)
+        }
+        if (!(Array.isArray(args) && args.length > 0)) {
+            throw new Error(`operation not of the form { "<operator>": [ <args...> ] }`)
         }
         if (operator === "if") {
             const [ guard, then, else_ ] = args
-            const evalGuard = evaluate(guard, data)
-            if (isTruthy(evalGuard)) {
-                return evaluate(then, data)
-            }
-            if (isFalsy(evalGuard)) {
-                return evaluate(else_, data)
-            }
-            throw new Error(`if-guard evaluates to something neither truthy, nor falsy: ${evalGuard}`)
+            return evaluateIf(guard, then, else_, data)
         }
         if ([ "===", "and", ">", "<", ">=", "<=", "in", "+" ].indexOf(operator) > -1) {
-            const evalArg = (index: number) => evaluate(args[index], data)
-            const opFunc = op2binOp[operator]
-            switch (operator) {
-                case "===":
-                case "in":
-                case "+": return opFunc(evalArg(0), evalArg(1))
-                case "and": return args.reduce((acc: any, current: CertLogicExpression) => acc && evaluate(current, data), true)
-                case ">":
-                case "<":
-                case ">=":
-                case "<=": {
-                    if (args.length === 2) {
-                        return opFunc(evalArg(0), evalArg(1))
-                    } else if (args.length === 3) {
-                        const evalMiddleArg = evalArg(1)
-                        return opFunc(evalArg(0), evalMiddleArg) && opFunc(evalMiddleArg, evalArg(2))
-                    }
-                    throw new Error(`invalid number of operands to "${operator}" operation`)
-                }
-            }
+            return evaluateBinOp(operator, args, data)
         }
         if (operator === "!") {
-            const operand = evaluate(args[0], data)
-            if (isFalsy(operand)) {
-                return true
-            }
-            if (isTruthy(operand)) {
-                return false
-            }
-            throw new Error(`operand of ! evaluates to something neither truthy, nor falsy: ${operand}`)
+            return evaluateNot(args[0], data)
         }
         if (operator === "plusDays") {
-            const dateStr = evaluate(args[0], data)
-            const nDays = evaluate(args[1], data)
-            const date = new Date(dateStr)
-            date.setDate(date.getDate() + nDays)
-            return date
+            return evaluatePlusDays(args[0], args[1], data)
         }
         if (operator === "reduce") {
-            const evalOperand = evaluate(args[0], data)
-            const evalInitial = () => evaluate(args[2], data)
-            if (evalOperand === null) {
-                return evalInitial()
-            }
-            if (!Array.isArray(evalOperand)) {
-                throw new Error(`operand of reduce evaluated to a non-null non-array`)
-            }
-            return (evalOperand as any[])
-                .reduce(
-                    (accumulator, current) => evaluate(args[1], { accumulator, current /* (patch:) , data */ }),
-                    evalInitial()
-                )
+            return evaluateReduce(args[0], args[1], args[2], data)
         }
         throw new Error(`unrecognised operator: "${operator}"`)
     }
     throw new Error(`invalid CertLogic expression: ${expr}`)
 }
-
-
-// export const validate = (expr: any) => ???
-// TODO  write validator that checks a given JSON value whether it's valid as a CertLogic expression, wrapping every value in an object which details issues, type, etc.
 
