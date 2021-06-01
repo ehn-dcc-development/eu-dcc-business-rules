@@ -1,7 +1,6 @@
 package eu.ehn.certlogic
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.junit.jupiter.api.Assertions.assertEquals
 import java.io.File
@@ -26,16 +25,11 @@ data class TestSuite(
 )
 
 
-val objectMapper = jacksonObjectMapper()
-
 val testSuitesPath = File("../../jsonLogic/test")
 
 fun allTestSuites(): List<TestSuite> = testSuitesPath
-    .listFiles { dir, name -> name.endsWith(".json") }
-    .map(::readTestSuiteFromDisk)
-
-
-fun readTestSuiteFromDisk(file: File): TestSuite = objectMapper.readValue<TestSuite>(file)
+    .listFiles { _, name -> name.endsWith(".json") }
+    .map { objectMapper.readValue(it) }
 
 
 fun TestSuite.run() {

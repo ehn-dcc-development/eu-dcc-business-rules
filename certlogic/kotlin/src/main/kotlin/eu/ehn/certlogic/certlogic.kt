@@ -46,10 +46,10 @@ internal fun evaluateVar(args: JsonNode, data: JsonNode): JsonNode {
 
 internal fun evaluateIf(guard: JsonNode, then: JsonNode, else_: JsonNode, data: JsonNode): JsonNode {
     val evalGuard = evaluate(guard, data)
-    if (isFalsy(evalGuard)) {
+    if (isTruthy(evalGuard)) {
         return evaluate(then, data)
     }
-    if (isTruthy(evalGuard)) {
+    if (isFalsy(evalGuard)) {
         return evaluate(else_, data)
     }
     throw RuntimeException("if-guard evaluates to something neither truthy, nor falsy: $evalGuard")
@@ -84,7 +84,7 @@ internal fun evaluateBinOp(operator: String, args: ArrayNode, data: JsonNode): J
         "in" -> {
             val r = evalArgs[1]
             if (r !is ArrayNode) {
-                throw RuntimeException("right-hand side of \"in\" operation must be an array")
+                throw RuntimeException("right-hand side of an \"in\" operation must be an array")
             }
             BooleanNode.valueOf(r.contains(evalArgs[0]))
         }
@@ -100,21 +100,23 @@ internal fun evaluateBinOp(operator: String, args: ArrayNode, data: JsonNode): J
             if (isFalsy(acc)) acc else evaluate(current, data)
         }
         "<", ">", "<=", ">=" -> {
-            when (evalArgs[0]) {
-                is IntNode -> {
-                    if (!evalArgs.all { it is IntNode }) {
-                        throw RuntimeException("all operands must have the same type")
+            BooleanNode.valueOf(
+                when (evalArgs[0]) {
+                    is IntNode -> {
+                        if (evalArgs.any { it !is IntNode }) {
+                            throw RuntimeException("all operands must have the same type")
+                        }
+                        compare(operator, evalArgs.map { (it as IntNode).intValue() })
                     }
-                    BooleanNode.valueOf(compare(operator, evalArgs.map { (it as IntNode).intValue() }))
-                }
-                is JsonDateTime -> {
-                    if (!evalArgs.all { it is JsonDateTime }) {
-                        throw RuntimeException("all operands must have the same type")
+                    is JsonDateTime -> {
+                        if (evalArgs.any { it !is JsonDateTime }) {
+                            throw RuntimeException("all operands must have the same type")
+                        }
+                        compare(operator, evalArgs.map { (it as JsonDateTime).temporalValue() })
                     }
-                    BooleanNode.valueOf(compare(operator, evalArgs.map { (it as JsonDateTime).temporalValue() }))
+                    else -> throw RuntimeException("can't handle the following type for the operands to a \"$operator\" operation: ${evalArgs[0].javaClass}")
                 }
-                else -> throw RuntimeException("can't handle the following type for the operands to a \"$operator\" operation: ${evalArgs[0].javaClass}")
-            }
+            )
         }
         else -> throw RuntimeException("unhandled binary operator \"$operator\"")
     }
