@@ -1,4 +1,4 @@
-package eu.europa.ec.certlogic
+package eu.ehn.certlogic
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.*
@@ -56,60 +56,65 @@ internal fun evaluateIf(guard: JsonNode, then: JsonNode, else_: JsonNode, data: 
 }
 
 
-internal fun isComparable(value: JsonNode) = value is IntNode || value is JsonDateTime
-
-internal fun withComparables(opFunc: (l: Comparable<JsonNode>, r: Comparable<JsonNode>) -> Boolean):
-        (l: JsonNode, r: JsonNode) -> Boolean
-        = { l: JsonNode, r: JsonNode ->
-    if (!isComparable(l) || !isComparable(r)) {
-        throw RuntimeException("operands of this operation must both be comparable")
+internal fun intCompare(operator: String, l: Int, r: Int): Boolean =
+    when (operator) {
+        "<" -> l < r
+        ">" -> l > r
+        "<=" -> l <= r
+        ">=" -> l >= r
+        else -> throw RuntimeException("unhandled binary comparison operator \"$operator\"")
     }
-    @Suppress("UNCHECKED_CAST")
-    opFunc(l as Comparable<JsonNode>, r as Comparable<JsonNode>)
-}
+
+internal fun <T:Comparable<T>> compare(operator: String, args: List<T>): Boolean =
+    when (args.size) {
+        2 -> intCompare(operator, args[0].compareTo(args[1]), 0)
+        3 -> intCompare(operator, args[0].compareTo(args[1]), 0) && intCompare(operator, args[1].compareTo(args[2]), 0)
+        else -> throw RuntimeException("invalid number of operands to a \"$operator\" operation")
+    }
 
 internal fun evaluateBinOp(operator: String, args: ArrayNode, data: JsonNode): JsonNode {
-    val evalArg = { index: Int -> evaluate(args[index], data) }
+    when (operator) {
+        "and" -> if (args.size() < 2) throw RuntimeException("an \"and\" operation must have at least 2 operands")
+        "<", ">", "<=", ">=" -> if (args.size() < 2 || args.size() > 3) throw RuntimeException("an operation with operator \"$operator\" must have 2 or 3 operands")
+        else -> if (args.size() != 2) throw RuntimeException("an operation with operator \"$operator\" must have 2 operands")
+    }
+    val evalArgs = args.map { arg -> evaluate(arg, data) }
     return when (operator) {
-        "===" -> BooleanNode.valueOf(evalArg(0) == evalArg(1))
+        "===" -> BooleanNode.valueOf(evalArgs[0] == evalArgs[1])
         "in" -> {
-            val r = evalArg(1)
+            val r = evalArgs[1]
             if (r !is ArrayNode) {
                 throw RuntimeException("right-hand side of \"in\" operation must be an array")
             }
-            BooleanNode.valueOf(r.contains(evalArg(0)))
+            BooleanNode.valueOf(r.contains(evalArgs[0]))
         }
         "+" -> {
-            val l = evalArg(0)
-            val r = evalArg(1)
+            val l = evalArgs[0]
+            val r = evalArgs[1]
             if (l !is IntNode || r !is IntNode) {
-                throw RuntimeException("operands of this operation must both be integers")
+                throw RuntimeException("operands of a "+" operator must both be integers")
             }
-            IntNode.valueOf(evalArg(0).intValue() + evalArg(1).intValue())
+            IntNode.valueOf(evalArgs[0].intValue() + evalArgs[1].intValue())
         }
         "and" -> args.fold(BooleanNode.TRUE as JsonNode) { acc, current ->
             if (isFalsy(acc)) acc else evaluate(current, data)
         }
         "<", ">", "<=", ">=" -> {
-            val opFunc = withComparables { l, r ->
-                when (operator) {
-                    "<" -> l < (r as JsonNode)
-                    ">" -> l > (r as JsonNode)
-                    "<=" -> l <= (r as JsonNode)
-                    ">=" -> l >= (r as JsonNode)
-                    else -> throw RuntimeException("unhandled binary comparison operator \"$operator\"")
-                }
-            }
-            return BooleanNode.valueOf(
-                when (args.size()) {
-                    2 -> opFunc(evalArg(0), evalArg(1))
-                    3 -> {
-                        val evalMiddleArg = evalArg(1)
-                        opFunc(evalArg(0), evalMiddleArg) && opFunc(evalMiddleArg, evalArg(2))
+            when (evalArgs[0]) {
+                is IntNode -> {
+                    if (!evalArgs.all { it is IntNode }) {
+                        throw RuntimeException("all operands must have the same type")
                     }
-                    else -> throw RuntimeException("invalid number of operands to \"$operator\" operation")
+                    BooleanNode.valueOf(compare(operator, evalArgs.map { (it as IntNode).intValue() }))
                 }
-            )
+                is JsonDateTime -> {
+                    if (!evalArgs.all { it is JsonDateTime }) {
+                        throw RuntimeException("all operands must have the same type")
+                    }
+                    BooleanNode.valueOf(compare(operator, evalArgs.map { (it as JsonDateTime).temporalValue() }))
+                }
+                else -> throw RuntimeException("can't handle the following type for the operands to a \"$operator\" operation: ${evalArgs[0].javaClass}")
+            }
         }
         else -> throw RuntimeException("unhandled binary operator \"$operator\"")
     }
@@ -118,11 +123,13 @@ internal fun evaluateBinOp(operator: String, args: ArrayNode, data: JsonNode): J
 
 internal fun evaluateNot(operandExpr: JsonNode, data: JsonNode): JsonNode {
     val operand = evaluate(operandExpr, data)
-    return when (operand) {
-        ::isFalsy -> BooleanNode.TRUE
-        ::isTruthy -> BooleanNode.FALSE
-        else -> throw RuntimeException("operand of ! evaluates to something neither truthy, nor falsy: $operand")
+    if (isFalsy(operand)) {
+        return BooleanNode.TRUE
     }
+    if (isTruthy(operand)) {
+        return BooleanNode.FALSE
+    }
+    throw RuntimeException("operand of ! evaluates to something neither truthy, nor falsy: $operand")
 }
 
 

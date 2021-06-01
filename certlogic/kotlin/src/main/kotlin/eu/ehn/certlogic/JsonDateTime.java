@@ -1,4 +1,4 @@
-package eu.europa.ec.certlogic;
+package eu.ehn.certlogic;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -29,6 +29,10 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
         }
     }
 
+    public OffsetDateTime temporalValue() {
+        return this._value;
+    }
+
     protected JsonDateTime(OffsetDateTime dateTime) {
         this._value = dateTime;
     }
@@ -49,7 +53,7 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
 
     @Override
     public boolean equals(Object o) {
-        return false;
+        return o instanceof JsonDateTime && this.compareTo((JsonDateTime) o) == 0;
     }
 
     @Override
