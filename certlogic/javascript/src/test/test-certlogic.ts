@@ -108,8 +108,6 @@ describe("binary operation", () => {
 describe("and operation", () => {
 
     it("should work", () => {
-        equal(evaluate({ "and": [ true ] }, null), true)
-        equal(evaluate({ "and": [ false ] }, null), false)
         equal(evaluate({ "and": [ true, false ] }, null), false)
         equal(evaluate({ "and": [ null, true ] }, null), null)
         equal(evaluate({ "and": [ true, null, false ] }, null), null)

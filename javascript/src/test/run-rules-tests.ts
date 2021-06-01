@@ -32,9 +32,9 @@ export const runTestsWith = (runRule: RuleRunner) => {
     const rulesTestsPath = join(rulesPath, "test");
     rules.forEach((rule) => {
         const ruleId = rule.name
-        const path = join(rulesTestsPath, `${ruleId}.json`)
-        if (existsSync(path)) {
-            runTests(rule, readJson(path), runRule)
+        const ruleAssertionsFile = join(rulesTestsPath, `${ruleId}.json`)
+        if (existsSync(ruleAssertionsFile)) {
+            runTests(rule, readJson(ruleAssertionsFile), runRule)
         } else {
             describe(`rule: "${ruleId}"`, () => {
                 it(`no assertions file`, () => {

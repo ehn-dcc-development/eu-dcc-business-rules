@@ -40,6 +40,10 @@ export const isFalsy = (value: any) => value === false || value === null
 export const isTruthy = (value: any) => value === true || (Array.isArray(value) ? value.length > 0 : (typeof value === "object" && value !== null))
 
 
+const isInt = (value: any): value is number => typeof value === "number" && Number.isInteger(value)
+const isDate = (value: any): value is Date => typeof value === "object" && "toISOString" in value
+
+
 const evaluateVar = (args: any, data: any): any => {
     if (data === null) {
         return null
@@ -76,39 +80,58 @@ const evaluateIf = (guard: CertLogicExpression, then: CertLogicExpression, else_
 
 type Comparable = number | Date
 
-const isDate = (value: any): value is Date => typeof value === "object" && "toISOString" in value
-const isComparable = (value: any): value is Comparable => typeof value === "number" || isDate(value)
-
-const withComparables = (opFunc: (l: Comparable, r: Comparable) => boolean) => (l: any, r: any) => {
-    if (!isComparable(l) || !isComparable(r)) {
-        throw new Error(`operands of this operation must both be comparable`)
+type ComparisonOperator = "<" | ">" | "<=" | ">="
+const compareFunctionFor = (operator: ComparisonOperator) => (l: Comparable, r: Comparable): boolean => {
+    switch (operator) {
+        case "<": return l < r
+        case ">": return l > r
+        case "<=": return l <= r
+        case ">=": return l >= r
     }
-    return opFunc(l, r)
 }
 
-const op2binOp: { [op: string]: (l: any, r: any) => boolean } = {
-    "<": withComparables((l, r) => l < r),
-    ">": withComparables((l, r) => l > r),
-    "<=": withComparables((l, r) => l <= r),
-    ">=": withComparables((l, r) => l >= r),
+const compare = (operator: ComparisonOperator, args: Comparable[]): boolean => {
+    const compFunc = compareFunctionFor(operator)
+    switch (args.length) {
+        case 2: return compFunc(args[0], args[1])
+        case 3: return compFunc(args[0], args[1]) && compFunc(args[1], args[2]!)
+        default: throw new Error(`invalid number of operands to a "${operator}" operation`)
+    }
 }
 
 const evaluateBinOp = (operator: string, args: CertLogicExpression[], data: any): any => {
-    const evalArg = (index: number) => evaluate(args[index], data)
     switch (operator) {
-        case "===": return evalArg(0) === evalArg(1)
+        case "and": {
+            if (args.length < 2) throw new Error(`an \"and\" operation must have at least 2 operands`)
+            break
+        }
+        case "<":
+        case ">":
+        case "<=":
+        case ">=": {
+            if (args.length < 2 || args.length > 3) throw new Error(`an operation with operator \"$operator\" must have 2 or 3 operands`)
+            break
+        }
+        default: {
+            if (args.length !== 2) throw new Error(`an operation with operator \"$operator\" must have 2 operands`)
+            break
+        }
+    }
+    const evalArgs = args.map((arg) => evaluate(arg, data))
+    switch (operator) {
+        case "===": return evalArgs[0] === evalArgs[1]
         case "in": {
-            const r = evalArg(1)
+            const r = evalArgs[1]
             if (!Array.isArray(r)) {
-                throw new Error(`right-hand side of "in" operation must be an array`)
+                throw new Error(`right-hand side of an "in" operation must be an array`)
             }
-            return r.indexOf(evalArg(0)) > -1
+            return r.indexOf(evalArgs[0]) > -1
         }
         case "+": {
-            const l = evalArg(0)
-            const r = evalArg(1)
-            if (typeof l !== "number" || typeof r !== "number") {
-                throw new Error(`operands of this operation must both be numbers`)
+            const l = evalArgs[0]
+            const r = evalArgs[1]
+            if (!isInt(l) || !isInt(r)) {
+                throw new Error(`operands of this operation must both be integers`)
             }
             return l + r
         }
@@ -120,15 +143,19 @@ const evaluateBinOp = (operator: string, args: CertLogicExpression[], data: any)
         case ">":
         case "<=":
         case ">=": {
-            const opFunc = op2binOp[operator]
-            if (args.length === 2) {
-                return opFunc(evalArg(0), evalArg(1))
-            } else if (args.length === 3) {
-                const evalMiddleArg = evalArg(1)
-                return opFunc(evalArg(0), evalMiddleArg) && opFunc(evalMiddleArg, evalArg(2))
+            if (isInt(evalArgs[0])) {
+                if (evalArgs.some((arg) => !isInt(arg))) {
+                    throw new Error(`all operands must have the same type`)
+                }
             }
-            throw new Error(`invalid number of operands to "${operator}" operation`)
+            if (isDate(evalArgs[0])) {
+                if (evalArgs.some((arg) => !isDate(arg))) {
+                    throw new Error(`all operands must have the same type`)
+                }
+            }
+            return compare(operator, evalArgs)
         }
+        default: throw new Error(`unhandled binary operator "${operator}"`)
     }
 }
 
@@ -145,10 +172,17 @@ const evaluateNot = (operandExpr: CertLogicExpression, data: any): any => {
 }
 
 
-const evaluatePlusDays = (dateOperand: CertLogicExpression, nDays: number, data: any): Date => {
-    const date = new Date(evaluate(dateOperand, data))
-    date.setDate(date.getDate() + nDays)
-    return date
+const evaluatePlusDays = (dateOperand: CertLogicExpression, nDays: CertLogicExpression, data: any): Date => {
+    if (!isInt(nDays)) {
+        throw new Error(`days argument of "plusDays" must be an integer`)
+    }
+    const dateTimeStr = evaluate(dateOperand, data)
+    if (typeof dateTimeStr !== "string") {
+        throw new Error(`date argument of "plusDays" must be a string`)
+    }
+    const dateTime = new Date(dateTimeStr)
+    dateTime.setDate(dateTime.getDate() + nDays)
+    return dateTime
 }
 
 
@@ -170,7 +204,7 @@ const evaluateReduce = (operand: CertLogicExpression, lambda: CertLogicExpressio
 
 
 export const evaluate = (expr: CertLogicExpression, data: any): any => {
-    if (typeof expr === "string" || typeof expr === "number" || typeof expr === "boolean" || expr === null) {
+    if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean" || expr === null) {
         return expr
     }
     if (Array.isArray(expr)) {
