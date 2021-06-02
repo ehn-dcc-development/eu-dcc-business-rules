@@ -40,7 +40,7 @@ Various code in this repo assumes that the following two repos are cloned right 
 
 ## Licensing
 
-Copyright (C) 2021 T-Systems International GmbH and all other contributors
+Copyright (c) 2021 Ministry of Health, Science, and Sports, and all other contributors
 
 Licensed under the **Apache License, Version 2.0** (the "License"); you may not use this file except in compliance with the License.
 
