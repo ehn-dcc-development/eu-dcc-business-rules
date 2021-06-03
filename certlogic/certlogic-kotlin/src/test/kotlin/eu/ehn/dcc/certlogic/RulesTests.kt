@@ -1,4 +1,4 @@
-package eu.ehn.certlogic
+package eu.ehn.dcc.certlogic
 
 import com.fasterxml.jackson.databind.JsonNode
 import org.junit.jupiter.api.Test

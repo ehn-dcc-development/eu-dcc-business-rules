@@ -1,8 +1,9 @@
-package eu.ehn.certlogic
+package eu.ehn.dcc.certlogic
 
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import java.io.File
+
 
 val objectMapper = jacksonObjectMapper()
 

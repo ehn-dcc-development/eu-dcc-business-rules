@@ -1,9 +1,13 @@
-package eu.ehn.certlogic
+package eu.ehn.dcc.certlogic
 
+import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.*
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import org.junit.jupiter.api.Assertions.*
+import com.fasterxml.jackson.module.kotlin.readValue
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Assertions.assertFalse
+import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import java.io.File
 
 internal class CertlogicTests {
 
@@ -32,17 +36,63 @@ internal class CertlogicTests {
     }
 
     @Test
-    fun `test simple deserialisation`() {
-        val om = jacksonObjectMapper()
-        val certLogicExpr = om.readTree("""{ "var": "" }""")
-        val data = om.readTree("42")
-        assertEquals(IntNode.valueOf(42), evaluate(certLogicExpr, data))
-    }
-
-    @Test
     fun `test all test suites from disk`() {
         allTestSuites().map { it.run() }
     }
 
+}
+
+
+data class Assertion(
+    var directive: String?,
+    var message: String?,
+    var data: JsonNode,
+    var expected: JsonNode
+)
+data class TestCase(
+    var name: String,
+    var directive: String?,
+    var certLogicExpression: JsonNode,
+    var assertions: Array<Assertion>
+)
+data class TestSuite(
+    var name: String,
+    var directive: String?,
+    var cases: Array<TestCase>
+)
+
+
+val testSuitesPath = File("../certlogic-overall/testing")
+
+fun allTestSuites(): List<TestSuite> = testSuitesPath
+    .listFiles { _, name -> name.endsWith(".json") }
+    .map { objectMapper.readValue(it) }
+
+
+fun TestSuite.run() {
+    if (this.directive == "skip") {
+        println("(Skipping test suite \"${this.name}\".)")
+        return
+    }
+    println("Running test suite \"${this.name}\":")
+    this.cases.forEach { testCase ->
+        if (testCase.directive == "skip") {
+            println("\t(Skipping test case \"${testCase.name}\".)")
+            return
+        }
+        println("\tRunning test case \"${testCase.name}\":")
+        testCase.assertions.forEachIndexed { index, assertion ->
+            if (assertion.directive == "skip") {
+                println("\t\t(skipping assertion ${index + 1})")
+            } else {
+                println("\t\tRunning assertion ${index + 1}...")
+                Assertions.assertEquals(
+                    assertion.expected,
+                    evaluate(testCase.certLogicExpression, assertion.data),
+                    "assertion ${index + 1}"
+                )
+            }
+        }
+    }
 }
 
