@@ -1,0 +1,41 @@
+{
+  "name": "comparison",
+  "cases": [
+    {
+      "name": "tri-comparison",
+      "certLogicExpression": {
+        "<=": [
+          { "var": "0" },
+          { "var": "1" },
+          { "var": "2" }
+        ]
+      },
+      "assertions": [
+        {
+          "data": [ 0, 1, 2 ],
+          "expected": true
+        },
+        {
+          "data": [ 0, 2, 1 ],
+          "expected": false
+        },
+        {
+          "data": [ 1, 2, 0 ],
+          "expected": false
+        },
+        {
+          "data": [ 1, 0, 2 ],
+          "expected": false
+        },
+        {
+          "data": [ 2, 0, 1 ],
+          "expected": false
+        },
+        {
+          "data": [ 2, 1, 0 ],
+          "expected": false
+        }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,8 @@
-import { readdirSync } from "fs"
+import { PathLike, readdirSync, readFileSync } from "fs"
 import { join } from "path"
-const { deepEqual } = require("chai").assert
+import { CertLogicExpression, evaluate } from "../certlogic"
 
-import { JsonLogicRule } from "../extend-JsonLogic"
-import { readJson } from "../file-utils"
-import { certLogicPath } from "../paths"
+const { deepEqual } = require("chai").assert
 
 
 type TestDirective = "skip" | "only" | undefined
@@ -18,7 +16,7 @@ interface Assertion {
 interface TestCase {
     name: string
     directive: TestDirective
-    certLogicExpression: JsonLogicRule
+    certLogicExpression: CertLogicExpression
     assertions: Assertion[]
 }
 interface TestSuite {
@@ -30,7 +28,7 @@ interface TestSuite {
 
 const testDirective2MochaFunc = (testDirective: TestDirective, mochaFunc: any) => testDirective === undefined ? mochaFunc : mochaFunc[testDirective]
 
-const runTestsOn = <T>(testSuite: TestSuite, evaluate: (expr: T, data: any) => any) => {
+const runTestsOn = (testSuite: TestSuite) => {
     testDirective2MochaFunc(testSuite.directive, describe)(testSuite.name, () => {
         testSuite.cases
             .forEach(({name, certLogicExpression, assertions, directive}) => {
@@ -46,7 +44,7 @@ const runTestsOn = <T>(testSuite: TestSuite, evaluate: (expr: T, data: any) => a
                                     console.warn("(test directive 'only' not supported on assertions)")
                                 }
                             }
-                            deepEqual(evaluate(certLogicExpression as unknown as T, data), expected, message || JSON.stringify(data))
+                            deepEqual(evaluate(certLogicExpression, data), expected, message || JSON.stringify(data))
                         })
                 })
             })
@@ -54,11 +52,11 @@ const runTestsOn = <T>(testSuite: TestSuite, evaluate: (expr: T, data: any) => a
 }
 
 
-const testSuitesPath = join(certLogicPath, "certlogic-overall/testing")
+const testSuitesPath = join(__dirname, "../../../certlogic-overall/testing")
 
-export const runTestsWith = <T> (evaluate: (expr: T, data: any) => any) => {
-    readdirSync(testSuitesPath)
-        .filter((path) => path.endsWith(".json"))
-        .forEach((path) => runTestsOn(readJson(join(testSuitesPath, path)), evaluate))
-}
+const readJson = (path: PathLike): any => JSON.parse(readFileSync(path, "utf8"))
+
+readdirSync(testSuitesPath)
+    .filter((path) => path.endsWith(".json"))
+    .forEach((path) => runTestsOn(readJson(join(testSuitesPath, path))))
 

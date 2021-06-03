@@ -4,13 +4,15 @@
   "description": "",
   "main": "dist/run-rules.js",
   "scripts": {
+    "postinstall": "npm link \"certlogic-js\"",
     "build": "tsc",
     "postbuild": "node dist/derive-valueSets-payload.js",
     "build-watch": "tsc --watch --incremental",
     "test": "mocha dist/test",
     "test-watch": "mocha --watch dist/test",
     "start": "node dist/testData/run-rules-on-testData-with-CertLogic.js && node dist/testData/run-rules-on-testData-with-JsonLogic.js",
-    "validate": "node dist/testData/validate-testData-dcc.js"
+    "validate": "node dist/testData/validate-testData-dcc.js",
+    "clean": "rm -rf dist/ && rm -rf node_modules/"
   },
   "dependencies": {
     "fs-readdir-recursive": "^1.1.0",

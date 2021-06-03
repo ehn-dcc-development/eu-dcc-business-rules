@@ -11,8 +11,14 @@
 
 ## About
 
-To be able to make decisions based on DCC instances, business rules have to be implemented.
-This repository collects “various” relevant artifacts pertaining to business rules.
+The [Digital COVID Certificate](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en) allows to determine whether a person is fit-for-travel based on their vaccination, test, and recovery status.
+To make such determinations, business (or validation) rules have to be implemented in verifier apps.
+
+The architecture chosen for that relies on expressing the validation rules in a plain JSON format, called **CertLogic**.
+That makes updating the validation rules without needing to update verifier apps as a whole, and without much danger of triggering e.g. Apple's anti-code injection policy.
+A set of validation rules (or _ruleset_) is then executed, or “run” by a CertLogic engine against JSON data consisting of a DCC payload, and an external parameters object with value sets, validation clock, etc.
+
+For the moment, [this Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+DGC+Validation+Rules) is the authoritative source of information.
 
 
 ## Assumptions
@@ -23,20 +29,24 @@ Various code in this repo assumes that the following two repos are cloned right 
 * [ehn-dgc-schema](https://github.com/ehn-digital-green-development/ehn-dgc-schema)
 
 
+## Organisation
+
+This repository contains the following:
+
+* [CertLogic](./certlogic): a specification, reference implementations for various platforms, a test suite, and a validation tool.
+  CertLogic is generic, and not tied to the DCC, to make it easier to understand, test, expand, etc. independently.
+* [RulesRunner](./rules-runner): implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
+* [Rulesets](./rulesets): implementations of rulesets with unit tests - for now that of the EU-template, but later of possibly various member states as well.
+
+**TODO**  The contents of the [javascript](./javascript) directory still have to be moved to their proper places.
+
+
 ## Testing & Status
 
 - If you found any problems, please create an [Issue](/../../issues).
 - Please make sure to review the issues to see if any other members states found issues with your provided test data.
-- Current status: _very_ much a Work-In-Progress. 
+- Current status: Work-In-Progress. 
 
-
-## Code organization
-
-- [`javascript/`](./javascript): JavaScript “stuff” - see [the README there](./javascript/README.md) for pointers
-- [`rules/`](./rules): prelimary implementation of the  in the [JsonLogic](https://jsonlogic.com/) format.
-  _Note:_ this has currently **no official status!**.
-  [This Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+DGC+Validation+Rules) is leading, and discussions should be conducted there.
-- [`jsonLogic/`](jsonLogic): unit tests for testing semantics of JsonLogic + notes.
 
 ## Licensing
 

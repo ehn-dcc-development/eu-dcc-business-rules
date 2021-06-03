@@ -1,7 +1,7 @@
 import { join } from "path"
 import { JsonLogicRule } from "./extend-JsonLogic"
 import { readJson } from "./file-utils"
-import { rulesPath } from "./paths"
+import { rulesetsPath } from "./paths"
 
 
 export interface Rule {
@@ -11,11 +11,11 @@ export interface Rule {
     description: string
     certLogicExpression: JsonLogicRule
 }
-export type Rules = Rule[]
-export const rules: Rules = readJson(join(rulesPath, "EU-Level-validation-rules.json"))
+export type Ruleset = Rule[]
+export const rules: Ruleset = readJson(join(rulesetsPath, "EU/template-ruleset.json"))
 
 
-export const valueSets = readJson(join(rulesPath, "valueSets.json"))
+export const valueSets = readJson(join(rulesetsPath, "valueSets.json"))
 
 
 export type RuleRunner = (rule: Rule, payload: any, validationClock?: string) => any

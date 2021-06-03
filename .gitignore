@@ -1,2 +1,7 @@
+# IntelliJ/IDEA:
 /.idea
+*.iml
+
+# results of running validations:
 /out
+

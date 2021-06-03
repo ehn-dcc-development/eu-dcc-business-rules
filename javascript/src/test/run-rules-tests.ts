@@ -3,7 +3,7 @@ import { existsSync, readdirSync } from "fs"
 import { join } from "path"
 
 import { readJson } from "../file-utils"
-import { rulesPath } from "../paths"
+import { rulesetsPath } from "../paths"
 import { Rule, RuleRunner, rules } from "../rules"
 
 
@@ -29,7 +29,7 @@ const runTests = (rule: Rule, assertions: Assertion[], runRule: RuleRunner) => {
 
 
 export const runTestsWith = (runRule: RuleRunner) => {
-    const rulesTestsPath = join(rulesPath, "test");
+    const rulesTestsPath = join(rulesetsPath, "EU/tests");
     rules.forEach((rule) => {
         const ruleId = rule.name
         const ruleAssertionsFile = join(rulesTestsPath, `${ruleId}.json`)
