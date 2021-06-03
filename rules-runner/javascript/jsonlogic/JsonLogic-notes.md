@@ -29,11 +29,3 @@
 [Official unit tests](https://jsonlogic.com/tests.json), apparently also used to test the Kotlin implementation from `advantagefse`.
 However, that set is not complete, especially with regards to edge case behaviour involving "degenerate" values like `null`, `{}`, `[]`, etc.
 
-
-## Representation of dates
-
-The representation of date(+time)s is string-based, conforming to ISO 8601.
-That also implies date(+time)s can be sorted as strings.
-
-The custom `plusDays` operation returns an ISO 8601 date+time string.
-

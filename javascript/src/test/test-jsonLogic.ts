@@ -227,12 +227,12 @@ describe("some operation", () => {
 
 describe("date extensions", () => {
 
-    it("plusDays", () => {
+    it("plusTime", () => {
         isTrue(applyLogic({
                 "<=": [
-                    { "plusDays": [ { "var": "certificate.date" }, 12 ] },
-                    { "plusDays": [ { "var": "dateObject.current" }, 0 ] },
-                    { "plusDays": [ { "var": "certificate.date" }, 365 ] }
+                    { "plusTime": [ { "var": "certificate.date" }, 12, "day" ] },
+                    { "plusTime": [ { "var": "dateObject.current" }, 0, "day" ] },
+                    { "plusTime": [ { "var": "certificate.date" }, 365, "day" ] }
                 ]
             }, {
                 "dateObject": { "current": "2022-05-02T00:00:00Z" }, "certificate": { "date": "2021-05-03T00:00:00Z" }

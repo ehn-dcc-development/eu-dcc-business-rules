@@ -17,7 +17,7 @@ export type CertLogicExpression =
     | { "in": [ CertLogicExpression, CertLogicExpression ] }
     | { "+": [ CertLogicExpression, CertLogicExpression ] }
     | { "!": [ CertLogicExpression ] }
-    | { "plusDays": [ CertLogicExpression, CertLogicExpression ] }
+    | { "plusTime": [ CertLogicExpression, number, TimeUnit ] }
     | { "reduce": [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
     | boolean
     | number    // ...which should be an integer...
@@ -25,6 +25,7 @@ export type CertLogicExpression =
     | null
     | CertLogicExpression[]
 
+export type TimeUnit = "day" | "hour"
 
 /**
  * @returns whether the given `value` is considered *falsy* by CertLogic.
@@ -172,17 +173,28 @@ const evaluateNot = (operandExpr: CertLogicExpression, data: any): any => {
 }
 
 
-const evaluatePlusDays = (dateOperand: CertLogicExpression, nDays: CertLogicExpression, data: any): Date => {
-    if (!isInt(nDays)) {
-        throw new Error(`days argument of "plusDays" must be an integer`)
+export const plusTime = (dateTimeStr: string, amount: number, unit: TimeUnit): Date => {
+    const dateTime = new Date(dateTimeStr)
+    if (unit === "day") {
+        dateTime.setDate(dateTime.getDate() + amount)
+    } else if (unit === "hour") {
+        dateTime.setHours(dateTime.getHours() + amount)
+    }
+    return dateTime
+}
+
+const evaluatePlusTime = (dateOperand: CertLogicExpression, amount: CertLogicExpression, unit: TimeUnit, data: any): Date => {
+    if (!isInt(amount)) {
+        throw new Error(`"amount" argument (#2) of "plusTime" must be an integer`)
+    }
+    if ([ "day", "hour" ].indexOf(unit) === -1) {
+        throw new Error(`"unit" argument (#3) of "plusTime" must be a string 'day' or 'hour'`)
     }
     const dateTimeStr = evaluate(dateOperand, data)
     if (typeof dateTimeStr !== "string") {
-        throw new Error(`date argument of "plusDays" must be a string`)
+        throw new Error(`date argument of "plusTime" must be a string`)
     }
-    const dateTime = new Date(dateTimeStr)
-    dateTime.setDate(dateTime.getDate() + nDays)
-    return dateTime
+    return plusTime(dateTimeStr, amount, unit)
 }
 
 
@@ -233,8 +245,8 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
         if (operator === "!") {
             return evaluateNot(args[0], data)
         }
-        if (operator === "plusDays") {
-            return evaluatePlusDays(args[0], args[1], data)
+        if (operator === "plusTime") {
+            return evaluatePlusTime(args[0], args[1], args[2], data)
         }
         if (operator === "reduce") {
             return evaluateReduce(args[0], args[1], args[2], data)

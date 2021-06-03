@@ -5,13 +5,14 @@
       "name": "offsetting dates",
       "directive": "skip",
       "certLogicExpression": {
-        "plusDays": [
+        "plusTime": [
           {
             "var": "d0"
           },
           {
             "var": "dPlus"
-          }
+          },
+          "day"
         ]
       },
       "assertions": [
@@ -25,9 +26,9 @@
       "name": "compare offset dates (e.g., for VR-EU-0003)",
       "certLogicExpression": {
         "<=": [
-          { "plusDays": [ { "var": "vaccination.date" }, 14 ] },
-          { "plusDays": [ { "var": "dateObject.current" }, 0 ] },
-          { "plusDays": [ { "var": "vaccination.date" }, 365 ] }
+          { "plusTime": [ { "var": "vaccination.date" }, 14, "day" ] },
+          { "plusTime": [ { "var": "dateObject.current" }, 0, "day" ] },
+          { "plusTime": [ { "var": "vaccination.date" }, 365, "day" ] }
         ]
       },
       "assertions": [

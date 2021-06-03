@@ -135,15 +135,29 @@ internal fun evaluateNot(operandExpr: JsonNode, data: JsonNode): JsonNode {
 }
 
 
-internal fun evaluatePlusDays(dateOperand: JsonNode, nDays: JsonNode, data: JsonNode): JsonDateTime {
-    if (nDays !is IntNode) {
-        throw RuntimeException("days argument of \"plusDays\" must be an integer")
+private fun isTimeUnit(unit: JsonNode): Boolean {
+    if (unit !is TextNode) return false
+    return try {
+        val timeUnit = TimeUnit.valueOf(unit.textValue())
+        true
+    } catch (iae: IllegalArgumentException) {
+        false
     }
+}
+
+internal fun evaluatePlusTime(dateOperand: JsonNode, amount: JsonNode, unit: JsonNode, data: JsonNode): JsonDateTime {
+    if (amount !is IntNode) {
+        throw RuntimeException("\"amount\" argument (#2) of \"plusTime\" must be an integer")
+    }
+    if (!isTimeUnit(unit)) {
+        throw RuntimeException("\"unit\" argument (#3) of \"plusTime\" must be a string 'day' or 'hour'")
+    }
+    val timeUnit = TimeUnit.valueOf(unit.textValue())
     val dateTimeStr = evaluate(dateOperand, data)
     if (dateTimeStr !is TextNode) {
-        throw RuntimeException("date argument of \"plusDays\" must be a string")
+        throw RuntimeException("date argument of \"plusTime\" must be a string")
     }
-    return JsonDateTime.fromIso8601(dateTimeStr.asText()).plusDays(nDays.intValue())
+    return JsonDateTime.fromIso8601(dateTimeStr.asText()).plusTime(amount.intValue(), timeUnit)
 }
 
 
@@ -188,7 +202,7 @@ fun evaluate(expr: JsonNode, data: JsonNode): JsonNode = when (expr) {
                 "if" -> evaluateIf(args[0], args[1], args[2], data)
                 "===", "and", ">", "<", ">=", "<=", "in", "+" -> evaluateBinOp(operator, args, data)
                 "!" -> evaluateNot(args[0], data)
-                "plusDays" -> evaluatePlusDays(args[0], args[1], data)
+                "plusTime" -> evaluatePlusTime(args[0], args[1], args[2], data)
                 "reduce" -> evaluateReduce(args[0], args[1], args[2], data)
                 else -> throw RuntimeException("unrecognised operator: \"$operator\"")
             }

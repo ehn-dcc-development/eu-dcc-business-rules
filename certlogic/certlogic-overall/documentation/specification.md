@@ -43,7 +43,7 @@ CertLogic restricts this notion even further to avoid confusion, or unjust relia
 The usual array, boolean, integer (as a subset of JavaScript's `Number` type), and string literals are allowed.
 Literal for the following (types of) values are not allowed: objects, `null`, and dates.
 
-A datetime (or timestamp) has to be constructed by performing a `plusDays` operation on a string with 0 days added.
+A datetime (or timestamp) has to be constructed by performing a `plusTime` operation on a string with 0 days or hours added.
 This makes it possible to ensure consistent datetime representations across platforms, without being able to implicitly rely on the behaviour of native datetime types in combination with the other (allowed) operations.
 
 
@@ -131,14 +131,15 @@ The negation operation takes one operand, and returns `true` if that operand's f
 It's considered an error if the operand is neither falsy, nor truthy.
 
 
-## Offset datetime (`plusDays`)
+## Offset datetime (`plusTime`)
 
 A datetime offset operation has the following form:
 
     {
-        "plusDays": [
+        "plusTime": [
             <operand that evaluates to a string with a datetime in the allowed format>,
-            <integer: the number of days to add (may be negative)>
+            <integer: the number of days/hours to add (may be negative)>,
+            <"day" or "hour">
         ]
     }
 
