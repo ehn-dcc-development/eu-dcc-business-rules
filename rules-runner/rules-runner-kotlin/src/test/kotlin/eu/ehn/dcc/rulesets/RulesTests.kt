@@ -1,7 +1,8 @@
-package eu.ehn.dcc.certlogic
+package eu.ehn.dcc.rulesets
 
 import com.fasterxml.jackson.databind.JsonNode
 import org.junit.jupiter.api.Test
+import java.io.File
 import kotlin.test.assertEquals
 
 
@@ -15,7 +16,7 @@ data class RuleAssertion(
 
 
 fun runTests(rule: Rule, assertions: List<RuleAssertion>) {
-    println("rule: \"${rule.name}\"")
+    println("rule: \"${rule.id}\"")
     assertions.forEachIndexed { index, assertion ->
         val assertionText = "assertion ${index + 1}"
         println(if (assertion.name?.isNotEmpty() == false) assertionText else "${assertion.name} ($assertionText)")
@@ -24,13 +25,23 @@ fun runTests(rule: Rule, assertions: List<RuleAssertion>) {
 }
 
 
-internal class RunRulesTests {
+fun File.fileNameWithoutExt(): CharSequence {
+    val asStr = this.absolutePath
+    val slashIndex = asStr.lastIndexOf('/')
+    val dotIndex = asStr.lastIndexOf('.')
+    return asStr.subSequence(slashIndex + 1, dotIndex)
+}
+
+
+// TODO  use @ParametrizedTest for this
+// FIXME  not picked up by Maven test
+internal class RunEURulesTests {
 
     @Test
     fun `run assertions for all rules`() {
-        val rulesTestsPath = rulesPath / "test"
-        rules.forEach { rule ->
-            val ruleId = rule.name
+        val rulesTestsPath = rulesPath / "EU" / "tests"
+        euTemplateRuleset.forEach { rule ->
+            val ruleId = rule.id
             val ruleAssertionsFile = rulesTestsPath / "$ruleId.json"
             if (ruleAssertionsFile.isFile) {
                 runTests(rule, readJson(ruleAssertionsFile))
@@ -42,7 +53,7 @@ internal class RunRulesTests {
         val assertionsFilesForNonExistingRules = rulesTestsPath
             .listFiles { _, name -> name.endsWith(".json") }
             .map { file -> file.fileNameWithoutExt() }
-            .filter { ruleId -> rules.none { rule -> rule.name == ruleId } }
+            .filter { ruleId -> euTemplateRuleset.none { rule -> rule.id == ruleId } }
         if (assertionsFilesForNonExistingRules.isEmpty()) {
             println("no assertions files for non-existing rules")
         } else {
@@ -51,3 +62,4 @@ internal class RunRulesTests {
     }
 
 }
+

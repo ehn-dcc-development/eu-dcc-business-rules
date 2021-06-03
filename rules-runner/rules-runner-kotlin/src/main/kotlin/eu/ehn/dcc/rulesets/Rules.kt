@@ -1,22 +1,24 @@
-package eu.ehn.dcc.certlogic
+package eu.ehn.dcc.rulesets
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.JsonNodeFactory
 import com.fasterxml.jackson.databind.node.ObjectNode
+import eu.ehn.dcc.certlogic.evaluate
 import java.io.File
 
+
 data class Rule(
-    var name: String,
+    var id: String,
     var active: Boolean,
     var businessDescription: String?,
     var description: String,
     var inputParameter: String?,
     var certLogicExpression: JsonNode
 )
-typealias Rules = List<Rule>
+typealias Ruleset = List<Rule>
 
-val rulesPath = File("../../rules")
-val rules: Rules = readJson(rulesPath / "EU-Level-validation-rules.json")
+val rulesPath = File("../../rulesets")
+val euTemplateRuleset: Ruleset = readJson(rulesPath / "EU" / "template-ruleset.json")
 
 val valueSets: ObjectNode = readJson(rulesPath / "valueSets.json")
 

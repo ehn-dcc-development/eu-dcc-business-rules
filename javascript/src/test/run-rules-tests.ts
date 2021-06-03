@@ -4,7 +4,7 @@ import { join } from "path"
 
 import { readJson } from "../file-utils"
 import { rulesetsPath } from "../paths"
-import { Rule, RuleRunner, rules } from "../rules"
+import { Rule, RuleRunner, euTemplateRuleset } from "../rules"
 
 
 interface Assertion {
@@ -17,7 +17,7 @@ interface Assertion {
 
 
 const runTests = (rule: Rule, assertions: Assertion[], runRule: RuleRunner) => {
-    describe(`rule: "${rule.name}"`, () => {
+    describe(`rule: "${rule.id}"`, () => {
         assertions.forEach(({ name, payload, validationClock, expected, message }, index) => {
             const assertionText = `assertion ${index + 1}`
             it(name ? `${name} (${assertionText})` : assertionText, () => {
@@ -30,13 +30,12 @@ const runTests = (rule: Rule, assertions: Assertion[], runRule: RuleRunner) => {
 
 export const runTestsWith = (runRule: RuleRunner) => {
     const rulesTestsPath = join(rulesetsPath, "EU/tests");
-    rules.forEach((rule) => {
-        const ruleId = rule.name
-        const ruleAssertionsFile = join(rulesTestsPath, `${ruleId}.json`)
+    euTemplateRuleset.forEach((rule) => {
+        const ruleAssertionsFile = join(rulesTestsPath, `${rule.id}.json`)
         if (existsSync(ruleAssertionsFile)) {
             runTests(rule, readJson(ruleAssertionsFile), runRule)
         } else {
-            describe(`rule: "${ruleId}"`, () => {
+            describe(`rule: "${rule.id}"`, () => {
                 it(`no assertions file`, () => {
                     fail()
                 })
@@ -47,7 +46,7 @@ export const runTestsWith = (runRule: RuleRunner) => {
     const assertionsFilesForNonExistingRules = readdirSync(rulesTestsPath)
         .filter((path) => path.endsWith(".json"))
         .map((path) => path.substring(path.lastIndexOf("/") + 1, path.length - ".json".length))
-        .filter((ruleId) => !rules.find((rule) => rule.name === ruleId))
+        .filter((ruleId) => !euTemplateRuleset.find((rule) => rule.id === ruleId))
     if (assertionsFilesForNonExistingRules.length === 0) {
         console.log(`no assertions files for non-existing rules`)
     } else {

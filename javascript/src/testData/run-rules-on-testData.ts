@@ -9,13 +9,13 @@ import { join } from "path"
 import { writeJson } from "../file-utils"
 import { mapTestFiles } from "./map-testData"
 import { outPath } from "../paths"
-import { RuleRunner, rules } from "../rules"
+import { RuleRunner, euTemplateRuleset } from "../rules"
 
 
 const validateAgainstRules = (runRule: RuleRunner) => (testJson: any) => {
     const result: any = {}
-    rules.forEach((rule) => {
-        result[rule.name] = runRule(rule, testJson.JSON, testJson["TESTCTX"]["VALIDATIONCLOCK"])
+    euTemplateRuleset.forEach((rule) => {
+        result[rule.id] = runRule(rule, testJson.JSON, testJson["TESTCTX"]["VALIDATIONCLOCK"])
     })
     result.allSatisfied = Object.values(result).reduce((acc, x) => acc && !!x, true)
     return result

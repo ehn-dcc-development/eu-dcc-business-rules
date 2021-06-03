@@ -5,14 +5,14 @@ import { rulesetsPath } from "./paths"
 
 
 export interface Rule {
-    name: string
+    id: string
     active: boolean
     businessDescription?: string
     description: string
     certLogicExpression: JsonLogicRule
 }
 export type Ruleset = Rule[]
-export const rules: Ruleset = readJson(join(rulesetsPath, "EU/template-ruleset.json"))
+export const euTemplateRuleset: Ruleset = readJson(join(rulesetsPath, "EU/template-ruleset.json"))
 
 
 export const valueSets = readJson(join(rulesetsPath, "valueSets.json"))
