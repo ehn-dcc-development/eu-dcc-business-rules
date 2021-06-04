@@ -23,7 +23,7 @@ export const runRuleSet = (ruleSet: RuleSet, data: RuleEvaluationDataContext): R
     ruleSet.forEach((rule) => {
         ruleEvaluations[rule.id] = runRule(rule, data)
     })
-    const hasErrors = Object.values(ruleEvaluations).some((result) => typeof result !== "boolean")
+    const hasErrors = Object.values(ruleEvaluations).some((ruleResult) => typeof ruleResult !== "boolean")
     const allSatisfied = !hasErrors && Object.values(ruleEvaluations).map((ruleResult) => ruleResult as boolean).reduce((l, r) => l && r)
     return {
         ruleEvaluations,

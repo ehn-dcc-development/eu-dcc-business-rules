@@ -63,13 +63,6 @@ data class TestSuite(
 )
 
 
-val testSuitesPath = File("../certlogic-overall/testing")
-
-fun allTestSuites(): List<TestSuite> = testSuitesPath
-    .listFiles { _, name -> name.endsWith(".json") }
-    .map { jacksonObjectMapper().readValue(it) }
-
-
 fun TestSuite.run() {
     if (this.directive == "skip") {
         println("(Skipping test suite \"${this.name}\".)")
@@ -96,4 +89,11 @@ fun TestSuite.run() {
         }
     }
 }
+
+
+val testSuitesPath = File("../certlogic-overall/testing")
+
+fun allTestSuites(): List<TestSuite> = testSuitesPath
+    .listFiles { _, name -> name.endsWith(".json") }
+    .map { jacksonObjectMapper().readValue(it) }
 
