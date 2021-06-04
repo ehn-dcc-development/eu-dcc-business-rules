@@ -1,0 +1,147 @@
+{
+  "name": "construction and comparing of datetimes ",
+  "cases": [
+    {
+      "name": "comparison of datetimes constructed using plusTime",
+      "certLogicExpression": {
+        "<": [
+          {
+            "plusTime": [
+              {
+                "var": ""
+              },
+              0,
+              "day"
+            ]
+          },
+          {
+            "plusTime": [
+              "2021-06-01T00:00:00+00:00",
+              40,
+              "hour"
+            ]
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": "2021-06-02T16:00:00+00:00",
+          "expected": false,
+          "message": "exactly 40 hours"
+        },
+        {
+          "data": "2021-06-02T15:59:59+00:00",
+          "expected": true,
+          "message": "just within 40 hours"
+        },
+        {
+          "data": "2021-06-02T00:00:00+00:00",
+          "expected": true,
+          "message": "comfortably within 40 hours"
+        }
+      ]
+    },
+    {
+      "name": "tri-comparison of dates (e.g., for VR-EU-0003)",
+      "certLogicExpression": {
+        "<=": [
+          {
+            "plusTime": [
+              {
+                "var": "vaccination.date"
+              },
+              14,
+              "day"
+            ]
+          },
+          {
+            "plusTime": [
+              {
+                "var": "dateObject.current"
+              },
+              0,
+              "day"
+            ]
+          },
+          {
+            "plusTime": [
+              {
+                "var": "vaccination.date"
+              },
+              365,
+              "day"
+            ]
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": {
+            "dateObject": {
+              "current": "2021-05-02T00:00:00+00:00"
+            },
+            "vaccination": {
+              "date": "2021-05-01T00:00:00+00:00"
+            }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "dateObject": {
+              "current": "2021-05-14T00:00:00+00:00"
+            },
+            "vaccination": {
+              "date": "2021-05-01T00:00:00+00:00"
+            }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "dateObject": {
+              "current": "2021-05-15T00:00:00+00:00"
+            },
+            "vaccination": {
+              "date": "2021-05-01T00:00:00+00:00"
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "dateObject": {
+              "current": "2022-04-30T00:00:00+00:00"
+            },
+            "vaccination": {
+              "date": "2021-05-01T00:00:00+00:00"
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "dateObject": {
+              "current": "2022-05-01T00:00:00+00:00"
+            },
+            "vaccination": {
+              "date": "2021-05-01T00:00:00+00:00"
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "dateObject": {
+              "current": "2022-05-02T00:00:00+00:00"
+            },
+            "vaccination": {
+              "date": "2021-05-01T00:00:00+00:00"
+            }
+          },
+          "expected": false
+        }
+      ]
+    }
+  ]
+}

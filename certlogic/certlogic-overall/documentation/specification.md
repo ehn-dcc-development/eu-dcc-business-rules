@@ -20,12 +20,14 @@ CertLogic _logical_ expressions are of the following form, _except_ for data acc
         ]
     }
 
-The CertLogic function always evaluates a _valid_ CertLogic expression to some value, never throwing an error.
+The CertLogic evaluator function always evaluates a _valid_ CertLogic expression to some value, never throwing an error.
 Operating on a `null` value evaluates to `null` in most, but not all, cases.
-However, it might throw on an _invalid_ expression, which is any expression object with a known `<operation id>`, that doesn't follow the specification.
+However, it might throw on an _invalid_ expression, which is any expression object with an unknown `<operation id>`, or with a known one that doesn't follow the specification.
+As a result, the CertLogic evaluator does not exhibit undefined behaviour, but simply errors out.
+It's advisable to `try-catch` the evaluation, and return `false` result if that happens when evaluating a validation rule.
 
 A JSON array evaluates to an array with every item evaluated separately.
-If a JSON object (not an array) is not of the logical expression form above, and also not of the `var`-form, it evaluates to itself.
+If a JSON object (not an array) is a literal, being a boolean, an integer, or a string, it evaluates to itself.
 
 
 ## Truthy and falsy

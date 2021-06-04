@@ -4,7 +4,37 @@
   "cases": [
     {
       "name": "patched reduce knows about global data",
-      "certLogicExpression": { "reduce": [ { "var": "x" }, { "+": [ { "var": "accumulator" }, { "if": [ { "===": [ { "var": "current" }, { "var": "data.z" } ] }, 1, 0 ] } ] }, 0 ] },
+      "certLogicExpression": {
+        "reduce": [
+          {
+            "var": "x"
+          },
+          {
+            "+": [
+              {
+                "var": "accumulator"
+              },
+              {
+                "if": [
+                  {
+                    "===": [
+                      {
+                        "var": "current"
+                      },
+                      {
+                        "var": "data.z"
+                      }
+                    ]
+                  },
+                  1,
+                  0
+                ]
+              }
+            ]
+          },
+          0
+        ]
+      },
       "assertions": [
         {
           "data": null,
@@ -15,35 +45,73 @@
           "expected": 0
         },
         {
-          "data": { "x": null },
+          "data": {
+            "x": null
+          },
           "expected": 0
         },
         {
-          "data": { "x": [] },
+          "data": {
+            "x": []
+          },
           "expected": 0
         },
         {
-          "data": { "x": [], "z": null },
+          "data": {
+            "x": [],
+            "z": null
+          },
           "expected": 0
         },
         {
-          "data": { "x": [null], "z": null },
+          "data": {
+            "x": [
+              null
+            ],
+            "z": null
+          },
           "expected": 1
         },
         {
-          "data": { "x": [null], "z": 1 },
+          "data": {
+            "x": [
+              null
+            ],
+            "z": 1
+          },
           "expected": 0
         },
         {
-          "data": { "x": [1], "z": 1 },
+          "data": {
+            "x": [
+              1
+            ],
+            "z": 1
+          },
           "expected": 1
         },
         {
-          "data": { "x": [1,2,1,1], "z": 1 },
+          "data": {
+            "x": [
+              1,
+              2,
+              1,
+              1
+            ],
+            "z": 1
+          },
           "expected": 3
         },
         {
-          "data": { "x": [1,2,1,1], "z": 2 },
+          "data": {
+            "x": [
+              1,
+              2,
+              1,
+              1
+            ],
+            "z": 2
+          },
           "expected": 1
         }
       ]

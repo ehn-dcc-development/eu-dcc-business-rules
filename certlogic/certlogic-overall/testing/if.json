@@ -1,0 +1,41 @@
+{
+  "name": "if operation",
+  "cases": [
+    {
+      "name": "should work",
+      "certLogicExpression": {
+        "if": [
+          {
+            "var": ""
+          },
+          "T",
+          "F"
+        ]
+      },
+      "assertions": [
+        {
+          "data": true,
+          "expected": "T"
+        },
+        {
+          "data": [
+            "foo"
+          ],
+          "expected": "T"
+        },
+        {
+          "data": {},
+          "expected": "T"
+        },
+        {
+          "data": null,
+          "expected": "F"
+        },
+        {
+          "data": false,
+          "expected": "F"
+        }
+      ]
+    }
+  ]
+}

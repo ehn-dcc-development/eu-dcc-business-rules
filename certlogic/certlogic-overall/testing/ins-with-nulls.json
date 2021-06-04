@@ -3,7 +3,16 @@
   "cases": [
     {
       "name": "null-safety",
-      "certLogicExpression": { "in": [ { "var": "x" }, { "var": "y" } ] },
+      "certLogicExpression": {
+        "in": [
+          {
+            "var": "x"
+          },
+          {
+            "var": "y"
+          }
+        ]
+      },
       "assertions": [
         {
           "directive": "skip",
@@ -17,40 +26,84 @@
         },
         {
           "directive": "skip",
-          "data": { "x": null },
+          "data": {
+            "x": null
+          },
           "expected": false
         },
         {
           "directive": "skip",
-          "data": { "x": null, "y": null },
+          "data": {
+            "x": null,
+            "y": null
+          },
           "expected": false
         },
         {
-          "data": { "x": null, "y": [] },
+          "data": {
+            "x": null,
+            "y": []
+          },
           "expected": false
         }
       ]
     },
     {
       "name": "in on a null doesn't eval to true",
-      "certLogicExpression": { "in": [ { "var": "x" }, { "var": "y" } ] },
+      "certLogicExpression": {
+        "in": [
+          {
+            "var": "x"
+          },
+          {
+            "var": "y"
+          }
+        ]
+      },
       "assertions": [
         {
-          "data": { "x": null, "y": [ "a", "b" ] },
+          "data": {
+            "x": null,
+            "y": [
+              "a",
+              "b"
+            ]
+          },
           "expected": false
         }
       ]
     },
     {
       "name": "works as expected without nulls",
-      "certLogicExpression": { "in": [ { "var": "x" }, { "var": "y" } ] },
+      "certLogicExpression": {
+        "in": [
+          {
+            "var": "x"
+          },
+          {
+            "var": "y"
+          }
+        ]
+      },
       "assertions": [
         {
-          "data": { "x": "a", "y": [ "a", "b" ] },
+          "data": {
+            "x": "a",
+            "y": [
+              "a",
+              "b"
+            ]
+          },
           "expected": true
         },
         {
-          "data": { "x": "c", "y": [ "a", "b" ] },
+          "data": {
+            "x": "c",
+            "y": [
+              "a",
+              "b"
+            ]
+          },
           "expected": false
         }
       ]

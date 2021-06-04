@@ -2,37 +2,110 @@
   "name": "comparison",
   "cases": [
     {
-      "name": "tri-comparison",
+      "name": "should work as binary",
       "certLogicExpression": {
         "<=": [
-          { "var": "0" },
-          { "var": "1" },
-          { "var": "2" }
+          {
+            "var": "0"
+          },
+          {
+            "var": "1"
+          }
         ]
       },
       "assertions": [
         {
-          "data": [ 0, 1, 2 ],
+          "data": [
+            0,
+            0
+          ],
           "expected": true
         },
         {
-          "data": [ 0, 2, 1 ],
+          "data": [
+            0,
+            1
+          ],
+          "expected": true
+        },
+        {
+          "data": [
+            1,
+            1
+          ],
+          "expected": true
+        },
+        {
+          "data": [
+            1,
+            0
+          ],
+          "expected": false
+        }
+      ]
+    },
+    {
+      "name": "should work as ternary ('between')",
+      "certLogicExpression": {
+        "<=": [
+          {
+            "var": "0"
+          },
+          {
+            "var": "1"
+          },
+          {
+            "var": "2"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": [
+            0,
+            1,
+            2
+          ],
+          "expected": true
+        },
+        {
+          "data": [
+            0,
+            2,
+            1
+          ],
           "expected": false
         },
         {
-          "data": [ 1, 2, 0 ],
+          "data": [
+            1,
+            2,
+            0
+          ],
           "expected": false
         },
         {
-          "data": [ 1, 0, 2 ],
+          "data": [
+            1,
+            0,
+            2
+          ],
           "expected": false
         },
         {
-          "data": [ 2, 0, 1 ],
+          "data": [
+            2,
+            0,
+            1
+          ],
           "expected": false
         },
         {
-          "data": [ 2, 1, 0 ],
+          "data": [
+            2,
+            1,
+            0
+          ],
           "expected": false
         }
       ]

@@ -6,10 +6,11 @@
  * Type definition for CertLogic expressions.
  */
 export type CertLogicExpression =
+    | CertLogicExpression[]
     | { "var": string }
+    | { "and": CertLogicExpression[] }
     | { "if": [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
     | { "===": [ CertLogicExpression, CertLogicExpression ] }
-    | { "and": CertLogicExpression[] }
     | { "<": [ CertLogicExpression, CertLogicExpression ] | [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
     | { ">": [ CertLogicExpression, CertLogicExpression ] | [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
     | { "<=": [ CertLogicExpression, CertLogicExpression ] | [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
@@ -19,11 +20,10 @@ export type CertLogicExpression =
     | { "!": [ CertLogicExpression ] }
     | { "plusTime": [ CertLogicExpression, number, TimeUnit ] }
     | { "reduce": [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
+    // literals:
     | boolean
     | number    // ...which should be an integer...
     | string
-    | null
-    | CertLogicExpression[]
 
 export type TimeUnit = "day" | "hour"
 
@@ -216,7 +216,7 @@ const evaluateReduce = (operand: CertLogicExpression, lambda: CertLogicExpressio
 
 
 export const evaluate = (expr: CertLogicExpression, data: any): any => {
-    if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean" || expr === null) {
+    if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean") {
         return expr
     }
     if (Array.isArray(expr)) {

@@ -1,6 +1,6 @@
-const { equal, isFalse, isTrue } = require("chai").assert
+const { isFalse, isTrue } = require("chai").assert
 
-
+// (check out the JS-specific shenanigans w.r.t. dates:)
 describe("dates", () => {
 
     it("constructing a date using new Date(<string>)", () => {
@@ -8,7 +8,7 @@ describe("dates", () => {
         isTrue(typeof date === "object" && "toISOString" in date)
     })
 
-    it("comparison of identical dates using dates constructed with new Date(<string>)", () => {
+    it("comparison of identical dates constructed with new Date(<string>)", () => {
         const d1 = new Date("2021-05-02T00:00:00+00:00")
         const d2 = new Date("2021-05-02T00:00:00+00:00")
         isTrue( d1 <= d2)

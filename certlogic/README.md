@@ -23,10 +23,10 @@ This (part of the) repository contains:
 
 * Reference implementations of CertLogic for various platforms - currently: [JavaScript](./certlogic-js), [Kotlin](./certlogic-kotlin)
 * [Platform-independent “stuff”](./certlogic-overall):
-    * [Documentation](certlogic-overall/documentation): the specification, design choices, etc.
-    * [JSON Schemas](certlogic-overall/schemas) for CertLogic expression and test suites JSON - **TODO**
-    * A comprehensive [test suite](certlogic-overall/testing) - **TODO**
-    * A [validation tool](certlogic-overall/validation) - **TODO**
+    * [Documentation](./certlogic-overall/documentation): [the specification](./certlogic-overall/documentation/specification.md), [design choices](./certlogic-overall/documentation/design-choices.md), etc.
+    * [JSON Schemas](./certlogic-overall/schemas) for [CertLogic expressions](./certlogic-overall/schemas/CertLogic-expression.json) and [test suites](./certlogic-overall/schemas/CertLogic-testSuite.json) JSON
+    * A comprehensive [test suite](./certlogic-overall/testing) - **TODO**  to expand
+    * A [validation tool](./certlogic-overall/validation) - **TODO**
 
 
 ## Testing & Status

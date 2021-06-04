@@ -1,0 +1,62 @@
+{
+  "name": "in operation",
+  "cases": [
+    {
+      "name": "should work",
+      "certLogicExpression": {
+        "in": [
+          {
+            "var": ""
+          },
+          [
+            "foo",
+            "bar"
+          ]
+        ]
+      },
+      "assertions": [
+        {
+          "data": "foo",
+          "expected": true
+        },
+        {
+          "data": "bar",
+          "expected": true
+        },
+        {
+          "data": 0,
+          "expected": false
+        },
+        {
+          "data": null,
+          "expected": false
+        }
+      ]
+    },
+    {
+      "name": "should work with empty right-hand side",
+      "certLogicExpression": {
+        "in": [
+          {
+            "var": ""
+          },
+          []
+        ]
+      },
+      "assertions": [
+        {
+          "data": "foo",
+          "expected": false
+        },
+        {
+          "data": "",
+          "expected": false
+        },
+        {
+          "data": null,
+          "expected": false
+        }
+      ]
+    }
+  ]
+}

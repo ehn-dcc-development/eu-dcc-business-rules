@@ -1,0 +1,67 @@
+{
+  "name": "and operation",
+  "cases": [
+    {
+      "name": "should work as binary operator",
+      "certLogicExpression": {
+        "and": [
+          {
+            "var": "0"
+          },
+          {
+            "var": "1"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": [
+            true,
+            false
+          ],
+          "expected": false
+        },
+        {
+          "data": [
+            null,
+            true
+          ],
+          "expected": null
+        },
+        {
+          "data": [
+            true,
+            {}
+          ],
+          "expected": {}
+        }
+      ]
+    },
+    {
+      "name": "should work as ternary operator",
+      "certLogicExpression": {
+        "and": [
+          {
+            "var": "0"
+          },
+          {
+            "var": "1"
+          },
+          {
+            "var": "2"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": [
+            true,
+            null,
+            false
+          ],
+          "expected": null
+        }
+      ]
+    }
+  ]
+}

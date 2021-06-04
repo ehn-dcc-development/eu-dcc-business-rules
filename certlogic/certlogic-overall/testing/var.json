@@ -1,9 +1,151 @@
 {
-  "name": "use of var",
+  "name": "var operation",
   "cases": [
     {
+      "name": "should return data context on \"\"",
+      "certLogicExpression": {
+        "var": ""
+      },
+      "assertions": [
+        {
+          "data": {
+            "foo": "bar"
+          },
+          "expected": {
+            "foo": "bar"
+          }
+        }
+      ]
+    },
+    {
+      "name": "should drill into data (1)",
+      "certLogicExpression": {
+        "var": "x"
+      },
+      "assertions": [
+        {
+          "data": {
+            "x": 1
+          },
+          "expected": 1
+        }
+      ]
+    },
+    {
+      "name": "should drill into data (2)",
+      "certLogicExpression": {
+        "var": "x.0"
+      },
+      "assertions": [
+        {
+          "data": {
+            "x": [
+              1
+            ]
+          },
+          "expected": 1
+        }
+      ]
+    },
+    {
+      "name": "should drill into data (3)",
+      "certLogicExpression": {
+        "var": "xxx.0.yyy"
+      },
+      "assertions": [
+        {
+          "data": {
+            "xxx": [
+              {
+                "yyy": 1
+              }
+            ]
+          },
+          "expected": 1
+        }
+      ]
+    },
+    {
+      "name": "should return null on null",
+      "certLogicExpression": {
+        "var": "x"
+      },
+      "assertions": [
+        {
+          "data": null,
+          "expected": null
+        }
+      ]
+    },
+    {
+      "name": "should return null on undrillables (1)",
+      "certLogicExpression": {
+        "var": "x.y"
+      },
+      "assertions": [
+        {
+          "data": {
+            "x": {
+              "z": 1
+            }
+          },
+          "expected": null
+        }
+      ]
+    },
+    {
+      "name": "should return null on undrillables (2)",
+      "certLogicExpression": {
+        "var": "x.0"
+      },
+      "assertions": [
+        {
+          "data": {
+            "x": {
+              "z": 1
+            }
+          },
+          "expected": null
+        }
+      ]
+    },
+    {
+      "name": "should return null on undrillables (3)",
+      "certLogicExpression": {
+        "var": "x.0"
+      },
+      "assertions": [
+        {
+          "data": {
+            "y": {
+              "z": 1
+            }
+          },
+          "expected": null
+        }
+      ]
+    },
+    {
+      "name": "should return null on undrillables (4)",
+      "certLogicExpression": {
+        "var": "x..z"
+      },
+      "assertions": [
+        {
+          "data": {
+            "x": {
+              "z": 1
+            }
+          },
+          "expected": null
+        }
+      ]
+    },
+    {
       "name": "var-ing non-existing array elements",
-      "certLogicExpression": { "var": "1" },
+      "certLogicExpression": {
+        "var": "1"
+      },
       "assertions": [
         {
           "data": null,
@@ -14,18 +156,29 @@
           "expected": null
         },
         {
-          "data": [1],
+          "data": [
+            1
+          ],
           "expected": null
         },
         {
-          "data": [1, 2],
+          "data": [
+            1,
+            2
+          ],
           "expected": 2
         }
       ]
     },
     {
       "name": "determine #array <= 1",
-      "certLogicExpression": { "!": [ { "var": "1" } ] },
+      "certLogicExpression": {
+        "!": [
+          {
+            "var": "1"
+          }
+        ]
+      },
       "assertions": [
         {
           "data": null,
@@ -36,26 +189,23 @@
           "expected": true
         },
         {
-          "data": [null],
+          "data": [
+            null
+          ],
           "expected": true
         },
         {
-          "data": [null, null],
+          "data": [
+            null,
+            null
+          ],
           "expected": true
         },
         {
-          "data": [1],
+          "data": [
+            1
+          ],
           "expected": true
-        },
-        {
-          "directive": "skip",
-          "data": [1, 2],
-          "expected": false
-        },
-        {
-          "directive": "skip",
-          "data": [1, 2, 3],
-          "expected": false
         }
       ]
     }

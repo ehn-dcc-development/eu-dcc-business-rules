@@ -1,0 +1,62 @@
+{
+  "id" : "https://dcc.ehn.eu/schemas/CertLogic-testSuite.json",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "title" : "EU CertLogic test suite",
+  "type" : "object",
+  "properties" : {
+    "name" : {
+      "type" : "string"
+    },
+    "cases" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/TestCase"
+      }
+    },
+    "directive" : {
+      "$ref" : "#/definitions/TestDirective"
+    }
+  },
+  "required" : [ "name", "cases" ],
+  "definitions" : {
+    "TestCase" : {
+      "type" : "object",
+      "properties" : {
+        "name" : {
+          "type" : "string"
+        },
+        "certLogicExpression" : {
+          "$ref" : "CertLogic-expression.json#/definitions/CertLogicExpression"
+        },
+        "directive" : {
+          "$ref" : "#/definitions/TestDirective"
+        },
+        "assertions" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/Assertion"
+          }
+        }
+      },
+      "required" : [ "name", "certLogicExpression", "assertions" ],
+      "additionalProperties" : false
+    },
+    "Assertion" : {
+      "type" : "object",
+      "properties" : {
+        "data" : { },
+        "expected" : { },
+        "directive" : {
+          "$ref" : "#/definitions/TestDirective"
+        },
+        "message" : {
+          "type" : "string"
+        }
+      },
+      "required" : [ "data", "expected" ]
+    },
+    "TestDirective" : {
+      "enum" : [ "skip", "only" ]
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "name": "equality operation (===)",
+  "cases": [
+    {
+      "name": "should work as expected",
+      "certLogicExpression": {
+        "===": [
+          {
+            "var": "0"
+          },
+          {
+            "var": "1"
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": [
+            "foo",
+            "foo"
+          ],
+          "expected": true
+        },
+        {
+          "data": [
+            "foo",
+            "bar"
+          ],
+          "expected": false
+        }
+      ]
+    }
+  ]
+}

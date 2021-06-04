@@ -1,4 +1,4 @@
-import { PathLike, readdirSync, readFileSync } from "fs"
+import { readdirSync, readFileSync } from "fs"
 import { join } from "path"
 import { CertLogicExpression, evaluate } from "../certlogic"
 
@@ -54,9 +54,7 @@ const runTestsOn = (testSuite: TestSuite) => {
 
 const testSuitesPath = join(__dirname, "../../../certlogic-overall/testing")
 
-const readJson = (path: PathLike): any => JSON.parse(readFileSync(path, "utf8"))
-
 readdirSync(testSuitesPath)
     .filter((path) => path.endsWith(".json"))
-    .forEach((path) => runTestsOn(readJson(join(testSuitesPath, path))))
+    .forEach((path) => runTestsOn(JSON.parse(readFileSync(join(testSuitesPath, path), "utf8"))))
 

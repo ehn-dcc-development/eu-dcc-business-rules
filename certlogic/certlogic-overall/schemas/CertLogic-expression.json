@@ -1,0 +1,120 @@
+{
+  "id" : "https://dcc.ehn.eu/schemas/CertLogic-expression.json",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "title" : "EU CertLogic expression",
+  "$ref" : "#/definitions/CertLogicExpression",
+  "definitions" : {
+    "CertLogicExpression" : {
+      "oneOf" : [ {
+        "$ref" : "#/definitions/Array"
+      }, {
+        "$ref" : "#/definitions/BinaryOperation"
+      }, {
+        "$ref" : "#/definitions/DataAccess"
+      }, {
+        "$ref" : "#/definitions/IfThenElse"
+      }, {
+        "$ref" : "#/definitions/Integer"
+      }, {
+        "$ref" : "#/definitions/Not"
+      }, {
+        "$ref" : "#/definitions/PlusTime"
+      }, {
+        "$ref" : "#/definitions/Reduce"
+      }, {
+        "$ref" : "#/definitions/String"
+      } ]
+    },
+    "Array" : {
+      "type" : "array",
+      "items" : {
+        "$ref" : "#/definitions/CertLogicExpression"
+      }
+    },
+    "BinaryOperator" : {
+      "enum" : [ "===", "and", "<", ">", "<=", ">=", "in", "+", "!", "plusDays" ]
+    },
+    "BinaryOperation" : {
+      "type" : "object",
+      "patternProperties" : {
+        "===|and|<|>|<=|>=|in|\\+|!" : {
+          "type" : "array",
+          "minItems" : 1,
+          "items" : {
+            "$ref" : "#/definitions/CertLogicExpression"
+          }
+        }
+      },
+      "additionalProperties" : false
+    },
+    "DataAccess" : {
+      "type" : "object",
+      "properties" : {
+        "var" : {
+          "type" : "string"
+        }
+      },
+      "required" : [ "var" ],
+      "additionalProperties" : false
+    },
+    "IfThenElse" : {
+      "type" : "object",
+      "properties" : {
+        "if" : {
+          "type" : "array",
+          "minItems" : 3,
+          "maxItems" : 3,
+          "items" : {
+            "$ref" : "#/definitions/CertLogicExpression"
+          }
+        }
+      },
+      "required" : [ "if" ],
+      "additionalProperties" : false
+    },
+    "Integer" : {
+      "type" : "integer"
+    },
+    "Not" : {
+      "type" : "object",
+      "properties" : {
+        "!" : {
+          "$ref" : "#/definitions/CertLogicExpression"
+        }
+      },
+      "required" : [ "!" ],
+      "additionalProperties" : false
+    },
+    "PlusTime" : {
+      "type" : "object",
+      "properties" : {
+        "plusTime" : {
+          "type" : "array",
+          "items" : {
+            "$ref" : "#/definitions/CertLogicExpression"
+          }
+        }
+      },
+      "required" : [ "plusTime" ],
+      "additionalProperties" : false
+    },
+    "Reduce" : {
+      "type" : "object",
+      "properties" : {
+        "reduce" : {
+          "type" : "array",
+          "minItems" : 1,
+          "items" : {
+            "$ref" : "#/definitions/CertLogicExpression"
+          }
+        }
+      }
+    },
+    "String" : {
+      "type" : "string"
+    },
+    "TimeUnit" : {
+      "enum" : [ "day", "hour" ]
+    }
+  }
+}
