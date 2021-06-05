@@ -1,0 +1,25 @@
+{
+  "name": "certlogic-validation",
+  "version": "0.1.0",
+  "description": "Validators for CertLogic",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "build-watch": "tsc --watch --incremental",
+    "test": "mocha dist/test",
+    "test-watch": "mocha --watch dist/test",
+    "clean": "rm -rf dist/ && rm -rf node_modules/"
+  },
+  "author": "Meinte Boersma",
+  "license": "Apache-2.0",
+  "dependencies": {
+    "@types/json-schema": "^7.0.7"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.18",
+    "@types/mocha": "^8.2.2",
+    "@types/node": "^15.12.1",
+    "chai": "^4.3.4",
+    "mocha": "^8.4.0"
+  }
+}

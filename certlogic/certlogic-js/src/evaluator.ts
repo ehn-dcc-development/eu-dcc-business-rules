@@ -175,6 +175,9 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
     if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean") {
         return expr
     }
+    if (expr === null) {
+        throw new Error(`invalid CertLogic expression: ${expr}`)
+    }
     if (Array.isArray(expr)) {
         return (expr as CertLogicExpression[]).map((item) => evaluate(item, data))
     }
