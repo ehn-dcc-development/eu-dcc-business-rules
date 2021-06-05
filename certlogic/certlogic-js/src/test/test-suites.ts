@@ -1,6 +1,7 @@
 import { readdirSync, readFileSync } from "fs"
 import { join } from "path"
-import { CertLogicExpression, evaluate } from "../certlogic"
+import { CertLogicExpression } from "../typings"
+import { evaluate } from "../evaluator"
 
 const { deepEqual } = require("chai").assert
 

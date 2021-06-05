@@ -1,48 +1,5 @@
-/*
- * CertLogic is specified subset of JsonLogic, where necessary extended with custom operations - e.g. for correct handling of dates.
- */
-
-/**
- * Type definition for CertLogic expressions.
- */
-export type CertLogicExpression =
-    | CertLogicExpression[]
-    | { "var": string }
-    | { "and": CertLogicExpression[] }
-    | { "if": [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
-    | { "===": [ CertLogicExpression, CertLogicExpression ] }
-    | { "<": [ CertLogicExpression, CertLogicExpression ] | [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
-    | { ">": [ CertLogicExpression, CertLogicExpression ] | [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
-    | { "<=": [ CertLogicExpression, CertLogicExpression ] | [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
-    | { ">=": [ CertLogicExpression, CertLogicExpression ] | [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
-    | { "in": [ CertLogicExpression, CertLogicExpression ] }
-    | { "+": [ CertLogicExpression, CertLogicExpression ] }
-    | { "!": [ CertLogicExpression ] }
-    | { "plusTime": [ CertLogicExpression, number, TimeUnit ] }
-    | { "reduce": [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
-    // literals:
-    | boolean
-    | number    // ...which should be an integer...
-    | string
-
-export type TimeUnit = "day" | "hour"
-
-/**
- * @returns whether the given `value` is considered *falsy* by CertLogic.
- * Note: the notions of both falsy and truthy are narrower than those of JavaScript, and even of JsonLogic.
- * Truthy and falsy values can be used for conditional logic, e.g. the guard of an `if`-expression.
- * Values that are neither truthy nor falsy (many of which exist) can't be used for that.
- */
-export const isFalsy = (value: any) => value === false || value === null
-/**
- * @returns whether the given `value` is considered *truthy* by CertLogic.
- * @see isFalsy
- */
-export const isTruthy = (value: any) => value === true || (Array.isArray(value) ? value.length > 0 : (typeof value === "object" && value !== null))
-
-
-const isInt = (value: any): value is number => typeof value === "number" && Number.isInteger(value)
-const isDate = (value: any): value is Date => typeof value === "object" && "toISOString" in value
+import { CertLogicExpression, TimeUnit } from "./typings"
+import { isDate, isFalsy, isInt, isTruthy, plusTime } from "./internals"
 
 
 const evaluateVar = (args: any, data: any): any => {
@@ -68,6 +25,15 @@ const evaluateVar = (args: any, data: any): any => {
 
 
 const evaluateIf = (guard: CertLogicExpression, then: CertLogicExpression, else_: CertLogicExpression, data: any): any => {
+    if (guard === undefined) {
+        throw new Error(`an if-operation must have a guard (argument #1)`)
+    }
+    if (then === undefined) {
+        throw new Error(`an if-operation must have a then (argument #2)`)
+    }
+    if (else_ === undefined) {
+        throw new Error(`an if-operation must have an else (argument #3)`)
+    }
     const evalGuard = evaluate(guard, data)
     if (isTruthy(evalGuard)) {
         return evaluate(then, data)
@@ -103,18 +69,18 @@ const compare = (operator: ComparisonOperator, args: Comparable[]): boolean => {
 const evaluateBinOp = (operator: string, args: CertLogicExpression[], data: any): any => {
     switch (operator) {
         case "and": {
-            if (args.length < 2) throw new Error(`an \"and\" operation must have at least 2 operands`)
+            if (args.length < 2) throw new Error(`an "and" operation must have at least 2 operands`)
             break
         }
         case "<":
         case ">":
         case "<=":
         case ">=": {
-            if (args.length < 2 || args.length > 3) throw new Error(`an operation with operator \"$operator\" must have 2 or 3 operands`)
+            if (args.length < 2 || args.length > 3) throw new Error(`an operation with operator "${operator}" must have 2 or 3 operands`)
             break
         }
         default: {
-            if (args.length !== 2) throw new Error(`an operation with operator \"$operator\" must have 2 operands`)
+            if (args.length !== 2) throw new Error(`an operation with operator "${operator}" must have 2 operands`)
             break
         }
     }
@@ -172,16 +138,6 @@ const evaluateNot = (operandExpr: CertLogicExpression, data: any): any => {
     throw new Error(`operand of ! evaluates to something neither truthy, nor falsy: ${operand}`)
 }
 
-
-export const plusTime = (dateTimeStr: string, amount: number, unit: TimeUnit): Date => {
-    const dateTime = new Date(dateTimeStr)
-    if (unit === "day") {
-        dateTime.setDate(dateTime.getDate() + amount)
-    } else if (unit === "hour") {
-        dateTime.setHours(dateTime.getHours() + amount)
-    }
-    return dateTime
-}
 
 const evaluatePlusTime = (dateOperand: CertLogicExpression, amount: CertLogicExpression, unit: TimeUnit, data: any): Date => {
     if (!isInt(amount)) {

@@ -2,7 +2,7 @@
   "name": "certlogic-js",
   "version": "0.7.0",
   "description": "",
-  "main": "dist/certlogic.js",
+  "main": "dist/index.js",
   "scripts": {
     "postinstall": "npm link",
     "build": "tsc",
@@ -11,6 +11,8 @@
     "test-watch": "mocha --watch dist/test",
     "clean": "rm -rf dist/ && rm -rf node_modules/"
   },
+  "author": "Meinte Boersma",
+  "license": "Apache-2.0",
   "devDependencies": {
     "@types/chai": "^4.2.18",
     "@types/mocha": "^8.2.2",

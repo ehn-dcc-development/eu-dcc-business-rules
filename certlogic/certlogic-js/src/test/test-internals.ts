@@ -1,6 +1,6 @@
 const { isFalse, isTrue } = require("chai").assert
 
-import { isFalsy, isTruthy } from "../certlogic"
+import { isFalsy, isTruthy } from "../internals"
 
 
 describe("internal functions", () => {
