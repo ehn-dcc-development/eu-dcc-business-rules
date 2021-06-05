@@ -15,7 +15,6 @@
 This repository contains:
 
 * The [EU-template for validation rules](./EU)
-* The [JSON data containing the value sets](./valueSets.json) necessary for executing the validation rules - these are derived from...
 
 
 ## Testing & Status

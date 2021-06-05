@@ -6,7 +6,6 @@
   "scripts": {
     "postinstall": "npm link \"certlogic-js\"",
     "build": "tsc",
-    "postbuild": "node dist/derive-valueSets-payload.js",
     "build-watch": "tsc --watch --incremental",
     "test": "mocha dist/test",
     "test-watch": "mocha --watch dist/test",

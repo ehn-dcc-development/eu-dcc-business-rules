@@ -21,6 +21,8 @@ This (part of the) repository contains (or will contain):
 
 * Reference implementations of CertLogic for various platforms - **TODO**
 * [General information about JsonLogic](./javascript/jsonlogic) (as the basis for CertLogic).
+* The [JSON data containing the value sets](./resources/valueSets.json) necessary for executing the validation rules.
+  These are computed from [the value sets in the EHN DCC schema-repository](https://github.com/ehn-digital-green-development/ehn-dgc-schema/tree/main/valuesets) by running the [this script](../rules-runner/resources/prepare-valueSetsJson.sh) on the commandline.
 
 
 ## Testing & Status
