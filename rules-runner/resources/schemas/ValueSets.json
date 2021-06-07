@@ -1,0 +1,49 @@
+{
+  "id": "https://dcc.ehn.eu/schemas/ValueSets.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "country-2-codes": {
+      "$ref": "#/definitions/stringsArray"
+    },
+    "disease-agent-targeted": {
+      "$ref": "#/definitions/stringsArray"
+    },
+    "covid-19-lab-test-manufacturer-and-name": {
+      "$ref": "#/definitions/stringsArray"
+    },
+    "covid-19-lab-result": {
+      "$ref": "#/definitions/stringsArray"
+    },
+    "covid-19-lab-test-type": {
+      "$ref": "#/definitions/stringsArray"
+    },
+    "vaccines-covid-19-auth-holders": {
+      "$ref": "#/definitions/stringsArray"
+    },
+    "vaccines-covid-19-names": {
+      "$ref": "#/definitions/stringsArray"
+    },
+    "sct-vaccines-covid-19": {
+      "$ref": "#/definitions/stringsArray"
+    }
+  },
+  "required": [
+    "country-2-codes",
+    "disease-agent-targeted",
+    "covid-19-lab-test-manufacturer-and-name",
+    "covid-19-lab-result",
+    "covid-19-lab-test-type",
+    "vaccines-covid-19-auth-holders",
+    "vaccines-covid-19-names",
+    "sct-vaccines-covid-19"
+  ],
+  "definitions": {
+    "stringsArray": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  }
+}

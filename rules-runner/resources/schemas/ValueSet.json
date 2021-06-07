@@ -1,0 +1,55 @@
+{
+  "id": "https://dcc.ehn.eu/schemas/ValueSet.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "valueSetId": {
+      "type": "string"
+    },
+    "valueSetDate": {
+      "type": "string"
+    },
+    "valueSetValues": {
+      "type": "object",
+      "patternProperties": {
+        ".+": {
+          "$ref": "#/definitions/ValueSetValue"
+        }
+      }
+    }
+  },
+  "required": [
+    "valueSetId",
+    "valueSetDate",
+    "valueSetValues"
+  ],
+  "definitions": {
+    "ValueSetValue": {
+      "type": "object",
+      "properties": {
+        "display": {
+          "type": "string"
+        },
+        "lang": {
+          "type": "string"
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "version": {
+          "type": "string"
+        },
+        "system": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "display",
+        "lang",
+        "active",
+        "version",
+        "system"
+      ]
+    }
+  }
+}

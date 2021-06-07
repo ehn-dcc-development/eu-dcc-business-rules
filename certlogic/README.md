@@ -25,8 +25,8 @@ This (part of the) repository contains:
 * [Platform-independent “stuff”](./certlogic-overall):
     * [Documentation](./certlogic-overall/documentation): [the specification](./certlogic-overall/documentation/specification.md), [design choices](./certlogic-overall/documentation/design-choices.md), etc.
     * [JSON Schemas](./certlogic-overall/schemas) for [CertLogic expressions](./certlogic-overall/schemas/CertLogic-expression.json) and [test suites](./certlogic-overall/schemas/CertLogic-testSuite.json) JSON
-    * A comprehensive [test suite](./certlogic-overall/testing) - **TODO**  to expand
-    * A [validation tool](./certlogic-overall/validation) - **TODO**
+    * A comprehensive [test suite](./certlogic-overall/testing): the files in this directory contain test suites conforming to [this JSON Schema](./certlogic-overall/schemas/CertLogic-testSuite.json), and are executed by [`test-suites` Mocha test](./certlogic-js/src/test/test-suites.ts)
+    * A [validation tool](./certlogic-overall/validation): this NPM package exposes an executable `certlogic-validate` which validates a JSON file containing a single CertLogic expression
 
 
 ## Testing & Status

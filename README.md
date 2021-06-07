@@ -16,7 +16,7 @@ To make such determinations, business (or validation) rules have to be implement
 
 The architecture chosen for that relies on expressing the validation rules in a plain JSON format, called **CertLogic**.
 That makes updating the validation rules without needing to update verifier apps as a whole, and without much danger of triggering e.g. Apple's anti-code injection policy.
-A set of validation rules (or _ruleset_) is then executed, or “run” by a CertLogic engine against JSON data consisting of a DCC payload, and an external parameters object with value sets, validation clock, etc.
+A set of validation rules (or _rule set_) is then executed, or “run” by a CertLogic engine against JSON data consisting of a DCC payload, and an external parameters object with value sets, validation clock, etc.
 
 For the moment, [this Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+DGC+Validation+Rules) is the authoritative source of information.
 
@@ -26,7 +26,7 @@ For the moment, [this Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/
 Various code in this repo assumes that the following two repos are cloned right next to where this repo's cloned:
 
 * [dgc-testdata](https://github.com/eu-digital-green-certificates/dgc-testdata)
-* [ehn-dgc-schema](https://github.com/ehn-digital-green-development/ehn-dgc-schema)
+* [ehn-dgc-schema](https://github.com/ehn-dcc-development/ehn-dgc-schema)
 
 
 ## Organisation
@@ -36,7 +36,7 @@ This repository contains the following:
 * [CertLogic](./certlogic): a specification, reference implementations for various platforms, a test suite, and a validation tool.
   CertLogic is generic, and not tied to the DCC, to make it easier to understand, test, expand, etc. independently.
 * [RulesRunner](./rules-runner): implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
-* [Rulesets](./rulesets): implementations of rulesets with unit tests - for now that of the EU-template, but later of possibly various member states as well.
+* [Rule sets](./rulesets): implementations of rule sets with unit tests - for now that of the EU-template, but later of possibly various member states as well.
 
 **TODO**  The contents of the [javascript](./javascript) directory still have to be moved to their proper places.
 

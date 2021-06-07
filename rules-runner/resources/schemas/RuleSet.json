@@ -1,0 +1,46 @@
+{
+  "id": "https://dcc.ehn.eu/schemas/ValueSets.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "array",
+  "items": {
+    "$ref": "#/definitions/Rule"
+  },
+  "definitions": {
+    "Rule": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "logic": {
+          "$ref": "https://dcc.ehn.eu/schemas/CertLogic-expression.json#/definitions/CertLogicExpression"
+        }
+      },
+      "required": [
+        "id",
+        "description",
+        "logic"
+      ]
+    },
+    "Assertions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Assertion"
+      }
+    },
+    "Assertion": {
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "payload": {},
+        "validationClock": { "type": "string", "format": "date-time" },
+        "expected": {},
+        "message": { "type": "string" }
+      },
+      "required": [ "payload", "expected" ]
+    }
+  }
+}
