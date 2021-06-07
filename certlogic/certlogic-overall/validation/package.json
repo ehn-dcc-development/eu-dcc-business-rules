@@ -10,13 +10,19 @@
     "test-watch": "mocha --watch dist/test",
     "clean": "rm -rf dist/ && rm -rf node_modules/"
   },
+  "bin": {
+    "certlogic-validate": "dist/cli.js"
+  },
   "author": "Meinte Boersma",
   "license": "Apache-2.0",
   "dependencies": {
-    "@types/json-schema": "^7.0.7"
+    "@types/json-schema": "^7.0.7",
+    "certlogic-js": "../../certlogic-js",
+    "deep-equal": "^2.0.5"
   },
   "devDependencies": {
     "@types/chai": "^4.2.18",
+    "@types/deep-equal": "^1.0.1",
     "@types/mocha": "^8.2.2",
     "@types/node": "^15.12.1",
     "chai": "^4.3.4",

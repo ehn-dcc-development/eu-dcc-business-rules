@@ -38,7 +38,7 @@ describe("operation objects", () => {
     it("should recognise invalid operation objects", () => {
         assertErrors({}, "expression object must have exactly one key, but it has 0")
         assertErrors({ foo: "bar", alice: "bob" }, "expression object must have exactly one key, but it has 2")
-        assertErrors({ all: [] }, `operation not of the form { "<operator>": [ <args...> ] }`)
+        assertErrors({ all: [] }, `operation not of the form { "<operator>": [ <values...> ] }`)
     })
 
     it("should recognise unknown operators", () => {

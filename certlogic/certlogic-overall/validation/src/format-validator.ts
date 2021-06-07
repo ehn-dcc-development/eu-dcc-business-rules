@@ -3,33 +3,33 @@ import { isInt } from "certlogic-js"
 import { ValidationError } from "./typings"
 
 
-const validateVar = (expr: any, args: any): ValidationError[] => {
-    if (typeof args !== "string") {
+const validateVar = (expr: any, values: any): ValidationError[] => {
+    if (typeof values !== "string") {
         return [ { expr, message: `not of the form { "var": "<path>" }` } ]
     }
-    const path = args
+    const path = values
     return (path === "" || path.match(/^((\w[\w\d-]*)|\d+)(\.((\w[\w\d-]*)|\d+))*$/))
         ? []
         : [ { expr, message: `data access path doesn't have a valid format: ${path}` } ]
 }
 
 
-const validateIf = (expr: any, args: any[]): ValidationError[] => {
+const validateIf = (expr: any, values: any[]): ValidationError[] => {
     const errors = []
-    if (args.length !== 3) {
-        errors.push({ expr, message: `an "if"-operation must have exactly 3 values/operands, but it has ${args.length}` })
+    if (values.length !== 3) {
+        errors.push({ expr, message: `an "if"-operation must have exactly 3 values/operands, but it has ${values.length}` })
     }
-    errors.push(...args.slice(0, 3).flatMap(validate))
+    errors.push(...values.slice(0, 3).flatMap(validate))
     return errors
 }
 
-const validateBinOp = (expr: any, operator: string, args: any[]): ValidationError[] => {
+const validateBinOp = (expr: any, operator: string, values: any[]): ValidationError[] => {
     const errors = []
     let maxOperands = 2
     switch (operator) {
         case "and": {
-            if (args.length < 2) {
-                errors.push({ expr, message: `an "and" operation must have at least 2 operands, but it has ${args.length}` })
+            if (values.length < 2) {
+                errors.push({ expr, message: `an "and" operation must have at least 2 operands, but it has ${values.length}` })
             }
             break
         }
@@ -38,51 +38,51 @@ const validateBinOp = (expr: any, operator: string, args: any[]): ValidationErro
         case "<=":
         case ">=": {
             maxOperands = 3
-            if (args.length < 2 || args.length > 3) {
-                errors.push({ expr, message: `an operation with operator "${operator}" must have 2 or 3 operands, but it has ${args.length}` })
+            if (values.length < 2 || values.length > 3) {
+                errors.push({ expr, message: `an operation with operator "${operator}" must have 2 or 3 operands, but it has ${values.length}` })
             }
             break
         }
         default: {
-            if (args.length !== 2) {
-                errors.push({ expr, message: `an operation with operator "${operator}" must have 2 operands, but it has ${args.length}` })
+            if (values.length !== 2) {
+                errors.push({ expr, message: `an operation with operator "${operator}" must have 2 operands, but it has ${values.length}` })
             }
             break
         }
     }
-    errors.push(...args.slice(0, maxOperands).flatMap(validate))
+    errors.push(...values.slice(0, maxOperands).flatMap(validate))
     return errors
 }
 
-const validateNot = (expr: any, args: any[]): ValidationError[] => {
-    return args.length === 1
-        ? validate(args[0])
-        : [ { expr, message: `a !-operation (logical not/negation) must have exactly 1 operand, but it has ${args.length}` } ]
+const validateNot = (expr: any, values: any[]): ValidationError[] => {
+    return values.length === 1
+        ? validate(values[0])
+        : [ { expr, message: `a !-operation (logical not/negation) must have exactly 1 operand, but it has ${values.length}` } ]
 }
 
-const validatePlusTime = (expr: any, args: any[]): ValidationError[] => {
+const validatePlusTime = (expr: any, values: any[]): ValidationError[] => {
     const errors = []
-    if (args.length !== 3) {
-        errors.push({ expr, message: `a "plusTime"-operation must have exactly 3 values/operands, but it has ${args.length}` })
+    if (values.length !== 3) {
+        errors.push({ expr, message: `a "plusTime"-operation must have exactly 3 values/operands, but it has ${values.length}` })
     }
-    if (args[0] !== undefined) {
-        errors.push(...validate(args[0]))
+    if (values[0] !== undefined) {
+        errors.push(...validate(values[0]))
     }
-    if (args[1] !== undefined && !isInt(args[1])) {
-        errors.push({ expr, message: `"amount" argument (#2) of "plusTime" must be an integer, but it is: ${args[1]}` })
+    if (values[1] !== undefined && !isInt(values[1])) {
+        errors.push({ expr, message: `"amount" argument (#2) of "plusTime" must be an integer, but it is: ${values[1]}` })
     }
-    if (args[2] !== undefined && [ "day", "hour" ].indexOf(args[2]) === -1) {
-        throw new Error(`"unit" argument (#3) of "plusTime" must be a string 'day' or 'hour', but it is: ${args[2]}`)
+    if (values[2] !== undefined && [ "day", "hour" ].indexOf(values[2]) === -1) {
+        throw new Error(`"unit" argument (#3) of "plusTime" must be a string 'day' or 'hour', but it is: ${values[2]}`)
     }
     return errors
 }
 
-const validateReduce = (expr: any, args: any[]): ValidationError[] => {
+const validateReduce = (expr: any, values: any[]): ValidationError[] => {
     const errors = []
-    if (args.length !== 3) {
-        errors.push({ expr, message: `a "reduce"-operation must have exactly 3 values/operands, but it has ${args.length}` })
+    if (values.length !== 3) {
+        errors.push({ expr, message: `a "reduce"-operation must have exactly 3 values/operands, but it has ${values.length}` })
     }
-    errors.push(...args.slice(0, 3).flatMap(validate))
+    errors.push(...values.slice(0, 3).flatMap(validate))
     return errors
 }
 
@@ -106,27 +106,27 @@ const validate = (expr: any): ValidationError[] => {
             return withError(`expression object must have exactly one key, but it has ${keys.length}`)
         }
         const operator = keys[0]
-        const args = (expr as any)[operator]
+        const values = (expr as any)[operator]
         if (operator === "var") {
-            return validateVar(expr, args)
+            return validateVar(expr, values)
         }
-        if (!(Array.isArray(args) && args.length > 0)) {
-            return withError(`operation not of the form { "<operator>": [ <args...> ] }`)
+        if (!(Array.isArray(values) && values.length > 0)) {
+            return withError(`operation not of the form { "<operator>": [ <values...> ] }`)
         }
         if (operator === "if") {
-            return validateIf(expr, args)
+            return validateIf(expr, values)
         }
         if ([ "===", "and", ">", "<", ">=", "<=", "in", "+" ].indexOf(operator) > -1) {
-            return validateBinOp(expr, operator, args)
+            return validateBinOp(expr, operator, values)
         }
         if (operator === "!") {
-            return validateNot(expr, args)
+            return validateNot(expr, values)
         }
         if (operator === "plusTime") {
-            return validatePlusTime(expr, args)
+            return validatePlusTime(expr, values)
         }
         if (operator === "reduce") {
-            return validateReduce(expr, args)
+            return validateReduce(expr, values)
         }
         return withError(`unrecognised operator: "${operator}"`)
     }

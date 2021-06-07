@@ -2,14 +2,14 @@ import { CertLogicExpression, TimeUnit } from "./typings"
 import { isDate, isFalsy, isInt, isTruthy, plusTime } from "./internals"
 
 
-const evaluateVar = (args: any, data: any): any => {
+const evaluateVar = (value: any, data: any): any => {
     if (data === null) {
         return null
     }
-    if (typeof args !== "string") {
+    if (typeof value !== "string") {
         throw new Error(`not of the form { "var": "<path>" }`)
     }
-    const path = args
+    const path = value
     if (path === "") {  // "it"
         return data
     }
@@ -57,34 +57,34 @@ const compareFunctionFor = (operator: ComparisonOperator) => (l: Comparable, r: 
     }
 }
 
-const compare = (operator: ComparisonOperator, args: Comparable[]): boolean => {
+const compare = (operator: ComparisonOperator, values: Comparable[]): boolean => {
     const compFunc = compareFunctionFor(operator)
-    switch (args.length) {
-        case 2: return compFunc(args[0], args[1])
-        case 3: return compFunc(args[0], args[1]) && compFunc(args[1], args[2]!)
+    switch (values.length) {
+        case 2: return compFunc(values[0], values[1])
+        case 3: return compFunc(values[0], values[1]) && compFunc(values[1], values[2]!)
         default: throw new Error(`invalid number of operands to a "${operator}" operation`)
     }
 }
 
-const evaluateBinOp = (operator: string, args: CertLogicExpression[], data: any): any => {
+const evaluateBinOp = (operator: string, values: CertLogicExpression[], data: any): any => {
     switch (operator) {
         case "and": {
-            if (args.length < 2) throw new Error(`an "and" operation must have at least 2 operands`)
+            if (values.length < 2) throw new Error(`an "and" operation must have at least 2 operands`)
             break
         }
         case "<":
         case ">":
         case "<=":
         case ">=": {
-            if (args.length < 2 || args.length > 3) throw new Error(`an operation with operator "${operator}" must have 2 or 3 operands`)
+            if (values.length < 2 || values.length > 3) throw new Error(`an operation with operator "${operator}" must have 2 or 3 operands`)
             break
         }
         default: {
-            if (args.length !== 2) throw new Error(`an operation with operator "${operator}" must have 2 operands`)
+            if (values.length !== 2) throw new Error(`an operation with operator "${operator}" must have 2 operands`)
             break
         }
     }
-    const evalArgs = args.map((arg) => evaluate(arg, data))
+    const evalArgs = values.map((arg) => evaluate(arg, data))
     switch (operator) {
         case "===": return evalArgs[0] === evalArgs[1]
         case "in": {
@@ -102,7 +102,7 @@ const evaluateBinOp = (operator: string, args: CertLogicExpression[], data: any)
             }
             return l + r
         }
-        case "and": return args.reduce(
+        case "and": return values.reduce(
             (acc: any, current: CertLogicExpression) => isFalsy(acc) ? acc : evaluate(current, data),
             true
         )
@@ -187,28 +187,28 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
             throw new Error(`unrecognised expression object encountered`)
         }
         const operator = keys[0]
-        const args = (expr as any)[operator]
+        const values = (expr as any)[operator]
         if (operator === "var") {
-            return evaluateVar(args, data)
+            return evaluateVar(values, data)
         }
-        if (!(Array.isArray(args) && args.length > 0)) {
-            throw new Error(`operation not of the form { "<operator>": [ <args...> ] }`)
+        if (!(Array.isArray(values) && values.length > 0)) {
+            throw new Error(`operation not of the form { "<operator>": [ <values...> ] }`)
         }
         if (operator === "if") {
-            const [ guard, then, else_ ] = args
+            const [ guard, then, else_ ] = values
             return evaluateIf(guard, then, else_, data)
         }
         if ([ "===", "and", ">", "<", ">=", "<=", "in", "+" ].indexOf(operator) > -1) {
-            return evaluateBinOp(operator, args, data)
+            return evaluateBinOp(operator, values, data)
         }
         if (operator === "!") {
-            return evaluateNot(args[0], data)
+            return evaluateNot(values[0], data)
         }
         if (operator === "plusTime") {
-            return evaluatePlusTime(args[0], args[1], args[2], data)
+            return evaluatePlusTime(values[0], values[1], values[2], data)
         }
         if (operator === "reduce") {
-            return evaluateReduce(args[0], args[1], args[2], data)
+            return evaluateReduce(values[0], values[1], values[2], data)
         }
         throw new Error(`unrecognised operator: "${operator}"`)
     }
