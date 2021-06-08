@@ -38,7 +38,7 @@ const runTestsOn = (testSuite: TestSuite) => {
                         .forEach(({ data, expected, message , directive}, index) => {
                             switch (directive) {
                                 case "skip": {
-                                    console.warn(`      (! skipped assertion ${message || `#${index + 1}`} of:)`)
+                                    console.warn(`      ! skipped assertion ${message || `#${index + 1}`}`)
                                     return
                                 }
                                 case "only": {
@@ -53,7 +53,7 @@ const runTestsOn = (testSuite: TestSuite) => {
 }
 
 
-const testSuitesPath = join(__dirname, "../../../certlogic-overall/testing")
+const testSuitesPath = join(__dirname, "../../../testSuite")
 
 readdirSync(testSuitesPath)
     .filter((path) => path.endsWith(".json"))

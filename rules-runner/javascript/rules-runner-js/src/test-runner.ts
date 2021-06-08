@@ -1,6 +1,7 @@
 const { deepEqual, fail } = require("chai").assert
 import { existsSync, PathLike, readdirSync, readFileSync } from "fs"
 import { join } from "path"
+import { validate } from "../../../../certlogic/certlogic-validation"
 
 import { loadJsonFile, parameters } from "./cli-utils"
 import { runRule } from "./runners"
@@ -18,6 +19,11 @@ interface Assertion {
 
 const runTests = (rule: Rule, valueSets: ValueSets, assertions: Assertion[]) => {
     describe(`rule: "${rule.id}"`, () => {
+        const validation = validate(rule.logic)
+        if (validation.length > 0) {
+            console.dir(validation)
+            fail(`rule "${rule.id}" has validation errors in its logic`)
+        }
         assertions.forEach(({ name, payload, validationClock, expected, message }, index) => {
             const assertionText = `assertion ${index + 1}`
             it(name ? `${name} (${assertionText})` : assertionText, () => {

@@ -14,8 +14,28 @@
 The [Digital COVID Certificate](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en) allows to determine whether a person is fit-for-travel based on their vaccination, test, and recovery status.
 To make such determinations, business (or validation) rules have to be implemented in verifier apps.
 
-The architecture chosen for that relies on expressing the validation rules in a plain JSON format, called **CertLogic**.
-That makes updating the validation rules without needing to update verifier apps as a whole, and without much danger of triggering e.g. Apple's anti-code injection policy.
+This leads to the following requirements on the business rules:
+
+1. They must be executable on a number of platforms/programming languages.
+2. The verifier apps must be updatable with new (versions of) business rules without needing to update the entire app.
+3. They must be freely exchangable between participating nations, so that travelers can determine _beforehand_ whether they're going to be deemed fit-for-travel.
+
+A good way to respect these requirements is to express these business rules in a plain JSON format:
+
+1. Their formulation is effectively platform/programming language-aspecific.
+2. They can be downloaded to verifier apps “just as data”, decreasing the danger of being seen to violate e.g. Apple's “no code injection”-policies, and of slow app updates.
+
+It was initially proposed to use [JsonLogic](https://jsonlogic.com/) to formulate business rules.
+JsonLogic has implementations of its engine for a variety of platforms/programming languages.
+However, the following problems were found with (using) JsonLogic:
+
+* The implementations had differing behaviour/semantics.
+  In theory, this could be mitigated by patching implementations to align their behaviour/semantics.
+* No support for dates and datetimes was provided out-of-the-box.
+  In theory, this could be mitigated by adding custom operations, but unfortunately, not every implementation allows that.
+* JsonLogic provides more than is required for the purpose here, which would mean that much testing is required to ensure that behaviour is consistent across implementations.
+
+To mitigate these problems, a subset of JsonLogic, called **CertLogic**, has been specified, and adorned with a test suite, validator tooling, and own implementations for a number of platforms/programming languages.
 A set of validation rules (or _rule set_) is then executed, or “run” by a CertLogic engine against JSON data consisting of a DCC payload, and an external parameters object with value sets, validation clock, etc.
 
 For the moment, [this Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+DGC+Validation+Rules) is the authoritative source of information.
@@ -25,7 +45,7 @@ For the moment, [this Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/
 
 Various code in this repo assumes that the following two repos are cloned right next to where this repo's cloned:
 
-* [dgc-testdata](https://github.com/eu-digital-green-certificates/dgc-testdata)
+* [dgc-testdata](https://github.com/ehn-dcc-development/dgc-testdata)
 * [ehn-dgc-schema](https://github.com/ehn-dcc-development/ehn-dgc-schema)
 
 
@@ -33,12 +53,13 @@ Various code in this repo assumes that the following two repos are cloned right 
 
 This repository contains the following:
 
-* [CertLogic](./certlogic): a specification, reference implementations for various platforms, a test suite, and a validation tool.
+* [Documentation](./documentation): currently only [design choices](./documentation/design-choices.md).
+* [CertLogic](./certlogic/README.md): a specification, reference implementations for various platforms, a test suite, and a validation tool.
   CertLogic is generic, and not tied to the DCC, to make it easier to understand, test, expand, etc. independently.
-* [RulesRunner](./rules-runner): implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
+* [RulesRunner](./rules-runner/README.md): implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
 * [Rule sets](./rulesets): implementations of rule sets with unit tests - for now that of the EU-template, but later of possibly various member states as well.
 
-**TODO**  The contents of the [javascript](./javascript) directory still have to be moved to their proper places.
+**TODO**  The contents of the [javascript](./javascript) directory still have to be moved to their proper places, and are currently provided as-is *only*, without guarantee of them being useful.
 
 
 ## Testing & Status

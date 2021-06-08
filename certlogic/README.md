@@ -13,7 +13,7 @@
 ## About
 
 CertLogic is a standard for expressing logic, such as the kind you find in business/validation rules, in plain JSON format.
-CertLogic is a [specified](certlogic-overall/documentation/specification.md) subset of [JsonLogic](https://jsonlogic.com/), extended with necessary custom operations - e.g. for working with dates.
+CertLogic is a [specified](./specification.md) subset of [JsonLogic](https://jsonlogic.com/), extended with necessary custom operations - e.g. for working with dates.
 It serves as the basis for defining _interchangeable_ validation rules on top of the [Digital COVID Certificate](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en).
 
 
@@ -21,12 +21,14 @@ It serves as the basis for defining _interchangeable_ validation rules on top of
 
 This (part of the) repository contains:
 
-* Reference implementations of CertLogic for various platforms - currently: [JavaScript](./certlogic-js), [Kotlin](./certlogic-kotlin)
-* [Platform-independent “stuff”](./certlogic-overall):
-    * [Documentation](./certlogic-overall/documentation): [the specification](./certlogic-overall/documentation/specification.md), [design choices](./certlogic-overall/documentation/design-choices.md), etc.
-    * [JSON Schemas](./certlogic-overall/schemas) for [CertLogic expressions](./certlogic-overall/schemas/CertLogic-expression.json) and [test suites](./certlogic-overall/schemas/CertLogic-testSuite.json) JSON
-    * A comprehensive [test suite](./certlogic-overall/testing): the files in this directory contain test suites conforming to [this JSON Schema](./certlogic-overall/schemas/CertLogic-testSuite.json), and are executed by [`test-suites` Mocha test](./certlogic-js/src/test/test-suites.ts)
-    * A [validation tool](./certlogic-overall/validation): this NPM package exposes an executable `certlogic-validate` which validates a JSON file containing a single CertLogic expression
+* Reference implementations of CertLogic for various platforms/programming languages - currently:
+  * [JavaScript](./certlogic-js) (as NPMS package)
+  * [Kotlin](./certlogic-kotlin) (as Maven/Kotlin module)
+* A [validation tool](./certlogic-validation): this NPM package exposes an executable `certlogic-validate` which validates a JSON file containing a single CertLogic expression
+* [JSON Schemas](./schemas) for [CertLogic expressions](./schemas/CertLogic-expression.json) and [test suites](./schemas/CertLogic-testSuite.json) JSON
+* A comprehensive [test suite](testSuite): the files in this directory contain test suites conforming to [this JSON Schema](./schemas/CertLogic-testSuite.json), and are executed by the [`test-suites` Mocha test](./certlogic-js/src/test/test-suites.ts), and the [`CertLogicTests` JUnit/Kotlin ](certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/CertLogicTests.kt)
+* A [build script](./build.sh) to build `certlogic-js`, `certlogic-kotlin`, and `certlogic-validation`.
+* The [specification](./specification.md)
 
 
 ## Testing & Status

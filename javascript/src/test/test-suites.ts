@@ -54,7 +54,7 @@ const runTestsOn = <T>(testSuite: TestSuite, evaluate: (expr: T, data: any) => a
 }
 
 
-const testSuitesPath = join(certLogicPath, "certlogic-overall/testing")
+const testSuitesPath = join(certLogicPath, "testSuite")
 
 export const runTestsWith = <T> (evaluate: (expr: T, data: any) => any) => {
     readdirSync(testSuitesPath)

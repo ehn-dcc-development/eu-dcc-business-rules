@@ -4,8 +4,10 @@
   "description": "Validators for CertLogic",
   "main": "dist/index.js",
   "scripts": {
+    "postinstall": "npm link certlogic-js",
     "build": "tsc",
     "build-watch": "tsc --watch --incremental",
+    "pretest": "npm run build",
     "test": "mocha dist/test",
     "test-watch": "mocha --watch dist/test",
     "clean": "rm -rf dist/ && rm -rf node_modules/"

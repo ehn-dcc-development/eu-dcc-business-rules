@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import java.io.File
 
-internal class CertlogicTests {
+internal class CertLogicTests {
 
     @Test
     fun `test isTruthy`() {
@@ -91,7 +91,7 @@ fun TestSuite.run() {
 }
 
 
-val testSuitesPath = File("../certlogic-overall/testing")
+val testSuitesPath = File("../testSuite")
 
 fun allTestSuites(): List<TestSuite> = testSuitesPath
     .listFiles { _, name -> name.endsWith(".json") }

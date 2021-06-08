@@ -6,7 +6,7 @@ This NPM package exposes functionality to
 2. Run rule sets from CLI
 3. Run tests from CLI
 
-A rule set is a JSON file that adheres to a certain JSON Schema (**TODO**).
+A rule set is a JSON file that adheres to [this JSON Schema](../../resources/schemas/RuleSet.json).
 
 
 ## Run rule (sets) programmatically
