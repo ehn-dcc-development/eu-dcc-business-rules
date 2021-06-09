@@ -13,6 +13,11 @@ import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * A class to represent date-time's with as a {@link com.fasterxml.jackson.databind.JsonNode JSON value}.
+ * All date-time's are represented internally as an {@link OffsetDateTime}.
+ * Dates are converted to date-time's by assuming midnight Zulu-time (UTC+0).
+ */
 public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> {
 
     private static final long serialVersionUID = 1L;
@@ -21,12 +26,24 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
 
     private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
-    public static JsonDateTime fromIso8601(String dateTimeString) {
+    /**
+     * @param dateTimeString a string with a date-time <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">compliant with RFC3339</a>
+     * @return a {@link JsonDateTime JSON date-time} of the given date-time
+     */
+    public static JsonDateTime fromRfc3339dateTime(String dateTimeString) {
         try {
             return new JsonDateTime(OffsetDateTime.parse(dateTimeString, formatter));
         } catch (DateTimeParseException e) {
             throw e;
         }
+    }
+
+    /**
+     * @param dateString a string with a date in the format "YYYY-MM-DD"
+     * @return a {@link JsonDateTime JSON date-time} at midnight UTC+0 on the given date.
+     */
+    public static JsonDateTime fromIso8601date(String dateString) {
+        return JsonDateTime.fromRfc3339dateTime(dateString + "T00:00:00Z");
     }
 
     public OffsetDateTime temporalValue() {
