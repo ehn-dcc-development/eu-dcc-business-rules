@@ -1,0 +1,37 @@
+{
+  "id": "https://dcc.ehn.eu/schemas/RuleTests.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$ref": "#/definitions/Assertions",
+  "definitions": {
+    "Assertions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Assertion"
+      }
+    },
+    "Assertion": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "payload": {
+          "description": "The DCC payload, but of 'any' type to allow non-validating input."
+        },
+        "validationClock": {
+          "description": "The date-time at which the rules are executed.",
+          "type": "string",
+          "format": "date-time"
+        },
+        "expected": {},
+        "message": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "payload",
+        "expected"
+      ]
+    }
+  }
+}

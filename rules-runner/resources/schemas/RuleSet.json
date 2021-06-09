@@ -1,5 +1,5 @@
 {
-  "id": "https://dcc.ehn.eu/schemas/ValueSets.json",
+  "id": "https://dcc.ehn.eu/schemas/RuleSet.json",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "type": "array",
   "items": {
@@ -21,26 +21,8 @@
       },
       "required": [
         "id",
-        "description",
         "logic"
       ]
-    },
-    "Assertions": {
-      "type": "array",
-      "items": {
-        "$ref": "#/definitions/Assertion"
-      }
-    },
-    "Assertion": {
-      "type": "object",
-      "properties": {
-        "name": { "type": "string" },
-        "payload": {},
-        "validationClock": { "type": "string", "format": "date-time" },
-        "expected": {},
-        "message": { "type": "string" }
-      },
-      "required": [ "payload", "expected" ]
     }
   }
 }

@@ -45,7 +45,10 @@ CertLogic restricts this notion even further to avoid confusion, or unjust relia
 The usual array, boolean, integer (as a subset of JavaScript's `Number` type), and string literals are allowed.
 Literal for the following (types of) values are not allowed: objects, `null`, and dates.
 
-A datetime (or timestamp) has to be constructed by performing a `plusTime` operation on a string with 0 days or hours added.
+
+## Dates and date-times
+
+Dates, and date-times (or timestamp) have to be constructed by performing a `plusTime` operation on a string with 0 days or hours added.
 This makes it possible to ensure consistent datetime representations across platforms, without being able to implicitly rely on the behaviour of native datetime types in combination with the other (allowed) operations.
 
 
@@ -105,6 +108,10 @@ An operation with a binary operator has the following form:
 
 For the `===`, `in`, and `+` operators, `n` must equal 2.
 
+The `===` operator checks equality without type coercion.
+This works reliable on strings and integers, but not on other types.
+_Note:_ this might be restricted further to only allow strings and integers.
+
 The `in` operator checks whether `<operand 1>` is a member of `<operand 2>`, which must be an array - possibly empty.
 (This must be checked beforehand through other means: operating on a non-array `<operand 2>` is considered an error.)
 
@@ -123,8 +130,10 @@ The ternary form
     }
 
 has the following semantics: `(<operand 1> <op> <operand 2>) and (<operand 2> <op> <operand 3>)`.
-The operands must be comparable values: integers, or datetimes.
+The operands must be comparable values of the following type: integers, or dates/date-times.
 All operands must be of the same type.
+
+_Note:_ separate operators may be introduced for (unequal-)comparison of dates/date-times.
 
 
 ## Negation (`!`)
@@ -172,4 +181,10 @@ This is essentially equivalent to JavaScript's `Array.reduce` function.
 All other special array operations can be implemented using (only) a `reduce` operation with a suitable `<lambda>`.
 
 To be able to access values in the original data context, CertLogic *may* expand beyond JsonLogic at some point by also adding a key-value pair with key `"data"` to the data object passed to the `<lambda>`, whose value is the original data context.
+
+
+## Evolution of this specification
+
+This specification can evolve over time, based on necessary clarifications, or required additional functionality.
+In any case, at least the behaviour of the “allowed”-part of the specification should be covered by the [test suite](./testSuite).
 

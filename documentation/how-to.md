@@ -37,13 +37,11 @@ A rule may come to also contain the following metadata:
 * Validity range: valid from a certain date(-time), until (exclusive) a certain date(-time).
     Either end of a validity range may be undefined, meaning since/until forever, resp.
 
-* Human-readable message(s) explaining (both) the outcome(s).
-
-This has been foreseen but is not yet implemented.
+This has been foreseen but is not yet implemented, as are human-readable message(s) explaining (both) the outcome(s).
 
 It's desirable that each rule has a single responsibility, and accesses as little data from the DCC and extra external parameters as possible.
-This keeps rules understandable, testable, and individually replacable.
-The fit-for-travel determination should be divided into a *set of rules*.
+This keeps rules understandable, testable, and individually replaceable.
+The full fit-for-travel determination must therefore take the form of a *set of rules*.
 
 
 ## Writing rule expressions
@@ -75,32 +73,54 @@ The following things can be helpful:
 
     The tool exposes an executable `certlogic-validate`, which can be run from the CLI as follows:
 
-        $ ./node_modules/bin/certlogic-validate 
+        $ ./node_modules/bin/certlogic-validate <path to JSON file containing a single CertLogic expression>
 
     This works from the directory where you installed `certlogic-validation`.
     Alternatively, you can use `npx` (when installed, and when `certlogic-validation` is available in the NPM Registry) to directly execute it.
-    Inside NPM `scripts`, you can drop the `./node_modules/.bin/` prefix.
+    Inside NPM `scripts`, you can remove the `./node_modules/.bin/` prefix.
 
 * The `certlogic-validation` tool does not have or use any knowledge about the shape of the data the given CertLogic expression is validated against.
-    That will be addressed the later on.
+    That will be addressed later on.
 
 
-## Writing rule sets
+## Writing a rule set
 
-A **rule set** is a set of rules for a certain legislative region, such as an EU member state, or the EU as a whole.
+A **rule set** is a set of rules for a certain legislative region, such as an EU Member State, or the EU as a whole.
+The EU-template rule set can be found [here](../rulesets/EU/template-ruleset.json).
 
 A rule set is written in a JSON format that relies on CertLogic.
-Its [JSON Schema](../rules-runner/resources/schemas/RuleSet.json) can help with authoring a JSON file containing a rule set.
+Its [RuleSet JSON Schema](../rules-runner/resources/schemas/RuleSet.json) can help with authoring a JSON file containing a rule set.
 
 _Note:_ this schema is expected to change in the near future.
 The various components (rules runners, validators) should reflect those changes.
 
 
-## Running rules
+## Testing rules
+
+Any rule should come with automated tests that exercise it.
+Such tests corroborate the rule writer's intention, but can also be used to check the validity of the execution of the same rule by different rules engines.
+That's particularly helpful with implementors of verifier apps having free choice in what rules engine to use.
+
+The `rules-runner-js` NPM package exposes a CLI command `test-rule-set` to test the rules in a rule set on a per-rule basis.
+The usage of this CLI command is as follows:
+
+    $ ./node_modules/.bin/test-rule-set --rule-set=<path to JSON file with rule set> --value-sets=<path to JSON with value sets> --tests=<path to directory with rule tests>
+
+Tests for a rule reside in a JSON file with file name equal to the rule's ID, and which conforms [the RuleTests JSON Schema](../rules-runner/resources/schemas/RuleTests.json).
+The `test-rule-set` command tries to load the rule set, and value sets JSON files, and all JSON files in the indicated `tests` directory.
+It then runs all rules' tests, checking whether the rule evaluates without erroring on each test, and matches the expected outcome.
+`test-rule-set` also checks whether the test files are in 1-to-1 correspondence to the rules in the rule set, reporting when a rule does not have a corresponding test file, and vice versa.
+
+To test this functionality you can run the script `test-EU`, which tests the [EU-template rule set](../rulesets/EU/template-ruleset.json).
+
+    $ (rules-runner/javascript/rules-runner-js) npm run test-EU
+
+
+## Running rules (or a rule set)
 
 Rule sets can be run using _rules runners_ for JavaScript and for Kotlin/Java.
 These rules runners rely on a CertLogic rule engine, written in the same languages (respectively).
-They can be found [here](../rules-runner/README.md).
+All rules runners can be found [here](../rules-runner/README.md).
 
 
 ### Running rules in JavaScript
@@ -181,9 +201,9 @@ The following `build.gradle` Gradle build script fragment sets up the dependenci
 
 ```groovy
 dependencies {
-    implementation project(‘:decoder’)
-    implementation ‘eu.ehn.dcc.certlogic:certlogic-kotlin:0.7.1-SNAPSHOT’
-    implementation ‘eu.ehn.dcc.certlogic:rules-runner-kotlin:0.7.1-SNAPSHOT’
+    implementation project(':decoder')
+    implementation 'eu.ehn.dcc.certlogic:certlogic-kotlin:0.7.1-SNAPSHOT'
+    implementation 'eu.ehn.dcc:rules-runner-kotlin:0.7.1-SNAPSHOT'
     // …
 }
 ```
@@ -218,7 +238,7 @@ allprojects {
 
 #### Maven
 
-The following XML specifies the dependencies when using Maven:
+The following XML fragment specifies the dependencies in a `pom.xml` when using Maven:
 
 ```XML
 <dependencies>
@@ -236,12 +256,5 @@ The following XML specifies the dependencies when using Maven:
 ```
 
 For now, this assumes that both modules have been `mvn install`-ed to the local Maven repository (usually physically located in `~/.m2`).
-
-
-**TODO**  how to test rule sets
-
-
-## Testing rule sets
-
-Any rule set should come with unit tests testing the individual rules.
+When the Kotlin Certlogic and rules-runner modules are available on Maven Central, `0.7.1-SNAPSHOT` should be replaced with non-snapshot version numbers.
 
