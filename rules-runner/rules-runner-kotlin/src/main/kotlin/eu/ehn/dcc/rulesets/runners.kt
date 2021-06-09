@@ -16,7 +16,7 @@ fun runRule(rule: Rule, data: JsonNode): RuleEvaluationResult =
             EvaluationError("rule evaluated to a non-boolean: $evalResult")
         }
     } catch (re: RuntimeException) {
-        EvaluationError("rule evaluation errored out: ${re.message}")
+        EvaluationError("rule evaluation errored: ${re.message}")
     }
 
 

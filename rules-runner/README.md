@@ -20,17 +20,26 @@ A rules runner is a component to run a rule set (for a specific member state) fo
 This (part of the) repository contains (or will contain):
 
 * Implementations of rules runner components for various platforms/programming languages - currently:
+
   * [JavaScript](./javascript/rules-runner-js) (as NPM package)
   * [Kotlin](./rules-runner-kotlin) (as Maven/Kotlin module)
 
 * JSON Schemas for [rule sets](./resources/schemas/RuleSet.json)
 
 * The [JSON data containing the value sets](./resources/valueSets.json) necessary for executing the validation rules.
-    These are computed from [the value sets in the EHN DCC schema-repository](https://github.com/ehn-digital-green-development/ehn-dgc-schema/tree/main/valuesets) by running
+    These are computed from [the value sets in the eHN DCC schema-repository](https://github.com/ehn-dcc-development/ehn-dcc-schema/tree/main/valuesets) by running
 
-    $ ./prepare-valueSetsJson.sh
+        $ ./prepare-valueSetsJson.sh
 
     on the CLI inside `rules-runner/resources`.
+
+    Prerequisites for running this command are:
+
+    * The [eHN DCC schema-repository](https://github.com/ehn-dcc-development/ehn-dcc-schema) should be cloned locally next to this `dgc-business-rules` repository.
+    * The [`jq` tool](https://stedolan.github.io/jq/) should be installed.
+        E.g., on Mac you can install it as follows using [Homebrew](https://brew.sh/):
+
+            $ brew install jq
 
 * A [build script](./build.sh) to build `rules-runner-js`, and `rules-runner-kotlin`.
 

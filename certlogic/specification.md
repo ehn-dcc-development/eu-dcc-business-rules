@@ -1,6 +1,6 @@
 # CertLogic: specification
 
-CertLogic is a *subset* of JsonLogic, extended with custom operations - e.g. for working with dates.
+CertLogic is a restricted *subset* of JsonLogic, extended with custom operations - e.g. for working with dates.
 
 The semantics of CertLogic is that of a function which takes a _CertLogic expression_, a _data context_, and returns a value.
 All three of these values are JSON values that must be _self-contained_, and _non-referential_.

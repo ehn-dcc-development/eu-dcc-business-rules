@@ -11,10 +11,15 @@
 
 ## About
 
-The [Digital COVID Certificate](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en) allows to determine whether a person is fit-for-travel based on their vaccination, test, and recovery status.
-To make such determinations, business (or validation) rules have to be implemented in verifier apps.
-This repository contains a framework to implement business rules in verifier apps (and backends) using a _rules engine_, and [explains how to do that](./documentation/how-to.md).
+The [Digital COVID Certificate](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en) allows to determine whether a person is deemed fit-for-travel into a country-of-arrival (CoA) based on their vaccination, test, and recovery status.
+To make such determinations, business (or validation, or verification) rules have to be implemented in verifier apps.
 
+This repository contains a framework to implement (sets of) rules in verifier apps (and backends) using a _rules engine_.
+It [explains how to do that](./documentation/how-to.md) in a way that makes these rules interchangeable across implementors.
+The advantage of this approach is that it ultimately allows citizens to check their fit-for-travel status into an intended CoA _ahead_ of travel, aganst the actual rules.
+This can be achieved by adhering to a common, and testable and verifiable way of defining, and executing rules.
+
+This work is a result of work done by the EU Taskforce Business Rules.
 
 
 ## Assumptions

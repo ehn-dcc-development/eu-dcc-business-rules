@@ -56,13 +56,13 @@ fun File.fileNameWithoutExt(): CharSequence {
 // FIXME  not picked up by Maven test
 internal class RunEURulesTests {
 
-    val euTemplateRuleset = readJson<RuleSet>(File("../../rulesets/EU/template-ruleset.json"))
+    val euTemplateRuleSet = readJson<RuleSet>(File("../../rulesets/EU/template-ruleset.json"))
     val rulesTestsPath = File("../../rulesets/EU/tests")
     val valueSets = readJson<ObjectNode>(File("../resources/valueSets.json"))
 
     @Test
     fun `run assertions for all EU rules`() {
-        euTemplateRuleset.forEach { rule ->
+        euTemplateRuleSet.forEach { rule ->
             val ruleId = rule.id
             val ruleAssertionsFile = rulesTestsPath / "$ruleId.json"
             if (ruleAssertionsFile.isFile) {
@@ -76,7 +76,7 @@ internal class RunEURulesTests {
     @Test
     fun `an assertions file exists for all rules`() {
         assertTrue("rules without assertions found") {
-            euTemplateRuleset.all { rule -> (rulesTestsPath / "${rule.id}.json").isFile }
+            euTemplateRuleSet.all { rule -> (rulesTestsPath / "${rule.id}.json").isFile }
         }
     }
 
@@ -85,7 +85,7 @@ internal class RunEURulesTests {
         val assertionsFilesForNonExistingRules = rulesTestsPath
             .listFiles { _, name -> name.endsWith(".json") }
             .map { file -> file.fileNameWithoutExt() }
-            .filter { ruleId -> euTemplateRuleset.none { rule -> rule.id == ruleId } }
+            .filter { ruleId -> euTemplateRuleSet.none { rule -> rule.id == ruleId } }
         assertTrue { assertionsFilesForNonExistingRules.isEmpty() }
     }
 
