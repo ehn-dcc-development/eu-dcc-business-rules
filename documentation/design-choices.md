@@ -1,5 +1,31 @@
 # CertLogic: design choices
 
+This leads to the following requirements on the business rules:
+
+1. They must be executable on a number of platforms/programming languages.
+2. The verifier apps must be updatable with new (versions of) business rules without needing to update the entire app.
+3. They must be freely exchangable between participating nations, so that travelers can determine _beforehand_ whether they're going to be deemed fit-for-travel.
+
+A good way to respect these requirements is to express these business rules in a plain JSON format:
+
+1. Their formulation is effectively platform/programming language-aspecific.
+2. They can be downloaded to verifier apps “just as data”, decreasing the danger of being seen to violate e.g. Apple's “no code injection”-policies, and of slow app updates.
+
+It was initially proposed to use [JsonLogic](https://jsonlogic.com/) to formulate business rules.
+JsonLogic has implementations of its engine for a variety of platforms/programming languages.
+However, the following problems were found with (using) JsonLogic:
+
+* The implementations had differing behaviour/semantics.
+  In theory, this could be mitigated by patching implementations to align their behaviour/semantics.
+* No support for dates and datetimes was provided out-of-the-box.
+  In theory, this could be mitigated by adding custom operations, but unfortunately, not every implementation allows that.
+* JsonLogic provides more than is required for the purpose here, which would mean that much testing is required to ensure that behaviour is consistent across implementations.
+
+To mitigate these problems, a subset of JsonLogic, called **CertLogic**, has been specified, and adorned with a test suite, validator tooling, and own implementations for a number of platforms/programming languages.
+A set of validation rules (or _rule set_) is then executed, or “run” by a CertLogic engine against JSON data consisting of a DCC payload, and an external parameters object with value sets, validation clock, etc.
+
+For the moment, [this Confluence page](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+DGC+Validation+Rules) is the authoritative source of information.
+
 
 ## Regarding CertLogic
 
