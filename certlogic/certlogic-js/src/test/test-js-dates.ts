@@ -54,7 +54,5 @@ describe("dates", () => {
         throws(() => date.toISOString(), /Invalid time value/)
     })
 
-    // TODO  add tests with different timezone formats
-
 })
 

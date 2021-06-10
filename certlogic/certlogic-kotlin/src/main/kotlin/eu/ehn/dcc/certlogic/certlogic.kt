@@ -161,7 +161,7 @@ internal fun evaluatePlusTime(dateOperand: JsonNode, amount: JsonNode, unit: Jso
     if (dateTimeStr !is TextNode) {
         throw RuntimeException("date argument of \"plusTime\" must be a string")
     }
-    return JsonDateTime.fromRfc3339dateTime(dateTimeStr.asText()).plusTime(amount.intValue(), timeUnit)
+    return JsonDateTime.fromString(dateTimeStr.asText()).plusTime(amount.intValue(), timeUnit)
 }
 
 

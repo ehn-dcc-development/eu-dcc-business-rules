@@ -202,8 +202,8 @@ The following `build.gradle` Gradle build script fragment sets up the dependenci
 ```groovy
 dependencies {
     implementation project(':decoder')
-    implementation 'eu.ehn.dcc.certlogic:certlogic-kotlin:0.7.2-SNAPSHOT'
-    implementation 'eu.ehn.dcc:rules-runner-kotlin:0.7.2-SNAPSHOT'
+    implementation 'eu.ehn.dcc.certlogic:certlogic-kotlin:0.7.3-SNAPSHOT'
+    implementation 'eu.ehn.dcc:rules-runner-kotlin:0.7.3-SNAPSHOT'
     // …
 }
 ```
@@ -245,16 +245,16 @@ The following XML fragment specifies the dependencies in a `pom.xml` when using 
     <dependency>
         <groupId>eu.ehn.dcc.certlogic</groupId>
         <artifactId>certlogic-kotlin</artifactId>
-        <version>0.7.2-SNAPSHOT</version>
+        <version>0.7.3-SNAPSHOT</version>
     </dependency>
     <dependency>
         <groupId>eu.ehn.dcc</groupId>
         <artifactId>rules-runner-kotlin</artifactId>
-        <version>0.7.2-SNAPSHOT</version>
+        <version>0.7.3-SNAPSHOT</version>
     </dependency>
 </dependencies>
 ```
 
 For now, this assumes that both modules have been `mvn install`-ed to the local Maven repository (usually physically located in `~/.m2`).
-When the Kotlin Certlogic and rules-runner modules are available on Maven Central, `0.7.2-SNAPSHOT` (or whatever snapshot version number is mentioned) should be replaced with non-snapshot version numbers.
+When the Kotlin Certlogic and rules-runner modules are available on Maven Central, `0.7.3-SNAPSHOT` (or whatever snapshot version number is mentioned) should be replaced with non-snapshot version numbers.
 

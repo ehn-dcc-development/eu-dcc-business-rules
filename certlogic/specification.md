@@ -50,8 +50,16 @@ Literal for the following (types of) values are not allowed: objects, `null`, an
 
 ## Dates and date-times
 
-Dates, and date-times (or timestamp) have to be constructed by performing a `plusTime` operation on a string with 0 days or hours added.
-This makes it possible to ensure consistent datetime representations across platforms, without being able to implicitly rely on the behaviour of native datetime types in combination with the other (allowed) operations.
+Dates, and date-times (so: timestamp) have to be constructed by performing a `plusTime` operation on a string with 0 days or hours added.
+This makes it possible to ensure consistent date/datetime representations across platforms, without being able to implicitly rely on the behaviour of native date/datetime types in combination with the other (allowed) operations.
+
+The following date and date-time formats are allowed:
+
+	YYYY-MM-DD
+	YYYY-MM-DDThh:mm:ssZ
+	YYYY-MM-DDThh:mm:ss[+-]hh
+	YYYY-MM-DDThh:mm:ss[+-]hhmm
+	YYYY-MM-DDThh:mm:ss[+-]hh:mm
 
 
 ## Data access (`var`)
