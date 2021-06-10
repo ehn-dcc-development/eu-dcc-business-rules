@@ -14,26 +14,34 @@ internal class CertLogicTests {
 
     @Test
     fun `test isTruthy`() {
+        // (no undefined)
         assertFalse(isTruthy(NullNode.instance))
         assertFalse(isTruthy(BooleanNode.FALSE))
         assertTrue(isTruthy(BooleanNode.TRUE))
         assertFalse(isTruthy(JsonNodeFactory.instance.arrayNode()), "empty array")
         assertTrue(isTruthy(JsonNodeFactory.instance.arrayNode().add(TextNode.valueOf("foo"))), "non-empty array")
-        assertTrue(isTruthy(JsonNodeFactory.instance.objectNode()))
-        assertTrue(isTruthy(JsonNodeFactory.instance.objectNode().put("foo", "bar")))
-        assertFalse(isTruthy(TextNode.valueOf("foo")))
-        assertFalse(isTruthy(IntNode.valueOf(42)))
+        assertTrue(isTruthy(JsonNodeFactory.instance.objectNode()), "empty object")
+        assertTrue(isTruthy(JsonNodeFactory.instance.objectNode().put("foo", "bar")), "non-empty object")
+        assertTrue(isTruthy(TextNode.valueOf("foo")))
+        assertFalse(isTruthy(TextNode.valueOf("")))
+        assertTrue(isTruthy(IntNode.valueOf(42)))
+        assertFalse(isTruthy(IntNode.valueOf(0)))
     }
 
     @Test
     fun `test isFalsy`() {
+        // (no undefined)
         assertTrue(isFalsy(NullNode.instance))
         assertTrue(isFalsy(BooleanNode.FALSE))
         assertFalse(isFalsy(BooleanNode.TRUE))
         assertFalse(isFalsy(JsonNodeFactory.instance.arrayNode()), "empty array")
+        assertFalse(isFalsy(JsonNodeFactory.instance.arrayNode().add(TextNode.valueOf("foo"))), "non-empty array")
         assertFalse(isFalsy(JsonNodeFactory.instance.objectNode()), "empty object")
-        assertFalse(isFalsy(TextNode.valueOf("")))
-        assertFalse(isFalsy(IntNode.valueOf(0)))
+        assertTrue(isTruthy(JsonNodeFactory.instance.objectNode().put("foo", "bar")), "non-empty object")
+        assertFalse(isFalsy(TextNode.valueOf("foo")))
+        assertTrue(isFalsy(TextNode.valueOf("")))
+        assertFalse(isFalsy(IntNode.valueOf(42)))
+        assertTrue(isFalsy(IntNode.valueOf(0)))
     }
 
     @Test

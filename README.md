@@ -34,7 +34,7 @@ Various code in this repo assumes that the following two repos are cloned right 
 
 This repository contains the following:
 
-* [Documentation](./documentation): currently only [design choices](./documentation/design-choices.md).
+* [Documentation](./documentation): currently a [How-To](./documentation/how-to.md), and [design choices](./documentation/design-choices.md).
 * [CertLogic](./certlogic/README.md): a specification, reference implementations for various platforms, a test suite, and a validation tool.
   CertLogic is generic, and not tied to the DCC, to make it easier to understand, test, expand, etc. independently.
 * [RulesRunner](./rules-runner/README.md): implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.

@@ -7,11 +7,15 @@ import com.fasterxml.jackson.databind.node.*
 internal fun isFalsy(value: JsonNode): Boolean = when (value) {
     is BooleanNode -> value == BooleanNode.FALSE
     is NullNode -> true
+    is TextNode -> value.textValue().isEmpty()
+    is IntNode -> value.intValue() == 0
     else -> false
 }
 
 internal fun isTruthy(value: JsonNode): Boolean = when (value) {
     is BooleanNode -> value == BooleanNode.TRUE
+    is TextNode -> value.textValue().isNotEmpty()
+    is IntNode -> value.intValue() != 0
     is ArrayNode -> value.size() > 0
     is ObjectNode -> true
     else -> false

@@ -1,0 +1,131 @@
+{
+  "name": "detect missing values",
+  "cases": [
+    {
+      "name": "detect missing string value",
+      "certLogicExpression": {
+        "if": [
+          {
+            "var": "payload.f"
+          },
+          {
+            "!": [
+              {
+                "===": [
+                  {
+                    "var": "payload.f"
+                  },
+                  "foo"
+                ]
+              }
+            ]
+          },
+          true
+        ]
+      },
+      "assertions": [
+        {
+          "data": {
+            "payload": {}
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "f": null
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "f": ""
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "f": "foo"
+            }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "payload": {
+              "f": "bar"
+            }
+          },
+          "expected": true
+        }
+      ]
+    },
+    {
+      "name": "detect missing integer value",
+      "certLogicExpression": {
+        "if": [
+          {
+            "var": "payload.f"
+          },
+          {
+            "!": [
+              {
+                "===": [
+                  {
+                    "var": "payload.f"
+                  },
+                  42
+                ]
+              }
+            ]
+          },
+          true
+        ]
+      },
+      "assertions": [
+        {
+          "data": {
+            "payload": {}
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "f": null
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "f": 0
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "f": 42
+            }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "payload": {
+              "f": 37
+            }
+          },
+          "expected": true
+        }
+      ]
+    }
+  ]
+}
