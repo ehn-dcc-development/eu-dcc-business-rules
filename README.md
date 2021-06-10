@@ -11,7 +11,7 @@
 
 ## About
 
-The [Digital COVID Certificate](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en) allows to determine whether a person is deemed fit-for-travel into a country-of-arrival (CoA) based on their vaccination, test, and recovery status.
+The [Digital COVID Certificate (DCC)](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en) allows to determine whether a person is deemed fit-for-travel into a country-of-arrival (CoA) based on their vaccination, test, and recovery status.
 To make such determinations, business (or validation, or verification) rules have to be implemented in verifier apps.
 
 This repository contains a framework to implement (sets of) rules in verifier apps (and backends) using a _rules engine_.
@@ -21,13 +21,15 @@ This can be achieved by adhering to a common, and testable and verifiable way of
 
 This work is a result of work done by the EU Taskforce Business Rules.
 
+The (JSON Schema) technical specification for the EU DCC can be found [here](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf).
+
 
 ## Assumptions
 
 Various code in this repo assumes that the following two repos are cloned right next to where this repo's cloned:
 
-* [dgc-testdata](https://github.com/ehn-dcc-development/dgc-testdata)
 * [ehn-dcc-schema](https://github.com/ehn-dcc-development/ehn-dcc-schema)
+* ([dgc-testdata](https://github.com/ehn-dcc-development/dgc-testdata))
 
 
 ## Organisation

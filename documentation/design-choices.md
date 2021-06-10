@@ -1,6 +1,6 @@
 # CertLogic: design choices
 
-This leads to the following requirements on the business rules:
+The following requirements are in scope for the business rules:
 
 1. They must be executable on a number of platforms/programming languages.
 2. The verifier apps must be updatable with new (versions of) business rules without needing to update the entire app.
