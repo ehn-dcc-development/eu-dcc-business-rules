@@ -1,0 +1,18 @@
+{
+  "name": "certlogic-tests",
+  "version": "0.7.5",
+  "description": "A comprehensive test suite for CertLogic.",
+  "main": "typings.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "prestart": "npm run build",
+    "start": "node dist/filter-validate-tests.js"
+  },
+  "author": "Meinte Boersma",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "@types/deep-equal": "^1.0.1",
+    "@types/node": "^15.12.2",
+    "deep-equal": "^2.0.5"
+  }
+}

@@ -1,30 +1,10 @@
 import { readdirSync, readFileSync } from "fs"
 import { join } from "path"
-import { CertLogicExpression } from "../typings"
 import { evaluate } from "../evaluator"
 
 const { deepEqual } = require("chai").assert
 
-
-type TestDirective = "skip" | "only" | undefined
-
-interface Assertion {
-    data: any
-    expected: any
-    directive: TestDirective
-    message?: string
-}
-interface TestCase {
-    name: string
-    directive: TestDirective
-    certLogicExpression: CertLogicExpression
-    assertions: Assertion[]
-}
-interface TestSuite {
-    name: string
-    directive: TestDirective
-    cases: TestCase[]
-}
+import { TestDirective, TestSuite } from "./test-types"
 
 
 const testDirective2MochaFunc = (testDirective: TestDirective, mochaFunc: any) => testDirective === undefined ? mochaFunc : mochaFunc[testDirective]
@@ -32,20 +12,28 @@ const testDirective2MochaFunc = (testDirective: TestDirective, mochaFunc: any) =
 const runTestsOn = (testSuite: TestSuite) => {
     testDirective2MochaFunc(testSuite.directive, describe)(testSuite.name, () => {
         testSuite.cases
-            .forEach(({name, certLogicExpression, assertions, directive}) => {
-                testDirective2MochaFunc(directive, it)(name, () => {
-                    assertions
-                        .forEach(({ data, expected, message , directive}, index) => {
-                            switch (directive) {
+            .forEach((testCase) => {
+                testDirective2MochaFunc(testCase.directive, it)(testCase.name, () => {
+                    testCase.assertions
+                        .forEach((assertion, index) => {
+                            const assertionText = assertion.message || `#${index + 1}`
+                            if (assertion.certLogicExpression === undefined && testCase.certLogicExpression === undefined) {
+                                console.error(`     !! no CertLogic expression defined on assertion ${assertionText}, and neither on encompassing test case "${testCase.name}"`)
+                            }
+                            switch (assertion.directive) {
                                 case "skip": {
-                                    console.warn(`      ! skipped assertion ${message || `#${index + 1}`}`)
+                                    console.warn(`      ! skipped assertion ${assertionText}`)
                                     return
                                 }
                                 case "only": {
-                                    console.warn("(test directive 'only' not supported on assertions)")
+                                    console.warn(`      (test directive 'only' not supported on assertions - ignoring)`)
                                 }
                             }
-                            deepEqual(evaluate(certLogicExpression, data), expected, message || JSON.stringify(data))
+                            deepEqual(
+                                evaluate((assertion.certLogicExpression !== undefined ? assertion.certLogicExpression : testCase.certLogicExpression)!!, assertion.data),
+                                assertion.expected,
+                                assertion.message || JSON.stringify(assertion.data)
+                            )
                         })
                 })
             })
