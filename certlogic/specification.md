@@ -60,6 +60,14 @@ The following date and date-time formats are allowed:
 	YYYY-MM-DDThh:mm:ss[+-]hh
 	YYYY-MM-DDThh:mm:ss[+-]hhmm
 	YYYY-MM-DDThh:mm:ss[+-]hh:mm
+	YYYY-MM-DDThh:mm:ss.S+Z
+	YYYY-MM-DDThh:mm:ss.S+[+-]hh
+	YYYY-MM-DDThh:mm:ss.S+[+-]hhmm
+	YYYY-MM-DDThh:mm:ss.S+[+-]hh:mm
+
+The last four formats specify sub-second time info, with any number of decimals being accepted.
+Any date(-time) is always normalised to milliseconds, with 3 places behind the decimal dot.
+All decimals beyond the 3rd one are ignored, effectively rounding _down_ to the nearest millisecond.
 
 
 ## Data access (`var`)

@@ -34,14 +34,17 @@ export const dateFromString = (str: string) => {
     if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
         return new Date(str)
     }
-    const matcher = str.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(Z|([+-]\d{2}):?(\d{2})?)$/)
-    //                                   1      2       3       4       5       6      7  8            9
+    const matcher = str.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+?)?(Z|([+-]\d{2}):?(\d{2})?)?$/)
+    //                                   1      2       3       4       5       6      7        8  9            10
     if (matcher) {
         let reformatted = `${matcher[1]}-${matcher[2]}-${matcher[3]}T${matcher[4]}:${matcher[5]}:${matcher[6]}`
-        if (matcher[7] === "Z") {
+        if (matcher[7]) {
+            reformatted += matcher[7].padEnd(4, "0").substring(0, 4)
+        }
+        if (!matcher[8] || (matcher[8] === "Z")) {
             reformatted += "Z"
         } else {
-            reformatted += matcher[8] + ":" + (matcher[9] || "00")
+            reformatted += matcher[9] + ":" + (matcher[10] || "00")
         }
         return new Date(reformatted)
     }

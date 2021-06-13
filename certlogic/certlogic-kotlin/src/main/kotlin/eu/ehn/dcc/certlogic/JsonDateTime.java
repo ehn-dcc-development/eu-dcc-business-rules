@@ -26,38 +26,39 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
 
     private final OffsetDateTime _value;
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
-
     /**
      * @param str a string with either a date or a date-time in any of the supported formats - see the approved documentation
      * @return a {@link JsonDateTime JSON date-time} of the given date/date-time
      */
     public static JsonDateTime fromString(String str) {
         if (str.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
-            return JsonDateTime.fromRfc3339dateTime(str + "T00:00:00Z");
+            return JsonDateTime.fromStringInternal(str + "T00:00:00Z");
         }
-        final Pattern pattern = Pattern.compile("^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})(Z|([+-]\\d{2}):?(\\d{2})?)$");
-        //                                        1        2        3        4        5        6       7  8             9
+        final Pattern pattern = Pattern.compile("^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})(\\.\\d+?)?(Z|([+-]\\d{2}):?(\\d{2})?)$");
+        //                                        1        2        3        4        5        6       7          8  9             10
         Matcher matcher = pattern.matcher(str);
         if (matcher.matches()) {
             String reformatted = String.format("%s-%s-%sT%s:%s:%s", matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5), matcher.group(6));
-            if (matcher.group(7).equals("Z")) {
+            if (matcher.group(7) != null) {
+                reformatted += String.format("%-4s", matcher.group(7)).replace(' ', '0').substring(0, 4);
+            }
+            if (matcher.group(8) == null || matcher.group(8).equals("Z")) {
                 reformatted += "Z";
             } else {
-                reformatted += matcher.group(8) + ":" + (matcher.group(9) != null ? matcher.group(9) : "00");
+                reformatted += matcher.group(9) + ":" + (matcher.group(10) != null ? matcher.group(10) : "00");
             }
-            return JsonDateTime.fromRfc3339dateTime(reformatted);
+            return JsonDateTime.fromStringInternal(reformatted);
         }
         throw new DateTimeParseException("not an allowed date or date-time format", str, 0);
     }
 
     /**
-     * @param dateTimeString a string with a date-time <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">compliant with RFC3339</a>
+     * @param dateTimeString a string with a date-time <a href="https://datatracker.ietf.org/doc/html/rfc3339#section-5.6">compliant with RFC3339</a> but optionally with added milliseconds
      * @return a {@link JsonDateTime JSON date-time} of the given date-time
      */
-    private static JsonDateTime fromRfc3339dateTime(String dateTimeString) {
+    private static JsonDateTime fromStringInternal(String dateTimeString) {
         try {
-            return new JsonDateTime(OffsetDateTime.parse(dateTimeString, formatter));
+            return new JsonDateTime(OffsetDateTime.parse(dateTimeString));
         } catch (DateTimeParseException e) {
             throw e;
         }
@@ -108,6 +109,8 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
     public JsonNodeType getNodeType() {
         return JsonNodeType.OBJECT;
     }
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZZZZZ");
 
     @Override
     public String asText() {

@@ -2,7 +2,7 @@ const { equal, isFalse, isTrue, throws } = require("chai").assert
 
 
 // (check out the JS-specific shenanigans w.r.t. dates:)
-describe("dates", () => {
+describe("JavaScript Date", () => {
 
     it("constructing a datetime using new Date(<string>)", () => {
         const date = new Date("2021-05-02T00:00:00+00:00")
