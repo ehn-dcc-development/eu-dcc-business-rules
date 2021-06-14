@@ -22,7 +22,7 @@ The data structure a rule operates on can be rendered in JSON format as follows:
 }
 ```
 
-The DCC payload JSON _must_ conform to the [DCC JSON Schema](https://github.com/ehn-dcc-development/ehn-dcc-schema/blob/main/DCC.combined-schema.json) (currently at version/release **1.2.1**), as well as to the [technical specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf) for it.
+The DCC payload JSON _must_ conform to the [DCC JSON Schema](https://github.com/ehn-dcc-development/ehn-dcc-schema/blob/main/DCC.combined-schema.json) (currently at version/release **1.3.0**), as well as to the [technical specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf) for it.
 
 The “compressed” value sets are derived from the [value sets in the DCC Schema repo](https://github.com/ehn-dcc-development/ehn-dcc-schema/tree/main/valuesets).
 The (extra) external parameters may consist of data like the validation clock.
