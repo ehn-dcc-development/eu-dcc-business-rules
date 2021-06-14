@@ -128,13 +128,14 @@ For the `===`, `in`, and `+` operators, `n` must equal 2.
 
 The `===` operator checks equality without type coercion.
 This works reliable on strings and integers, but not on other types.
-_Note:_ this might be restricted further to only allow strings and integers.
+_Note:_ this might still be restricted further to only allow strings and integers.
 
 The `in` operator checks whether `<operand 1>` is a member of `<operand 2>`, which must be an array - possibly empty.
 (This must be checked beforehand through other means: operating on a non-array `<operand 2>` is considered an error.)
 
 The `and` operator can be used _variadically_: it can have any number of operands greater than 1.
-An operation with the `and` operator returns its first operand that evaluates to a falsy value, or the evaluation of the last value.
+All operands must be either truthy or falsy - no “inbetween” values that are neither are allowed.
+An operation with the `and` operator returns the first of its operand that evaluates to a falsy value, or the evaluation of the last value.
 
 The comparison operators `>`, `<`, `>=`, `<=` (exempting equality `===`) can be used in (the customary) binary form (`n` = 2), or in the ternary form (`n` = 3).
 The ternary form
