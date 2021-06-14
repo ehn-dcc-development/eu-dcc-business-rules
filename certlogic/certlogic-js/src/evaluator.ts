@@ -103,7 +103,15 @@ const evaluateBinOp = (operator: string, values: CertLogicExpression[], data: an
             return l + r
         }
         case "and": return values.reduce(
-            (acc: any, current: CertLogicExpression) => isFalsy(acc) ? acc : evaluate(current, data),
+            (acc: any, current: CertLogicExpression) => {
+                if (isFalsy(acc)) {
+                    return acc
+                }
+                if (isTruthy(acc)) {
+                    return evaluate(current, data)
+                }
+                throw new Error(`any operand of an "and" operation must be either truthy or falsy`)
+            },
             true
         )
         case "<":
