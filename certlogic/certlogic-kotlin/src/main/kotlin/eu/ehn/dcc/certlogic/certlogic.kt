@@ -101,7 +101,11 @@ internal fun evaluateBinOp(operator: String, args: ArrayNode, data: JsonNode): J
             IntNode.valueOf(evalArgs[0].intValue() + evalArgs[1].intValue())
         }
         "and" -> args.fold(BooleanNode.TRUE as JsonNode) { acc, current ->
-            if (isFalsy(acc)) acc else evaluate(current, data)
+            when {
+                isFalsy(acc) -> acc
+                isTruthy(acc) -> evaluate(current, data)
+                else -> throw RuntimeException("all operands of an \"and\" operation must be either truthy or falsy")
+            }
         }
         "<", ">", "<=", ">=" -> {
             BooleanNode.valueOf(
