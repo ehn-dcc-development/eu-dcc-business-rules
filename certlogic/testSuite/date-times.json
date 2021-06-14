@@ -1,10 +1,10 @@
 {
-  "name": "construction and comparing of datetimes ",
+  "name": "construction and comparing of date-times ",
   "cases": [
     {
-      "name": "comparison of datetimes constructed using plusTime",
+      "name": "comparison of datet-imes constructed using plusTime",
       "certLogicExpression": {
-        "<": [
+        "before": [
           {
             "plusTime": [
               {
@@ -44,7 +44,7 @@
     {
       "name": "tri-comparison of dates (e.g., for VR-EU-0003)",
       "certLogicExpression": {
-        "<=": [
+        "not-after": [
           {
             "plusTime": [
               {

@@ -178,7 +178,7 @@
           "var": "payload.v.0"
         },
         {
-          "<=": [
+          "not-after": [
             {
               "plusTime": [
                 {
@@ -288,7 +288,7 @@
           "var": "payload.t.0"
         },
         {
-          "<": [
+          "before": [
             {
               "plusTime": [
                 {
@@ -357,7 +357,7 @@
           "var": "payload.r.0"
         },
         {
-          "<=": [
+          "not-after": [
             {
               "plusTime": [
                 {
@@ -404,7 +404,7 @@
         {
           "and": [
             {
-              ">=": [
+              "not-before": [
                 {
                   "plusTime": [
                     {
@@ -426,7 +426,7 @@
               ]
             },
             {
-              "<=": [
+              "not-after": [
                 {
                   "plusTime": [
                     {

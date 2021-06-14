@@ -76,10 +76,19 @@ internal fun <T:Comparable<T>> compare(operator: String, args: List<T>): Boolean
         else -> throw RuntimeException("invalid number of operands to a \"$operator\" operation")
     }
 
+internal fun comparisonOperatorForDateTimeComparison(operator: String): String =
+    when (operator) {
+        "after" -> ">"
+        "before" -> "<"
+        "not-after" -> "<="
+        "not-before" -> ">="
+        else -> throw RuntimeException("unhandled date-time comparison operator \"$operator\"")
+    }
+
 internal fun evaluateBinOp(operator: String, args: ArrayNode, data: JsonNode): JsonNode {
     when (operator) {
         "and" -> if (args.size() < 2) throw RuntimeException("an \"and\" operation must have at least 2 operands")
-        "<", ">", "<=", ">=" -> if (args.size() < 2 || args.size() > 3) throw RuntimeException("an operation with operator \"$operator\" must have 2 or 3 operands")
+        "<", ">", "<=", ">=", "after", "before", "not-after", "not-before" -> if (args.size() < 2 || args.size() > 3) throw RuntimeException("an operation with operator \"$operator\" must have 2 or 3 operands")
         else -> if (args.size() != 2) throw RuntimeException("an operation with operator \"$operator\" must have 2 operands")
     }
     val evalArgs = args.map { arg -> evaluate(arg, data) }
@@ -108,23 +117,20 @@ internal fun evaluateBinOp(operator: String, args: ArrayNode, data: JsonNode): J
             }
         }
         "<", ">", "<=", ">=" -> {
+            if (!evalArgs.all { it is IntNode }) {
+                throw RuntimeException("all operands of a comparison operator must be of integer type")
+            }
             BooleanNode.valueOf(
-                when (evalArgs[0]) {
-                    is IntNode -> {
-                        if (evalArgs.any { it !is IntNode }) {
-                            throw RuntimeException("all operands must have the same type")
-                        }
-                        compare(operator, evalArgs.map { (it as IntNode).intValue() })
-                    }
-                    is JsonDateTime -> {
-                        if (evalArgs.any { it !is JsonDateTime }) {
-                            throw RuntimeException("all operands must have the same type")
-                        }
-                        compare(operator, evalArgs.map { (it as JsonDateTime).temporalValue() })
-                    }
-                    else -> throw RuntimeException("can't handle the following type for the operands to a \"$operator\" operation: ${evalArgs[0].javaClass}")
-                }
+                compare(operator, evalArgs.map { (it as IntNode).intValue() })
             )
+        }
+        "after", "before", "not-after", "not-before" -> {
+            if (!evalArgs.all { it is JsonDateTime }) {
+                throw RuntimeException("all operands of a date-time comparsion must be date-times")
+            }
+            BooleanNode.valueOf(
+                compare(comparisonOperatorForDateTimeComparison(operator), evalArgs.map { (it as JsonDateTime).temporalValue() })
+           )
         }
         else -> throw RuntimeException("unhandled binary operator \"$operator\"")
     }
@@ -208,7 +214,7 @@ fun evaluate(expr: JsonNode, data: JsonNode): JsonNode = when (expr) {
             }
             when (operator) {
                 "if" -> evaluateIf(args[0], args[1], args[2], data)
-                "===", "and", ">", "<", ">=", "<=", "in", "+" -> evaluateBinOp(operator, args, data)
+                "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" -> evaluateBinOp(operator, args, data)
                 "!" -> evaluateNot(args[0], data)
                 "plusTime" -> evaluatePlusTime(args[0], args[1], args[2], data)
                 "reduce" -> evaluateReduce(args[0], args[1], args[2], data)

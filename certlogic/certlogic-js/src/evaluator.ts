@@ -66,6 +66,16 @@ const compare = (operator: ComparisonOperator, values: Comparable[]): boolean =>
     }
 }
 
+type DateTimeComparisonOperator = "after" | "before" | "not-after" | "not-before"
+const comparisonOperatorForDateTimeComparison = (operator: DateTimeComparisonOperator) => {
+    switch (operator) {
+        case "after": return ">"
+        case "before": return "<"
+        case "not-after": return "<="
+        case "not-before": return ">="
+    }
+}
+
 const evaluateBinOp = (operator: string, values: CertLogicExpression[], data: any): any => {
     switch (operator) {
         case "and": {
@@ -75,7 +85,9 @@ const evaluateBinOp = (operator: string, values: CertLogicExpression[], data: an
         case "<":
         case ">":
         case "<=":
-        case ">=": {
+        case ">=":
+        case "before":
+        case "not-after": {
             if (values.length < 2 || values.length > 3) throw new Error(`an operation with operator "${operator}" must have 2 or 3 operands`)
             break
         }
@@ -110,7 +122,7 @@ const evaluateBinOp = (operator: string, values: CertLogicExpression[], data: an
                 if (isTruthy(acc)) {
                     return evaluate(current, data)
                 }
-                throw new Error(`any operand of an "and" operation must be either truthy or falsy`)
+                throw new Error(`all operands of an "and" operation must be either truthy or falsy`)
             },
             true
         )
@@ -118,17 +130,19 @@ const evaluateBinOp = (operator: string, values: CertLogicExpression[], data: an
         case ">":
         case "<=":
         case ">=": {
-            if (isInt(evalArgs[0])) {
-                if (evalArgs.some((arg) => !isInt(arg))) {
-                    throw new Error(`all operands must have the same type`)
-                }
-            }
-            if (isDate(evalArgs[0])) {
-                if (evalArgs.some((arg) => !isDate(arg))) {
-                    throw new Error(`all operands must have the same type`)
-                }
+            if (!evalArgs.every(isInt)) {
+                throw new Error(`all operands of a comparison operation must be of integer type`)
             }
             return compare(operator, evalArgs)
+        }
+        case "after":
+        case "before":
+        case "not-after":
+        case "not-before": {
+            if (!evalArgs.every(isDate)) {
+                throw new Error(`all operands of a date-time comparison must be date-times`)
+            }
+            return compare(comparisonOperatorForDateTimeComparison(operator), evalArgs)
         }
         default: throw new Error(`unhandled binary operator "${operator}"`)
     }
@@ -206,7 +220,7 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
             const [ guard, then, else_ ] = values
             return evaluateIf(guard, then, else_, data)
         }
-        if ([ "===", "and", ">", "<", ">=", "<=", "in", "+" ].indexOf(operator) > -1) {
+        if ([ "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" ].indexOf(operator) > -1) {
             return evaluateBinOp(operator, values, data)
         }
         if (operator === "!") {

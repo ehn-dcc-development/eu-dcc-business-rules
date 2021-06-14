@@ -17,7 +17,7 @@ However, the following problems were found with (using) JsonLogic:
 
 * The implementations had differing behaviour/semantics.
   In theory, this could be mitigated by patching implementations to align their behaviour/semantics.
-* No support for dates and datetimes was provided out-of-the-box.
+* No support for date(-times) was provided out-of-the-box.
   In theory, this could be mitigated by adding custom operations, but unfortunately, not every implementation allows that.
 * JsonLogic provides more than is required for the purpose here, which would mean that much testing is required to ensure that behaviour is consistent across implementations.
 

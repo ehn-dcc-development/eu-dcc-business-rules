@@ -1,6 +1,6 @@
 {
   "name": "certlogic-validation",
-  "version": "0.1.0",
+  "version": "0.7.5",
   "description": "Validators for CertLogic",
   "main": "dist/index.js",
   "scripts": {
