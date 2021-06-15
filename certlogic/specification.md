@@ -114,12 +114,13 @@ Conditional logic can be implemented through an operation of the following form:
 If the `<guard>` evaluates to a truthy value, then the `<guard>` expression is evaluated, otherwise the `<else>` expression.
 
 
-## Operations with binary operators
+## Operations with infix operators
 
-The following binary operators known from JavaScript are available: `===`, `and`, `>`, `<`, `>=`, `<=`, `in`, `+`.
+(An infix operator is a binary operator which is notated between its operands.)
+The following infix operators known from JavaScript are available: `===`, `and`, `>`, `<`, `>=`, `<=`, `in`, `+`.
 A few custom operations have been added specifically for date-time-handling: `after`, `before`, `not-after`, `not-before`.
 
-An operation with a binary operator has the following form:
+An operation with an infix operator has the following form (which is decidedly non-infix):
 
     {
         "<operator>": [
@@ -143,7 +144,7 @@ The `and` operator can be used _variadically_: it can have any number of operand
 All operands must be either truthy or falsy - no “inbetween” values that are neither are allowed.
 An operation with the `and` operator returns the first of its operand that evaluates to a falsy value, or the evaluation of the last value.
 
-The comparison operators `>`, `<`, `>=`, `<=`, `after`, `before`, `not-after`, `not-before` (but not equality `===`) can be used in (the customary) binary form (`n` = 2), or in the ternary form (`n` = 3).
+The comparison operators `>`, `<`, `>=`, `<=`, `after`, `before`, `not-after`, `not-before` (but not equality `===`) can be used in (the customary) infix form (`n` = 2), or in the ternary form (`n` = 3).
 The ternary form
 
     {
@@ -164,7 +165,7 @@ All operands of an `after`, `before`, `not-after`, or `not-before` operator must
 ## Negation (`!`)
 
 The negation operation takes one operand, and returns `true` if that operand's falsy, and `false` if it's truthy.
-It's an error if the operand is neither falsy, nor truthy.
+It's an error if any operand is neither falsy, nor truthy.
 
 
 ## Offset date-time (`plusTime`)

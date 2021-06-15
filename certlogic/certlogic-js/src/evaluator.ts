@@ -76,7 +76,7 @@ const comparisonOperatorForDateTimeComparison = (operator: DateTimeComparisonOpe
     }
 }
 
-const evaluateBinOp = (operator: string, values: CertLogicExpression[], data: any): any => {
+const evaluateInfix = (operator: string, values: CertLogicExpression[], data: any): any => {
     switch (operator) {
         case "and": {
             if (values.length < 2) throw new Error(`an "and" operation must have at least 2 operands`)
@@ -86,8 +86,10 @@ const evaluateBinOp = (operator: string, values: CertLogicExpression[], data: an
         case ">":
         case "<=":
         case ">=":
+        case "after":
         case "before":
-        case "not-after": {
+        case "not-after":
+        case "not-before": {
             if (values.length < 2 || values.length > 3) throw new Error(`an operation with operator "${operator}" must have 2 or 3 operands`)
             break
         }
@@ -144,7 +146,7 @@ const evaluateBinOp = (operator: string, values: CertLogicExpression[], data: an
             }
             return compare(comparisonOperatorForDateTimeComparison(operator), evalArgs)
         }
-        default: throw new Error(`unhandled binary operator "${operator}"`)
+        default: throw new Error(`unhandled infix operator "${operator}"`)
     }
 }
 
@@ -221,7 +223,7 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
             return evaluateIf(guard, then, else_, data)
         }
         if ([ "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" ].indexOf(operator) > -1) {
-            return evaluateBinOp(operator, values, data)
+            return evaluateInfix(operator, values, data)
         }
         if (operator === "!") {
             return evaluateNot(values[0], data)

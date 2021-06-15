@@ -66,7 +66,7 @@ internal fun intCompare(operator: String, l: Int, r: Int): Boolean =
         ">" -> l > r
         "<=" -> l <= r
         ">=" -> l >= r
-        else -> throw RuntimeException("unhandled binary comparison operator \"$operator\"")
+        else -> throw RuntimeException("unhandled comparison operator \"$operator\"")
     }
 
 internal fun <T:Comparable<T>> compare(operator: String, args: List<T>): Boolean =
@@ -85,7 +85,7 @@ internal fun comparisonOperatorForDateTimeComparison(operator: String): String =
         else -> throw RuntimeException("unhandled date-time comparison operator \"$operator\"")
     }
 
-internal fun evaluateBinOp(operator: String, args: ArrayNode, data: JsonNode): JsonNode {
+internal fun evaluateInfix(operator: String, args: ArrayNode, data: JsonNode): JsonNode {
     when (operator) {
         "and" -> if (args.size() < 2) throw RuntimeException("an \"and\" operation must have at least 2 operands")
         "<", ">", "<=", ">=", "after", "before", "not-after", "not-before" -> if (args.size() < 2 || args.size() > 3) throw RuntimeException("an operation with operator \"$operator\" must have 2 or 3 operands")
@@ -132,7 +132,7 @@ internal fun evaluateBinOp(operator: String, args: ArrayNode, data: JsonNode): J
                 compare(comparisonOperatorForDateTimeComparison(operator), evalArgs.map { (it as JsonDateTime).temporalValue() })
            )
         }
-        else -> throw RuntimeException("unhandled binary operator \"$operator\"")
+        else -> throw RuntimeException("unhandled infix operator \"$operator\"")
     }
 }
 
@@ -214,7 +214,7 @@ fun evaluate(expr: JsonNode, data: JsonNode): JsonNode = when (expr) {
             }
             when (operator) {
                 "if" -> evaluateIf(args[0], args[1], args[2], data)
-                "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" -> evaluateBinOp(operator, args, data)
+                "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" -> evaluateInfix(operator, args, data)
                 "!" -> evaluateNot(args[0], data)
                 "plusTime" -> evaluatePlusTime(args[0], args[1], args[2], data)
                 "reduce" -> evaluateReduce(args[0], args[1], args[2], data)
