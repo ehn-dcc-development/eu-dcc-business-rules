@@ -36,7 +36,11 @@ const validateBinOp = (expr: any, operator: string, values: any[]): ValidationEr
         case "<":
         case ">":
         case "<=":
-        case ">=": {
+        case ">=":
+        case "after":
+        case "before":
+        case "not-after":
+        case "not-before": {
             maxOperands = 3
             if (values.length < 2 || values.length > 3) {
                 errors.push({ expr, message: `an operation with operator "${operator}" must have 2 or 3 operands, but it has ${values.length}` })
@@ -116,7 +120,7 @@ const validate = (expr: any): ValidationError[] => {
         if (operator === "if") {
             return validateIf(expr, values)
         }
-        if ([ "===", "and", ">", "<", ">=", "<=", "in", "+" ].indexOf(operator) > -1) {
+        if ([ "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" ].indexOf(operator) > -1) {
             return validateBinOp(expr, operator, values)
         }
         if (operator === "!") {

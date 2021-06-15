@@ -1,6 +1,6 @@
 # CertLogic: specification
 
-CertLogic is a restricted *subset* of JsonLogic, extended with custom operations - e.g. for working with dates.
+CertLogic is a restricted *subset* of JsonLogic, extended with custom operations - e.g. for working with date-times.
 
 The semantics of CertLogic is that of a function which takes a _CertLogic expression_, a _data context_ (structured data), and returns a value.
 All three of these values are JSON values that must be _self-contained_, and _non-referential_.
@@ -45,13 +45,14 @@ Note: `null`, the empty string, the zero integer, the empty array all being fals
 ## Literals: arrays, booleans, integers, and strings
 
 The usual array, boolean, integer (as a subset of JavaScript's `Number` type), and string literals are allowed.
-Literal for the following (types of) values are not allowed: objects, `null`, and dates.
+Literal for the following (types of) values are not allowed: objects, `null`, and date-times.
 
 
 ## Dates and date-times
 
-Dates, and date-times (so: timestamp) have to be constructed by performing a `plusTime` operation on a string with 0 days or hours added.
-This makes it possible to ensure consistent date/datetime representations across platforms, without being able to implicitly rely on the behaviour of native date/datetime types in combination with the other (allowed) operations.
+Dates, and date-times (so: timestamps) can only be constructed by performing a `plusTime` operation, with a certain amount of hours or days added.
+Add 0 hours/days to represent the date(-time) as-is.
+This makes it possible to ensure consistent date/date-time representations across platforms, without being able to implicitly rely on the behaviour of native date/date-time types in combination with the other (allowed) operations.
 
 The following date and date-time formats are allowed:
 
@@ -68,6 +69,10 @@ The following date and date-time formats are allowed:
 The last four formats specify sub-second time info, with any number of decimals being accepted.
 Any date(-time) is always normalised to milliseconds, with 3 places behind the decimal dot.
 All decimals beyond the 3rd one are ignored, effectively rounding _down_ to the nearest millisecond.
+
+Effectively, any date is always converted to the corresponding ms-precise date-time at midnight of that date.
+Note that that doesn't properly reflect the resolution of the input date.
+That effect has to be taken into account by the logic implementor.
 
 
 ## Data access (`var`)
@@ -109,11 +114,13 @@ Conditional logic can be implemented through an operation of the following form:
 If the `<guard>` evaluates to a truthy value, then the `<guard>` expression is evaluated, otherwise the `<else>` expression.
 
 
-## Operations with binary operators
+## Operations with infix operators
 
-The following binary operators from JavaScript are available: `===`, `and`, `>`, `<`, `>=`, `<=`, `in`, `+`.
+(An infix operator is a binary operator which is notated between its operands.)
+The following infix operators known from JavaScript are available: `===`, `and`, `>`, `<`, `>=`, `<=`, `in`, `+`.
+A few custom operations have been added specifically for date-time-handling: `after`, `before`, `not-after`, `not-before`.
 
-An operation with a binary operator has the following form:
+An operation with an infix operator has the following form (which is decidedly non-infix):
 
     {
         "<operator>": [
@@ -137,7 +144,7 @@ The `and` operator can be used _variadically_: it can have any number of operand
 All operands must be either truthy or falsy - no “inbetween” values that are neither are allowed.
 An operation with the `and` operator returns the first of its operand that evaluates to a falsy value, or the evaluation of the last value.
 
-The comparison operators `>`, `<`, `>=`, `<=` (exempting equality `===`) can be used in (the customary) binary form (`n` = 2), or in the ternary form (`n` = 3).
+The comparison operators `>`, `<`, `>=`, `<=`, `after`, `before`, `not-after`, `not-before` (but not equality `===`) can be used in (the customary) infix form (`n` = 2), or in the ternary form (`n` = 3).
 The ternary form
 
     {
@@ -149,31 +156,31 @@ The ternary form
     }
 
 has the following semantics: `(<operand 1> <op> <operand 2>) and (<operand 2> <op> <operand 3>)`.
-The operands must be comparable values of the following type: integers, or dates/date-times.
-All operands must be of the same type.
+It's an error if not all operands are of integer type.
 
-_Note:_ separate operators may be introduced for (unequal-)comparison of dates/date-times.
+The `after`, `before`, `not-after`, and `not-before` operators are the date-time-specific equivalents of the `>`, `<`, `<=`, and `>=` (respectively) operators for integers, including the ternary form.
+All operands of an `after`, `before`, `not-after`, or `not-before` operator must be date-times.
 
 
 ## Negation (`!`)
 
 The negation operation takes one operand, and returns `true` if that operand's falsy, and `false` if it's truthy.
-It's considered an error if the operand is neither falsy, nor truthy.
+It's an error if any operand is neither falsy, nor truthy.
 
 
-## Offset datetime (`plusTime`)
+## Offset date-time (`plusTime`)
 
-A datetime offset operation has the following form:
+A date-time offset operation has the following form:
 
     {
         "plusTime": [
-            <operand that evaluates to a string with a datetime in the allowed format>,
+            <operand that evaluates to a string with a date-time in the allowed format>,
             <integer: the number of days/hours to add (may be negative)>,
             <"day" or "hour">
         ]
     }
 
-This operation is the *only* way to construct datetime values.
+This operation is the *only* way to construct date-time values.
 
 
 ## Reduction (`reduce`)
