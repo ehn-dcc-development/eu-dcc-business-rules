@@ -12,7 +12,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.5.0</kotlin.version>
         <jackson.version>2.12.3</jackson.version>
-        <github.organization>eu-digital-green-certificates</github.organization>
+        <github.organization>ehn-dcc-development</github.organization>
         <github.project>dgc-business-rules</github.project>
     </properties>
     <distributionManagement>
