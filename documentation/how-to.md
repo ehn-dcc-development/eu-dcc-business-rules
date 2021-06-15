@@ -203,7 +203,7 @@ The following `build.gradle` Gradle build script fragment sets up the dependenci
 dependencies {
     implementation project(':decoder')
     implementation 'eu.ehn.dcc.certlogic:certlogic-kotlin:0.7.5-SNAPSHOT'
-    implementation 'eu.ehn.dcc:rules-runner-kotlin:0.7.5-SNAPSHOT'
+    implementation 'eu.ehn.dcc:rules-runner-kotlin:0.5.0-SNAPSHOT'
     // …
 }
 ```
