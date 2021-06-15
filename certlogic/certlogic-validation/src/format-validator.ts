@@ -23,7 +23,7 @@ const validateIf = (expr: any, values: any[]): ValidationError[] => {
     return errors
 }
 
-const validateBinOp = (expr: any, operator: string, values: any[]): ValidationError[] => {
+const validateInfix = (expr: any, operator: string, values: any[]): ValidationError[] => {
     const errors = []
     let maxOperands = 2
     switch (operator) {
@@ -121,7 +121,7 @@ const validate = (expr: any): ValidationError[] => {
             return validateIf(expr, values)
         }
         if ([ "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" ].indexOf(operator) > -1) {
-            return validateBinOp(expr, operator, values)
+            return validateInfix(expr, operator, values)
         }
         if (operator === "!") {
             return validateNot(expr, values)

@@ -10,6 +10,8 @@
     "pretest": "npm run build",
     "test": "mocha dist/test",
     "test-watch": "mocha --watch dist/test",
+    "prestart": "npm run test",
+    "start": "node dist/test/validate-testSuite.js",
     "clean": "rm -rf dist/ && rm -rf node_modules/"
   },
   "bin": {

@@ -14,13 +14,17 @@ const typeOfVar = (args: any, typeOfData: TypeObject): TypeObject => {
     return path.split(".").reduce(typeFrom, typeOfData)
 }
 
-const typeOfBinOp = (operator: string): TypeObject => {
+const typeOfInfix = (operator: string): TypeObject => {
     switch (operator) {
         case "===":
         case ">":
         case "<":
         case ">=":
         case "<=":
+        case "after":
+        case "before":
+        case "not-after":
+        case "not-before":
         case "in":
             return booleanType
         case "and": return sumOf(falsy, truthy) // TODO  could make this sharper by actually inspecting the operands
@@ -72,8 +76,8 @@ export const typeOf = (expr: CertLogicExpression, typeOfData: TypeObject): TypeO
         if (operator === "if") {
             return typeOfIf(args[1], args[2], typeOfData)
         }
-        if ([ "===", "and", ">", "<", ">=", "<=", "in", "+" ].indexOf(operator) > -1) {
-            return typeOfBinOp(operator)
+        if ([ "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" ].indexOf(operator) > -1) {
+            return typeOfInfix(operator)
         }
         if (operator === "!") {
             return booleanType
