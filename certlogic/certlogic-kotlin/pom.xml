@@ -6,13 +6,21 @@
 
     <groupId>eu.ehn.dcc.certlogic</groupId>
     <artifactId>certlogic-kotlin</artifactId>
-    <version>0.7.5-SNAPSHOT</version>
+    <version>latest</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <kotlin.version>1.5.0</kotlin.version>
         <jackson.version>2.12.3</jackson.version>
+        <github.organization>eu-digital-green-certificates</github.organization>
+        <github.project>dgc-business-rules</github.project>
     </properties>
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/${github.organization}/${github.project}</url>
+        </repository>
+    </distributionManagement>
 
     <dependencies>
         <dependency>
