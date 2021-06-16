@@ -1,0 +1,90 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "t == empty array",
+    "payload": {
+      "t": []
+    },
+    "expected": true
+  },
+  {
+    "payload": {
+      "t": [
+        {
+          "tt": "LP6464-4",
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-05T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "payload": {
+      "t": [
+        {
+          "tt": "LP6464-4",
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-04T13:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "exactly 72 hours ago",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP6464-4",
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-04T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "just within 72 hours",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP6464-4",
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T23:59:59+00:00",
+    "expected": true
+  },
+  {
+    "name": "comfortably within 40 hours",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP6464-4",
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "eager, eager..!",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP6464-4",
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-02T00:00:00+00:00",
+    "expected": true
+  }
+]

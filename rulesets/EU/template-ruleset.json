@@ -239,9 +239,10 @@
             {
               "var": "payload.t.0.tt"
             },
-            {
-              "var": "external.valueSets.covid-19-lab-test-type"
-            }
+            [
+              "LP217198-3",
+              "LP6464-4"
+            ]
           ]
         },
         true
@@ -278,14 +279,60 @@
     }
   },
   {
-    "id": "TR-EU-0003",
+    "id": "TR-EU-0005",
     "businessDescription": "The test must be performed ",
-    "description": "DateTime of Sample Collection must be less than 72 hours before the Verification Datetime.",
+    "description": "DateTime of Sample Collection must be less than 48 hours before the Verification Datetime for a test of type RAT (rapid antigen test).",
     "inputParameter": "Test Part of the HCert (\"t\")+ validation date (timestamp)+ Valuesets +\"sc\"",
     "logic": {
       "if": [
         {
-          "var": "payload.t.0"
+          "===": [
+            {
+              "var": "payload.t.0.tt"
+            },
+            "LP217198-3"
+          ]
+        },
+        {
+          "before": [
+            {
+              "plusTime": [
+                {
+                  "var": "external.validationClock"
+                },
+                0,
+                "day"
+              ]
+            },
+            {
+              "plusTime": [
+                {
+                  "var": "payload.t.0.sc"
+                },
+                48,
+                "hour"
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "TR-EU-0006",
+    "businessDescription": "The test must be performed ",
+    "description": "DateTime of Sample Collection must be less than 72 hours before the Verification Datetime for a test of type NAA (PCR test).",
+    "inputParameter": "Test Part of the HCert (\"t\")+ validation date (timestamp)+ Valuesets +\"sc\"",
+    "logic": {
+      "if": [
+        {
+          "===": [
+            {
+              "var": "payload.t.0.tt"
+            },
+            "LP6464-4"
+          ]
         },
         {
           "before": [
