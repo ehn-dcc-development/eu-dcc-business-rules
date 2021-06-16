@@ -23,6 +23,8 @@ This work is a result of work done by the EU Taskforce Business Rules.
 
 The (JSON Schema) technical specification for the EU DCC can be found [here](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf).
 
+Relevant documents and links can be found [here](./documentation/documents-links.md).
+
 
 ## Assumptions
 
@@ -36,7 +38,7 @@ Various code in this repo assumes that the following two repos are cloned right 
 
 This repository contains the following:
 
-* [Documentation](./documentation): currently a [How-To](./documentation/how-to.md), and [design choices](./documentation/design-choices.md).
+* [Documentation](./documentation): currently a [How-To](./documentation/how-to.md), [design choices](./documentation/design-choices.md), and [documents/links](./documentation/documents-links.md).
 * [CertLogic](./certlogic/README.md): a specification, reference implementations for various platforms, a test suite, and a validation tool.
   CertLogic is generic, and not tied to the DCC, to make it easier to understand, test, expand, etc. independently.
 * [RulesRunner](./rules-runner/README.md): implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
