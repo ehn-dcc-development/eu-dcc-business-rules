@@ -6,7 +6,6 @@
   "scripts": {
     "build": "tsc",
     "build-watch": "tsc --watch --incremental",
-    "test-EU": "node dist/test-cli.js --tests=../../../rulesets/EU/tests --rule-set=../../../rulesets/EU/template-ruleset.json --value-sets=../../resources/valueSets.json",
     "clean": "rm -rf dist/ && rm -rf node_modules/"
   },
   "bin": {

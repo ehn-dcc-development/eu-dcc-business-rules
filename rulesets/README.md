@@ -15,6 +15,7 @@
 This repository contains:
 
 * The [EU-template for validation rules](./EU)
+* The [validation rules for traveling (in-)to the Netherlands (NL)](./NL)
 
 
 ## Testing & Status

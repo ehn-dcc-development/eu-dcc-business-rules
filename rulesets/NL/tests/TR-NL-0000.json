@@ -1,0 +1,39 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "t == empty array",
+    "payload": {
+      "t": []
+    },
+    "expected": true
+  },
+  {
+    "name": "1 t-event",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP6464-4"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "name": "2 t-events",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP6464-4"
+        },
+        {
+          "tt": "LP217198-3"
+        }
+      ]
+    },
+    "expected": false
+  }
+]

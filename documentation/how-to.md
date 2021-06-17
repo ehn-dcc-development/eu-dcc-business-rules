@@ -111,9 +111,9 @@ The `test-rule-set` command tries to load the rule set, and value sets JSON file
 It then runs all rules' tests, checking whether the rule evaluates without erroring on each test, and matches the expected outcome.
 `test-rule-set` also checks whether the test files are in 1-to-1 correspondence to the rules in the rule set, reporting when a rule does not have a corresponding test file, and vice versa.
 
-To test this functionality you can run the script `test-EU`, which tests the [EU-template rule set](../rulesets/EU/template-ruleset.json).
+To test this functionality you can run the script `run-tests.sh`, which tests all rule sets present against their (respective) tests.
 
-    $ (rules-runner/javascript/rules-runner-js) npm run test-EU
+    $ (rulesets) ./run-tests.sh
 
 
 ## Running rules (or a rule set)

@@ -1,0 +1,39 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "payload": {
+      "r": []
+    },
+    "expected": true
+  },
+  {
+    "name": "1 r-event",
+    "payload": {
+      "r": [
+        {
+          "tg": "840539006"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "name": "2 r-events",
+    "payload": {
+      "r": [
+        {
+          "tg": "840539006"
+        },
+        {
+          "tg": "840539006"
+        }
+      ]
+    },
+    "expected": false
+  }
+]

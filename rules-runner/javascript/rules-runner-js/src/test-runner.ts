@@ -27,7 +27,12 @@ const runTests = (rule: Rule, valueSets: ValueSets, assertions: Assertion[]) => 
         assertions.forEach(({ name, payload, validationClock, expected, message }, index) => {
             const assertionText = `assertion ${index + 1}`
             it(name ? `${name} (${assertionText})` : assertionText, () => {
-                deepEqual(runRule(rule, { payload, external: { valueSets, validationClock } }), expected)
+                const evalResult = runRule(rule, { payload, external: { valueSets, validationClock } })
+                if (typeof evalResult === "object" && "errorMessage" in evalResult) {
+                    fail(`evaluation of ${assertionText} failed, due to: ${evalResult.errorMessage}`)
+                } else {
+                    deepEqual(evalResult, expected)
+                }
             })
         })
     })
