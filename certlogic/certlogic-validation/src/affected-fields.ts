@@ -3,7 +3,7 @@ import { CertLogicExpression } from "certlogic-js"
 
 const gatherFieldsVar = (path: string): string[] => {
     const match = path.match(/\.?(\w+?)$/)
-    return match ? [ match.groups![0] ] : []
+    return match ? [ match[0] ] : []
 }
 
 
@@ -16,7 +16,7 @@ const gatherFields = (expr: CertLogicExpression): string[] => {
         const operator = keys[0]
         const values = (expr as any)[operator]
         if (operator === "var") {
-            return gatherFieldsVar(values as string)
+            return [ values ]
         }
         if (operator === "if") {
             const [ guard, then, else_ ] = values
@@ -39,5 +39,5 @@ const gatherFields = (expr: CertLogicExpression): string[] => {
 }
 
 
-export const affectedFields = (expr: CertLogicExpression) => new Set(gatherFields(expr))
+export const affectedFields = (expr: CertLogicExpression) => [ ...new Set(gatherFields(expr)) ]
 

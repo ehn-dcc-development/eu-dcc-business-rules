@@ -1,3 +1,4 @@
+export { affectedFields } from "./affected-fields"
 export { validateFormat } from "./format-validator"
 export { typeOf } from "./type-calculator"
 // export * from "./type-checker"
