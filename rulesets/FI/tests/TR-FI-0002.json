@@ -1,0 +1,61 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "t == empty array",
+    "payload": {
+      "t": []
+    },
+    "expected": true
+  },
+  {
+    "name": "a RAT from an approved test manufacturer",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP217198-3",
+          "ma": "344"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "name": "a RAT, but not an approved test manufacturer",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP217198-3",
+          "ma": "???"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "name": "a RAT, but approved test manufacturer field is missing",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP217198-3"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "name": "not a RAT, so anything goes",
+    "payload": {
+      "t": [
+        {
+          "tt": "LP6464-4",
+          "ma": "???"
+        }
+      ]
+    },
+    "expected": true
+  }
+]

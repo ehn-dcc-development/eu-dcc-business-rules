@@ -1,0 +1,122 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "v == empty array",
+    "payload": {
+      "v": []
+    },
+    "expected": true
+  },
+  {
+    "name": "too early",
+    "payload": {
+      "v": [
+        {
+          "dt": "2021-06-01"
+        }
+      ]
+    },
+    "validationClock": "2021-05-31T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "just too early",
+    "payload": {
+      "v": [
+        {
+          "dt": "2021-06-01"
+        }
+      ]
+    },
+    "validationClock": "2021-05-31T23:59:59+00:00",
+    "expected": false
+  },
+  {
+    "name": "just in time",
+    "payload": {
+      "v": [
+        {
+          "dt": "2021-06-01"
+        }
+      ]
+    },
+    "validationClock": "2021-06-01T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "28 days later :D",
+    "payload": {
+      "v": [
+        {
+          "dt": "2021-06-01"
+        }
+      ]
+    },
+    "validationClock": "2021-06-29T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "a month has passed...",
+    "payload": {
+      "v": [
+        {
+          "dt": "2021-06-01"
+        }
+      ]
+    },
+    "validationClock": "2021-07-01T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "almost a year",
+    "payload": {
+      "v": [
+        {
+          "dt": "2021-06-01"
+        }
+      ]
+    },
+    "validationClock": "2022-05-31T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "a year",
+    "payload": {
+      "v": [
+        {
+          "dt": "2021-06-01"
+        }
+      ]
+    },
+    "validationClock": "2022-06-01T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "just more than a year",
+    "payload": {
+      "v": [
+        {
+          "dt": "2021-06-01"
+        }
+      ]
+    },
+    "validationClock": "2022-06-02T13:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "more than a year",
+    "payload": {
+      "v": [
+        {
+          "dt": "2021-06-01"
+        }
+      ]
+    },
+    "validationClock": "2022-06-02T00:00:00+00:00",
+    "expected": true
+  }
+]

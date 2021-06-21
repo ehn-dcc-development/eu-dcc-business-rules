@@ -1,0 +1,47 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "payload": {
+      "r": []
+    },
+    "expected": true
+  },
+  {
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-05-31"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-01"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-02"
+        }
+      ]
+    },
+    "expected": true
+  }
+]

@@ -1,0 +1,36 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "t == empty array",
+    "payload": {
+      "t": []
+    },
+    "expected": true
+  },
+  {
+    "name": "a positive test",
+    "payload": {
+      "t": [
+        {
+          "tr": "260373001"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "name": "a negative test",
+    "payload": {
+      "t": [
+        {
+          "tr": "260415000"
+        }
+      ]
+    },
+    "expected": true
+  }
+]

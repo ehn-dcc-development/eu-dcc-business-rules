@@ -1,0 +1,62 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "t == empty array",
+    "payload": {
+      "t": []
+    },
+    "expected": true
+  },
+  {
+    "name": "more than 72h ago",
+    "payload": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-05T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "just within 72 hours",
+    "payload": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T23:59:59+00:00",
+    "expected": true
+  },
+  {
+    "name": "comfortably within 72 hours",
+    "payload": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "eager, eager..!",
+    "payload": {
+      "t": [
+        {
+          "sc": "2021-06-01T00:00:00+00:00"
+        }
+      ]
+    },
+    "validationClock": "2021-06-01T00:00:00+00:00",
+    "expected": true
+  }
+]

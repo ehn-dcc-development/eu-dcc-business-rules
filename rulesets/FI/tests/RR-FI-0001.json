@@ -1,0 +1,131 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "payload": {
+      "r": []
+    },
+    "expected": true
+  },
+  {
+    "name": "day too early",
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-04"
+        }
+      ]
+    },
+    "validationClock": "2021-05-31T00:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "a second too early",
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-04"
+        }
+      ]
+    },
+    "validationClock": "2021-05-31T23:59:59+00:00",
+    "expected": false
+  },
+  {
+    "name": "just in time",
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-04"
+        }
+      ]
+    },
+    "validationClock": "2021-06-01T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "halfway",
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-04"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T13:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "nearly too late - 1s to spare",
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-04"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T23:59:59+00:00",
+    "expected": true
+  },
+  {
+    "name": "nearly too late - on the second",
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-04"
+        }
+      ]
+    },
+    "validationClock": "2021-06-03T00:00:00+00:00",
+    "expected": true
+  },
+  {
+    "name": "a second too late",
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-04"
+        }
+      ]
+    },
+    "validationClock": "2021-06-04T00:00:01+00:00",
+    "expected": false
+  },
+  {
+    "name": "too late",
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-04"
+        }
+      ]
+    },
+    "validationClock": "2021-06-04T13:00:00+00:00",
+    "expected": false
+  },
+  {
+    "name": "really too late",
+    "payload": {
+      "r": [
+        {
+          "df": "2021-06-01",
+          "du": "2021-06-04"
+        }
+      ]
+    },
+    "validationClock": "2021-07-01T00:00:00+00:00",
+    "expected": false
+  }
+]

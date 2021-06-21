@@ -1,0 +1,570 @@
+[
+  {
+    "id": "GR-FI-0000",
+    "businessDescription": "Assure the DCC contains only one type of event.",
+    "description": "Exactly one type of event.",
+    "inputParameter": "Entire HCert JSON (\"r\", \"t\", \"v\")",
+    "logic": {
+      "===": [
+        {
+          "reduce": [
+            [
+              {
+                "var": "payload.r"
+              },
+              {
+                "var": "payload.t"
+              },
+              {
+                "var": "payload.v"
+              }
+            ],
+            {
+              "+": [
+                {
+                  "var": "accumulator"
+                },
+                {
+                  "if": [
+                    {
+                      "var": "current.0"
+                    },
+                    1,
+                    0
+                  ]
+                }
+              ]
+            },
+            0
+          ]
+        },
+        1
+      ]
+    }
+  },
+  {
+    "id": "GR-FI-0001",
+    "description": "The \"disease or agent targeted\" must be COVID-19 of the value set list.",
+    "inputParameter": "Entire HCert JSON (\"v\",\"t\",\"r\",\"..\") + Valuesets + \"tg\"",
+    "logic": {
+      "and": [
+        {
+          "if": [
+            {
+              "var": "payload.r.0"
+            },
+            {
+              "in": [
+                {
+                  "var": "payload.r.0.tg"
+                },
+                {
+                  "var": "external.valueSets.disease-agent-targeted"
+                }
+              ]
+            },
+            true
+          ]
+        },
+        {
+          "if": [
+            {
+              "var": "payload.t.0"
+            },
+            {
+              "in": [
+                {
+                  "var": "payload.t.0.tg"
+                },
+                {
+                  "var": "external.valueSets.disease-agent-targeted"
+                }
+              ]
+            },
+            true
+          ]
+        },
+        {
+          "if": [
+            {
+              "var": "payload.v.0"
+            },
+            {
+              "in": [
+                {
+                  "var": "payload.v.0.tg"
+                },
+                {
+                  "var": "external.valueSets.disease-agent-targeted"
+                }
+              ]
+            },
+            true
+          ]
+        }
+      ]
+    }
+  },
+  {
+    "id": "VR-FI-0000",
+    "description": "At most one v-event.",
+    "inputParameter": "Entire HCert JSON (\"v\")",
+    "logic": {
+      "!": [
+        {
+          "var": "payload.v.1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "VR-FI-0001",
+    "businessDescription": "EMA must approve allowed vaccines.",
+    "description": "Only vaccines in the allowed valueset that have been approved by the EMA are allowed.",
+    "inputParameter": "Vaccination Part of the HCert (\"v\")+ Valuesets + (\"v\")+\"mp\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.v.0"
+        },
+        {
+          "in": [
+            {
+              "var": "payload.v.0.mp"
+            },
+            [
+              "EU/1/20/1528",
+              "EU/1/20/1507",
+              "EU/1/21/1529",
+              "EU/1/20/1525"
+            ]
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "VR-FI-0002",
+    "businessDescription": "The vaccination course must be completed to provide enough protection.",
+    "description": "Vaccination doses must be equal or greater than expected doses.",
+    "inputParameter": "Vaccination Part of the HCert (\"v\")+ Valuesets + \"dn\"+\"sd\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.v.0"
+        },
+        {
+          ">=": [
+            {
+              "var": "payload.v.0.dn"
+            },
+            {
+              "var": "payload.v.0.sd"
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "VR-FI-0004",
+    "description": "Date of vaccination must be before the current time.",
+    "inputParameter": "Vaccination Part of the HCert (\"v\") + Valuesets + +\"dt\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.v.0"
+        },
+        {
+          "not-before": [
+            {
+              "plusTime": [
+                {
+                  "var": "external.validationClock"
+                },
+                0,
+                "day"
+              ]
+            },
+            {
+              "plusTime": [
+                {
+                  "var": "payload.v.0.dt"
+                },
+                0,
+                "day"
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "VR-FI-0005",
+    "description": "Most recent vaccine more than 14 days ago",
+    "inputParameter": "Vaccination Part of the HCert (\"v\") + Valuesets + +\"dt\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.v.0"
+        },
+        {
+          "not-before": [
+            {
+              "plusTime": [
+                {
+                  "var": "external.validationClock"
+                },
+                0,
+                "day"
+              ]
+            },
+            {
+              "plusTime": [
+                {
+                  "var": "payload.v.0.dt"
+                },
+                -14,
+                "day"
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "TR-FI-0000",
+    "description": "At most one t-event.",
+    "inputParameter": "Entire HCert JSON (\"t\")",
+    "logic": {
+      "!": [
+        {
+          "var": "payload.t.1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "TR-FI-0001",
+    "businessDescription": "The test type (tt) can be RAT or NAA.",
+    "description": "The test type must be one of the value set list (RAT OR NAA).",
+    "inputParameter": "Test Part of the HCert (\"t\")+ Valuesets + \"tt\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.t.0"
+        },
+        {
+          "in": [
+            {
+              "var": "payload.t.0.tt"
+            },
+            {
+              "var": "external.valueSets.covid-19-lab-test-type"
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "TR-FI-0002",
+    "businessDescription": "If the test type is \"RAT\" then the test must be in the list of accepted RAT tests.",
+    "description": "If the test type is \"RAT\" then the \"test product and manufacturer\" MUST be in the valueset list, if it's NAA return true.",
+    "inputParameter": "Test Part of the HCert (\"t\")+ Valuesets +\"tt\" + \"ma\"",
+    "logic": {
+      "if": [
+        {
+          "===": [
+            {
+              "var": "payload.t.0.tt"
+            },
+            "LP217198-3"
+          ]
+        },
+        {
+          "in": [
+            {
+              "var": "payload.t.0.ma"
+            },
+            {
+              "var": "external.valueSets.covid-19-lab-test-manufacturer-and-name"
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "TR-FI-0003",
+    "businessDescription": "The test must be performed ",
+    "description": "DateTime of Sample Collection must be less than 72 hours before the Verification Datetime.",
+    "inputParameter": "Test Part of the HCert (\"t\")+ validation date (timestamp)+ Valuesets +\"sc\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.t.0"
+        },
+        {
+          "before": [
+            {
+              "plusTime": [
+                {
+                  "var": "external.validationClock"
+                },
+                0,
+                "day"
+              ]
+            },
+            {
+              "plusTime": [
+                {
+                  "var": "payload.t.0.sc"
+                },
+                72,
+                "hour"
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "TR-FI-0004",
+    "description": "Test result must be negative (\"not detected\").",
+    "inputParameter": "Test Part of the HCert (\"t\")+ Valuesets +\"tr\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.t.0"
+        },
+        {
+          "===": [
+            {
+              "var": "payload.t.0.tr"
+            },
+            "260415000"
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "RR-FI-0000",
+    "description": "At most one r-event.",
+    "inputParameter": "Entire HCert JSON (\"r\")",
+    "logic": {
+      "!": [
+        {
+          "var": "payload.r.1"
+        }
+      ]
+    }
+  },
+  {
+    "id": "RR-FI-0001",
+    "businessDescription": "The certificate must be valid.",
+    "description": "The Verification Datetime must be between \"Certificate Valid From\" and \"Certificate Valid Until\".",
+    "inputParameter": "Recovery Part of the HCert (\"r\")+ validation date (timestamp) +\"df\" +\"du\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.r.0"
+        },
+        {
+          "not-after": [
+            {
+              "plusTime": [
+                {
+                  "var": "payload.r.0.df"
+                },
+                0,
+                "day"
+              ]
+            },
+            {
+              "plusTime": [
+                {
+                  "var": "external.validationClock"
+                },
+                0,
+                "day"
+              ]
+            },
+            {
+              "plusTime": [
+                {
+                  "var": "payload.r.0.du"
+                },
+                0,
+                "day"
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "RR-FI-0003",
+    "description": "The validity start date must be before the validity end date.",
+    "inputParameter": "Recovery Part of the HCert (\"r\") +\"df\" +\"du\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.r.0"
+        },
+        {
+          "before": [
+            {
+              "plusTime": [
+                {
+                  "var": "payload.r.0.df"
+                },
+                0,
+                "day"
+              ]
+            },
+            {
+              "plusTime": [
+                {
+                  "var": "payload.r.0.du"
+                },
+                0,
+                "day"
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  },
+  {
+    "id": "RR-FI-0004",
+    "businessDescription": "The validity period of the certificate must be checked.",
+    "description": "The validity start date must be greater than or equal to the first positive test date +11 days (recovery time) and validity end date must be less than or equal to the first positive test date +180 (6 months)",
+    "inputParameter": "Recovery Part of the HCert (\"r\")+ \"fr\" + \"df\" + \"du\"",
+    "logic": {
+      "if": [
+        {
+          "var": "payload.r.0"
+        },
+        {
+          "not-after": [
+            {
+              "if": [
+                {
+                  "after": [
+                    {
+                      "plusTime": [
+                        {
+                          "var": "payload.r.0.df"
+                        },
+                        0,
+                        "day"
+                      ]
+                    },
+                    {
+                      "plusTime": [
+                        {
+                          "var": "payload.r.0.fr"
+                        },
+                        11,
+                        "day"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "plusTime": [
+                    {
+                      "var": "payload.r.0.df"
+                    },
+                    0,
+                    "day"
+                  ]
+                },
+                {
+                  "plusTime": [
+                    {
+                      "var": "payload.r.0.fr"
+                    },
+                    11,
+                    "day"
+                  ]
+                }
+              ]
+            },
+            {
+              "plusTime": [
+                {
+                  "var": "external.validationClock"
+                },
+                0,
+                "day"
+              ]
+            },
+            {
+              "if": [
+                {
+                  "before": [
+                    {
+                      "plusTime": [
+                        {
+                          "var": "payload.r.0.du"
+                        },
+                        0,
+                        "day"
+                      ]
+                    },
+                    {
+                      "plusTime": [
+                        {
+                          "var": "payload.r.0.fr"
+                        },
+                        180,
+                        "day"
+                      ]
+                    }
+                  ]
+                },
+                {
+                  "plusTime": [
+                    {
+                      "var": "payload.r.0.du"
+                    },
+                    0,
+                    "day"
+                  ]
+                },
+                {
+                  "plusTime": [
+                    {
+                      "var": "payload.r.0.fr"
+                    },
+                    180,
+                    "day"
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        true
+      ]
+    }
+  }
+]

@@ -1,0 +1,39 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "v == empty array",
+    "payload": {
+      "v": []
+    },
+    "expected": true
+  },
+  {
+    "name": "1 v-event",
+    "payload": {
+      "v": [
+        {
+          "mp": "EU/1/20/1528"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "name": "2 v-events",
+    "payload": {
+      "v": [
+        {
+          "mp": "EU/1/20/1528"
+        },
+        {
+          "mp": "EU/1/21/1529"
+        }
+      ]
+    },
+    "expected": false
+  }
+]
