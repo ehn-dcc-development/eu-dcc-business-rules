@@ -1,5 +1,5 @@
 <h1 align="center">
- Digital COVID Certificates: CertLogic
+ Digital COVID Certificates: MPS implementation of CertLogic
 </h1>
 
 <p align="center">
@@ -12,35 +12,35 @@
 
 ## About
 
-CertLogic is a standard for expressing logic, such as the kind you find in business/validation rules, in plain JSON format.
-CertLogic is a [specified](./specification.md) subset of [JsonLogic](https://jsonlogic.com/), extended with necessary custom operations - e.g. for working with dates.
-It serves as the basis for defining _interchangeable_ validation rules on top of the [Digital COVID Certificate](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en).
+This part of the repository contains implementations of CertLogic and Validation Rules languages in JetBrains MPS.
+This validation rules environment is for demo-purposes only, for the moment.
+(These implementations are not as feature-complete as they could be.)
 
 
-## Organisation
+## Installation
 
-This (part of the) repository contains:
+Steps:
 
-* Reference implementations of CertLogic for various platforms/programming languages - currently:
-  * [JavaScript](./certlogic-js) (as NPMS package)
-  * [Kotlin](./certlogic-kotlin) (as Maven/Kotlin module)
-* A [validation tool](./certlogic-validation): this NPM package exposes an executable `certlogic-validate` which validates a JSON file containing a single CertLogic expression
-* [JSON Schemas](./schemas) for [CertLogic expressions](./schemas/CertLogic-expression.json) and [test suites](./schemas/CertLogic-testSuite.json) JSON
-* A comprehensive [test suite](testSuite): the files in this directory contain test suites conforming to [this JSON Schema](./schemas/CertLogic-testSuite.json), and are executed by the [`test-suites` Mocha test](./certlogic-js/src/test/test-suites.ts), and the [`CertLogicTests` JUnit/Kotlin ](certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/CertLogicTests.kt)
-* A [build script](./build.sh) to build `certlogic-js`, `certlogic-kotlin`, and `certlogic-validation`.
-* The [specification](./specification.md)
+1. [Download the latest version of MPS.](https://www.jetbrains.com/mps/download/)
+2. Install it.
+3. Open MPS, and point it to the [`DCC` directory](./DCC) which is an MPS project.
+4. In the project overview:
+   * navigate to the **dcc-rules** “solution” (marked with an “S” icon),
+   * then to the **rules** “model” (marked with an "M" icon), 
+   * and then double-click the **EU template rules** section.
+
+Things should now look like this: ![screenshot of EU rules](./screenshot-MPS.png)
 
 
 ## Testing & Status
 
 - If you found any problems, please create an [Issue](/../../issues).
-- Please make sure to review the issues to see if any other members states found issues with your provided test data.
 - Current status: Work-In-Progress.
 
 
 ## Licensing
 
-Copyright (c) 2021 Ministry of Health, Welfare and Sport, and all other contributors
+Copyright (c) 2021 Dutch Ministry of Health, Welfare and Sport, and all other contributors
 
 Licensed under the **Apache License, Version 2.0** (the "License"); you may not use this file except in compliance with the License.
 
