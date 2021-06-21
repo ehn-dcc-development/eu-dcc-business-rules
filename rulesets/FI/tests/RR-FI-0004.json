@@ -1,0 +1,154 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "r == empty array",
+    "payload": {
+      "r": []
+    },
+    "expected": true
+  },
+  {
+    "name": "fr more than 11 days before df (now < df)",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-05-01",
+          "df": "2021-06-01",
+          "du": "2021-07-01"
+        }
+      ]
+    },
+    "validationClock": "2021-05-31T00:00:00Z",
+    "expected": false
+  },
+  {
+    "name": "fr more than 11 days before df (now = df)",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-05-01",
+          "df": "2021-06-01",
+          "du": "2021-07-01"
+        }
+      ]
+    },
+    "validationClock": "2021-06-01T00:00:00Z",
+    "expected": true
+  },
+  {
+    "name": "fr more than 11 days before df (df < now < du)",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-05-01",
+          "df": "2021-06-01",
+          "du": "2021-07-01"
+        }
+      ]
+    },
+    "validationClock": "2021-07-01T00:00:00Z",
+    "expected": true
+  },
+  {
+    "name": "fr exactly 11 days before df (now < df)",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-05-20",
+          "df": "2021-06-01",
+          "du": "2021-07-01"
+        }
+      ]
+    },
+    "validationClock": "2021-05-31T00:00:00Z",
+    "expected": false
+  },
+  {
+    "name": "fr exactly 11 days before df (now = df)",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-05-20",
+          "df": "2021-06-01",
+          "du": "2021-07-01"
+        }
+      ]
+    },
+    "validationClock": "2021-06-01T00:00:00Z",
+    "expected": true
+  },
+  {
+    "name": "fr exactly 11 days before df (df < now < du)",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-05-20",
+          "df": "2021-06-01",
+          "du": "2021-07-01"
+        }
+      ]
+    },
+    "validationClock": "2021-07-01T00:00:00Z",
+    "expected": true
+  },
+  {
+    "name": "fr less than 11 days before df (now = df)",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-05-26",
+          "df": "2021-06-01",
+          "du": "2021-07-01"
+        }
+      ]
+    },
+    "validationClock": "2021-06-01T00:00:00Z",
+    "expected": false
+  },
+  {
+    "name": "du before fr + 180 days",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-05-01",
+          "df": "2021-06-01",
+          "du": "2021-12-01"
+        }
+      ]
+    },
+    "validationClock": "2021-11-30T00:00:00Z",
+    "expected": false
+  },
+  {
+    "name": "situation #1 on which RR-EU-0002 would yield false, but is OK with RR-NL-0004 (df < fr + 11d)",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-06-01",
+          "df": "2021-06-05",
+          "du": "2021-12-01"
+        }
+      ]
+    },
+    "validationClock": "2021-06-13T00:00:00Z",
+    "expected": true
+  },
+  {
+    "name": "situation #2 on which RR-EU-0002 would yield false, but is handled OK by RR-NL-0004 (du > fr + 180d)",
+    "payload": {
+      "r": [
+        {
+          "fr": "2021-06-01",
+          "df": "2021-06-12",
+          "du": "2021-11-30"
+        }
+      ]
+    },
+    "validationClock": "2021-11-29T00:00:00Z",
+    "expected": false
+  }
+]

@@ -1,0 +1,148 @@
+[
+  {
+    "name": "empty DCC",
+    "payload": {},
+    "expected": true
+  },
+  {
+    "name": "v == empty array",
+    "payload": {
+      "v": []
+    },
+    "expected": true
+  },
+  {
+    "payload": {
+      "v": [
+        {
+          "mp": "Pfizer"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "name": "BioNTech/Pfizer",
+    "payload": {
+      "v": [
+        {
+          "mp": "EU/1/20/1528"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "name": "Moderna",
+    "payload": {
+      "v": [
+        {
+          "mp": "EU/1/20/1507"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "name": "AstraZeneca",
+    "payload": {
+      "v": [
+        {
+          "mp": "EU/1/21/1529"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "name": "Janssen",
+    "payload": {
+      "v": [
+        {
+          "mp": "EU/1/20/1525"
+        }
+      ]
+    },
+    "expected": true
+  },
+  {
+    "payload": {
+      "v": [
+        {
+          "mp": "CVnCoV"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "payload": {
+      "v": [
+        {
+          "mp": "Sputnik-V"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "payload": {
+      "v": [
+        {
+          "mp": "Convidecia"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "payload": {
+      "v": [
+        {
+          "mp": "EpiVacCorona"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "payload": {
+      "v": [
+        {
+          "mp": "BBIBP-CorV"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "payload": {
+      "v": [
+        {
+          "mp": "Inactivated-SARS-CoV-2-Vero-Cell"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "payload": {
+      "v": [
+        {
+          "mp": "CoronaVac"
+        }
+      ]
+    },
+    "expected": false
+  },
+  {
+    "payload": {
+      "v": [
+        {
+          "mp": "Covaxin"
+        }
+      ]
+    },
+    "expected": false
+  }
+]
