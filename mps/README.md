@@ -24,12 +24,13 @@ Steps:
 1. [Download the latest version of MPS.](https://www.jetbrains.com/mps/download/)
 2. Install it.
 3. Open MPS, and point it to the [`DCC` directory](./DCC) which is an MPS project.
-4. In the project overview:
+4. Click the “green hammer” to _Make Project_: ![](images/screenshot-Make-Project.png)
+5. In the project overview:
    * navigate to the **dcc-rules** “solution” (marked with an “S” icon),
    * then to the **rules** “model” (marked with an "M" icon), 
    * and then double-click the **EU template rules** section.
 
-Things should now look like this: ![screenshot of EU rules](./screenshot-MPS.png)
+Things should now look like this: ![screenshot of EU rules](images/screenshot-built-project.png)
 
 
 ## Testing & Status
