@@ -47,13 +47,12 @@ This (part of the) repository contains (or will contain):
 ## Testing & Status
 
 - If you found any problems, please create an [Issue](/../../issues).
-- Please make sure to review the issues to see if any other members states found issues with your provided test data.
 - Current status: Work-In-Progress.
 
 
 ## Licensing
 
-Copyright (c) 2021 Ministry of Health, Welfare and Sport, and all other contributors
+Copyright (c) 2021 Dutch Ministry of Health, Welfare and Sport, and all other contributors
 
 Licensed under the **Apache License, Version 2.0** (the "License"); you may not use this file except in compliance with the License.
 

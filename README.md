@@ -4,6 +4,8 @@
 
 <p align="center">
     <a href="#about">About</a> •
+    <a href="#assumptions">Assumptions</a> •
+    <a href="#organisation">Organisation</a> •
     <a href="#testing--status">Testing & Status</a> •
     <a href="#licensing">Licensing</a>
 </p>
@@ -50,13 +52,12 @@ This repository contains the following:
 ## Testing & Status
 
 - If you found any problems, please create an [Issue](/../../issues).
-- Please make sure to review the issues to see if any other members states found issues with your provided test data.
-- Current status: Work-In-Progress. 
+- Current status: Work-In-Progress.
 
 
 ## Licensing
 
-Copyright (c) 2021 Ministry of Health, Science, and Sports, and all other contributors
+Copyright (c) 2021 Dutch Ministry of Health, Science, and Sports, and all other contributors
 
 Licensed under the **Apache License, Version 2.0** (the "License"); you may not use this file except in compliance with the License.
 

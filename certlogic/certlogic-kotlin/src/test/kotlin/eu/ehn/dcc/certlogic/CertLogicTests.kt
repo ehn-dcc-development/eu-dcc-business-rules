@@ -55,6 +55,7 @@ internal class CertLogicTests {
 data class Assertion(
     var directive: String?,
     var message: String?,
+    var certLogicExpression: JsonNode,
     var data: JsonNode,
     var expected: JsonNode
 )
@@ -84,15 +85,21 @@ fun TestSuite.run() {
         }
         println("\tRunning test case \"${testCase.name}\":")
         testCase.assertions.forEachIndexed { index, assertion ->
-            if (assertion.directive == "skip") {
-                println("\t\t(skipping assertion ${index + 1})")
-            } else {
-                println("\t\tRunning assertion ${index + 1}...")
-                Assertions.assertEquals(
-                    assertion.expected,
-                    evaluate(testCase.certLogicExpression, assertion.data),
-                    "assertion ${index + 1}"
-                )
+            val assertionText = assertion.message ?: "#${index + 1}"
+            if (assertion.certLogicExpression is NullNode && testCase.certLogicExpression is NullNode) {
+                println("     !! no CertLogic expression defined on assertion ${assertionText}, and neither on encompassing test case \"${testCase.name}\"")
+            }
+            when (assertion.directive) {
+                "skip" -> println("\t\t! skipped assertion $assertionText")
+                "only" -> println("\t\t(test directive 'only' not supported on assertions - ignoring)")
+                else -> {
+                    println("\t\tRunning assertion ${index + 1}...")
+                    Assertions.assertEquals(
+                        assertion.expected,
+                        evaluate(if (assertion.certLogicExpression is NullNode) testCase.certLogicExpression else assertion.certLogicExpression, assertion.data),
+                        assertion.message ?: assertion.data.asText()
+                    )
+                }
             }
         }
     }

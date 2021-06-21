@@ -32,12 +32,10 @@ Apart from its logic -a CertLogic expression- a rule comes with metadata:
 * An **id** to identify the rule with.
     A rule is immutable, with identity provided by its immutable ID.
 
-A rule may come to also contain the following metadata:
-
 * Validity range: valid from a certain date(-time), until (exclusive) a certain date(-time).
     Either end of a validity range may be undefined, meaning since/until forever, resp.
 
-This has been foreseen but is not yet implemented, as are human-readable message(s) explaining (both) the outcome(s).
+* Human-readable message(s) explaining (both) the outcome(s).
 
 It's desirable that each rule has a single responsibility, and accesses as little data from the DCC and extra external parameters as possible.
 This keeps rules understandable, testable, and individually replaceable.

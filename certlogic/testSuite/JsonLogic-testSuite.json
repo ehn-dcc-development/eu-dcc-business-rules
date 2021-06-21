@@ -1,0 +1,928 @@
+{
+  "name": "JsonLogic test suite - filtered",
+  "cases": [
+    {
+      "name": "# Non-rules get passed through",
+      "assertions": [
+        {
+          "certLogicExpression": true,
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": false,
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": 17,
+          "data": {},
+          "expected": 17
+        },
+        {
+          "certLogicExpression": "apple",
+          "data": {},
+          "expected": "apple"
+        },
+        {
+          "certLogicExpression": [
+            "a",
+            "b"
+          ],
+          "data": {},
+          "expected": [
+            "a",
+            "b"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "# Single operator tests",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "===": [
+              1,
+              1
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "===": [
+              1,
+              "1"
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "===": [
+              1,
+              2
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            ">": [
+              2,
+              1
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            ">": [
+              1,
+              1
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            ">": [
+              1,
+              2
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            ">=": [
+              2,
+              1
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            ">=": [
+              1,
+              1
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            ">=": [
+              1,
+              2
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "<": [
+              2,
+              1
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "<": [
+              1,
+              1
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "<": [
+              1,
+              2
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "<": [
+              1,
+              2,
+              3
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "<": [
+              1,
+              1,
+              3
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "<": [
+              1,
+              4,
+              3
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "<=": [
+              2,
+              1
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "<=": [
+              1,
+              1
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "<=": [
+              1,
+              2
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "<=": [
+              1,
+              2,
+              3
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "<=": [
+              1,
+              4,
+              3
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "!": [
+              false
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "!": [
+              true
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              true,
+              true
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              false,
+              true
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              true,
+              false
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              false,
+              false
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              true,
+              true,
+              true
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              true,
+              true,
+              false
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              1,
+              3
+            ]
+          },
+          "data": {},
+          "expected": 3
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              3,
+              false
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              false,
+              3
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "in": [
+              "Bart",
+              [
+                "Bart",
+                "Homer",
+                "Lisa",
+                "Marge",
+                "Maggie"
+              ]
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "in": [
+              "Milhouse",
+              [
+                "Bart",
+                "Homer",
+                "Lisa",
+                "Marge",
+                "Maggie"
+              ]
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "+": [
+              1,
+              2
+            ]
+          },
+          "data": {},
+          "expected": 3
+        }
+      ]
+    },
+    {
+      "name": "Simple if/then/else cases",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "if": [
+              true,
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "apple"
+        },
+        {
+          "certLogicExpression": {
+            "if": [
+              false,
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "banana"
+        }
+      ]
+    },
+    {
+      "name": "Empty arrays are falsey",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "if": [
+              [
+                1
+              ],
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "apple"
+        },
+        {
+          "certLogicExpression": {
+            "if": [
+              [
+                1,
+                2,
+                3,
+                4
+              ],
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "apple"
+        }
+      ]
+    },
+    {
+      "name": "Empty strings are falsey, all other strings are truthy",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "if": [
+              "",
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "banana"
+        },
+        {
+          "certLogicExpression": {
+            "if": [
+              "zucchini",
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "apple"
+        },
+        {
+          "certLogicExpression": {
+            "if": [
+              "0",
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "apple"
+        }
+      ]
+    },
+    {
+      "name": "You can cast a string to numeric with a unary + ",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "===": [
+              0,
+              "0"
+            ]
+          },
+          "data": null,
+          "expected": false
+        }
+      ]
+    },
+    {
+      "name": "Zero is falsy, all other numbers are truthy",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "if": [
+              0,
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "banana"
+        },
+        {
+          "certLogicExpression": {
+            "if": [
+              1,
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "apple"
+        },
+        {
+          "certLogicExpression": {
+            "if": [
+              -1,
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "apple"
+        }
+      ]
+    },
+    {
+      "name": "Truthy and falsy definitions matter in Boolean operations",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "!": [
+              0
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              0,
+              true
+            ]
+          },
+          "data": {},
+          "expected": 0
+        },
+        {
+          "certLogicExpression": {
+            "!": [
+              ""
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              "",
+              true
+            ]
+          },
+          "data": {},
+          "expected": ""
+        },
+        {
+          "certLogicExpression": {
+            "!": [
+              "0"
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              "0",
+              true
+            ]
+          },
+          "data": {},
+          "expected": true
+        }
+      ]
+    },
+    {
+      "name": "If the conditional is logic, it gets evaluated",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "if": [
+              {
+                ">": [
+                  2,
+                  1
+                ]
+              },
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "apple"
+        },
+        {
+          "certLogicExpression": {
+            "if": [
+              {
+                ">": [
+                  1,
+                  2
+                ]
+              },
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "banana"
+        }
+      ]
+    },
+    {
+      "name": "# Compound Tests",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "and": [
+              {
+                ">": [
+                  3,
+                  1
+                ]
+              },
+              true
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              {
+                ">": [
+                  3,
+                  1
+                ]
+              },
+              false
+            ]
+          },
+          "data": {},
+          "expected": false
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              {
+                ">": [
+                  3,
+                  1
+                ]
+              },
+              {
+                "<": [
+                  1,
+                  3
+                ]
+              }
+            ]
+          },
+          "data": {},
+          "expected": true
+        }
+      ]
+    },
+    {
+      "name": "# Data-Driven",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "var": "a"
+          },
+          "data": {
+            "a": 1
+          },
+          "expected": 1
+        },
+        {
+          "certLogicExpression": {
+            "var": "b"
+          },
+          "data": {
+            "a": 1
+          },
+          "expected": null
+        },
+        {
+          "certLogicExpression": {
+            "var": "a"
+          },
+          "data": null,
+          "expected": null
+        },
+        {
+          "certLogicExpression": {
+            "var": "a.b"
+          },
+          "data": {
+            "a": {
+              "b": "c"
+            }
+          },
+          "expected": "c"
+        },
+        {
+          "certLogicExpression": {
+            "var": "a.q"
+          },
+          "data": {
+            "a": {
+              "b": "c"
+            }
+          },
+          "expected": null
+        },
+        {
+          "certLogicExpression": {
+            "var": "1"
+          },
+          "data": [
+            "apple",
+            "banana"
+          ],
+          "expected": "banana"
+        },
+        {
+          "certLogicExpression": {
+            "var": "1.1"
+          },
+          "data": [
+            "apple",
+            [
+              "banana",
+              "beer"
+            ]
+          ],
+          "expected": "beer"
+        },
+        {
+          "certLogicExpression": {
+            "in": [
+              {
+                "var": "filling"
+              },
+              [
+                "apple",
+                "cherry"
+              ]
+            ]
+          },
+          "data": {
+            "filling": "apple"
+          },
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "var": "a.b.c"
+          },
+          "data": null,
+          "expected": null
+        },
+        {
+          "certLogicExpression": {
+            "var": "a.b.c"
+          },
+          "data": {
+            "a": null
+          },
+          "expected": null
+        },
+        {
+          "certLogicExpression": {
+            "var": "a.b.c"
+          },
+          "data": {
+            "a": {
+              "b": null
+            }
+          },
+          "expected": null
+        },
+        {
+          "certLogicExpression": {
+            "var": ""
+          },
+          "data": 1,
+          "expected": 1
+        }
+      ]
+    },
+    {
+      "name": "Filter, map, all, none, and some",
+      "assertions": [
+        {
+          "certLogicExpression": {
+            "reduce": [
+              {
+                "var": "integers"
+              },
+              {
+                "+": [
+                  {
+                    "var": "current"
+                  },
+                  {
+                    "var": "accumulator"
+                  }
+                ]
+              },
+              0
+            ]
+          },
+          "data": {
+            "integers": [
+              1,
+              2,
+              3,
+              4
+            ]
+          },
+          "expected": 10
+        },
+        {
+          "certLogicExpression": {
+            "reduce": [
+              {
+                "var": "integers"
+              },
+              {
+                "+": [
+                  {
+                    "var": "current"
+                  },
+                  {
+                    "var": "accumulator"
+                  }
+                ]
+              },
+              0
+            ]
+          },
+          "data": null,
+          "expected": 0
+        },
+        {
+          "certLogicExpression": {
+            "reduce": [
+              {
+                "var": "desserts"
+              },
+              {
+                "+": [
+                  {
+                    "var": "accumulator"
+                  },
+                  {
+                    "var": "current.qty"
+                  }
+                ]
+              },
+              0
+            ]
+          },
+          "data": {
+            "desserts": [
+              {
+                "name": "apple",
+                "qty": 1
+              },
+              {
+                "name": "brownie",
+                "qty": 2
+              },
+              {
+                "name": "cupcake",
+                "qty": 3
+              }
+            ]
+          },
+          "expected": 6
+        }
+      ]
+    }
+  ]
+}
