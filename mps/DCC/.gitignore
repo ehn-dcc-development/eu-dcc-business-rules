@@ -1,0 +1,7 @@
+/.mps/workspace.xml
+classes_gen/
+source_gen/
+source_gen.caches/
+/build/artifacts/
+/build/tmp/
+/build*.xml
