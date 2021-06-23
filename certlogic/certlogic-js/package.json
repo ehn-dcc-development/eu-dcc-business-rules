@@ -4,13 +4,12 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "npm link",
     "build": "tsc",
     "build-watch": "tsc --watch --incremental",
     "pretest": "npm run build",
     "test": "mocha dist/test",
     "test-watch": "mocha --watch dist/test",
-    "clean": "rm -rf dist/ && rm -rf node_modules/"
+    "clean": "rm -rf dist/ && rm -rf node_modules/ && rm -rf package-lock.json && rm -rf yarn.lock"
   },
   "bin": {
     "certlogic-run": "dist/cli.js"

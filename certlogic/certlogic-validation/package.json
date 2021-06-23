@@ -4,7 +4,6 @@
   "description": "Validators for CertLogic",
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "npm link certlogic-js",
     "build": "tsc",
     "build-watch": "tsc --watch --incremental",
     "pretest": "npm run build",
@@ -12,7 +11,7 @@
     "test-watch": "mocha --watch dist/test",
     "prestart": "npm run test",
     "start": "node dist/test/validate-testSuite.js",
-    "clean": "rm -rf dist/ && rm -rf node_modules/"
+    "clean": "rm -rf dist/ && rm -rf node_modules/ && rm -rf package-lock.json && rm -rf yarn.lock"
   },
   "bin": {
     "certlogic-validate": "dist/cli.js"
@@ -21,7 +20,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@types/json-schema": "^7.0.7",
-    "certlogic-js": "../certlogic-js",
+    "certlogic-js": "file:../certlogic-js",
     "deep-equal": "^2.0.5"
   },
   "devDependencies": {

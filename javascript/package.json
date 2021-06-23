@@ -4,7 +4,6 @@
   "description": "",
   "main": "dist/run-rules.js",
   "scripts": {
-    "postinstall": "npm link \"certlogic-js\"",
     "build": "tsc",
     "build-watch": "tsc --watch --incremental",
     "test": "mocha dist/test",
@@ -14,11 +13,11 @@
     "clean": "rm -rf dist/ && rm -rf node_modules/"
   },
   "dependencies": {
+    "certlogic-js": "file:../certlogic/certlogic-js",
     "fs-readdir-recursive": "^1.1.0",
     "json-logic-js": "^2.0.1"
   },
   "devDependencies": {
-    "@types/ajv": "^1.0.0",
     "@types/chai": "^4.2.18",
     "@types/fs-readdir-recursive": "^1.0.0",
     "@types/json-logic-js": "^1.2.1",
