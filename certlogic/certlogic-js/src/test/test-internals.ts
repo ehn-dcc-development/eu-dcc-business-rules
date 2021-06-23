@@ -1,6 +1,6 @@
 const { equal, isFalse, isTrue } = require("chai").assert
 
-import { dateFromString, isFalsy, isTruthy } from "../internals"
+import { dateFromString, isFalsy, isTruthy, plusTime } from "../internals"
 
 
 describe("truthy and falsy", () => {
@@ -69,6 +69,34 @@ describe("parsing of dates/date-times", () => {
         check("2021-08-01T00:00:00.0001Z", "2021-08-01T00:00:00.000Z")    // 100 µs
         check("2021-08-01T00:00:00.00001Z", "2021-08-01T00:00:00.000Z")   //  10 µs
         check("2021-08-01T00:00:00.000001Z", "2021-08-01T00:00:00.000Z")  //   1 µs
+    })
+
+})
+
+
+describe("plusTime", () => {
+
+    it("plusTime works for 1-day offsets", () => {
+        equal(plusTime("2021-06-23", 1, "day").toISOString(), "2021-06-24T00:00:00.000Z")
+        equal(plusTime("2021-06-23", -1, "day").toISOString(), "2021-06-22T00:00:00.000Z")
+    })
+
+    it("plusTime works for 1-hour offsets", () => {
+        equal(plusTime("2021-06-23T00:00:00.000Z", 1, "hour").toISOString(), "2021-06-23T01:00:00.000Z")
+        equal(plusTime("2021-06-23T00:00:00.000Z", -1, "hour").toISOString(), "2021-06-22T23:00:00.000Z")
+    })
+
+    it("plusTime works for day-offsets in hours", () => {
+        equal(plusTime("2021-06-23T00:00:00.000Z", 24, "hour").toISOString(), "2021-06-24T00:00:00.000Z")
+        equal(plusTime("2021-06-23T00:00:00.000Z", 48, "hour").toISOString(), "2021-06-25T00:00:00.000Z")
+        equal(plusTime("2021-06-23T00:00:00.000Z", 72, "hour").toISOString(), "2021-06-26T00:00:00.000Z")
+        equal(plusTime("2021-06-23T00:00:00.000Z", -24, "hour").toISOString(), "2021-06-22T00:00:00.000Z")
+        equal(plusTime("2021-06-23T00:00:00.000Z", -48, "hour").toISOString(), "2021-06-21T00:00:00.000Z")
+        equal(plusTime("2021-06-23T00:00:00.000Z", -72, "hour").toISOString(), "2021-06-20T00:00:00.000Z")
+    })
+
+    it("plusTime not affected by DST transitions", () => {
+        equal(plusTime("2021-06-23", -180, "day").toISOString(), "2020-12-25T00:00:00.000Z")
     })
 
 })
