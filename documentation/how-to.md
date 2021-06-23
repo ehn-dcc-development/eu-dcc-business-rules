@@ -71,7 +71,11 @@ The following things can be helpful:
 
     The tool exposes an executable `certlogic-validate`, which can be run from the CLI as follows:
 
-        $ ./node_modules/bin/certlogic-validate <path to JSON file containing a single CertLogic expression>
+        $ npx certlogic-validate <path to JSON file containing a single CertLogic expression>
+
+    or as
+
+        $ ./node_modules/.bin/certlogic-validate <path to JSON file containing a single CertLogic expression>
 
     This works from the directory where you installed `certlogic-validation`.
     Alternatively, you can use `npx` (when installed, and when `certlogic-validation` is available in the NPM Registry) to directly execute it.

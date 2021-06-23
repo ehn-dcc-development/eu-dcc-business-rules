@@ -12,6 +12,9 @@
     "test-watch": "mocha --watch dist/test",
     "clean": "rm -rf dist/ && rm -rf node_modules/"
   },
+  "bin": {
+    "certlogic-run": "dist/cli.js"
+  },
   "author": "Meinte Boersma",
   "license": "Apache-2.0",
   "devDependencies": {
