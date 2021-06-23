@@ -55,9 +55,9 @@ export const dateFromString = (str: string) => {
 export const plusTime = (dateTimeLikeStr: string, amount: number, unit: TimeUnit): Date => {
     const dateTime = dateFromString(dateTimeLikeStr)
     if (unit === "day") {
-        dateTime.setDate(dateTime.getDate() + amount)
+        dateTime.setUTCDate(dateTime.getUTCDate() + amount)
     } else if (unit === "hour") {
-        dateTime.setHours(dateTime.getHours() + amount)
+        dateTime.setUTCHours(dateTime.getUTCHours() + amount)
     }
     return dateTime
 }

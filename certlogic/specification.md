@@ -181,6 +181,7 @@ A date-time offset operation has the following form:
     }
 
 This operation is the *only* way to construct date-time values.
+Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap seconds.
 
 
 ## Reduction (`reduce`)
