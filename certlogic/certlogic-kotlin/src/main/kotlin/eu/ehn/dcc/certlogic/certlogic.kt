@@ -154,7 +154,7 @@ internal fun evaluateNot(operandExpr: JsonNode, data: JsonNode): JsonNode {
 private fun isTimeUnit(unit: JsonNode): Boolean {
     if (unit !is TextNode) return false
     return try {
-        val timeUnit = TimeUnit.valueOf(unit.textValue())
+        TimeUnit.valueOf(unit.textValue())
         true
     } catch (iae: IllegalArgumentException) {
         false
