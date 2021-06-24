@@ -11,14 +11,25 @@ readdirSync(testSuitesPath)
     .map((path) => JSON.parse(readFileSync(join(testSuitesPath, path), "utf8")))
     .forEach((testSuite) => {
         testSuite.cases.forEach((testCase: any) => {
-            const errors = validate(testCase.certLogicExpression)
-            if (errors.length > 0) {
-                console.log(`${errors.length} validation error${errors.length > 1 ? "s" : ""} found on expression of test case "${testCase.name}" in test suite "${testSuite.name}:`)
-                errors.forEach(({ message, expr }) => {
-                    console.log(`\t${message} on:`)
-                    console.dir(expr)
-                })
+            const validateAndReport = (testExpr: any, index?: number) => {
+                const errors = validate(testExpr)
+                if (errors.length > 0) {
+                    console.log(`${errors.length} validation error${errors.length > 1 ? "s" : ""} found on expression of ${index === undefined ? "" : `assertion #${index + 1} of`} test case "${testCase.name}" in test suite "${testSuite.name}":`)
+                    errors.forEach(({ message, expr }) => {
+                        console.log(`\t${message} on (sub) expression:`)
+                        console.dir(expr)
+                    })
+                }
             }
+            if (testCase.certLogicExpression !== undefined) {
+                validateAndReport(testCase.certLogicExpression)
+            }
+            testCase.assertions
+                .forEach((assertion: any, index: number) => {
+                    if (assertion.certLogicExpression !== undefined) {
+                        validateAndReport(assertion.certLogicExpression, index)
+                    }
+                })
         })
     })
 
