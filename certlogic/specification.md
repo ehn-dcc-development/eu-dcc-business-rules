@@ -32,14 +32,14 @@ If a JSON object (not an array) is a literal, being a boolean, an integer, or a 
 
 ## Truthy and falsy
 
-Allowed falsy values are: `false`, `null`, the empty string (`""`), and the zero integer (`0`).
-Allowed truthy values are: `true`, any non-empty string (meaning: length > 0), any non-zero integer, any non-empty array, and any object.
+Allowed falsy values are: `false`, `null`, the empty string (`""`), the zero integer (`0`), the empty array (`[]`), and the empty object (`{}`).
+Allowed truthy values are: `true`, any non-empty string (meaning: length > 0), any non-zero integer, any non-empty array, and any object with at least one key-value-pair.
 Using other values that are “traditionally” falsy or truthy is regarded as undefined behaviour.
 
 The reason to do this is that JsonLogic has a notion of truthy/falsy that differs from the usual JavaScript one, precisely to aid in cross-platform adoption.
 CertLogic restricts this notion even further to avoid confusion, or unjust reliance on behaviour that's perceived as “common” but isn't (cross-platform).
 
-Note: `null`, the empty string, the zero integer, the empty array all being falsy (and not truthy) is useful for checking the presence/existence of values in the data context.
+Note: `null`, the empty string, the zero integer, the empty array, and the empty object all being falsy (and not truthy) is useful for checking the presence/existence of values in the data context.
 
 
 ## Literals: arrays, booleans, integers, and strings
