@@ -2,7 +2,7 @@
   "name": "construction and comparing of date-times ",
   "cases": [
     {
-      "name": "comparison of datet-imes constructed using plusTime",
+      "name": "comparison of date-times constructed using plusTime",
       "certLogicExpression": {
         "before": [
           {
@@ -140,6 +140,57 @@
             }
           },
           "expected": false
+        }
+      ]
+    },
+    {
+      "name": "comparisons of date-times constructed using plusTime across DST transitions",
+      "certLogicExpression": {
+        "not-before": [
+          {
+            "plusTime": [
+              {
+                "var": "d1"
+              },
+              0,
+              "day"
+            ]
+          },
+          {
+            "plusTime": [
+              {
+                "var": "d2"
+              },
+              -180,
+              "day"
+            ]
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": {
+            "d1": "2020-12-24",
+            "d2": "2021-06-23T00:00:00Z"
+          },
+          "expected": false,
+          "message": "d1 more than 180 days before d2"
+        },
+        {
+          "data": {
+            "d1": "2020-12-25",
+            "d2": "2021-06-23T00:00:00Z"
+          },
+          "expected": true,
+          "message": "d1 exactly 180 days before d2"
+        },
+        {
+          "data": {
+            "d1": "2020-12-26",
+            "d2": "2021-06-23T00:00:00Z"
+          },
+          "expected": true,
+          "message": "d1 less than 180 days before d2"
         }
       ]
     }
