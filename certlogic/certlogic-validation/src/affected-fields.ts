@@ -1,12 +1,6 @@
 import { CertLogicExpression } from "certlogic-js"
 
 
-const gatherFieldsVar = (path: string): string[] => {
-    const match = path.match(/\.?(\w+?)$/)
-    return match ? [ match[0] ] : []
-}
-
-
 const gatherFields = (expr: CertLogicExpression): string[] => {
     if (Array.isArray(expr)) {
         return (expr as CertLogicExpression[]).flatMap(gatherFields)
@@ -22,7 +16,7 @@ const gatherFields = (expr: CertLogicExpression): string[] => {
             const [ guard, then, else_ ] = values
             return [ ...gatherFields(guard), ...gatherFields(then), ...gatherFields(else_) ]
         }
-        if ([ "===", "and", ">", "<", ">=", "<=", "in", "+" ].indexOf(operator) > -1) {
+        if ([ "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" ].indexOf(operator) > -1) {
             return values.flatMap(gatherFields)
         }
         if (operator === "!") {
@@ -34,10 +28,11 @@ const gatherFields = (expr: CertLogicExpression): string[] => {
         if (operator === "reduce") {
             return [ /* operand: */...gatherFields(values[0]), /* initial: */...gatherFields(values[2]) ]
         }
+        throw new Error(`operator not recognised by fields gatherer ("gatherFields") in certlogic-validation/${__filename}: "${operator}"`)
     }
     return []
 }
 
 
-export const affectedFields = (expr: CertLogicExpression) => [ ...new Set(gatherFields(expr)) ]
+export const affectedFields = (expr: CertLogicExpression) => [ ...new Set(gatherFields(expr)) ].sort()
 
