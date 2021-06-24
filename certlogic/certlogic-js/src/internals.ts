@@ -1,25 +1,32 @@
 import { TimeUnit } from "./typings"
 
+const isDictionary = (value: any): value is object =>
+    typeof value === "object" && value !== null && !Array.isArray(value)
+
 /**
  * @returns Whether the given `value` is considered *falsy* by CertLogic.
  * Note: the notions of both falsy and truthy are narrower than those of JavaScript, and even of JsonLogic.
  * Truthy and falsy values can be used for conditional logic, e.g. the guard of an `if`-expression.
  * Values that are neither truthy nor falsy (many of which exist) can't be used for that.
  */
-export const isFalsy = (value: any) => value === false
+export const isFalsy = (value: any) =>
+       value === false
     || value === null
     || (typeof value === "string" && value === "")
     || (typeof value === "number" && value === 0)
     || (Array.isArray(value) && value.length === 0)
+    || (isDictionary(value) && Object.keys(value).length === 0)
 
 /**
  * @returns Whether the given `value` is considered *truthy* by CertLogic.
  * @see isFalsy
  */
-export const isTruthy = (value: any) => value === true
+export const isTruthy = (value: any) =>
+       value === true
     || (typeof value === "string" && value !== "")
     || (typeof value === "number" && value !== 0)
-    || (Array.isArray(value) ? value.length > 0 : (typeof value === "object" && value !== null))
+    || (Array.isArray(value) && value.length > 0)
+    || (isDictionary(value) && Object.keys(value).length > 0)
 
 
 export const isInt = (value: any): value is number => typeof value === "number" && Number.isInteger(value)

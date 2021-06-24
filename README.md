@@ -1,5 +1,5 @@
 <h1 align="center">
- Digital Green Certificates: Business Rules
+ Digital COVID Certificates: Business Rules
 </h1>
 
 <p align="center">
