@@ -76,17 +76,17 @@ describe("parsing of dates/date-times", () => {
 
 describe("plusTime", () => {
 
-    it("plusTime works for 1-day offsets", () => {
+    it("works for 1-day offsets", () => {
         equal(plusTime("2021-06-23", 1, "day").toISOString(), "2021-06-24T00:00:00.000Z")
         equal(plusTime("2021-06-23", -1, "day").toISOString(), "2021-06-22T00:00:00.000Z")
     })
 
-    it("plusTime works for 1-hour offsets", () => {
+    it("works for 1-hour offsets", () => {
         equal(plusTime("2021-06-23T00:00:00.000Z", 1, "hour").toISOString(), "2021-06-23T01:00:00.000Z")
         equal(plusTime("2021-06-23T00:00:00.000Z", -1, "hour").toISOString(), "2021-06-22T23:00:00.000Z")
     })
 
-    it("plusTime works for day-offsets in hours", () => {
+    it("works for day-offsets in hours", () => {
         equal(plusTime("2021-06-23T00:00:00.000Z", 24, "hour").toISOString(), "2021-06-24T00:00:00.000Z")
         equal(plusTime("2021-06-23T00:00:00.000Z", 48, "hour").toISOString(), "2021-06-25T00:00:00.000Z")
         equal(plusTime("2021-06-23T00:00:00.000Z", 72, "hour").toISOString(), "2021-06-26T00:00:00.000Z")
@@ -95,8 +95,18 @@ describe("plusTime", () => {
         equal(plusTime("2021-06-23T00:00:00.000Z", -72, "hour").toISOString(), "2021-06-20T00:00:00.000Z")
     })
 
-    it("plusTime not affected by DST transitions", () => {
+    it("not affected by DST transitions", () => {
         equal(plusTime("2021-06-23", -180, "day").toISOString(), "2020-12-25T00:00:00.000Z")
+    })
+
+    // The assertions with even index coincide with the assertions of the test case "comparisons of date-times constructed using plusTime across DST transitions" in `date-times.json` in the test suite:
+    it("yields comparable values", () => {
+        isFalse(plusTime("2020-12-24", 0, "day") >= plusTime("2021-06-23T00:00:00Z", -180, "day"), "d1 more than 180 days before d2")
+        isFalse(plusTime("2020-12-24", 180, "day") >= plusTime("2021-06-23T00:00:00Z", 0, "day"), "d1 more than 180 days before d2")
+        isTrue(plusTime("2020-12-25", 0, "day") >= plusTime("2021-06-23T00:00:00Z", -180, "day"), "d1 exactly 180 days before d2")
+        isTrue(plusTime("2020-12-25", 180, "day") >= plusTime("2021-06-23T00:00:00Z", 0, "day"), "d1 exactly 180 days before d2")
+        isTrue(plusTime("2020-12-26", 0, "day") >= plusTime("2021-06-23T00:00:00Z", -180, "day"), "d1 less than 180 days before d2")
+        isTrue(plusTime("2020-12-26", 180, "day") >= plusTime("2021-06-23T00:00:00Z", 0, "day"), "d1 less than 180 days before d2")
     })
 
 })

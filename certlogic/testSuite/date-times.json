@@ -162,7 +162,7 @@
                 "var": "d2"
               },
               -180,
-              "hour"
+              "day"
             ]
           }
         ]
@@ -181,7 +181,7 @@
             "d1": "2020-12-25",
             "d2": "2021-06-23T00:00:00Z"
           },
-          "expected": false,
+          "expected": true,
           "message": "d1 exactly 180 days before d2"
         },
         {
@@ -189,7 +189,7 @@
             "d1": "2020-12-26",
             "d2": "2021-06-23T00:00:00Z"
           },
-          "expected": false,
+          "expected": true,
           "message": "d1 less than 180 days before d2"
         }
       ]
