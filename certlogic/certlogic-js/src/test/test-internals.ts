@@ -25,7 +25,7 @@ describe("truthy and falsy", () => {
         isTrue(isFalsy(null))
         isTrue(isFalsy(false))
         isFalse(isFalsy(true))
-        isFalse(isFalsy([]), "empty array")
+        isTrue(isFalsy([]), "empty array")
         isFalse(isFalsy([ "foo" ]), "non-empty array")
         isFalse(isFalsy({}), "empty object")
         isFalse(isFalsy({ foo: "bar" }), "non-empty object")

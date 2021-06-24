@@ -34,7 +34,7 @@ internal class CertLogicTests {
         assertTrue(isFalsy(NullNode.instance))
         assertTrue(isFalsy(BooleanNode.FALSE))
         assertFalse(isFalsy(BooleanNode.TRUE))
-        assertFalse(isFalsy(JsonNodeFactory.instance.arrayNode()), "empty array")
+        assertTrue(isFalsy(JsonNodeFactory.instance.arrayNode()), "empty array")
         assertFalse(isFalsy(JsonNodeFactory.instance.arrayNode().add(TextNode.valueOf("foo"))), "non-empty array")
         assertFalse(isFalsy(JsonNodeFactory.instance.objectNode()), "empty object")
         assertTrue(isTruthy(JsonNodeFactory.instance.objectNode().put("foo", "bar")), "non-empty object")

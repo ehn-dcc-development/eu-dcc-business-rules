@@ -17,7 +17,7 @@
         <dependency>
             <groupId>eu.ehn.dcc.certlogic</groupId>
             <artifactId>certlogic-kotlin</artifactId>
-            <version>0.7.5-SNAPSHOT</version>
+            <version>0.7.6-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>

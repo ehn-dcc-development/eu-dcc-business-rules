@@ -432,6 +432,17 @@
         {
           "certLogicExpression": {
             "if": [
+              [],
+              "apple",
+              "banana"
+            ]
+          },
+          "data": null,
+          "expected": "banana"
+        },
+        {
+          "certLogicExpression": {
+            "if": [
               [
                 1
               ],
@@ -554,6 +565,25 @@
     {
       "name": "Truthy and falsy definitions matter in Boolean operations",
       "assertions": [
+        {
+          "certLogicExpression": {
+            "!": [
+              []
+            ]
+          },
+          "data": {},
+          "expected": true
+        },
+        {
+          "certLogicExpression": {
+            "and": [
+              [],
+              true
+            ]
+          },
+          "data": {},
+          "expected": []
+        },
         {
           "certLogicExpression": {
             "!": [
