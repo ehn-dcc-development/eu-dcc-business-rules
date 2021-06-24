@@ -9,6 +9,7 @@ internal fun isFalsy(value: JsonNode): Boolean = when (value) {
     is NullNode -> true
     is TextNode -> value.textValue().isEmpty()
     is IntNode -> value.intValue() == 0
+    is ArrayNode -> value.size() == 0
     else -> false
 }
 

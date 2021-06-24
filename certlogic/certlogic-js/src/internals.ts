@@ -10,6 +10,7 @@ export const isFalsy = (value: any) => value === false
     || value === null
     || (typeof value === "string" && value === "")
     || (typeof value === "number" && value === 0)
+    || (Array.isArray(value) && value.length === 0)
 
 /**
  * @returns Whether the given `value` is considered *truthy* by CertLogic.
