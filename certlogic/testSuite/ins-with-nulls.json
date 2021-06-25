@@ -45,6 +45,13 @@
             "y": []
           },
           "expected": false
+        },
+        {
+          "data": {
+            "x": null,
+            "y": [ null ]
+          },
+          "expected": true
         }
       ]
     },
