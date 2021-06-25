@@ -1,6 +1,6 @@
-# TODO  check whether ../../ehn-dcc-schema/valuesets/*.json exists, and is non-empty
+# TODO  check whether ../../ehn-dcc-valuesets/*.json exists, and is non-empty
 # TODO  check whether jq is installed
-VALUESETS_PATH=../../../ehn-dcc-schema/valuesets
+VALUESETS_PATH=../../../ehn-dcc-valuesets
 if [[ -d "$VALUESETS_PATH" ]]
 then
   jq --slurp 'map( { (.valueSetId): .valueSetValues|keys }) | add' $VALUESETS_PATH/*.json > valueSets.json
