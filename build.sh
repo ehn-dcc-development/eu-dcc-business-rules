@@ -1,14 +1,8 @@
 #!/usr/bin/env sh
 
-cd certlogic
-./build.sh
-cd ..
+(cd certlogic ; sh build.sh)
 
-cd rules-runner
-./build.sh
-cd ..
+(cd rules-runner ; sh build.sh)
 
-cd rulesets
-./run-tests.sh
-cd ..
+(cd rulesets ; sh run-tests.sh)
 

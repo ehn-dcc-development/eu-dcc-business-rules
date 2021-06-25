@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc",
     "build-watch": "tsc --watch --incremental",
-    "clean": "rm -rf dist/ && rm -rf node_modules/"
+    "clean": "rm -rf dist/ && rm -rf node_modules/ && rm -rf package-lock.json && rm -rf yarn.lock"
   },
   "bin": {
     "run-rule-set": "dist/cli.js",
@@ -15,7 +15,8 @@
   "author": "Meinte Boersma",
   "license": "Apache-2.0",
   "dependencies": {
-    "certlogic-js": "file:../../../certlogic/certlogic-js"
+    "certlogic-js": "file:../../../certlogic/certlogic-js",
+    "certlogic-validation": "file:../../../certlogic/certlogic-validation"
   },
   "devDependencies": {
     "@types/chai": "^4.2.18",
