@@ -1,9 +1,9 @@
 import { CertLogicExpression } from "certlogic-js"
 
 
-const gatherFields = (expr: CertLogicExpression): string[] => {
+const gatherFrom = (expr: CertLogicExpression): string[] => {
     if (Array.isArray(expr)) {
-        return (expr as CertLogicExpression[]).flatMap(gatherFields)
+        return (expr as CertLogicExpression[]).flatMap(gatherFrom)
     }
     if (typeof expr === "object") {
         const keys = Object.keys(expr)
@@ -14,19 +14,19 @@ const gatherFields = (expr: CertLogicExpression): string[] => {
         }
         if (operator === "if") {
             const [ guard, then, else_ ] = values
-            return [ ...gatherFields(guard), ...gatherFields(then), ...gatherFields(else_) ]
+            return [ ...gatherFrom(guard), ...gatherFrom(then), ...gatherFrom(else_) ]
         }
         if ([ "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" ].indexOf(operator) > -1) {
-            return values.flatMap(gatherFields)
+            return values.flatMap(gatherFrom)
         }
         if (operator === "!") {
-            return gatherFields(values[0])
+            return gatherFrom(values[0])
         }
         if (operator === "plusTime") {
-            return gatherFields(values[0])
+            return gatherFrom(values[0])
         }
         if (operator === "reduce") {
-            return [ /* operand: */...gatherFields(values[0]), /* initial: */...gatherFields(values[2]) ]
+            return [ /* operand: */...gatherFrom(values[0]), /* initial: */...gatherFrom(values[2]) ]
         }
         throw new Error(`operator not recognised by fields gatherer ("gatherFields") in certlogic-validation/${__filename}: "${operator}"`)
     }
@@ -34,5 +34,9 @@ const gatherFields = (expr: CertLogicExpression): string[] => {
 }
 
 
-export const affectedFields = (expr: CertLogicExpression) => [ ...new Set(gatherFields(expr)) ].sort()
+/**
+ * Compute which data accesses can be performed by the given CertLogic expression.
+ * @param expr A CertLogic expression.
+ */
+export const dataAccesses = (expr: CertLogicExpression) => [ ...new Set(gatherFrom(expr)) ].sort()
 

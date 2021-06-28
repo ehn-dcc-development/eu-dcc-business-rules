@@ -2,6 +2,22 @@
   "name": "certlogic-validation",
   "version": "0.7.7",
   "description": "Validators for CertLogic",
+  "keywords": [
+    "json",
+    "logic",
+    "jsonlogic",
+    "rules",
+    "validation",
+    "validator"
+  ],
+  "homepage": "https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/certlogic",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ehn-dcc-development/dgc-business-rules.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ehn-dcc-development/dgc-business-rules/issues"
+  },
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -16,11 +32,11 @@
   "bin": {
     "certlogic-validate": "dist/cli.js"
   },
-  "author": "Meinte Boersma",
+  "author": "Meinte Boersma <meinte.boersma@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
     "@types/json-schema": "^7.0.7",
-    "certlogic-js": "file:../certlogic-js",
+    "certlogic-js": "0.7.7",
     "deep-equal": "^2.0.5"
   },
   "devDependencies": {

@@ -12,7 +12,7 @@ if (!exprPath) {
 }
 
 if (!existsSync(exprPath)) {
-    console.error(`expression path ${exprPath} (arg. #1) is not valid: file doesn't exist`)
+    console.error(`expression path ${exprPath} is not valid: file doesn't exist`)
     process.exit(2)
 }
 
