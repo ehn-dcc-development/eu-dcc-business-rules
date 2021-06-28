@@ -1,7 +1,21 @@
 {
   "name": "certlogic-js",
   "version": "0.7.7",
-  "description": "",
+  "description": "Implementation of CertLogic in TypeScript.",
+  "keywords": [
+    "json",
+    "logic",
+    "jsonlogic",
+    "rules"
+  ],
+  "homepage": "https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/certlogic",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ehn-dcc-development/dgc-business-rules.git"
+  },
+  "bugs": {
+    "url": "https://github.com/ehn-dcc-development/dgc-business-rules/issues"
+  },
   "main": "dist/index.js",
   "scripts": {
     "build": "tsc",
@@ -14,7 +28,11 @@
   "bin": {
     "certlogic-run": "dist/cli.js"
   },
-  "author": "Meinte Boersma",
+  "author": "Meinte Boersma <meinte.boersma@gmail.com>",
+  "contributors": [
+    "Steffen Schulze",
+    "Denzil Ferreira <denzil.ferreira@solita.fi>"
+  ],
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/chai": "^4.2.18",
