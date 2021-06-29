@@ -11,7 +11,7 @@ The following is a list of (links to) official documents (or links) pertaining t
 
 * [eHN working groups for DCC](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/eHN+WORKING+GROUPS) - within that Wiki:
   * [Taskforce Business Rules](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/Taskforce+Business+Rules)
-    * [EU DCC Validation Rules](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/EU+DCC+Validation+Rules) - Wiki-draft: non-draft version to be added to this repo at some point in the near future
+    * [EU DCC Validation Rules](https://ec.europa.eu/health/sites/default/files/ehealth/docs/eu-dcc_validation-rules_en.pdf) - PDF version of official proposal
   * [Semantics sub-group](https://webgate.ec.europa.eu/fpfis/wikis/display/eHN/eHN+sg+Semantics)
 
 * [The technical specification for the EU DCC (JSON Schema)](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf)
