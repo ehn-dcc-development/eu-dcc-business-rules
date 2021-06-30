@@ -20,12 +20,13 @@ This repository contains a framework to implement (sets of) rules in verifier ap
 It [explains how to do that](./documentation/how-to.md) in a way that makes these rules interchangeable across implementors.
 The advantage of this approach is that it ultimately allows citizens to check their fit-for-travel status into an intended CoA _ahead_ of travel, against the actual rules.
 This can be achieved by adhering to a common, and testable and verifiable way of defining, and executing rules.
+The interchangeable rules are uploaded to, and can be downloaded from the EU Digital COVID Certificate Gateway (DGCG) - more info can be found [here](./documentation/gateway.md).
 
-An example of a rule, and how it should be executed, can be found [here](documentation/example.adoc).
+An example of a rule can be found [here](documentation/example.adoc).
 
 This work is a result of work done by the EU Taskforce Business Rules, and described in [this document](https://ec.europa.eu/health/sites/default/files/ehealth/docs/eu-dcc_validation-rules_en.pdf).
 The (JSON Schema) technical specification for the EU DCC can be found [here](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf).
-Relevant documents and links can be found [here](./documentation/documents-links.md).
+More relevant documents and links can be found [here](./documentation/documents-links.md).
 
 
 ## Assumptions
