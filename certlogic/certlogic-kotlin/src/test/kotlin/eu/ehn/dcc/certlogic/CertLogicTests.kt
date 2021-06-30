@@ -106,7 +106,7 @@ fun TestSuite.run() {
 }
 
 
-val testSuitesPath = File("../testSuite")
+val testSuitesPath = File("../specification/testSuite")
 
 fun allTestSuites(): List<TestSuite> = testSuitesPath
     .listFiles { _, name -> name.endsWith(".json") }

@@ -4,12 +4,13 @@ import { readdirSync, readFileSync } from "fs"
 import { validate } from "../index"
 
 
-const testSuitesPath = join(__dirname, "../../../testSuite")
+const testSuitesPath = join(__dirname, "../../../specification/testSuite")
 
 readdirSync(testSuitesPath)
     .filter((path) => path.endsWith(".json"))
     .map((path) => JSON.parse(readFileSync(join(testSuitesPath, path), "utf8")))
     .forEach((testSuite) => {
+        console.log(`validating test suite "${testSuite.name}"...`)
         testSuite.cases.forEach((testCase: any) => {
             const validateAndReport = (testExpr: any, index?: number) => {
                 const errors = validate(testExpr)

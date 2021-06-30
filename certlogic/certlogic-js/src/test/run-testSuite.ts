@@ -41,7 +41,7 @@ const runTestsOn = (testSuite: TestSuite) => {
 }
 
 
-const testSuitesPath = join(__dirname, "../../../testSuite")
+const testSuitesPath = join(__dirname, "../../../specification/testSuite")
 
 readdirSync(testSuitesPath)
     .filter((path) => path.endsWith(".json"))
