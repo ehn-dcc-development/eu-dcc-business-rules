@@ -18,19 +18,19 @@ To make such determinations, business (or validation, or verification) rules hav
 
 This repository contains a framework to implement (sets of) rules in verifier apps (and backends) using a _rules engine_.
 It [explains how to do that](./documentation/how-to.md) in a way that makes these rules interchangeable across implementors.
-The advantage of this approach is that it ultimately allows citizens to check their fit-for-travel status into an intended CoA _ahead_ of travel, aganst the actual rules.
+The advantage of this approach is that it ultimately allows citizens to check their fit-for-travel status into an intended CoA _ahead_ of travel, against the actual rules.
 This can be achieved by adhering to a common, and testable and verifiable way of defining, and executing rules.
 
-This work is a result of work done by the EU Taskforce Business Rules.
+An example of a rule, and how it should be executed, can be found [here](documentation/example.adoc).
 
+This work is a result of work done by the EU Taskforce Business Rules, and described in [this document](https://ec.europa.eu/health/sites/default/files/ehealth/docs/eu-dcc_validation-rules_en.pdf).
 The (JSON Schema) technical specification for the EU DCC can be found [here](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf).
-
 Relevant documents and links can be found [here](./documentation/documents-links.md).
 
 
 ## Assumptions
 
-Various code in this repo assumes that the following two repos are cloned right next to where this repo's cloned:
+Various code in this repo assumes that you've cloned the following two repos right next to where this repo's cloned:
 
 * [ehn-dcc-schema](https://github.com/ehn-dcc-development/ehn-dcc-schema)
 * [ehn-dcc-valuesets](https://github.com/ehn-dcc-development/ehn-dcc-valuesets)
@@ -41,7 +41,7 @@ Various code in this repo assumes that the following two repos are cloned right 
 
 This repository contains the following:
 
-* [Documentation](./documentation): currently a [How-To](./documentation/how-to.md), [design choices](./documentation/design-choices.md), and [documents/links](./documentation/documents-links.md).
+* [Documentation](./documentation/README.md).
 * [CertLogic](./certlogic/README.md): a specification, reference implementations for various platforms, a test suite, and a validation tool.
   CertLogic is generic, and not tied to the DCC, to make it easier to understand, test, expand, etc. independently.
 * [RulesRunner](./rules-runner/README.md): implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
