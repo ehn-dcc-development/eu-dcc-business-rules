@@ -46,7 +46,7 @@ The full fit-for-travel determination must therefore take the form of a *set of 
 
 The logical expression of a rule is written in a JSON format called **CertLogic**.
 CertLogic is a subset of the [JsonLogic](https://jsonlogic.com/) format, a relatively well-known format/framework for expressing business logic on structured data, restricted to and expanded with what's needed for DCC-rules.
-For more information about CertLogic: read its [specification](../certlogic/specification.md).
+For more information about CertLogic: read its [specification](../certlogic/specification/README.md).
 (For more information on the reasoning behind this setup: see the [design choices document](./design-choices.md).)
 
 Although CertLogic is a fairly easy format, some help with authoring rule expressions is desirable.

@@ -13,7 +13,7 @@
 ## About
 
 CertLogic is a standard for expressing logic, such as the kind you find in business/validation rules, in plain JSON format.
-CertLogic is a [specified](./specification.md) subset of [JsonLogic](https://jsonlogic.com/), extended with necessary custom operations - e.g. for working with dates.
+CertLogic is a [specified](./specification/README.md) subset of [JsonLogic](https://jsonlogic.com/), extended with necessary custom operations - e.g. for working with dates.
 It serves as the basis for defining _interchangeable_ validation rules on top of the [Digital COVID Certificate](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en).
 
 
