@@ -22,9 +22,10 @@ It serves as the basis for defining _interchangeable_ validation rules on top of
 This (part of the) repository contains:
 
 * Reference implementations of CertLogic for various platforms/programming languages - currently:
-  * [JavaScript](./certlogic-js) (as NPMS package)
-  * [Kotlin](./certlogic-kotlin) (as Maven/Kotlin module)
-* A [validation tool](./certlogic-validation): this NPM package exposes an executable `certlogic-validate` which validates a JSON file containing a single CertLogic expression
+  * [JavaScript](./certlogic-js), as NPM package - also available directly from the [NPM registry](https://www.npmjs.com/package/certlogic-js).
+  * [Kotlin](./certlogic-kotlin), as Maven/Kotlin module.
+* A [validation tool](./certlogic-validation): this NPM package exposes an executable `certlogic-validate` which validates a JSON file containing a single CertLogic expression.
+  It's also available directly from the [NPM registry](https://www.npmjs.com/package/certlogic-validation).
 * [JSON Schemas](./schemas) for [CertLogic expressions](./schemas/CertLogic-expression.json) and [test suites](./schemas/CertLogic-testSuite.json) JSON
 * A comprehensive [test suite](testSuite): the files in this directory contain test suites conforming to [this JSON Schema](./schemas/CertLogic-testSuite.json), and are executed by the [`test-suites` Mocha test](./certlogic-js/src/test/test-suites.ts), and the [`CertLogicTests` JUnit/Kotlin ](certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/CertLogicTests.kt)
 * A [build script](./build.sh) to build `certlogic-js`, `certlogic-kotlin`, and `certlogic-validation`.
