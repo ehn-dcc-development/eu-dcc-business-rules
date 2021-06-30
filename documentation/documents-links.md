@@ -16,3 +16,5 @@ The following is a list of (links to) official documents (or links) pertaining t
 
 * [The technical specification for the EU DCC (JSON Schema)](https://ec.europa.eu/health/sites/default/files/ehealth/docs/covid-certificate_json_specification_en.pdf)
 
+* [WHO-status of vaccines (June 16th, 2021)](https://extranet.who.int/pqweb/sites/default/files/documents/Status_of_COVID-19_Vaccines_within_WHO_EUL-PQ_evaluation_process-16June2021_Final.pdf)
+
