@@ -21,5 +21,7 @@ export type CertLogicExpression =
     | number    // ...which should be an integer...
     | string
 
-export type TimeUnit = "day" | "hour"
+export type TimeUnit = "year" | "month" | "day" | "hour"
+
+export const timeUnits = [ "year", "month", "day", "hour" ]
 

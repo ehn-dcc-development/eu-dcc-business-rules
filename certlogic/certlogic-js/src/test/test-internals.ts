@@ -123,5 +123,21 @@ describe("plusTime", () => {
         isTrue(plusTime("2020-12-26", 180, "day") >= plusTime("2021-06-23T00:00:00Z", 0, "day"), "d1 less than 180 days before d2")
     })
 
+    it("works for month offsets", () => {
+        equal(plusTime("2021-02-01T00:00:00.000Z", 0, "month").toISOString(), "2021-02-01T00:00:00.000Z")
+        equal(plusTime("2021-02-01T00:00:00.000Z", 1, "month").toISOString(), "2021-03-01T00:00:00.000Z")
+        equal(plusTime("2021-12-01T00:00:00.000Z", 1, "month").toISOString(), "2022-01-01T00:00:00.000Z")
+        equal(plusTime("2021-12-01T00:00:00.000Z", -12, "month").toISOString(), "2020-12-01T00:00:00.000Z")
+        equal(plusTime("2020-02-29T00:00:00.000Z", 1, "month").toISOString(), "2020-03-29T00:00:00.000Z")
+    })
+
+    it("works for year offsets", () => {
+        equal(plusTime("2021-02-01T00:00:00.000Z", 0, "year").toISOString(), "2021-02-01T00:00:00.000Z")
+        equal(plusTime("2021-02-01T00:00:00.000Z", 1, "year").toISOString(), "2022-02-01T00:00:00.000Z")
+        equal(plusTime("2021-02-01T00:00:00.000Z", -1, "year").toISOString(), "2020-02-01T00:00:00.000Z")
+        equal(plusTime("2021-02-01T00:00:00.000Z", 2, "year").toISOString(), "2023-02-01T00:00:00.000Z")
+        equal(plusTime("2020-02-29T00:00:00.000Z", 1, "year").toISOString(), "2021-03-01T00:00:00.000Z")
+    })
+
 })
 

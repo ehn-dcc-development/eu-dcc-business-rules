@@ -64,10 +64,19 @@ export const dateFromString = (str: string) => {
 
 export const plusTime = (dateTimeLikeStr: string, amount: number, unit: TimeUnit): Date => {
     const dateTime = dateFromString(dateTimeLikeStr)
-    if (unit === "day") {
+    if (amount === 0) {
+        return dateTime
+    }
+           if (unit === "day") {
         dateTime.setUTCDate(dateTime.getUTCDate() + amount)
     } else if (unit === "hour") {
         dateTime.setUTCHours(dateTime.getUTCHours() + amount)
+    } else if (unit === "month") {
+       dateTime.setUTCMonth(dateTime.getUTCMonth() + amount)
+    } else if (unit === "year") {
+       dateTime.setUTCFullYear(dateTime.getUTCFullYear() + amount)
+    } else {
+        throw new Error(`unknown time unit "${unit}"`)
     }
     return dateTime
 }

@@ -30,7 +30,7 @@ const migrateRule = (rule, msId) => ({
     "Version": "1.0.0",
     "SchemaVersion": "1.0.0",
     "Engine": "CERTLOGIC",
-    "EngineVersion": "0.7.7",
+    "EngineVersion": "1.0.0",
     "CertificateType": ruleType(rule.id),
     "Description": [
         {

@@ -73,9 +73,14 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
     }
 
     public JsonDateTime plusTime(int amount, TimeUnit unit) {
+        if (amount == 0) {
+            return this;
+        }
         switch (unit) {
             case day: return new JsonDateTime(this._value.plusDays(amount));
             case hour: return new JsonDateTime(this._value.plusHours(amount));
+            case month: return new JsonDateTime(this._value.plusMonths(amount));
+            case year: return new JsonDateTime(this._value.plusYears(amount));
             default: throw new RuntimeException(String.format("time unit \"%s\" not handled", unit));
         }
     }

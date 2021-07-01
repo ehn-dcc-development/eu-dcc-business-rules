@@ -166,7 +166,7 @@ internal fun evaluatePlusTime(dateOperand: JsonNode, amount: JsonNode, unit: Jso
         throw RuntimeException("\"amount\" argument (#2) of \"plusTime\" must be an integer")
     }
     if (!isTimeUnit(unit)) {
-        throw RuntimeException("\"unit\" argument (#3) of \"plusTime\" must be a string 'day' or 'hour'")
+        throw RuntimeException("\"unit\" argument (#3) of \"plusTime\" must be a string with one of the time units: ${TimeUnit.values().map { it.toString() }}")
     }
     val timeUnit = TimeUnit.valueOf(unit.textValue())
     val dateTimeStr = evaluate(dateOperand, data)
