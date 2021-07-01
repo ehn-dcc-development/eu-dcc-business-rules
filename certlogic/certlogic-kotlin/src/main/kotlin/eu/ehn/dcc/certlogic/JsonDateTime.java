@@ -34,8 +34,8 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
         if (str.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
             return JsonDateTime.fromStringInternal(str + "T00:00:00Z");
         }
-        final Pattern pattern = Pattern.compile("^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})(\\.\\d+?)?(Z|([+-]\\d{2}):?(\\d{2})?)$");
-        //                                        1        2        3        4        5        6       7          8  9             10
+        final Pattern pattern = Pattern.compile("^(\\d{4})-(\\d{2})-(\\d{2})T(\\d{2}):(\\d{2}):(\\d{2})(\\.\\d+?)?(Z|(([+-])(\\d{1,2}):?(\\d{2})?))?$");
+        //                                        1        2        3        4        5        6       7          8  910    11          12
         Matcher matcher = pattern.matcher(str);
         if (matcher.matches()) {
             String reformatted = String.format("%s-%s-%sT%s:%s:%s", matcher.group(1), matcher.group(2), matcher.group(3), matcher.group(4), matcher.group(5), matcher.group(6));
@@ -43,9 +43,9 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
                 reformatted += String.format("%-4s", matcher.group(7)).replace(' ', '0').substring(0, 4);
             }
             if (matcher.group(8) == null || matcher.group(8).equals("Z")) {
-                reformatted += "Z";
+                reformatted += "Z";  // Assume timezone offset 'Z' when missing.
             } else {
-                reformatted += matcher.group(9) + ":" + (matcher.group(10) != null ? matcher.group(10) : "00");
+                reformatted += matcher.group(10) + String.format("%2s", matcher.group(11)).replaceAll(" ", "0") + ":" + (matcher.group(12) != null ? matcher.group(12) : "00");
             }
             return JsonDateTime.fromStringInternal(reformatted);
         }

@@ -5,8 +5,8 @@ import kotlin.test.assertEquals
 
 class JsonDateTimeTests {
 
-    fun check(dateTimeLike: String, expected: String) {
-        assertEquals(expected, JsonDateTime.fromString(dateTimeLike).asText())
+    fun check(dateTimeLike: String, expected: String, message: String? = null) {
+        assertEquals(expected, JsonDateTime.fromString(dateTimeLike).asText(), message)
     }
 
     @Test
@@ -38,6 +38,24 @@ class JsonDateTimeTests {
         check("2021-08-01T00:00:00.0001Z", "2021-08-01T00:00:00.000Z")    // 100 µs
         check("2021-08-01T00:00:00.00001Z", "2021-08-01T00:00:00.000Z")   //  10 µs
         check("2021-08-01T00:00:00.000001Z", "2021-08-01T00:00:00.000Z")  //   1 µs
+    }
+
+    @Test
+    fun `construct date-times from strings which lack a timezone offset`() {
+        check("2021-08-01", "2021-08-01T00:00:00.000Z")
+        check("2021-08-01T00:00:00", "2021-08-01T00:00:00.000Z")
+    }
+
+    @Test
+    fun `construct date-times from strings which have a "short" timezone offset`() {
+        check("2021-08-01T00:00:00+1:00", "2021-08-01T00:00:00.000+01:00")
+        // java.time.OffsetDateTime keeps the timezone offset, and doesn't normalise to `Z`
+    }
+
+    @Test
+    fun `should work for some samples from the QA test data`() {
+        check("2021-05-20T12:34:56+00:00", "2021-05-20T12:34:56.000Z", "SI")
+        check("2021-06-29T14:02:07Z", "2021-06-29T14:02:07.000Z", "BE")
     }
 
 }

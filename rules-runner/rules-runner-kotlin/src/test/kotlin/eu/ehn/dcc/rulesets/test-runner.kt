@@ -53,7 +53,6 @@ fun File.fileNameWithoutExt(): CharSequence {
 }
 
 
-// FIXME  not picked up by Maven test
 internal class RunEURulesTests {
 
     val euTemplateRuleSet = readJson<RuleSet>(File("../../rulesets/EU/template-ruleset.json"))
