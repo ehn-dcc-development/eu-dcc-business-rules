@@ -1,12 +1,10 @@
 {
-  "name": "certlogic-tests",
-  "version": "0.7.5",
-  "description": "A comprehensive test suite for CertLogic.",
-  "main": "typings.d.ts",
+  "name": "jsonlogic-extension",
+  "version": "0.9.0",
   "scripts": {
     "build": "tsc",
     "prestart": "npm run build",
-    "start": "node dist/filter-validate-tests.js"
+    "start": "node dist/filter-tests.js"
   },
   "author": "Meinte Boersma",
   "license": "Apache-2.0",
