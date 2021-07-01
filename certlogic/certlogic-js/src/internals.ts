@@ -34,6 +34,8 @@ export const isInt = (value: any): value is number => typeof value === "number" 
 export const isDate = (value: any): value is Date => typeof value === "object" && "toISOString" in value
 
 
+const leftPad = (str: string, len: number, char: string): string => char.repeat(len - str.length) + str
+
 /**
  * @returns A JavaScript {@see Date} object representing the date or date-time given as a string.
  * @throws An {@see Error} in case the string couldn't be parsed as a date or date-time.
@@ -42,17 +44,17 @@ export const dateFromString = (str: string) => {
     if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
         return new Date(str)
     }
-    const matcher = str.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+?)?(Z|([+-]\d{2}):?(\d{2})?)?$/)
-    //                                   1      2       3       4       5       6      7        8  9            10
+    const matcher = str.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+?)?(Z|(([+-])(\d{1,2}):?(\d{2})?))?$/)
+    //                                   1      2       3       4       5       6      7        8   910    11          12
     if (matcher) {
         let reformatted = `${matcher[1]}-${matcher[2]}-${matcher[3]}T${matcher[4]}:${matcher[5]}:${matcher[6]}`
         if (matcher[7]) {
             reformatted += matcher[7].padEnd(4, "0").substring(0, 4)
         }
         if (!matcher[8] || (matcher[8] === "Z")) {
-            reformatted += "Z"
+            reformatted += "Z"  // Assume timezone offset 'Z' when missing.
         } else {
-            reformatted += matcher[9] + ":" + (matcher[10] || "00")
+            reformatted += matcher[10] + leftPad(matcher[11], 2, "0") +  ":" + (matcher[12] || "00")
         }
         return new Date(reformatted)
     }
