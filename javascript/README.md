@@ -16,6 +16,7 @@ Most important/interesting thing is to run
     $ npm start
 
 to run all [these rules](../rulesets/EU/template-ruleset.json) on all payloads in the [dgc-testdata](https://github.com/eu-digital-green-certificates/dgc-testdata) repo.
+**FIXME**  move this to `dgc-business-rules-testdata` repo
 
 Code is written in TypeScript, with typings serving as documentation.
 

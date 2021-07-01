@@ -4,5 +4,3 @@
 
 (cd rules-runner ; sh build.sh)
 
-(cd rulesets ; sh run-tests.sh)
-

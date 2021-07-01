@@ -6,9 +6,10 @@ From now on, we'll drop the adjectives, and stick to _“rule”_.
 
 ## Concepts
 
-A **rule** in the context of the DCC consists mainly of a logical expression with an outcome `true` or `false` that operates on a specific data structure.
+A **rule** in the context of the DCC consists of a logical expression, and some meta data.
+The logical expression operates on a specific data structure, and should produce a value`true` or `false`.
 Rules are executed by a _rule engine_.
-An outcome `true` of a rule's execution/evaluation indicates that the rule _“passes”_, while an outcome `false` is grounds for denying fit-for-travel status.
+A `true` result of a rule's execution/evaluation indicates that the rule _“passes”_, while a `false` is grounds for denying fit-for-travel status.
 
 The data structure a rule operates on can be rendered in JSON format as follows:
 
@@ -85,30 +86,20 @@ The following things can be helpful:
     That will be addressed later on.
 
 
-## Writing a rule set
-
-A **rule set** is a set of rules for a certain legislative region, such as an EU Member State, or the EU as a whole.
-The EU-template rule set can be found [here](../rulesets/EU/template-ruleset.json).
-
-A rule set is written in a JSON format that relies on CertLogic.
-Its [RuleSet JSON Schema](../rules-runner/resources/schemas/RuleSet.json) can help with authoring a JSON file containing a rule set.
-
-_Note:_ this schema is expected to change in the near future.
-The various components (rules runners, validators) should reflect those changes.
-
-
-## Testing rules
+## Testing a rule
 
 Any rule should come with automated tests that exercise it.
 Such tests corroborate the rule writer's intention, but can also be used to check the validity of the execution of the same rule by different rules engines.
 That's particularly helpful with implementors of verifier apps having free choice in what rules engine to use.
+
+**TODO**  bring up-to-date with other repo
 
 The `rules-runner-js` NPM package exposes a CLI command `test-rule-set` to test the rules in a rule set on a per-rule basis.
 The usage of this CLI command is as follows:
 
     $ ./node_modules/.bin/test-rule-set --rule-set=<path to JSON file with rule set> --value-sets=<path to JSON with value sets> --tests=<path to directory with rule tests>
 
-Tests for a rule reside in a JSON file with file name equal to the rule's ID, and which conforms [the RuleTests JSON Schema](../rules-runner/resources/schemas/RuleTests.json).
+Tests for a rule reside in JSON files which conform to [the RuleTests JSON Schema](???).
 The `test-rule-set` command tries to load the rule set, and value sets JSON files, and all JSON files in the indicated `tests` directory.
 It then runs all rules' tests, checking whether the rule evaluates without erroring on each test, and matches the expected outcome.
 `test-rule-set` also checks whether the test files are in 1-to-1 correspondence to the rules in the rule set, reporting when a rule does not have a corresponding test file, and vice versa.
@@ -118,7 +109,7 @@ To test this functionality you can run the script `run-tests.sh`, which tests al
     $ (rulesets) ./run-tests.sh
 
 
-## Running rules (or a rule set)
+## Running rules
 
 Rule sets can be run using _rules runners_ for JavaScript and for Kotlin/Java.
 These rules runners rely on a CertLogic rule engine, written in the same languages (respectively).
