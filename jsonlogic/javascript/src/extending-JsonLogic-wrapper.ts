@@ -6,7 +6,6 @@
 
 import { RulesLogic, add_operation, apply } from "json-logic-js"
 
-// TODO  generify this with return type parameter?
 export type DataAccess = { "var": JsonLogicRule }
 export type IfThenElse = { "if": [ JsonLogicRule, JsonLogicRule, JsonLogicRule ] }
 export type PlusDays = { "plusTime": [ JsonLogicRule, JsonLogicRule, JsonLogicRule ] }
@@ -45,8 +44,6 @@ export type JsonLogicRule =
     | BinaryOperation
     | LogicalOperation
 
-// TODO  map this to a JSON Schema, and compare with "official" one
-
 
 let extended = false
 
@@ -55,12 +52,12 @@ export const extendJsonLogic = () => {
         return
     }
     // Steffen Schulze's custom op for dates:
-    add_operation("plusTime", (dateTimeStr, amount, unit) => {
-        let dateTime = new Date(dateTimeStr)
+    add_operation("plusTime", (dateTimeStr: string, amount: number, unit: "day" | "hour") => {
+        let dateTime = new Date(dateTimeStr)    // Note: assumes that dateTimeStr is parseable as-is!
         if (unit === "day") {
-            dateTime.setDate(dateTime.getDate() + amount)
+            dateTime.setUTCDate(dateTime.getUTCDate() + amount)
         } else if (unit === "hour") {
-            dateTime.setHours(dateTime.getHours() + amount)
+            dateTime.setUTCHours(dateTime.getUTCHours() + amount)
         }
         return dateTime
     })

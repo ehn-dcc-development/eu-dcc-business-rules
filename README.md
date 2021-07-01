@@ -46,8 +46,7 @@ This repository contains the following:
 * [CertLogic](./certlogic/README.md): a specification, reference implementations for various platforms, a test suite, and a validation tool.
   CertLogic is generic, and not tied to the DCC, to make it easier to understand, test, expand, etc. independently.
 * [RulesRunner](./rules-runner/README.md): implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
-
-**TODO**  The contents of the [javascript](./javascript) directory still have to be moved to their proper places, and are currently provided as-is *only*, without guarantee of them being useful.
+* [JsonLogic](./jsonlogic/): documentation and code relating to JsonLogic.
 
 
 ## Testing & Status

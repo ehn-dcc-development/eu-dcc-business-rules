@@ -1,6 +1,6 @@
 const { deepEqual, fail, isFalse, isTrue } = require("chai").assert
 
-import { extendJsonLogic, applyLogic, JsonLogicRule } from "../extend-JsonLogic"
+import { extendJsonLogic, applyLogic, JsonLogicRule } from "../extending-JsonLogic-wrapper"
 
 extendJsonLogic()
 

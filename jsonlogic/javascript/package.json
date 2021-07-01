@@ -3,15 +3,25 @@
   "version": "0.9.0",
   "scripts": {
     "build": "tsc",
+    "pretest": "npm run build",
+    "test": "mocha dist/test",
     "prestart": "npm run build",
     "start": "node dist/filter-tests.js"
   },
   "author": "Meinte Boersma",
   "license": "Apache-2.0",
   "devDependencies": {
+    "@types/chai": "^4.2.19",
     "@types/deep-equal": "^1.0.1",
+    "@types/json-logic-js": "^1.2.1",
+    "@types/mocha": "^8.2.2",
     "@types/node": "^15.12.2",
     "certlogic-validation": "^0.8.0",
-    "deep-equal": "^2.0.5"
+    "chai": "^4.3.4",
+    "deep-equal": "^2.0.5",
+    "mocha": "^9.0.1"
+  },
+  "dependencies": {
+    "json-logic-js": "^2.0.1"
   }
 }
