@@ -115,14 +115,14 @@ We do that as follows with CertLogic:
 <2> The second operand is the _then-branch_.
 <3> The third operand is the _else-branch_.
 
-This expression uses an https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification.md#if-then-else-if[**if**-operation] to distinguish between the DCC representing a vaccination event, or something else.
-The first operand, which is the guard condition of the **if**-operation is a https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification.md#data-access-var[`var`- or **data access**-operation].
+This expression uses an https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md#if-then-else-if[**if**-operation] to distinguish between the DCC representing a vaccination event, or something else.
+The first operand, which is the guard condition of the **if**-operation is a https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md#data-access-var[`var`- or **data access**-operation].
 Such an operation drills down into the data context using the path `payload.v.0`, producing `null` for any missing/unaddressable value.
 With this particular path and the data context from <<example-data-context>>, the `var`-operation produces the object which is the first (with index 0) object in the array value of the `v`-field of the `payload` object, or a `null` value if that's not present.
 
 If the guard condition produces a `null` value, then the third operand, which is the else-branch, gets executed, and is returned as value of the **if**-operation.
 In general, an **if**-operation executes the then-branch when the guard condition produces a _truthy_ value, and the else-branch when the condition produces a _falsy_ value.
-What values are truthy, which are falsy, and which are neither, is specified https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification.md#truthy-and-falsy[here].
+What values are truthy, which are falsy, and which are neither, is specified https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md#truthy-and-falsy[here].
 
 Now, let's assume that the DCC we're dealing with represents a vaccination event - such as in the <<example-DCC-JSON>>
 To perform date(-time)-comparison, we use the `not-after`- and `plusTime`-operations.

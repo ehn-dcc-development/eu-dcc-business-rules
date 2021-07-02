@@ -1,8 +1,19 @@
 # CertLogic: specification
 
+
+## Version
+
+The semantic version identification of this specification is: **1.0.0**.
+
+The version identification of implementations don't have to be in sync.
+Rather, implementations should specify with which version of the specification they're compatible.
+
+
+## Introduction
+
 CertLogic is a restricted *subset* of JsonLogic, extended with custom operations - e.g. for working with date-times.
 
-The semantics of CertLogic is that of a function which takes a _CertLogic expression_, a _data context_ (structured data), and returns a value.
+The semantics of CertLogic is that of a function which takes a _CertLogic expression_, a _data context_ (structured data), and returns (or: produces/evaluates to) a value.
 All three of these values are JSON values that must be _self-contained_, and _non-referential_.
 This means that:
 
@@ -30,25 +41,27 @@ A JSON array evaluates to an array with every item evaluated separately.
 If a JSON object (not an array) is a literal, being a boolean, an integer, or a string, it evaluates to itself.
 
 
-## Truthy and falsy
+## Values
+
+### Truthy and falsy values
 
 Allowed falsy values are: `false`, `null`, the empty string (`""`), the zero integer (`0`), the empty array (`[]`), and the empty object (`{}`).
 Allowed truthy values are: `true`, any non-empty string (meaning: length > 0), any non-zero integer, any non-empty array, and any object with at least one key-value-pair.
-Using other values that are “traditionally” falsy or truthy is regarded as undefined behaviour.
 
+Truthy and falsy are not mutually exclusive: values exist which are neither truthy, nor falsy.
 The reason to do this is that JsonLogic has a notion of truthy/falsy that differs from the usual JavaScript one, precisely to aid in cross-platform adoption.
 CertLogic restricts this notion even further to avoid confusion, or unjust reliance on behaviour that's perceived as “common” but isn't (cross-platform).
 
 Note: `null`, the empty string, the zero integer, the empty array, and the empty object all being falsy (and not truthy) is useful for checking the presence/existence of values in the data context.
 
 
-## Literals: arrays, booleans, integers, and strings
+### Literal values: arrays, booleans, integers, and strings
 
 The usual array, boolean, integer (as a subset of JavaScript's `Number` type), and string literals are allowed.
 Literal for the following (types of) values are not allowed: objects, `null`, and date-times.
 
 
-## Dates and date-times
+### Dates and date-times
 
 Dates, and date-times (so: timestamps) can only be constructed by performing a `plusTime` operation, with a certain amount of hours or days added.
 Add 0 hours/days to represent the date(-time) as-is.
@@ -75,17 +88,18 @@ Note that that doesn't properly reflect the resolution of the input date.
 That effect has to be taken into account by the logic implementor.
 
 
-## Data access (`var`)
+## Operations
+
+### Data access (`var`)
 
 The data context can be accessed through an operation of the following form:
 
     { "var": "<path>" }
 
 The `<path>` is a string containing a path that “drills down into” the current data context.
-It must be composed of “path fragments” which are either “Lispy” words (starting with a word character followed by any number of word or number characters, or hyphens), or integers, and which are separated by periods (`.`).
-It must match the regular expression `/^((\w[\w\d-]*)|\d+)(\.((\w[\w\d-]*)|\d+))*$/`.
+A path is composed of “path fragments” that are separated by periods (`.`).
 
-In terms of most mainstream programming languages: if `it` is a variable/slot holding the current data context, then `{ "var": "<path>" }` essentially means `it.<path>`.
+In terms of most mainstream programming languages: if `it` is a variable/slot holding the current data context, then `{ "var": "<path>" }` means `it.<path>`.
 Data access of a `null` or non-existing value evaluates to `null`.
 In particular, accessing a non-existent property on an object evaluates to `null`.
 
@@ -99,7 +113,7 @@ The variant which provides a default value instead of a missing/`null` result is
 As noted before: the `var` data access operation is the only type of expression that can have a non-array argument specification.
 
 
-## If-then-else (`if`)
+### If-then-else (`if`)
 
 Conditional logic can be implemented through an operation of the following form:
 
@@ -114,7 +128,7 @@ Conditional logic can be implemented through an operation of the following form:
 If the `<guard>` evaluates to a truthy value, then the `<guard>` expression is evaluated, otherwise the `<else>` expression.
 
 
-## Operations with infix operators
+### Operations with infix operators
 
 (An infix operator is a binary operator which is notated between its operands.)
 The following infix operators known from JavaScript are available: `===`, `and`, `>`, `<`, `>=`, `<=`, `in`, `+`.
@@ -162,13 +176,13 @@ The `after`, `before`, `not-after`, and `not-before` operators are the date-time
 All operands of an `after`, `before`, `not-after`, or `not-before` operator must be date-times.
 
 
-## Negation (`!`)
+### Negation (`!`)
 
 The negation operation takes one operand, and returns `true` if that operand's falsy, and `false` if it's truthy.
 It's an error if any operand is neither falsy, nor truthy.
 
 
-## Offset date-time (`plusTime`)
+### Offset date-time (`plusTime`)
 
 A date-time offset operation has the following form:
 
@@ -184,7 +198,7 @@ This operation is the *only* way to construct date-time values.
 Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap seconds.
 
 
-## Reduction (`reduce`)
+### Reduction (`reduce`)
 
 A reduction operation has the following form:
 
@@ -210,8 +224,33 @@ All other special array operations can be implemented using (only) a `reduce` op
 To be able to access values in the original data context, CertLogic *may* expand beyond JsonLogic at some point by also adding a key-value pair with key `"data"` to the data object passed to the `<lambda>`, whose value is the original data context.
 
 
-## Evolution of this specification
+## Other aspects
+
+
+### Evolution of this specification
 
 This specification can evolve over time, based on necessary clarifications, or required additional functionality.
-In any case, at least the behaviour of the “allowed”-part of the specification should be covered by the [test suite](./testSuite).
+In any case, at least the behaviour of the “allowed”-part of the specification should be covered by the test suite - see directly below.
+
+
+### Test suite
+
+A comprehensive test suite is contained in the [`testSuite` directory](./testSuite), as a collection of JSON files.
+These files conform to a [JSON Schema](./schemas/CertLogic-testSuite.json).
+The test suite is (currently) executed by the [`test-suites` Mocha test](../certlogic-js/src/test/run-testSuite.ts), and the [`CertLogicTests` JUnit/Kotlin ](../certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/CertLogicTests.kt).
+
+
+### Schemas
+
+Two JSON Schemas are provided as part of this specification:
+
+* A [schema for CertLogic expressions](./schemas/CertLogic-expression.json).
+    Note that this schema can't fully determine whether a given JSON conforms to the specification above.
+    Use the provided validator for that - see below.
+* A [schema for files](./schemas/CertLogic-testSuite.json) that are part of the [test suite](./testSuite/).
+
+
+### Validator
+
+A validator is provided in the form of the [`certlogic-validation` NPM package](../certlogic-validation/README.md).
 
