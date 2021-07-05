@@ -3,6 +3,9 @@ package eu.ehn.dcc.certlogic
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
 
+/**
+ * Should be in sync with the `describe("parsing of dates/date-times", ...`-part of `test-internals.ts` from `certlogic-js`.
+ */
 class JsonDateTimeTests {
 
     fun check(dateTimeLike: String, expected: String, message: String? = null) {
@@ -57,7 +60,5 @@ class JsonDateTimeTests {
         check("2021-05-20T12:34:56+00:00", "2021-05-20T12:34:56.000Z", "SI")
         check("2021-06-29T14:02:07Z", "2021-06-29T14:02:07.000Z", "BE")
     }
-
-    // TODO  also test plusTime
 
 }
