@@ -88,7 +88,7 @@ The following date and date-time formats are allowed:
 	YYYY-MM-DDThh:mm:ss.S+[+-]hh:mm
 
 When a timezone offset is missing, the offset `Z` is assumed.
-The last four formats specify sub-second time info, with any number of decimals being accepted.
+The last eight formats specify sub-second time info, with any number of decimals being accepted.
 Any date(-time) is always normalised to milliseconds, with 3 places behind the decimal dot.
 All decimals beyond the 3rd one are ignored, effectively rounding _down_ to the nearest millisecond.
 
