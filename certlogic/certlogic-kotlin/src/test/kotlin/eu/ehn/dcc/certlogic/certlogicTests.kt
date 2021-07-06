@@ -4,9 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.*
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
-import org.junit.jupiter.api.Assertions
-import org.junit.jupiter.api.Assertions.assertFalse
-import org.junit.jupiter.api.Assertions.assertTrue
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import java.io.File
 
@@ -94,11 +92,15 @@ fun TestSuite.run() {
                 "only" -> println("\t\t(test directive 'only' not supported on assertions - ignoring)")
                 else -> {
                     println("\t\tRunning assertion ${index + 1}...")
-                    Assertions.assertEquals(
+                    val expr = if (assertion.certLogicExpression is NullNode) testCase.certLogicExpression else assertion.certLogicExpression
+                    val validationErrors = validate(expr)
+                    assertEquals(0, validationErrors.size, "CertLogic expression should not have validation errors, but has: $validationErrors")
+                    assertEquals(
                         assertion.expected,
-                        evaluate(if (assertion.certLogicExpression is NullNode) testCase.certLogicExpression else assertion.certLogicExpression, assertion.data),
+                        evaluate(expr, assertion.data),
                         assertion.message ?: assertion.data.asText()
                     )
+                    // (The previous assertion should always fail before the last one: if not, then the validator hasn't done its job!)
                 }
             }
         }
@@ -106,9 +108,7 @@ fun TestSuite.run() {
 }
 
 
-val testSuitesPath = File("../specification/testSuite")
-
-fun allTestSuites(): List<TestSuite> = testSuitesPath
+fun allTestSuites(): List<TestSuite> = File("../specification/testSuite")
     .listFiles { _, name -> name.endsWith(".json") }
     .map { jacksonObjectMapper().readValue(it) }
 

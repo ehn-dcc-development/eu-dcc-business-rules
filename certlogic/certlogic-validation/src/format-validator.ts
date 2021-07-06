@@ -1,4 +1,4 @@
-import { isInt, timeUnits } from "certlogic-js"
+import { isInt } from "certlogic-js"
 
 import { ValidationError } from "./typings"
 
@@ -8,7 +8,7 @@ const validateVar = (expr: any, values: any): ValidationError[] => {
         return [ { expr, message: `not of the form { "var": "<path>" }` } ]
     }
     const path = values
-    return (path === "" || path.match(/^((\w[\w\d-]*)|\d+)(\.((\w[\w\d-]*)|\d+))*$/))
+    return (path === "" || path.match(/^([^\.]+?)(\.[^\.]+?)*$/))
         ? []
         : [ { expr, message: `data access path doesn't have a valid format: ${path}` } ]
 }
@@ -25,7 +25,7 @@ const validateIf = (expr: any, values: any[]): ValidationError[] => {
 
 const validateInfix = (expr: any, operator: string, values: any[]): ValidationError[] => {
     const errors = []
-    let maxOperands = 2
+    let maxOperands = values.length
     switch (operator) {
         case "and": {
             if (values.length < 2) {
@@ -48,6 +48,7 @@ const validateInfix = (expr: any, operator: string, values: any[]): ValidationEr
             break
         }
         default: {
+            maxOperands = 2
             if (values.length !== 2) {
                 errors.push({ expr, message: `an operation with operator "${operator}" must have 2 operands, but it has ${values.length}` })
             }

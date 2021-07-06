@@ -23,5 +23,5 @@ export type CertLogicExpression =
 
 export type TimeUnit = "year" | "month" | "day" | "hour"
 
-export const timeUnits = [ "year", "month", "day", "hour" ]
+export const timeUnits: TimeUnit[] = [ "year", "month", "day", "hour" ]
 
