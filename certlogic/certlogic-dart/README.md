@@ -19,7 +19,7 @@ final data = {
 ### Evaluate a single rule
 
 ```dart
-JsonLogic.evaluate(rule.logic, data) as bool
+CertLogic.evaluate(rule.logic, data) as bool
 ```
 
 ### Evaluate a list of rules and return all failed rules
@@ -27,7 +27,7 @@ JsonLogic.evaluate(rule.logic, data) as bool
 ```dart
 final failedRules = validationRules
     ?.map(
-        (rule) => JsonLogic.evaluate(rule.logic, data) as bool == true ? null : rule,
+        (rule) => CertLogic.evaluate(rule.logic, data) as bool == true ? null : rule,
     )
     .whereType<ValidationRule>()
     .toList();
