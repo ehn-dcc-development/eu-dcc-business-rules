@@ -53,6 +53,8 @@ fun File.fileNameWithoutExt(): CharSequence {
 }
 
 
+/*
+>>>>>>> 5cb6acd (remove “legacy” rule sets and internal references to them)
 internal class RunEURulesTests {
 
     val euTemplateRuleSet = readJson<RuleSet>(File("../../rulesets/EU/template-ruleset.json"))
@@ -100,4 +102,5 @@ internal class RunEURulesTests {
     }
 
 }
+ */
 
