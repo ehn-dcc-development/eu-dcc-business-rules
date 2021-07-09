@@ -1,6 +1,7 @@
 const { equal, isFalse, isTrue } = require("chai").assert
 
 import { dateFromString, isFalsy, isTruthy, plusTime } from "../internals"
+import { TimeUnit } from "../typings"
 
 
 describe("truthy and falsy", () => {
@@ -40,8 +41,9 @@ describe("truthy and falsy", () => {
 
 describe("parsing of dates/date-times", () => {
 
-    const check = (dateTimeLike: string, expected: string, message?: string) =>
-        equal(dateFromString(dateTimeLike).toISOString(), expected)
+    const check = (dateTimeLike: string, expected: string, message?: string) => {
+        equal(dateFromString(dateTimeLike).toISOString(), expected, message)
+    }
 
     it("construct a date from a string without time information (compliant with a JSON Schema \"date\" formatted string)", () => {
         check("2021-05-04", "2021-05-04T00:00:00.000Z")
@@ -90,27 +92,31 @@ describe("parsing of dates/date-times", () => {
 
 describe("plusTime", () => {
 
+    const check = (dateTimeLike: string, amount: number, unit: TimeUnit, expected: string) => {
+        equal(plusTime(dateTimeLike, amount, unit).toISOString(), expected)
+    }
+
     it("works for 1-day offsets", () => {
-        equal(plusTime("2021-06-23", 1, "day").toISOString(), "2021-06-24T00:00:00.000Z")
-        equal(plusTime("2021-06-23", -1, "day").toISOString(), "2021-06-22T00:00:00.000Z")
+        check("2021-06-23", 1, "day", "2021-06-24T00:00:00.000Z")
+        check("2021-06-23", -1, "day", "2021-06-22T00:00:00.000Z")
     })
 
     it("works for 1-hour offsets", () => {
-        equal(plusTime("2021-06-23T00:00:00.000Z", 1, "hour").toISOString(), "2021-06-23T01:00:00.000Z")
-        equal(plusTime("2021-06-23T00:00:00.000Z", -1, "hour").toISOString(), "2021-06-22T23:00:00.000Z")
+        check("2021-06-23T00:00:00.000Z", 1, "hour", "2021-06-23T01:00:00.000Z")
+        check("2021-06-23T00:00:00.000Z", -1, "hour", "2021-06-22T23:00:00.000Z")
     })
 
     it("works for day-offsets in hours", () => {
-        equal(plusTime("2021-06-23T00:00:00.000Z", 24, "hour").toISOString(), "2021-06-24T00:00:00.000Z")
-        equal(plusTime("2021-06-23T00:00:00.000Z", 48, "hour").toISOString(), "2021-06-25T00:00:00.000Z")
-        equal(plusTime("2021-06-23T00:00:00.000Z", 72, "hour").toISOString(), "2021-06-26T00:00:00.000Z")
-        equal(plusTime("2021-06-23T00:00:00.000Z", -24, "hour").toISOString(), "2021-06-22T00:00:00.000Z")
-        equal(plusTime("2021-06-23T00:00:00.000Z", -48, "hour").toISOString(), "2021-06-21T00:00:00.000Z")
-        equal(plusTime("2021-06-23T00:00:00.000Z", -72, "hour").toISOString(), "2021-06-20T00:00:00.000Z")
+        check("2021-06-23T00:00:00.000Z", 24, "hour", "2021-06-24T00:00:00.000Z")
+        check("2021-06-23T00:00:00.000Z", 48, "hour", "2021-06-25T00:00:00.000Z")
+        check("2021-06-23T00:00:00.000Z", 72, "hour", "2021-06-26T00:00:00.000Z")
+        check("2021-06-23T00:00:00.000Z", -24, "hour", "2021-06-22T00:00:00.000Z")
+        check("2021-06-23T00:00:00.000Z", -48, "hour", "2021-06-21T00:00:00.000Z")
+        check("2021-06-23T00:00:00.000Z", -72, "hour", "2021-06-20T00:00:00.000Z")
     })
 
     it("not affected by DST transitions", () => {
-        equal(plusTime("2021-06-23", -180, "day").toISOString(), "2020-12-25T00:00:00.000Z")
+        check("2021-06-23", -180, "day", "2020-12-25T00:00:00.000Z")
     })
 
     // The assertions with even index coincide with the assertions of the test case "comparisons of date-times constructed using plusTime across DST transitions" in `date-times.json` in the test suite:
@@ -121,6 +127,22 @@ describe("plusTime", () => {
         isTrue(plusTime("2020-12-25", 180, "day") >= plusTime("2021-06-23T00:00:00Z", 0, "day"), "d1 exactly 180 days before d2")
         isTrue(plusTime("2020-12-26", 0, "day") >= plusTime("2021-06-23T00:00:00Z", -180, "day"), "d1 less than 180 days before d2")
         isTrue(plusTime("2020-12-26", 180, "day") >= plusTime("2021-06-23T00:00:00Z", 0, "day"), "d1 less than 180 days before d2")
+    })
+
+    it("works for month offsets", () => {
+        check("2021-02-01T00:00:00.000Z", 0, "month", "2021-02-01T00:00:00.000Z")
+        check("2021-02-01T00:00:00.000Z", 1, "month", "2021-03-01T00:00:00.000Z")
+        check("2021-12-01T00:00:00.000Z", 1, "month", "2022-01-01T00:00:00.000Z")
+        check("2021-12-01T00:00:00.000Z", -12, "month", "2020-12-01T00:00:00.000Z")
+        check("2020-02-29T00:00:00.000Z", 1, "month", "2020-03-29T00:00:00.000Z")
+    })
+
+    it("works for year offsets", () => {
+        check("2021-02-01T00:00:00.000Z", 0, "year", "2021-02-01T00:00:00.000Z")
+        check("2021-02-01T00:00:00.000Z", 1, "year", "2022-02-01T00:00:00.000Z")
+        check("2021-02-01T00:00:00.000Z", -1, "year", "2020-02-01T00:00:00.000Z")
+        check("2021-02-01T00:00:00.000Z", 2, "year", "2023-02-01T00:00:00.000Z")
+        check("2020-02-29T00:00:00.000Z", 1, "year", "2021-02-28T00:00:00.000Z")
     })
 
 })

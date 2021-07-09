@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.0.1**.
+The semantic version identification of this specification is: **1.1.0**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -63,8 +63,8 @@ Literal for the following (types of) values are not allowed: objects, `null`, an
 
 ### Dates and date-times
 
-Dates, and date-times (so: timestamps) can only be constructed by performing a `plusTime` operation, with a certain amount of hours or days added.
-Add 0 hours/days to represent the date(-time) as-is.
+Dates, and date-times (so: timestamps) can only be constructed by performing a `plusTime` operation, with a certain amount of years, months, hours or days added.
+Add 0 hours/days/months/years to represent the date(-time) as-is.
 This makes it possible to ensure consistent date/date-time representations across platforms, without being able to implicitly rely on the behaviour of native date/date-time types in combination with the other (allowed) operations.
 
 The following date and date-time formats are allowed:
@@ -199,12 +199,15 @@ A date-time offset operation has the following form:
         "plusTime": [
             <operand that evaluates to a string with a date-time in the allowed format>,
             <integer: the number of days/hours to add (may be negative)>,
-            <"day" or "hour">
+            <string with a time unit>
         ]
     }
 
+A time unit (string) can be one of: "year", "month", "day", "hour".
 This operation is the *only* way to construct date-time values.
 Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap seconds.
+
+To convert a date(-time) string without offsetting, specify an amount of `0`, and any time unit.
 
 
 ### Reduction (`reduce`)

@@ -1,6 +1,6 @@
 {
   "name": "certlogic-validation",
-  "version": "0.7.7",
+  "version": "0.8.0",
   "description": "Validators for CertLogic",
   "keywords": [
     "json",
@@ -25,8 +25,6 @@
     "pretest": "npm run build",
     "test": "mocha dist/test",
     "test-watch": "mocha --watch dist/test",
-    "prestart": "npm run test",
-    "start": "node dist/test/validate-testSuite.js",
     "clean": "rm -rf dist/ && rm -rf node_modules/ && rm -rf package-lock.json && rm -rf yarn.lock"
   },
   "bin": {
@@ -36,7 +34,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@types/json-schema": "^7.0.7",
-    "certlogic-js": "0.7.7",
+    "certlogic-js": "0.8.0",
     "deep-equal": "^2.0.5"
   },
   "devDependencies": {

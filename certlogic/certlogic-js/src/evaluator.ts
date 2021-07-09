@@ -1,4 +1,4 @@
-import { CertLogicExpression, TimeUnit } from "./typings"
+import { CertLogicExpression, TimeUnit, timeUnits } from "./typings"
 import { isDate, isFalsy, isInt, isTruthy, plusTime } from "./internals"
 
 
@@ -167,8 +167,8 @@ const evaluatePlusTime = (dateOperand: CertLogicExpression, amount: CertLogicExp
     if (!isInt(amount)) {
         throw new Error(`"amount" argument (#2) of "plusTime" must be an integer`)
     }
-    if ([ "day", "hour" ].indexOf(unit) === -1) {
-        throw new Error(`"unit" argument (#3) of "plusTime" must be a string 'day' or 'hour'`)
+    if (timeUnits.indexOf(unit) === -1) {
+        throw new Error(`"unit" argument (#3) of "plusTime" must be a string with one of the time units: ${timeUnits.join(", ")}`)
     }
     const dateTimeStr = evaluate(dateOperand, data)
     if (typeof dateTimeStr !== "string") {
