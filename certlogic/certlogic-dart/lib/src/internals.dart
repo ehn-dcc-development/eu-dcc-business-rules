@@ -32,9 +32,9 @@ class CertLogicInternals {
       case CertLogicTimeUnit.HOUR:
         return dateTime.add(Duration(hours: amount));
       case CertLogicTimeUnit.MONTH:
-        return DateTime(dateTime.year, dateTime.month + 1, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
+        return DateTime(dateTime.year, dateTime.month + amount, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
       case CertLogicTimeUnit.YEAR:
-        return DateTime(dateTime.year + 1, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
+        return DateTime(dateTime.year + amount, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
     }
   }
 }

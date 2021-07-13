@@ -197,8 +197,8 @@ class CertLogic {
     if (amount is! num) {
       throw Exception("'amount' argument (#2) of 'plusTime' must be an integer");
     }
-    if (!['day', 'hour'].contains(unit)) {
-      throw Exception("'unit' argument (#3) of 'plusTime' must be a string 'day' or 'hour'");
+    if (!['day', 'hour', 'month', 'year'].contains(unit)) {
+      throw Exception("'unit' argument (#3) of 'plusTime' must be a string 'year', 'month', 'day' or 'hour'");
     }
     final dynamic dateTimeStr = evaluate(dateOperand, data);
     if (dateTimeStr is! String) {
