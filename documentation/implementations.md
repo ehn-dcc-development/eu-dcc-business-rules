@@ -40,5 +40,5 @@ or the equivalent ES6- statement
 
 ## Go
 
-A Go version is in the works.
+* [`json-logic-go`](https://github.com/IBM/json-logic-go): an implementation of JsonLogic in Go, contributed through the hard work of Ilie Circiumaru.
 
