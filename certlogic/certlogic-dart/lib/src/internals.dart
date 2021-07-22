@@ -16,25 +16,27 @@ class CertLogicInternals {
   /// at midnight of that date. Note that that doesn't properly reflect the resolution of
   /// the input date. That effect has to be taken into account by the logic implementor.
   static DateTime dateFromString(String str) {
+    DateTime? dateTime;
     if (str.length == 10) {
       // No TZ is added
       final date = DateTime.parse(str);
-      return DateTime.utc(date.year, date.month, date.day); // Set it to midnight as per specs
+      dateTime = DateTime.utc(date.year, date.month, date.day); // Set it to midnight as per specs
     }
-    return DateTime.parse(str).toUtc();
+    dateTime ??= DateTime.parse(str);
+    return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
   }
 
   static DateTime plusTime(String dateTimeLikeStr, int amount, CertLogicTimeUnit unit) {
     final dateTime = dateFromString(dateTimeLikeStr);
     switch (unit) {
-      case CertLogicTimeUnit.DAY:
-        return dateTime.add(Duration(days: amount));
       case CertLogicTimeUnit.HOUR:
-        return dateTime.add(Duration(hours: amount));
+        return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, dateTime.hour + amount, dateTime.minute, dateTime.second, dateTime.millisecond);
+      case CertLogicTimeUnit.DAY:
+        return DateTime.utc(dateTime.year, dateTime.month, dateTime.day + amount, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
       case CertLogicTimeUnit.MONTH:
-        return DateTime(dateTime.year, dateTime.month + amount, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
+        return DateTime.utc(dateTime.year, dateTime.month + amount, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
       case CertLogicTimeUnit.YEAR:
-        return DateTime(dateTime.year + amount, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
+        return DateTime.utc(dateTime.year + amount, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
     }
   }
 }
