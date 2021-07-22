@@ -6,7 +6,7 @@ enum TestDirective {
   UNDEFINED,
 }
 
-TestDirective testDirectiveFromString(String directive) {
+TestDirective testDirectiveFromString(String? directive) {
   switch (directive) {
     case "skip":
       return TestDirective.SKIP;
@@ -62,9 +62,31 @@ class TestCase {
       name: map['name'],
       directive: testDirectiveFromString(map['directive']),
       certLogicExpression: map['certLogicExpression'],
-      assertions: List<Assertion>.from(map['assertions']?.map((x) => Assertion.fromMap(x))),
+      assertions: List<Assertion>.from(map['assertions']?.map((x) => Assertion.fromMap(x)) ?? []),
     );
   }
 
   factory TestCase.fromJson(String source) => TestCase.fromMap(json.decode(source));
+}
+
+class TestSuite {
+  String name;
+  TestDirective directive;
+  List<TestCase> cases;
+
+  TestSuite({
+    required this.name,
+    required this.directive,
+    required this.cases,
+  });
+
+  factory TestSuite.fromMap(Map<String, dynamic> map) {
+    return TestSuite(
+      name: map['name'],
+      directive: testDirectiveFromString(map['directive']),
+      cases: List<TestCase>.from(map['cases']?.map((x) => TestCase.fromMap(x))),
+    );
+  }
+
+  factory TestSuite.fromJson(String source) => TestSuite.fromMap(json.decode(source));
 }

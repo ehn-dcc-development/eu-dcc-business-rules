@@ -5,7 +5,7 @@ import 'package:test/test.dart';
 import 'models.dart';
 
 void main() {
-  const dirPath = '../../../specification/testSuite';
+  const dirPath = '../specification/testSuite';
 
   late final Directory dataDir;
 
@@ -16,16 +16,33 @@ void main() {
   test('validate test suite', () async {
     final entries = dataDir.listSync(recursive: true).toList();
     final files = entries.where((element) => element.path.endsWith('.json')).map((element) => File(element.path));
+    final failedNames = [];
+    var success = 0;
     for (final file in files) {
-      late TestCase model;
       final jsonString = await file.readAsString();
-      model = TestCase.fromJson(jsonString);
-      model.assertions.forEach((element) {
-        final result = CertLogic.evaluate(element.certLogicExpression, element.data) as bool;
-        print(element.message);
-        expect(result, element.expected);
+      final testSuite = TestSuite.fromJson(jsonString);
+      print('=========');
+      print('${testSuite.name}: ${testSuite.cases.length}');
+      testSuite.cases.forEach((testCase) {
+        print('=========');
+        print('${testSuite.name}: ${testSuite.cases.length}');
+        testCase.assertions.forEach((assertion) {
+          try {
+            final result = CertLogic.evaluate(assertion.certLogicExpression ?? testCase.certLogicExpression, assertion.data);
+            print(assertion.message);
+            expect(result, assertion.expected);
+            success++;
+          } catch (e) {
+            failedNames.add(assertion.message ?? testCase.name);
+          }
+        });
       });
     }
+    if (failedNames.isNotEmpty) {
+      print('failed: [\n${failedNames.join('\n')}\n]');
+    }
+    print('$success succeeded and ${failedNames.length} failed');
+    expect(failedNames.length, 0);
   });
 }
 
