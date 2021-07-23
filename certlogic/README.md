@@ -24,6 +24,7 @@ This (part of the) repository contains:
 * Reference implementations of CertLogic for various platforms/programming languages - currently:
   * [JavaScript](./certlogic-js), as NPM package - also available directly from the [NPM registry](https://www.npmjs.com/package/certlogic-js).
   * [Kotlin](./certlogic-kotlin), as Maven/Kotlin module.
+  * [Dart](./certlogic-dart), as Dart module.
 * A [validation tool](./certlogic-validation): this NPM package exposes an executable `certlogic-validate` which validates a JSON file containing a single CertLogic expression.
   It's also available directly from the [NPM registry](https://www.npmjs.com/package/certlogic-validation).
 * A [build script](./build.sh) to build `certlogic-js`, `certlogic-kotlin`, and `certlogic-validation`.

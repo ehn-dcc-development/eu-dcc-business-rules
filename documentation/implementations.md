@@ -6,7 +6,7 @@ Links to these are:
 
 ## JavaScript (TypeScript)
 
-[`certlogic-js`](../certlogic/certlogic-js) is a TypeScript implementation, usable from JavaScript as well, and available as [NPM package](https://www.npmjs.com/package/certlogic-js).
+[`certlogic-js`](../certlogic/certlogic-js): a TypeScript implementation, usable from JavaScript as well, and available as [NPM package](https://www.npmjs.com/package/certlogic-js).
 It can be installed by running
 
     $ npm certlogic-js
@@ -19,7 +19,7 @@ or the equivalent ES6- statement
 
     const { evaluate } = require("certlogic-js")
 
-[`certlogic-validation`](../certlogic/certlogic-validation) is an [NPM package](https://www.npmjs.com/package/certlogic-validation) that exposes validators for CertLogic expressions.
+[`certlogic-validation`](../certlogic/certlogic-validation): an [NPM package](https://www.npmjs.com/package/certlogic-validation) that exposes validators for CertLogic expressions.
 
 
 ## JVM
@@ -41,4 +41,9 @@ or the equivalent ES6- statement
 ## Go
 
 * [`json-logic-go`](https://github.com/IBM/json-logic-go): an implementation of JsonLogic in Go, contributed through the hard work of Ilie Circiumaru.
+
+
+## Dart
+
+* [`certlogic-dart`](../certlogic/certlogic-dart): a Dart implementation of CertLogic.
 
