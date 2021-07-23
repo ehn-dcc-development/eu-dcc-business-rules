@@ -7,7 +7,7 @@ class CertLogic {
   static dynamic _current;
   static dynamic _data;
 
-  /// _evaluate a variable
+  /// Evaluate a variable
   static dynamic _evaluateVar(dynamic value, dynamic data) {
     if (data == null) {
       return null;
