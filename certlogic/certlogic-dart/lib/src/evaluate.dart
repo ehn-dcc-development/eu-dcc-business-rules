@@ -1,6 +1,5 @@
 import 'package:certlogic_dart/src/internals.dart';
 import 'package:certlogic_dart/src/typings.dart';
-import 'package:collection/collection.dart';
 
 /// The library, you can use the static functions, so you don't need to instantiate this class
 class CertLogic {
@@ -169,7 +168,7 @@ class CertLogic {
         }
       case 'and':
         if (!evalArgs.any(CertLogicInternals.isFalsy)) return evalArgs.last;
-        return evalArgs.toList().firstWhereOrNull(CertLogicInternals.isFalsy);
+        return evalArgs.toList().firstWhere(CertLogicInternals.isFalsy);
       case '<':
       case '>':
       case '<=':
