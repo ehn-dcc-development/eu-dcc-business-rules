@@ -1,0 +1,10 @@
+name: certlogic_dart
+description: A package that can evaluate certlogic
+version: 0.0.3
+homepage: https://github.com/ehn-dcc-development/dgc-business-rules
+
+environment:
+  sdk: ">=2.12.0 <3.0.0"
+
+dev_dependencies:
+  test: 1.17.10
