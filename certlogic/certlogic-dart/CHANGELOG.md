@@ -1,3 +1,8 @@
+## 0.0.4
+
+* Fixed bugs for `and`, `reduce` and Dates
+* Added tests
+
 ## 0.0.3
 
 * Fixed bug where year and month only add one

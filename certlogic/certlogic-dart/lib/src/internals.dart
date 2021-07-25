@@ -22,6 +22,8 @@ class CertLogicInternals {
       final date = DateTime.parse(str);
       dateTime = DateTime.utc(date.year, date.month, date.day); // Set it to midnight as per specs
     }
+    final regex = r'(^[T,\-,:,\.0-9]{10,}[+,-])([0-9]|[0-9]{3}|[0-9]:[0-9]{2})$';
+    str = str.replaceAllMapped(RegExp(regex), (match) => '${match.group(1)}0${match.group(2)}');
     dateTime ??= DateTime.parse(str);
     return DateTime.utc(dateTime.year, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
   }
@@ -36,6 +38,8 @@ class CertLogicInternals {
       case CertLogicTimeUnit.MONTH:
         return DateTime.utc(dateTime.year, dateTime.month + amount, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
       case CertLogicTimeUnit.YEAR:
+        if (dateTime.month == DateTime.february && dateTime.day == 29)
+          return DateTime.utc(dateTime.year + amount, dateTime.month, dateTime.day - 1, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
         return DateTime.utc(dateTime.year + amount, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
     }
   }

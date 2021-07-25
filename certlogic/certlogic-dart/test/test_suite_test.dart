@@ -21,15 +21,13 @@ void main() {
     for (final file in files) {
       final jsonString = await file.readAsString();
       final testSuite = TestSuite.fromJson(jsonString);
-      print('=========');
-      print('${testSuite.name}: ${testSuite.cases.length}');
+      if (testSuite.directive == TestDirective.SKIP) continue;
       testSuite.cases.forEach((testCase) {
-        print('=========');
-        print('${testSuite.name}: ${testSuite.cases.length}');
+        if (testCase.directive == TestDirective.SKIP) return;
         testCase.assertions.forEach((assertion) {
+          if (assertion.directive == TestDirective.SKIP) return;
           try {
             final result = CertLogic.evaluate(assertion.certLogicExpression ?? testCase.certLogicExpression, assertion.data);
-            print(assertion.message);
             expect(result, assertion.expected);
             success++;
           } catch (e) {
