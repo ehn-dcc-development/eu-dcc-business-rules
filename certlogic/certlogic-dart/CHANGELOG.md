@@ -1,6 +1,7 @@
 ## 0.0.5
 
 * Invalid data access (`var` operation) on `null` now also throws
+* Cleanup reduce function data
 
 ## 0.0.4
 

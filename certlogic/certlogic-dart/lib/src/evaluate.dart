@@ -3,34 +3,16 @@ import 'package:certlogic_dart/src/typings.dart';
 
 /// The library, you can use the static functions, so you don't need to instantiate this class
 class CertLogic {
-  static dynamic _accumulator;
-  static dynamic _current;
-  static dynamic _data;
-
   /// Evaluate a variable
   static dynamic _evaluateVar(dynamic value, dynamic data) {
     if (value is! String) {
       throw Exception("not of the form { 'var': '<path>' }");
     }
-    if (value == '') {
-      return data;
-    }
-    dynamic returnData = data;
+    if (value == '') return data;
+    var returnData = data;
     value.split('.').forEach((fragment) {
       if (returnData == null) return;
-      if (fragment == 'data') {
-        returnData = _data;
-        return;
-      }
       if (returnData is Iterable) {
-        if (fragment == 'current') {
-          returnData = _current;
-          return;
-        }
-        if (fragment == 'accumulator') {
-          returnData = _accumulator;
-          return;
-        }
         try {
           final index = int.parse(fragment);
           if (index > (returnData as Iterable).length - 1) {
@@ -52,11 +34,11 @@ class CertLogic {
   }
 
   static dynamic _evaluateIf(dynamic guard, dynamic then, dynamic elseDo, dynamic data) {
-    final dynamic evalGuard = _evaluate(guard, data);
+    final dynamic evalGuard = evaluate(guard, data);
     if (CertLogicInternals.isTruthy(evalGuard)) {
-      return _evaluate(then, data);
+      return evaluate(then, data);
     } else {
-      return _evaluate(elseDo, data);
+      return evaluate(elseDo, data);
     }
   }
 
@@ -141,7 +123,7 @@ class CertLogic {
         if (values.length != 2) throw Exception("an operation with operator '$operatorAsString' must have 2 operands");
         break;
     }
-    final evalArgs = values.map<dynamic>((dynamic arg) => _evaluate(arg, data));
+    final evalArgs = values.map<dynamic>((dynamic arg) => evaluate(arg, data));
     switch (operatorAsString) {
       case '===':
         return evalArgs.elementAt(0) == evalArgs.elementAt(1);
@@ -192,7 +174,7 @@ class CertLogic {
   }
 
   static bool _evaluateNot(dynamic operandExpr, dynamic data) {
-    final dynamic operand = _evaluate(operandExpr, data);
+    final dynamic operand = evaluate(operandExpr, data);
     if (CertLogicInternals.isFalsy(operand)) {
       return true;
     }
@@ -209,7 +191,7 @@ class CertLogic {
     if (!['day', 'hour', 'month', 'year'].contains(unit)) {
       throw Exception("'unit' argument (#3) of 'plusTime' must be a string 'year', 'month', 'day' or 'hour'");
     }
-    final dynamic dateTimeStr = _evaluate(dateOperand, data);
+    final dynamic dateTimeStr = evaluate(dateOperand, data);
     if (dateTimeStr is! String) {
       throw Exception("date argument of 'plusTime' must be a string");
     }
@@ -217,8 +199,8 @@ class CertLogic {
   }
 
   static dynamic _evaluateReduce(dynamic operand, dynamic lambda, dynamic initial, dynamic data) {
-    final dynamic evalOperand = _evaluate(operand, data);
-    dynamic evalInitial() => _evaluate(initial, data);
+    final dynamic evalOperand = evaluate(operand, data);
+    dynamic evalInitial() => evaluate(initial, data);
     if (evalOperand == null) {
       return evalInitial();
     }
@@ -226,22 +208,16 @@ class CertLogic {
       throw Exception('operand of reduce _evaluated to a non-null non-array');
     }
 
-    _accumulator = evalInitial();
-    evalOperand.forEach((dynamic accumulator) {
-      _current = accumulator;
-      _accumulator = _evaluate(lambda, <dynamic>[accumulator, _accumulator]);
+    var accumulator = evalInitial();
+    evalOperand.forEach((dynamic current) {
+      accumulator = evaluate(lambda, {'current': current, 'accumulator': accumulator});
     });
-    return _accumulator;
+    return accumulator;
   }
 
   /// The evaluate function, this function will evaluate the given expression using the given data
   /// Note that for the dgc-business-rules you should also provide the external values in the data field
   static dynamic evaluate(dynamic expr, dynamic data) {
-    _data = data;
-    return _evaluate(expr, data);
-  }
-
-  static dynamic _evaluate(dynamic expr, dynamic data) {
     if (expr is String || expr is num || expr is bool) {
       return expr;
     }
@@ -249,7 +225,7 @@ class CertLogic {
       throw Exception('invalid CertLogic expression: $expr');
     }
     if (expr is Iterable) {
-      return expr.map<dynamic>((dynamic item) => _evaluate(item, data));
+      return expr.map<dynamic>((dynamic item) => evaluate(item, data));
     }
     if (expr is Map) {
       final keys = expr.keys;
