@@ -3,9 +3,6 @@ import { isDate, isFalsy, isInt, isTruthy, plusTime } from "./internals"
 
 
 const evaluateVar = (value: any, data: any): any => {
-    if (data === null) {
-        return null
-    }
     if (typeof value !== "string") {
         throw new Error(`not of the form { "var": "<path>" }`)
     }

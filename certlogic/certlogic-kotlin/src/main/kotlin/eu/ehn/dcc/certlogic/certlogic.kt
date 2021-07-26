@@ -25,9 +25,6 @@ internal fun isTruthy(value: JsonNode): Boolean = when (value) {
 
 
 internal fun evaluateVar(args: JsonNode, data: JsonNode): JsonNode {
-    if (data is NullNode) {
-        return NullNode.instance
-    }
     if (args !is TextNode) {
         throw RuntimeException("not of the form { \"var\": \"<path>\" }")
     }

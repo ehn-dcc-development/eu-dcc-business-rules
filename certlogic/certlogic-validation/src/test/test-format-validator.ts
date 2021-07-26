@@ -56,7 +56,6 @@ describe("var operations", () => {
         assertErrors({ var: "x" })
         assertErrors({ var: "x.0.y" })
         assertErrors({ var: "1" })
-        assertErrors({ var: "x/y" }, "data access path doesn't have a valid format: x/y")
         assertErrors({ var: "x." }, "data access path doesn't have a valid format: x.")
     })
 

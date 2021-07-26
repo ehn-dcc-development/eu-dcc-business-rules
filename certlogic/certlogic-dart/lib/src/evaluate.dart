@@ -9,9 +9,6 @@ class CertLogic {
 
   /// Evaluate a variable
   static dynamic _evaluateVar(dynamic value, dynamic data) {
-    if (data == null) {
-      return null;
-    }
     if (value is! String) {
       throw Exception("not of the form { 'var': '<path>' }");
     }

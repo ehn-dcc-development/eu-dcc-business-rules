@@ -1,3 +1,7 @@
+## 0.0.5
+
+* Invalid data access (`var` operation) on `null` now also throws
+
 ## 0.0.4
 
 * Fixed bugs for `and`, `reduce` and Dates
