@@ -15,8 +15,7 @@
   "author": "Meinte Boersma",
   "license": "Apache-2.0",
   "dependencies": {
-    "certlogic-js": "file:../../../certlogic/certlogic-js",
-    "certlogic-validation": "file:../../../certlogic/certlogic-validation"
+    "certlogic-js": "^0.8.2"
   },
   "devDependencies": {
     "@types/chai": "^4.2.18",

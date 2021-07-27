@@ -1,5 +1,9 @@
 # Change log
 
+## 0.8.2
+
+* Integrate everything from the `certlogic-validation` NPM package back into this `certlogic-js` NPM package.
+
 
 ## 0.8.1
 

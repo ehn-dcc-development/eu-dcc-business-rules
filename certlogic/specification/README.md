@@ -264,5 +264,5 @@ Two JSON Schemas are provided as part of this specification:
 
 ### Validator
 
-A validator is provided in the form of the [`certlogic-validation` NPM package](../certlogic-validation/README.md).
+A validator is provided in the form of the [`certlogic-js/validation` NPM sub package](../certlogic-js/README.md).
 

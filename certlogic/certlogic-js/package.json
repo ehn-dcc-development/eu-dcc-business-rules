@@ -1,12 +1,14 @@
 {
   "name": "certlogic-js",
-  "version": "0.8.1",
-  "description": "Implementation of CertLogic in TypeScript.",
+  "version": "0.8.2",
+  "description": "Implementation of CertLogic in TypeScript (including validation).",
   "keywords": [
     "json",
     "logic",
     "jsonlogic",
-    "rules"
+    "rules",
+    "validation",
+    "validator"
   ],
   "homepage": "https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/certlogic",
   "repository": {
@@ -26,7 +28,8 @@
     "clean": "rm -rf dist/ && rm -rf node_modules/ && rm -rf package-lock.json && rm -rf yarn.lock"
   },
   "bin": {
-    "certlogic-run": "dist/cli.js"
+    "certlogic-run": "dist/cli.js",
+    "certlogic-validate": "dist/validation/cli.js"
   },
   "author": "Meinte Boersma <meinte.boersma@gmail.com>",
   "contributors": [
@@ -36,10 +39,11 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/chai": "^4.2.18",
+    "@types/deep-equal": "^1.0.1",
     "@types/mocha": "^8.2.2",
-    "@types/node": "^15.12.0",
+    "@types/node": "^15.12.1",
     "chai": "^4.3.4",
     "mocha": "^8.4.0",
-    "typescript": "^4.3.2"
+    "typescript": "^4.3.4"
   }
 }

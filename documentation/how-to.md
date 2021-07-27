@@ -58,10 +58,10 @@ The following things can be helpful:
     This has the effect that the IDE validates JSON files in the mapping on-the-fly, and provides content assist(/“Intellisense”), etc.
 
 * The CertLogic specification is stricter than what can be expressed in a JSON Schema.
-    To validate a CertLogic expression against the specification, the [`certlogic-validation`](../certlogic/certlogic-validation) can be used.
-    This is an NPM package that can be installed using the CLI command
+    To validate a CertLogic expression against the specification, the [`certlogic-js/validation` NPM sub package](../certlogic-js/README.md) can be used.
+    This sub package is part of the `certlogic-js` NPM package that can be installed using the CLI command
 
-        $ npm add <relative path to>/certlogic-validation
+        $ npm add certlogic-js
 
     (The `$` represents the CLI prompt.)
     This commands takes one CLI argument: a path to a JSON file containing a CertLogic expression.
@@ -78,11 +78,11 @@ The following things can be helpful:
 
         $ ./node_modules/.bin/certlogic-validate <path to JSON file containing a single CertLogic expression>
 
-    This works from the directory where you installed `certlogic-validation`.
-    Alternatively, you can use `npx` (when installed, and when `certlogic-validation` is available in the NPM Registry) to directly execute it.
+    This works from the directory where you installed `certlogic-js`.
+    Alternatively, you can use `npx` (when installed) to directly execute it.
     Inside NPM `scripts`, you can remove the `./node_modules/.bin/` prefix.
 
-* The `certlogic-validation` tool does not have or use any knowledge about the shape of the data the given CertLogic expression is validated against.
+* The `certlogic-js` validator tool does not have or use any knowledge about the shape of the data the given CertLogic expression is executed against.
     That will be addressed later on.
 
 
