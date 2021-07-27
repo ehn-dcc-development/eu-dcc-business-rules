@@ -1,7 +1,7 @@
 import { join } from "path"
 import { readdirSync, readFileSync } from "fs"
 
-import { validate } from "../index"
+import { validate } from "../../validation/index"
 
 
 const testSuitesPath = join(__dirname, "../../../specification/testSuite")

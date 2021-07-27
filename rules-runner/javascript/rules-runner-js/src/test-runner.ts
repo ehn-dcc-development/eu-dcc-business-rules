@@ -1,7 +1,7 @@
 const { deepEqual, fail } = require("chai").assert
 import { existsSync, PathLike, readdirSync, readFileSync } from "fs"
 import { join } from "path"
-import { validate } from "certlogic-validation"
+import { validate } from "certlogic-js/dist/validation"
 
 import { loadJsonFile, parameters } from "./cli-utils"
 import { runRule } from "./runners"

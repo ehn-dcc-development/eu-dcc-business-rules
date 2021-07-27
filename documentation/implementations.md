@@ -19,8 +19,6 @@ or the equivalent ES6- statement
 
     const { evaluate } = require("certlogic-js")
 
-[`certlogic-validation`](../certlogic/certlogic-validation): an [NPM package](https://www.npmjs.com/package/certlogic-validation) that exposes validators for CertLogic expressions.
-
 
 ## JVM
 

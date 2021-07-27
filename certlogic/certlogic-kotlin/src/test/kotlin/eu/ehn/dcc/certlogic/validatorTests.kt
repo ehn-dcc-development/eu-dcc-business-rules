@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 
 
 /*
- * These unit tests are directly translated from `certlogic-validation/src/test/test-format-validator.ts`.
+ * These unit tests are directly translated from `certlogic-js/src/test/validation/test-format-validator.ts`.
  * Running the validator over all CertLogic expression in the test suite, is done by the runner in `certlogicTests`.
  */
 

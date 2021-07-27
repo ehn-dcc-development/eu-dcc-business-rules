@@ -3,7 +3,7 @@ import { join } from "path"
 
 const deepEqual = require("deep-equal")
 
-import { validateFormat } from "certlogic-validation"
+import { validateFormat } from "certlogic-js/dist/validation"
 const { evaluate } = require("certlogic-js")
 
 import { Assertion, TestCase, TestSuite } from "certlogic-js/src/test/test-types"

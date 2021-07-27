@@ -1,6 +1,6 @@
 const { equal } = require("chai").assert
 
-import { validateFormat } from "../format-validator"
+import { validateFormat } from "../../validation/format-validator"
 
 
 const assertErrors = (expr: any, ...messages: string[]) => {

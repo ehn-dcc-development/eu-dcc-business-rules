@@ -1,4 +1,4 @@
-import { isInt } from "certlogic-js"
+import { isInt } from "../internals"
 
 import { ValidationError } from "./typings"
 
