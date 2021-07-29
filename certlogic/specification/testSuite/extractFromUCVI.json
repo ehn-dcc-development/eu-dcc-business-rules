@@ -1,6 +1,5 @@
 {
   "name": "extractFromUVCI operation",
-  "directive": "only",
   "cases": [
     {
       "name": "index=-1",
