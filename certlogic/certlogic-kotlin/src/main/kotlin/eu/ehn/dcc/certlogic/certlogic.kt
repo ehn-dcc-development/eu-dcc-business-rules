@@ -4,26 +4,6 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.*
 
 
-internal fun isFalsy(value: JsonNode): Boolean = when (value) {
-    is BooleanNode -> value == BooleanNode.FALSE
-    is NullNode -> true
-    is TextNode -> value.textValue().isEmpty()
-    is IntNode -> value.intValue() == 0
-    is ArrayNode -> value.size() == 0
-    is ObjectNode -> value.size() == 0
-    else -> false
-}
-
-internal fun isTruthy(value: JsonNode): Boolean = when (value) {
-    is BooleanNode -> value == BooleanNode.TRUE
-    is TextNode -> value.textValue().isNotEmpty()
-    is IntNode -> value.intValue() != 0
-    is ArrayNode -> value.size() > 0
-    is ObjectNode -> value.size() > 0
-    else -> false
-}
-
-
 internal fun evaluateVar(args: JsonNode, data: JsonNode): JsonNode {
     if (args !is TextNode) {
         throw RuntimeException("not of the form { \"var\": \"<path>\" }")
@@ -58,31 +38,6 @@ internal fun evaluateIf(guard: JsonNode, then: JsonNode, else_: JsonNode, data: 
     throw RuntimeException("if-guard evaluates to something neither truthy, nor falsy: $evalGuard")
 }
 
-
-internal fun intCompare(operator: String, l: Int, r: Int): Boolean =
-    when (operator) {
-        "<" -> l < r
-        ">" -> l > r
-        "<=" -> l <= r
-        ">=" -> l >= r
-        else -> throw RuntimeException("unhandled comparison operator \"$operator\"")
-    }
-
-internal fun <T:Comparable<T>> compare(operator: String, args: List<T>): Boolean =
-    when (args.size) {
-        2 -> intCompare(operator, args[0].compareTo(args[1]), 0)
-        3 -> intCompare(operator, args[0].compareTo(args[1]), 0) && intCompare(operator, args[1].compareTo(args[2]), 0)
-        else -> throw RuntimeException("invalid number of operands to a \"$operator\" operation")
-    }
-
-internal fun comparisonOperatorForDateTimeComparison(operator: String): String =
-    when (operator) {
-        "after" -> ">"
-        "before" -> "<"
-        "not-after" -> "<="
-        "not-before" -> ">="
-        else -> throw RuntimeException("unhandled date-time comparison operator \"$operator\"")
-    }
 
 internal fun evaluateInfix(operator: String, args: ArrayNode, data: JsonNode): JsonNode {
     when (operator) {
