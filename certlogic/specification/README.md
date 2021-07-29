@@ -236,16 +236,16 @@ All other special array operations can be implemented using (only) a `reduce` op
 To be able to access values in the original data context, CertLogic *may* expand beyond JsonLogic at some point by also adding a key-value pair with key `"data"` to the data object passed to the `<lambda>`, whose value is the original data context.
 
 
-### Extract data from an UVCI (`extractFromUCVI`)
+### Extract data from an UVCI (`extractFromUVCI`)
 
 A DCC can contain UVCIs.
-Use cases exist which make it necessary to make decisions based on information contained in a UCVI.
-For more background information on the UCVI format, and design decisions around this operation: see [here](../../documentation/design-choices.md#operation-extract-from-UCVI).
+Use cases exist which make it necessary to make decisions based on information contained in a UVCI.
+For more background information on the UVCI format, and design decisions around this operation: see [here](../../documentation/design-choices.md#operation-extract-from-UVCI).
 
 An UVCI-extraction operation has the following form:
 
     {
-        "extractFromUCVI": [
+        "extractFromUVCI": [
             <operand>,
             <index>
         ]
@@ -255,11 +255,12 @@ The `<operand>` must be a string value, or `null`: anything else is an error.
 The `<index>` must be an integer.
 If the operand is `null`, `null` will be returned.
 
-The `extractFromUCVI` operation tries to interpret the given operand (now assumed to be not `null`, and a string) as a UCVI string according to Annex 2 in the [UCVI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
+The `extractFromUVCI` operation tries to interpret the given operand (now assumed to be not `null`, and a string) as a UVCI string according to Annex 2 in the [UVCI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
 It's *not* checked for compliance with this specification, in accordance with Postel's Law.
 The string is split on separator characters (`/`, `#`, `:`) into string fragments.
 The operation returns the string fragment with the given `<index>` (0-based), or `null` if no fragment with that index exists.
-Note that the `URN:UCVI:` prefix is optional, and initial fragments `[ "URN", "UCVI" ]` will be ignored.
+The `URN:UVCI:` prefix is optional, and initial fragments `[ "URN", "UVCI" ]` will be ignored.
+The string `"a::c/#/f"` contains 6 fragments: `"a"`, `""`, `"c"`, `""`, `""`, `"f"`.
 
 
 ## Other aspects

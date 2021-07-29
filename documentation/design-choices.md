@@ -63,15 +63,15 @@ Regarding the relation of CertLogic with JsonLogic, and the DCC validation rules
 
 ## Design choices specifics
 
-## Operation: extract from UCVI
+## Operation: extract from UVCI
 
-An example use case for being able to extract information is the need to invalidate DCCs that have been issued by fraudulent pharmacies which can be identified by a certain part of the UCVI.
-The UCVI technical format is clearly defined in Annex 2 in the [UCVI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
+An example use case for being able to extract information is the need to invalidate DCCs that have been issued by fraudulent pharmacies which can be identified by a certain part of the UVCI.
+The UVCI technical format is clearly defined in Annex 2 in the [UVCI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
 It's both limited, but has a degree of freedom with the exact structure.
 In particular, the precise format of individual fragments is not pre-defined.
 Also: the `URN:ICVI:` prefix is optional.
 
-There are several reasons to support extracting information from the UCVI with a specific operation, instead of using a more generic regex-based operation:
+There are several reasons to support extracting information from the UVCI with a specific operation, instead of using a more generic regex-based operation:
 
 1. Regexes live in Pandora's box: they are extremely flexible but are not easy to use well, while it's easy to misuse them, either intentionally, or unintentionally.
 2. The CertLogic domain-specific language should be kept small in terms of the ground it can cover, to keep its usage simple, and ensure the language is easy to test.
