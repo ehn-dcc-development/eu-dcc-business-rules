@@ -67,7 +67,7 @@ internal fun validatePlusTime(expr: JsonNode, values: ArrayNode): List<Validatio
     ) +
     (
         if (values.has(2) && !TimeUnit.isTimeUnitName(values[2].asText()))
-            listOf(ValidationError(expr, "\"unit\" argument (#3) of \"plusTime\" must be a string 'day' or 'hour', but it is: ${values[2]}"))
+            listOf(ValidationError(expr, "\"unit\" argument (#3) of \"plusTime\" must be a string equal to one of ${TimeUnit.values().map { it.name }.joinToString(", ")}, but it is: ${values[2]}"))
         else
             emptyList()
     )

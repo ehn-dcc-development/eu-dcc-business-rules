@@ -1,6 +1,7 @@
 import { isInt } from "../internals"
 
 import { ValidationError } from "./typings"
+import { timeUnits } from "../typings"
 
 
 const validateVar = (expr: any, values: any): ValidationError[] => {
@@ -76,8 +77,8 @@ const validatePlusTime = (expr: any, values: any[]): ValidationError[] => {
     if (values[1] !== undefined && !isInt(values[1])) {
         errors.push({ expr, message: `"amount" argument (#2) of "plusTime" must be an integer, but it is: ${values[1]}` })
     }
-    if (values[2] !== undefined && [ "year", "month", "day", "hour" ].indexOf(values[2]) === -1) {  // FIXME  should be able to use certlogic-js.timeUnits!
-        throw new Error(`"unit" argument (#3) of "plusTime" must be a string 'day' or 'hour', but it is: ${values[2]}`)
+    if (values[2] !== undefined && timeUnits.indexOf(values[2]) === -1) {
+        throw new Error(`"unit" argument (#3) of "plusTime" must be a string equal to one of ${timeUnits.join(", ")}, but it is: ${values[2]}`)
     }
     return errors
 }
