@@ -148,7 +148,7 @@ describe("plusTime", () => {
 })
 
 
-describe("exportFromUVCI", () => {
+describe("extractFromUVCI", () => {
 
     it("returns null on null operand", () => {
         equal(extractFromUVCI(null, -1), null)

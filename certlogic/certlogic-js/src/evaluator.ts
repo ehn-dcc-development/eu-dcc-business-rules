@@ -195,10 +195,10 @@ const evaluateReduce = (operand: CertLogicExpression, lambda: CertLogicExpressio
 const evaluateExtractFromUVCI = (operand: CertLogicExpression, index: CertLogicExpression, data: any): string | null => {
     const evalOperand = evaluate(operand, data)
     if (!(evalOperand === null || typeof evalOperand === "string")) {
-        throw new Error(`"UVCI" argument (#1) of "exportFromUVCI" must be either a string or null`)
+        throw new Error(`"UVCI" argument (#1) of "extractFromUVCI" must be either a string or null`)
     }
     if (!isInt(index)) {
-        throw new Error(`"index" argument (#2) of "exportFromUVCI" must be an integer`)
+        throw new Error(`"index" argument (#2) of "extractFromUVCI" must be an integer`)
     }
     return extractFromUVCI(evalOperand, index)
 }
