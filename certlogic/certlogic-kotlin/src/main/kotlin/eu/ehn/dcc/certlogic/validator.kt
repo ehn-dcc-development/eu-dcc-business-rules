@@ -58,7 +58,12 @@ internal fun validatePlusTime(expr: JsonNode, values: ArrayNode): List<Validatio
         else
             listOf(ValidationError(expr, "a \"plusTime\"-operation must have exactly 3 values/operands, but it has ${values.size()}"))
     ) +
-        validate(values[0]) +
+    (
+        if (values.has(0))
+            validate(values[0])
+        else
+            emptyList()
+    ) +
     (
         if (values.has(1) && !values[1].isInt)
             listOf(ValidationError(expr, "\"amount\" argument (#2) of \"plusTime\" must be an integer, but it is: ${values[1]}"))
@@ -80,6 +85,27 @@ internal fun validateReduce(expr: JsonNode, values: ArrayNode): List<ValidationE
         else
             listOf(ValidationError(expr, "an \"reduce\"-operation must have exactly 3 values/operands, but it has ${values.size()}"))
     ) + values.toList().subList(0, 3).flatMap { validate(it) }
+
+
+internal fun validateExtractFromUVCI(expr: JsonNode, values: ArrayNode): List<ValidationError> =
+    (
+        if (values.size() == 2)
+            emptyList()
+        else
+            listOf(ValidationError(expr, "an \"extractFromUVCI\"-operation must have exactly 2 values/operands, but it has ${values.size()}"))
+    ) +
+    (
+        if (values.has(0))
+            validate(values[0])
+        else
+            emptyList()
+    ) +
+    (
+        if (values.has(1) && values[1] !is IntNode)
+            listOf(ValidationError(expr, "\"index\" argument (#2) of \"extractFromUVCI\" must be an integer, but it is: ${values[1]}"))
+        else
+            emptyList()
+    )
 
 
 fun validate(expr: JsonNode): List<ValidationError> {
@@ -106,6 +132,7 @@ fun validate(expr: JsonNode): List<ValidationError> {
                 "!" -> validateNot(expr, args)
                 "plusTime" -> validatePlusTime(expr, args)
                 "reduce" -> validateReduce(expr, args)
+                "extractFromUVCI" -> validateExtractFromUVCI(expr, args)
                 else -> withError("unrecognised operator: \"$operator\"")
             }
         }

@@ -149,6 +149,19 @@ internal fun evaluateReduce(operand: JsonNode, lambda: JsonNode, initial: JsonNo
 }
 
 
+internal fun evaluateExtractFromUVCI(operand: JsonNode, index: JsonNode, data: JsonNode): JsonNode {
+    val evalOperand = evaluate(operand, data)
+    if (!(evalOperand is NullNode || evalOperand is TextNode)) {
+        throw RuntimeException("\"UVCI\" argument (#1) of \"extractFromUVCI\" must be either a string or null")
+    }
+    if (index !is IntNode) {
+        throw RuntimeException("\"index\" argument (#2) of \"extractFromUVCI\" must be an integer")
+    }
+    val result = extractFromUVCI(if (evalOperand is TextNode) evalOperand.asText() else null, index.intValue())
+    return if (result == null) NullNode.instance else TextNode.valueOf(result)
+}
+
+
 fun evaluate(expr: JsonNode, data: JsonNode): JsonNode = when (expr) {
     is TextNode -> expr
     is IntNode -> expr
@@ -172,6 +185,7 @@ fun evaluate(expr: JsonNode, data: JsonNode): JsonNode = when (expr) {
                 "!" -> evaluateNot(args[0], data)
                 "plusTime" -> evaluatePlusTime(args[0], args[1], args[2], data)
                 "reduce" -> evaluateReduce(args[0], args[1], args[2], data)
+                "extractFromUVCI" -> evaluateExtractFromUVCI(args[0], args[1], data)
                 else -> throw RuntimeException("unrecognised operator: \"$operator\"")
             }
         }

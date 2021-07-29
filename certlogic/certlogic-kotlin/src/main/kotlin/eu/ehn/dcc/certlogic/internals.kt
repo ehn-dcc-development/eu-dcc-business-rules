@@ -49,3 +49,14 @@ internal fun comparisonOperatorForDateTimeComparison(operator: String): String =
         else -> throw RuntimeException("unhandled date-time comparison operator \"$operator\"")
     }
 
+
+internal val optionalPrefix = "URN:UVCI:"
+internal fun extractFromUVCI(uvci: String?, index: Int): String? {
+    if (uvci == null || index < 0) {
+        return null
+    }
+    val prefixlessUvci = if (uvci.startsWith(optionalPrefix)) uvci.substring(optionalPrefix.length) else uvci
+    val fragments = prefixlessUvci.split(Regex("[/#:]"))
+    return if (index < fragments.size) fragments[index] else null
+}
+
