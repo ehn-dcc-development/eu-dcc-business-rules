@@ -4,7 +4,7 @@ import { readdirSync, readFileSync } from "fs"
 import { validate } from "../../validation/index"
 
 
-const testSuitesPath = join(__dirname, "../../../specification/testSuite")
+const testSuitesPath = join(__dirname, "../../../../specification/testSuite")
 
 
 describe("test suites", () => {

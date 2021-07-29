@@ -4,7 +4,7 @@
   "scripts": {
     "build": "tsc",
     "pretest": "npm run build",
-    "test": "mocha dist/test",
+    "test": "mocha --recursive dist/test",
     "prestart": "npm run build",
     "start": "node dist/filter-tests.js"
   },
