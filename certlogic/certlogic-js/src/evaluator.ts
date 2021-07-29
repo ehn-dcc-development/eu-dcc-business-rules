@@ -1,5 +1,5 @@
 import { CertLogicExpression, TimeUnit, timeUnits } from "./typings"
-import { isDate, isFalsy, isInt, isTruthy, plusTime } from "./internals"
+import { extractFromUVCI, isDate, isFalsy, isInt, isTruthy, plusTime } from "./internals"
 
 
 const evaluateVar = (value: any, data: any): any => {
@@ -192,6 +192,18 @@ const evaluateReduce = (operand: CertLogicExpression, lambda: CertLogicExpressio
 }
 
 
+const evaluateExtractFromUVCI = (operand: CertLogicExpression, index: CertLogicExpression, data: any): string | null => {
+    const evalOperand = evaluate(operand, data)
+    if (!(evalOperand === null || typeof evalOperand === "string")) {
+        throw new Error(`"UVCI" argument (#1) of "exportFromUVCI" must be either a string or null`)
+    }
+    if (!isInt(index)) {
+        throw new Error(`"index" argument (#2) of "exportFromUVCI" must be an integer`)
+    }
+    return extractFromUVCI(evalOperand, index)
+}
+
+
 export const evaluate = (expr: CertLogicExpression, data: any): any => {
     if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean") {
         return expr
@@ -230,6 +242,9 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
         }
         if (operator === "reduce") {
             return evaluateReduce(values[0], values[1], values[2], data)
+        }
+        if (operator === "extractFromUVCI") {
+            return evaluateExtractFromUVCI(values[0], values[1], data)
         }
         throw new Error(`unrecognised operator: "${operator}"`)
     }

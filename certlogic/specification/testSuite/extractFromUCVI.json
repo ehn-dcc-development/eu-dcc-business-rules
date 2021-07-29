@@ -1,0 +1,213 @@
+{
+  "name": "extractFromUVCI operation",
+  "directive": "only",
+  "cases": [
+    {
+      "name": "index=-1",
+      "certLogicExpression": {
+        "extractFromUVCI": [
+          {
+            "var": ""
+          },
+          -1
+        ]
+      },
+      "assertions": [
+        {
+          "data": null,
+          "expected": null
+        },
+        {
+          "data": "",
+          "expected": null
+        },
+        {
+          "data": "URN:UVCI:01:NL:187/37512422923",
+          "expected": null
+        }
+      ]
+    },
+    {
+      "name": "index=0",
+      "certLogicExpression": {
+        "extractFromUVCI": [
+          {
+            "var": ""
+          },
+          0
+        ]
+      },
+      "assertions": [
+        {
+          "data": null,
+          "expected": null
+        },
+        {
+          "data": "",
+          "expected": ""
+        },
+        {
+          "data": "URN:UVCI:01:NL:187/37512422923",
+          "expected": "01"
+        }
+      ]
+    },
+    {
+      "name": "index=1",
+      "certLogicExpression": {
+        "extractFromUVCI": [
+          {
+            "var": ""
+          },
+          1
+        ]
+      },
+      "assertions": [
+        {
+          "data": null,
+          "expected": null
+        },
+        {
+          "data": "",
+          "expected": null
+        },
+        {
+          "data": "URN:UVCI:01:NL:187/37512422923",
+          "expected": "NL"
+        },
+        {
+          "data": "01:NL:187/37512422923",
+          "expected": "NL"
+        },
+        {
+          "data": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B",
+          "expected": "AT"
+        },
+        {
+          "data": "01:AT:10807843F94AEE0EE5093FBC254BD813#B",
+          "expected": "AT"
+        }
+      ]
+    },
+    {
+      "name": "index=2",
+      "certLogicExpression": {
+        "extractFromUVCI": [
+          {
+            "var": ""
+          },
+          2
+        ]
+      },
+      "assertions": [
+        {
+          "data": "URN:UVCI:01:NL:187/37512422923",
+          "expected": "187"
+        },
+        {
+          "data": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B",
+          "expected": "10807843F94AEE0EE5093FBC254BD813"
+        },
+        {
+          "data": "foo/bar::baz#999lizards",
+          "expected": ""
+        }
+      ]
+    },
+    {
+      "name": "index=3",
+      "certLogicExpression": {
+        "extractFromUVCI": [
+          {
+            "var": ""
+          },
+          3
+        ]
+      },
+      "assertions": [
+        {
+          "data": "URN:UVCI:01:NL:187/37512422923",
+          "expected": "37512422923"
+        },
+        {
+          "data": "01:NL:187/37512422923",
+          "expected": "37512422923"
+        },
+        {
+          "data": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B",
+          "expected": "B"
+        },
+        {
+          "data": "01:AT:10807843F94AEE0EE5093FBC254BD813#B",
+          "expected": "B"
+        },
+        {
+          "data": "foo/bar::baz#999lizards",
+          "expected": "baz"
+        },
+        {
+          "data": "a::c/#/f",
+          "expected": ""
+        }
+      ]
+    },
+    {
+      "name": "index=4",
+      "certLogicExpression": {
+        "extractFromUVCI": [
+          {
+            "var": ""
+          },
+          4
+        ]
+      },
+      "assertions": [
+        {
+          "data": "URN:UVCI:01:NL:187/37512422923",
+          "expected": null
+        },
+        {
+          "data": "01:NL:187/37512422923",
+          "expected": null
+        },
+        {
+          "data": "URN:UVCI:01:AT:10807843F94AEE0EE5093FBC254BD813#B",
+          "expected": null
+        },
+        {
+          "data": "01:AT:10807843F94AEE0EE5093FBC254BD813#B",
+          "expected": null
+        },
+        {
+          "data": "foo/bar::baz#999lizards",
+          "expected": "999lizards"
+        },
+        {
+          "data": "a::c/#/f",
+          "expected": ""
+        }
+      ]
+    },
+    {
+      "name": "index=5",
+      "certLogicExpression": {
+        "extractFromUVCI": [
+          {
+            "var": ""
+          },
+          5
+        ]
+      },
+      "assertions": [
+        {
+          "data": "foo/bar::baz#999lizards",
+          "expected": null
+        },
+        {
+          "data": "a::c/#/f",
+          "expected": "f"
+        }
+      ]
+    }
+  ]
+}

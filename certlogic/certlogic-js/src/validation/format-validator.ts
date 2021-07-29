@@ -91,6 +91,20 @@ const validateReduce = (expr: any, values: any[]): ValidationError[] => {
     return errors
 }
 
+const validateExtractFromUVCI = (expr: any, values: any[]): ValidationError[] => {
+    const errors = []
+    if (values.length !== 2) {
+        errors.push({ expr, message: `an "extractFromUVCI"-operation must have exactly 2 values/operands, but it has ${values.length}` })
+    }
+    if (values[0] !== undefined) {
+        errors.push(...validate(values[0]))
+    }
+    if (values[1] !== undefined && !isInt(values[1])) {
+        errors.push({ expr, message: `"index" argument (#2) of "extractFromUVCI" must be an integer, but it is: ${values[1]}` })
+    }
+    return errors
+}
+
 const validate = (expr: any): ValidationError[] => {
     const withError = (message: string): ValidationError[] => [ { expr, message } ]
     if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean") {
@@ -132,6 +146,9 @@ const validate = (expr: any): ValidationError[] => {
         }
         if (operator === "reduce") {
             return validateReduce(expr, values)
+        }
+        if (operator === "extractFromUVCI") {
+            return validateExtractFromUVCI(expr, values)
         }
         return withError(`unrecognised operator: "${operator}"`)
     }
