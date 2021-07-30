@@ -256,7 +256,8 @@ The `<index>` must be an integer.
 If the operand is `null`, `null` will be returned.
 
 The `extractFromUVCI` operation tries to interpret the given operand (now assumed to be not `null`, and a string) as a UVCI string according to Annex 2 in the [UVCI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
-It's *not* checked for compliance with this specification, in accordance with Postel's Law.
+It's *not* checked for compliance with this specification: see the [design decisions](../../documentation/design-choices.md#operation-extract-from-UVCI) for an explanation why that is.
+
 The string is split on separator characters (`/`, `#`, `:`) into string fragments.
 The operation returns the string fragment with the given `<index>` (0-based), or `null` if no fragment with that index exists.
 The `URN:UVCI:` prefix is optional, and initial fragments `[ "URN", "UVCI" ]` will be ignored.
