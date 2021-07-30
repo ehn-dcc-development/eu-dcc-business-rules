@@ -294,3 +294,9 @@ Two JSON Schemas are provided as part of this specification:
 
 A validator is provided in the form of the [`certlogic-js/validation` NPM sub package](../certlogic-js/README.md).
 
+
+### Differences with JsonLogic implementations
+
+CertLogic is a subset of JsonLogic, but with custom operations that are specific to the domain of DCC added - currently: `plusTime`, and `extractFromUCVI`.
+Implementors of the DCC validator using a JsonLogic implementation instead of a CertLogic implementation need to provide these custom operations to JsonLogic as well - see the [first paragraph of this document](../../documentation/implementations.md).
+
