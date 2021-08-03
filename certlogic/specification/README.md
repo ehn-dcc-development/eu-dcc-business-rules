@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.1.0**.
+The semantic version identification of this specification is: **1.2.0**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -236,6 +236,34 @@ All other special array operations can be implemented using (only) a `reduce` op
 To be able to access values in the original data context, CertLogic *may* expand beyond JsonLogic at some point by also adding a key-value pair with key `"data"` to the data object passed to the `<lambda>`, whose value is the original data context.
 
 
+### Extract data from an UVCI (`extractFromUVCI`)
+
+A DCC can contain UVCIs.
+Use cases exist which make it necessary to make decisions based on information contained in a UVCI.
+For more background information on the UVCI format, and design decisions around this operation: see [here](../../documentation/design-choices.md#operation-extract-from-UVCI).
+
+An UVCI-extraction operation has the following form:
+
+    {
+        "extractFromUVCI": [
+            <operand>,
+            <index>
+        ]
+    }
+
+The `<operand>` must be a string value, or `null`: anything else is an error.
+The `<index>` must be an integer.
+If the operand is `null`, `null` will be returned.
+
+The `extractFromUVCI` operation tries to interpret the given operand (now assumed to be not `null`, and a string) as a UVCI string according to Annex 2 in the [UVCI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
+It's *not* checked for compliance with this specification: see the [design decisions](../../documentation/design-choices.md#operation-extract-from-UVCI) for an explanation why that is.
+
+The string is split on separator characters (`/`, `#`, `:`) into string fragments.
+The operation returns the string fragment with the given `<index>` (0-based), or `null` if no fragment with that index exists.
+The `URN:UVCI:` prefix is optional, and initial fragments `[ "URN", "UVCI" ]` will be ignored.
+The string `"a::c/#/f"` contains 6 fragments: `"a"`, `""`, `"c"`, `""`, `""`, `"f"`.
+
+
 ## Other aspects
 
 
@@ -265,4 +293,10 @@ Two JSON Schemas are provided as part of this specification:
 ### Validator
 
 A validator is provided in the form of the [`certlogic-js/validation` NPM sub package](../certlogic-js/README.md).
+
+
+### Differences with JsonLogic implementations
+
+CertLogic is a subset of JsonLogic, but with custom operations that are specific to the domain of DCC added - currently: `plusTime`, and `extractFromUCVI`.
+Implementors of the DCC validator using a JsonLogic implementation instead of a CertLogic implementation need to provide these custom operations to JsonLogic as well - see the [first paragraph of this document](../../documentation/implementations.md).
 

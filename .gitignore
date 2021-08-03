@@ -1,7 +1,8 @@
 # IntelliJ/IDEA:
-/.idea
+.idea
 *.iml
 
 # results of running validations:
 /out
+
 

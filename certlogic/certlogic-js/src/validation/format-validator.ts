@@ -1,6 +1,7 @@
 import { isInt } from "../internals"
 
 import { ValidationError } from "./typings"
+import { timeUnits } from "../typings"
 
 
 const validateVar = (expr: any, values: any): ValidationError[] => {
@@ -76,8 +77,8 @@ const validatePlusTime = (expr: any, values: any[]): ValidationError[] => {
     if (values[1] !== undefined && !isInt(values[1])) {
         errors.push({ expr, message: `"amount" argument (#2) of "plusTime" must be an integer, but it is: ${values[1]}` })
     }
-    if (values[2] !== undefined && [ "year", "month", "day", "hour" ].indexOf(values[2]) === -1) {  // FIXME  should be able to use certlogic-js.timeUnits!
-        throw new Error(`"unit" argument (#3) of "plusTime" must be a string 'day' or 'hour', but it is: ${values[2]}`)
+    if (values[2] !== undefined && timeUnits.indexOf(values[2]) === -1) {
+        throw new Error(`"unit" argument (#3) of "plusTime" must be a string equal to one of ${timeUnits.join(", ")}, but it is: ${values[2]}`)
     }
     return errors
 }
@@ -88,6 +89,20 @@ const validateReduce = (expr: any, values: any[]): ValidationError[] => {
         errors.push({ expr, message: `a "reduce"-operation must have exactly 3 values/operands, but it has ${values.length}` })
     }
     errors.push(...values.slice(0, 3).flatMap(validate))
+    return errors
+}
+
+const validateExtractFromUVCI = (expr: any, values: any[]): ValidationError[] => {
+    const errors = []
+    if (values.length !== 2) {
+        errors.push({ expr, message: `an "extractFromUVCI"-operation must have exactly 2 values/operands, but it has ${values.length}` })
+    }
+    if (values[0] !== undefined) {
+        errors.push(...validate(values[0]))
+    }
+    if (values[1] !== undefined && !isInt(values[1])) {
+        errors.push({ expr, message: `"index" argument (#2) of "extractFromUVCI" must be an integer, but it is: ${values[1]}` })
+    }
     return errors
 }
 
@@ -132,6 +147,9 @@ const validate = (expr: any): ValidationError[] => {
         }
         if (operator === "reduce") {
             return validateReduce(expr, values)
+        }
+        if (operator === "extractFromUVCI") {
+            return validateExtractFromUVCI(expr, values)
         }
         return withError(`unrecognised operator: "${operator}"`)
     }

@@ -85,3 +85,20 @@ export const plusTime = (dateTimeLikeStr: string, amount: number, unit: TimeUnit
     return dateTime
 }
 
+
+const optionalPrefix = "URN:UVCI:"
+/**
+ * @returns The fragment with given index from the UVCI string
+ *  (see Annex 2 in the [UVCI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf)),
+ *  or `null` when that fragment doesn't exist.
+ */
+export const extractFromUVCI = (uvci: string | null, index: number): string | null => {
+    if (uvci === null || index < 0) {
+        return null
+    }
+    const prefixlessUvci = uvci.startsWith(optionalPrefix) ? uvci.substring(optionalPrefix.length) : uvci
+    const fragments = prefixlessUvci.split(/[/#:]/)
+    return index < fragments.length ? fragments[index] : null
+}
+
+

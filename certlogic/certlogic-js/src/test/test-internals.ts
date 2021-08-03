@@ -1,6 +1,6 @@
 const { equal, isFalse, isTrue } = require("chai").assert
 
-import { dateFromString, isFalsy, isTruthy, plusTime } from "../internals"
+import { dateFromString, extractFromUVCI, isFalsy, isTruthy, plusTime } from "../internals"
 import { TimeUnit } from "../typings"
 
 
@@ -143,6 +143,56 @@ describe("plusTime", () => {
         check("2021-02-01T00:00:00.000Z", -1, "year", "2020-02-01T00:00:00.000Z")
         check("2021-02-01T00:00:00.000Z", 2, "year", "2023-02-01T00:00:00.000Z")
         check("2020-02-29T00:00:00.000Z", 1, "year", "2021-02-28T00:00:00.000Z")
+    })
+
+})
+
+
+describe("extractFromUVCI", () => {
+
+    it("returns null on null operand", () => {
+        equal(extractFromUVCI(null, -1), null)
+        equal(extractFromUVCI(null, 0), null)
+        equal(extractFromUVCI(null, 1), null)
+    })
+
+    it("works correctly on an empty string", () => {
+        equal(extractFromUVCI("", -1), null)
+        equal(extractFromUVCI("", 0), "")
+        equal(extractFromUVCI("", 1), null)
+    })
+
+    it("foo/bar::baz#999lizards (without optional prefix)", () => {
+        const uvci = "foo/bar::baz#999lizards"
+        equal(extractFromUVCI(uvci, -1), null)
+        equal(extractFromUVCI(uvci, 0), "foo")
+        equal(extractFromUVCI(uvci, 1), "bar")
+        equal(extractFromUVCI(uvci, 2), "")      // not null, but still falsy
+        equal(extractFromUVCI(uvci, 3), "baz")
+        equal(extractFromUVCI(uvci, 4), "999lizards")
+        equal(extractFromUVCI(uvci, 5), null)
+    })
+
+    it("foo/bar::baz#999lizards (with optional prefix)", () => {
+        const uvci = "URN:UVCI:foo/bar::baz#999lizards"
+        equal(extractFromUVCI(uvci, -1), null)
+        equal(extractFromUVCI(uvci, 0), "foo")
+        equal(extractFromUVCI(uvci, 1), "bar")
+        equal(extractFromUVCI(uvci, 2), "")      // not null, but still falsy
+        equal(extractFromUVCI(uvci, 3), "baz")
+        equal(extractFromUVCI(uvci, 4), "999lizards")
+        equal(extractFromUVCI(uvci, 5), null)
+    })
+
+    // the example from the specification:
+    it("each separator adds a fragment", () => {
+        const uvci = "a::c/#/f"
+        equal(extractFromUVCI(uvci, 0), "a")
+        equal(extractFromUVCI(uvci, 1), "")
+        equal(extractFromUVCI(uvci, 2), "c")
+        equal(extractFromUVCI(uvci, 3), "")
+        equal(extractFromUVCI(uvci, 4), "")
+        equal(extractFromUVCI(uvci, 5), "f")
     })
 
 })

@@ -60,3 +60,26 @@ Regarding the relation of CertLogic with JsonLogic, and the DCC validation rules
 
   Phrased alternatively, every value should in principle have [DICOM Attribute Requirement Type](http://dicomlookup.com/type.asp) 2. 
 
+
+## Design choices specifics
+
+## Operation: extract from UVCI
+
+An example use case for being able to extract information is the need to invalidate DCCs that have been issued by fraudulent pharmacies which can be identified by a certain part of the UVCI.
+The UVCI technical format is clearly defined in Annex 2 in the [UVCI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
+It has a limited degree of freedom within the format -in particular, the precise format of individual fragments is not pre-defined (outside of the characters allowed).
+Also: the `URN:ICVI:` prefix is optional - e.g. UVCIs in DCCs issued by Luxembourg do not have the prefix.
+
+There are several reasons to support extracting information from the UVCI with a specific operation, instead of using a more generic regex-based operation:
+
+1. Regexes live in Pandora's box: they are extremely flexible but are not easy to use well, while it's easy to misuse them, either intentionally, or unintentionally.
+2. The CertLogic domain-specific language should be kept small in terms of the ground it can cover, to keep its usage simple, and ensure the language is easy to test.
+3. It's more difficult to assess whether a rule implemented using a generic but complex operation is GDPR-compliant than when it uses a simple, functionally-limited/restricted domain-specific operation.
+
+Note that this operation does *not* assume that the given string conforms to the UVCI format.
+In particular, it will not check conformance, and will not error on a malformed UVCI.
+The rationale for this is a combination of Postel's Law, and the fact that this operation could be used to check for/detect malformed UVCIs.
+
+Point in case: some DCCs have invalid prefixes like `urn:uvci:` (lowercase instead of uppercase-only), and `URN:UCI:` (missing `V`).
+To detect such UVCIs, one can use the `extractFromUVCI` operation with indices 0 and 1, because the invalid prefixes will *not* be ignored, but become fragments.
+

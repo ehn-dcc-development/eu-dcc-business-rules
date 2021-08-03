@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
  * Should be in sync with `describe("plusTime", ...`-part of `test-internals.ts` from `certlogic-js`,
  * except for the `it("yields comparable values"`-part of that which is already covered by the test suite.
  */
-class PlusTimeTests {
+internal class PlusTimeTests {
 
     fun check(dateTimeLike: String, amount: Int, unit: TimeUnit, expected: String) {
         assertEquals(expected, JsonDateTime.fromString(dateTimeLike).plusTime(amount, unit).asText())

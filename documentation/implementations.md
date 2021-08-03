@@ -1,7 +1,18 @@
 # CertLogic implementations
 
-Several implementations of CertLogic and compatible implementations of JsonLogic exist.
-Links to these are:
+Several implementations of CertLogic and compatible implementations of JsonLogic exist - links to these are given below.
+Note that the compatibility of JsonLogic implementations does not necessarily include the custom operations, such as `plusTime`, and `extractFromUVCI`.
+These custom operations:
+
+* Are defined in the [CertLogic specification](../certlogic/specification/README.md).
+* Can be implemented by mimicking any of the existing implementations in
+  * [Java-/TypeScript](../certlogic/certlogic-js/src/internals.ts),
+  * [Kotlin](../certlogic/certlogic-kotlin/src/main/kotlin/eu/ehn/dcc/certlogic/internals.kt),
+  * or [Dart](../certlogic/certlogic-dart/lib/src/internals.dart).
+* Can be tested using the [test suite](../certlogic/specification/testSuite), and by mimicking the various unit tests available, such as:
+  * in [Java-/TypeScript](../certlogic/certlogic-js/src/test/test-internals.ts)
+  * in [Kotlin](../certlogic/certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/internalTests.kt)
+  * in [Dart](../certlogic/certlogic-dart/test/internals_test.dart).
 
 
 ## JavaScript (TypeScript)
