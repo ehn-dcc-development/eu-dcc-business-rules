@@ -28,6 +28,9 @@ const gatherFrom = (expr: CertLogicExpression): string[] => {
         if (operator === "reduce") {
             return [ /* operand: */...gatherFrom(values[0]), /* initial: */...gatherFrom(values[2]) ]
         }
+        if (operator === "extractFromUVCI") {
+            return [ /* operand: */ ...gatherFrom(values[0]), /* index: */ ...gatherFrom(values[1]) ]
+        }
         throw new Error(`operator not recognised by fields gatherer ("gatherFields") in certlogic-js/validation/${__filename}: "${operator}"`)
     }
     return []

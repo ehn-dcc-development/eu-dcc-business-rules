@@ -1,5 +1,10 @@
 # Change log
 
+## 0.9.1
+
+* Handle `extractFromUVCI` operation in the `validation/dataAccesses` function
+
+
 ## 0.9.0
 
 * Implement the `extractFromUVCI` operation

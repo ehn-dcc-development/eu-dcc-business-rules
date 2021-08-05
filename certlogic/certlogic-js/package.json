@@ -1,6 +1,6 @@
 {
   "name": "certlogic-js",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Implementation of CertLogic in TypeScript (including validation).",
   "keywords": [
     "json",
