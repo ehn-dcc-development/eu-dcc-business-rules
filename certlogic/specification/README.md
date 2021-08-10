@@ -134,7 +134,7 @@ Conditional logic can be implemented through an operation of the following form:
         ]
     }
 
-If the `<guard>` evaluates to a truthy value, then the `<guard>` expression is evaluated, otherwise the `<else>` expression.
+If the `<guard>` evaluates to a truthy value, then the `<then>` expression is evaluated, otherwise the `<else>` expression.
 
 
 ### Operations with infix operators
