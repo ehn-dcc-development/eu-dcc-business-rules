@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.2.0**.
+The semantic version identification of this specification is: **1.2.1**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -79,13 +79,13 @@ The following date and date-time formats are allowed:
 	YYYY-MM-DDThh:mm:ss[+-]h:mm
 	YYYY-MM-DDThh:mm:ss[+-]hh:mm
 	YYYY-MM-DDThh:mm:ss.S
-	YYYY-MM-DDThh:mm:ss.S+Z
-	YYYY-MM-DDThh:mm:ss.S+[+-]h
-	YYYY-MM-DDThh:mm:ss.S+[+-]hh
-	YYYY-MM-DDThh:mm:ss.S+[+-]hmm
-	YYYY-MM-DDThh:mm:ss.S+[+-]hhmm
-	YYYY-MM-DDThh:mm:ss.S+[+-]h:mm
-	YYYY-MM-DDThh:mm:ss.S+[+-]hh:mm
+	YYYY-MM-DDThh:mm:ss.SZ
+	YYYY-MM-DDThh:mm:ss.S[+-]h
+	YYYY-MM-DDThh:mm:ss.S[+-]hh
+	YYYY-MM-DDThh:mm:ss.S[+-]hmm
+	YYYY-MM-DDThh:mm:ss.S[+-]hhmm
+	YYYY-MM-DDThh:mm:ss.S[+-]h:mm
+	YYYY-MM-DDThh:mm:ss.S[+-]hh:mm
 
 When a timezone offset is missing, the offset `Z` is assumed.
 The last eight formats specify sub-second time info, with any number of decimals being accepted.
