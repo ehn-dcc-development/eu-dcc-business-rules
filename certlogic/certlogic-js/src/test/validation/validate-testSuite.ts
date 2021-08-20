@@ -1,7 +1,7 @@
 import { join } from "path"
 import { readdirSync, readFileSync } from "fs"
 
-import { validate } from "../../validation/index"
+import { dataAccesses, dataAccessesWithContext, validate } from "../../validation/index"
 
 
 const testSuitesPath = join(__dirname, "../../../../specification/testSuite")
@@ -26,6 +26,8 @@ describe("test suites", () => {
                     }
                     if (testCase.certLogicExpression !== undefined) {
                         validateAndReport(testCase.certLogicExpression)
+                        console.log(JSON.stringify(dataAccesses(testCase.certLogicExpression)))
+                        console.log(JSON.stringify(dataAccessesWithContext(testCase.certLogicExpression)))
                     }
                     testCase.assertions
                         .forEach((assertion: any, index: number) => {
