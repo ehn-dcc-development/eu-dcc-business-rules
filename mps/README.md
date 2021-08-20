@@ -14,7 +14,13 @@
 
 This part of the repository contains implementations of CertLogic and Validation Rules languages in JetBrains MPS.
 This validation rules environment is for demo-purposes only, for the moment.
-(These implementations are not as feature-complete as they could be.)
+
+These implementations are not as feature-complete as they could be.
+In particular, the following are missing:
+
+* Only part of a rule's meta data can be input - the focus is on the `Logic` part
+* Defining tests alongside rules
+* Exporting (or importing) rules in any way - either to the staging repository, or elsewhere
 
 
 ## Installation
