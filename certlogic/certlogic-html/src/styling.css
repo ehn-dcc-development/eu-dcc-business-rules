@@ -1,0 +1,95 @@
+body {
+    font-family: "Helvetica Neue";
+}
+
+span.string::before, span.string::after {
+    content: "\""
+}
+
+div.operation {
+    display: inline-block;
+}
+
+span.keyword {
+    font-weight: bold;
+}
+
+span.variadic-operator {
+    font-weight: bold;
+}
+
+span.variadic-operator::after {
+    content: ":";
+}
+
+div.indent {
+    margin-left: 1em;
+}
+
+span.push-right {
+    padding-right: 0.25rem;
+}
+
+span.push-left {
+    padding-left: 0.25rem;
+}
+
+span.push-both {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+}
+
+span.simple-value {
+    color: blue;
+    font-style: italic;
+}
+
+span.error {
+    color: red;
+    font-weight: bolder;
+}
+
+div.array {
+    display: inline;
+}
+
+div.inline {
+    display: inline;
+}
+
+span.signature {
+    color: #ccc;
+    font-style: italic;
+}
+
+span.path {
+    color: purple;
+}
+
+div.table {
+    display: table;
+    width: 100%;
+}
+
+div.table-body {
+    display: table-row-group;
+}
+
+div.row {
+    display: table-row;
+}
+
+div.cell {
+    display: table-cell;
+    border: 1px solid #999;
+    padding: 0.25rem;
+}
+
+div.header {
+    background-color: lightskyblue;
+}
+
+div.cell.identifier {
+    width: 6em;
+}
+
