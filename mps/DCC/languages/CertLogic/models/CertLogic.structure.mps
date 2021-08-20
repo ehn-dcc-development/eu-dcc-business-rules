@@ -362,6 +362,14 @@
     <property role="3F6X1D" value="5869320185948015058" />
     <property role="TrG5h" value="TimeUnit" />
     <ref role="1H5jkz" node="55O0TMOtwBj" resolve="day" />
+    <node concept="25R33" id="j5yUUrDgPP" role="25R1y">
+      <property role="3tVfz5" value="343834528615566709" />
+      <property role="TrG5h" value="year" />
+    </node>
+    <node concept="25R33" id="j5yUUrDgPT" role="25R1y">
+      <property role="3tVfz5" value="343834528615566713" />
+      <property role="TrG5h" value="month" />
+    </node>
     <node concept="25R33" id="55O0TMOtwBj" role="25R1y">
       <property role="3tVfz5" value="5869320185948015059" />
       <property role="TrG5h" value="day" />
@@ -369,6 +377,27 @@
     <node concept="25R33" id="55O0TMOtwBk" role="25R1y">
       <property role="3tVfz5" value="5869320185948015060" />
       <property role="TrG5h" value="hour" />
+    </node>
+  </node>
+  <node concept="1TIwiD" id="j5yUUrDgPY">
+    <property role="EcuMT" value="343834528615566718" />
+    <property role="TrG5h" value="ExtractFromUVCI" />
+    <property role="34LRSv" value="extractFromUVCI" />
+    <ref role="1TJDcQ" to="tpck:gw2VY9q" resolve="BaseConcept" />
+    <node concept="PrWs8" id="j5yUUrDgPZ" role="PzmwI">
+      <ref role="PrY4T" node="6ItNp1ojfSn" resolve="Expression" />
+    </node>
+    <node concept="1TJgyj" id="j5yUUrDgQ1" role="1TKVEi">
+      <property role="IQ2ns" value="343834528615566721" />
+      <property role="20lmBu" value="fLJjDmT/aggregation" />
+      <property role="20kJfa" value="operand" />
+      <property role="20lbJX" value="fLJekj4/_1" />
+      <ref role="20lvS9" node="6ItNp1ojfSn" resolve="Expression" />
+    </node>
+    <node concept="1TJgyi" id="j5yUUrDgQ3" role="1TKVEl">
+      <property role="IQ2nx" value="343834528615566723" />
+      <property role="TrG5h" value="index" />
+      <ref role="AX2Wp" to="tpck:fKAQMTA" resolve="integer" />
     </node>
   </node>
 </model>

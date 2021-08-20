@@ -508,5 +508,37 @@
       <node concept="2iRfu4" id="51wT2RoDqa0" role="2iSdaV" />
     </node>
   </node>
+  <node concept="24kQdi" id="j5yUUrDgQv">
+    <ref role="1XX52x" to="u3iy:j5yUUrDgPY" resolve="ExtractFromUVCI" />
+    <node concept="3EZMnI" id="j5yUUrDgQx" role="2wV5jI">
+      <node concept="3F1sOY" id="j5yUUrDgQy" role="3EZMnx">
+        <ref role="1NtTu8" to="u3iy:j5yUUrDgQ1" resolve="operand" />
+      </node>
+      <node concept="3F0ifn" id="j5yUUrDgQz" role="3EZMnx">
+        <property role="3F0ifm" value=".extractFromUVCI(" />
+        <ref role="1k5W1q" node="6ItNp1olMCP" resolve="operator" />
+        <node concept="11L4FC" id="j5yUUrDgQ$" role="3F10Kt">
+          <property role="VOm3f" value="true" />
+        </node>
+        <node concept="11LMrY" id="j5yUUrDgQ_" role="3F10Kt">
+          <property role="VOm3f" value="true" />
+        </node>
+      </node>
+      <node concept="3F0ifn" id="j5yUUrDgQA" role="3EZMnx">
+        <property role="3F0ifm" value="#" />
+        <ref role="1k5W1q" node="51wT2Ro$kf1" resolve="it" />
+      </node>
+      <node concept="3F0A7n" id="j5yUUrDgR5" role="3EZMnx">
+        <ref role="1NtTu8" to="u3iy:j5yUUrDgQ3" resolve="index" />
+      </node>
+      <node concept="3F0ifn" id="j5yUUrDgQG" role="3EZMnx">
+        <property role="3F0ifm" value=")" />
+        <node concept="11L4FC" id="j5yUUrDgQH" role="3F10Kt">
+          <property role="VOm3f" value="true" />
+        </node>
+      </node>
+      <node concept="2iRfu4" id="j5yUUrDgQI" role="2iSdaV" />
+    </node>
+  </node>
 </model>
 
