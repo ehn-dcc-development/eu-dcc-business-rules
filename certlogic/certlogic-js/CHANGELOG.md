@@ -1,5 +1,10 @@
 # Change log
 
+## 0.9.2
+
+* Add `extractFromUVCI` operation to the TypeScript typings
+
+
 ## 0.9.1
 
 * Handle `extractFromUVCI` operation in the `validation/dataAccesses` function

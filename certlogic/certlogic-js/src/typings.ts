@@ -16,6 +16,7 @@ export type CertLogicExpression =
     | { "!": [ CertLogicExpression ] }
     | { "plusTime": [ CertLogicExpression, number, TimeUnit ] }
     | { "reduce": [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
+    | { "extractFromUVCI": [ CertLogicExpression, number ] }
     // literals:
     | boolean
     | number    // ...which should be an integer...
