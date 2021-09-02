@@ -1,4 +1,4 @@
-import { CertLogicExpression, CertLogicOperation } from "../typings"
+import { CertLogicExpression } from "../typings"
 
 
 type DataAccessWithContext = {

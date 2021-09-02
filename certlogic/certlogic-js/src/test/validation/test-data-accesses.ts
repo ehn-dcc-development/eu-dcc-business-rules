@@ -1,7 +1,7 @@
 const { deepEqual } = require("chai").assert
 
 import { CertLogicOperation } from "../../typings"
-import { dataAccessesWithContext } from "../../validation/data-accesses"
+import { dataAccessesWithContext } from "../../validation"
 
 
 describe("dataAccessesWithContext", () => {
