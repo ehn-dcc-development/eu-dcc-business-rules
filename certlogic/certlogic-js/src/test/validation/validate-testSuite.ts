@@ -26,8 +26,6 @@ describe("test suites", () => {
                     }
                     if (testCase.certLogicExpression !== undefined) {
                         validateAndReport(testCase.certLogicExpression)
-                        console.log(JSON.stringify(dataAccesses(testCase.certLogicExpression)))
-                        console.log(JSON.stringify(dataAccessesWithContext(testCase.certLogicExpression)))
                     }
                     testCase.assertions
                         .forEach((assertion: any, index: number) => {

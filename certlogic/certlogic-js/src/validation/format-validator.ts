@@ -130,7 +130,7 @@ const validate = (expr: any): ValidationError[] => {
         if (operator === "var") {
             return validateVar(expr, values)
         }
-        if (!(Array.isArray(values) && values.length > 0)) {
+        if (!Array.isArray(values)) {
             return withError(`operation not of the form { "<operator>": [ <values...> ] }`)
         }
         if (operator === "if") {

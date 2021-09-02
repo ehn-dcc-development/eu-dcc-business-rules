@@ -119,20 +119,20 @@ fun validate(expr: JsonNode): List<ValidationError> {
             if (expr.size() != 1) {
                 return withError("expression object must have exactly one key, but it has ${expr.size()}")
             }
-            val (operator, args) = expr.fields().next()
+            val (operator, values) = expr.fields().next()
             if (operator == "var") {
-                return validateVar(expr, args)
+                return validateVar(expr, values)
             }
-            if (!(args is ArrayNode && args.size() > 0)) {
+            if (values !is ArrayNode) {
                 return withError("operation not of the form { \"<operator>\": [ <values...> ] }")
             }
             return when (operator) {
-                "if" -> validateIf(expr, args)
-                "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" -> validateInfix(expr, args, operator)
-                "!" -> validateNot(expr, args)
-                "plusTime" -> validatePlusTime(expr, args)
-                "reduce" -> validateReduce(expr, args)
-                "extractFromUVCI" -> validateExtractFromUVCI(expr, args)
+                "if" -> validateIf(expr, values)
+                "===", "and", ">", "<", ">=", "<=", "in", "+", "after", "before", "not-after", "not-before" -> validateInfix(expr, values, operator)
+                "!" -> validateNot(expr, values)
+                "plusTime" -> validatePlusTime(expr, values)
+                "reduce" -> validateReduce(expr, values)
+                "extractFromUVCI" -> validateExtractFromUVCI(expr, values)
                 else -> withError("unrecognised operator: \"$operator\"")
             }
         }

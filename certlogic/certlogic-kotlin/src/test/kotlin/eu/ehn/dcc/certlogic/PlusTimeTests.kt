@@ -9,7 +9,7 @@ import kotlin.test.assertEquals
  */
 internal class PlusTimeTests {
 
-    fun check(dateTimeLike: String, amount: Int, unit: TimeUnit, expected: String) {
+    private fun check(dateTimeLike: String, amount: Int, unit: TimeUnit, expected: String) {
         assertEquals(expected, JsonDateTime.fromString(dateTimeLike).plusTime(amount, unit).asText())
     }
 
