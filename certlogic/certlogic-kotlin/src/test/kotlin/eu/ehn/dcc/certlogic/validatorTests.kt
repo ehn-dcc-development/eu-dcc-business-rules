@@ -1,7 +1,7 @@
 package eu.ehn.dcc.certlogic
 
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.*
+import com.fasterxml.jackson.databind.node.TextNode
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 
@@ -25,34 +25,29 @@ internal class ValidatorTests {
 
     @Test
     fun `should recognise valid basic literals`() {
-        assertErrors(TextNode.valueOf(""))
-        assertErrors(TextNode.valueOf("foo"))
-        assertErrors(IntNode.valueOf(0))
-        assertErrors(IntNode.valueOf(42))
-        assertErrors(BooleanNode.FALSE)
-        assertErrors(BooleanNode.TRUE)
+        assertErrors("".asJson())
+        assertErrors("foo".asJson())
+        assertErrors(0.asJson())
+        assertErrors(42.asJson())
+        assertErrors(false.asJson())
+        assertErrors(true.asJson())
     }
 
     @Test
     fun `should recognise invalid basic literals`() {
-        assertErrors(NullNode.instance, "invalid CertLogic expression")
-        assertErrors(DoubleNode.valueOf( 3.14), "3.14 is a non-integer number")
+        assertErrors(jsonNull(), "invalid CertLogic expression")
+        assertErrors( 3.14.asJson(), "3.14 is a non-integer number")
     }
 
     @Test
     fun `should recognise invalid operation objects`() {
-        assertErrors(JsonNodeFactory.instance.objectNode(), "expression object must have exactly one key, but it has 0")
+        assertErrors(jsonObject(), "expression object must have exactly one key, but it has 0")
         assertErrors(
-            JsonNodeFactory.instance.objectNode().apply {
-                put("foo", "bar")
-                put("alice", "bob")
-            },
+            jsonObject("foo" to "bar".asJson(), "alice" to "bob".asJson()),
             "expression object must have exactly one key, but it has 2"
         )
         assertErrors(
-            JsonNodeFactory.instance.objectNode().apply {
-                set<ArrayNode>("all", JsonNodeFactory.instance.arrayNode())
-            },
+            jsonObject("all" to TextNode.valueOf("foo")),
             "operation not of the form { \"<operator>\": [ <values...> ] }"
         )
     }
@@ -60,25 +55,19 @@ internal class ValidatorTests {
     @Test
     fun `should recognise unknown operators`() {
         assertErrors(
-            JsonNodeFactory.instance.objectNode().apply {
-                set<ArrayNode>("all", JsonNodeFactory.instance.arrayNode().add(NullNode.instance))
-            },
+            jsonObject("all" to jsonArray()),
+            "unrecognised operator: \"all\""
+        )
+        assertErrors(
+            jsonObject("all" to jsonArray(jsonNull())),
             "unrecognised operator: \"all\""
         )
     }
 
-
-    fun makeVar(pathValue: ValueNode): JsonNode =
-        JsonNodeFactory.instance.objectNode().apply {
-            set<JsonNode>("var", pathValue)
-        }
-
-    fun makeVar(pathValue: String): JsonNode = makeVar(TextNode.valueOf(pathValue))
-
     @Test
     fun `should correctly validate var operations`() {
-        assertErrors(makeVar(NullNode.instance), "not of the form { \"var\": \"<path>\" }")
-        assertErrors(makeVar(IntNode.valueOf(0)), "not of the form { \"var\": \"<path>\" }")
+        assertErrors(makeVar(jsonNull()), "not of the form { \"var\": \"<path>\" }")
+        assertErrors(makeVar(0.asJson()), "not of the form { \"var\": \"<path>\" }")
         assertErrors(makeVar("x" ))
         assertErrors(makeVar("x.0.y"))
         assertErrors(makeVar("1"))

@@ -1,5 +1,11 @@
 # Change log
 
+# 0.10.0
+
+* Add a `dataAccessesWithContext` function in the `validation` sub package
+* Provide better format validations error in case an operation has no values/operands
+
+
 ## 0.9.2
 
 * Add `extractFromUVCI` operation to the TypeScript typings

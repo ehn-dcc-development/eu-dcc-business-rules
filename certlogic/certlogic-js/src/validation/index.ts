@@ -1,4 +1,4 @@
-export { dataAccesses } from "./data-accesses"
+export { dataAccesses, dataAccessesWithContext } from "./data-accesses"
 export { validateFormat } from "./format-validator"
 export { ValidationError } from "./typings"
 

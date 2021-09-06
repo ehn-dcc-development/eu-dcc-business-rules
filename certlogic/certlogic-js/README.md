@@ -23,7 +23,10 @@ It also exposes a sub package `certlogic-js/validation` for validation, which ha
 * `validateFormat`: a function that validates CertLogic expressions purely based on the CertLogic format, without regarding types.
 * `validate`: a function that validates CertLogic expressions, and returns any violations as validation errors.
   Currently, this is effectively an alias for `validateFormat`, but that might change in the future.
-* `dataAccesses`: a function that computes all data accesses that may be performed by the given CertLogic expression.
+* `dataAccesses`: a function that computes all data accesses that may be performed by the given CertLogic expression, through contained `var` operations.
+* `dataAccessesWithContext`: a variant of the `dataAccesses` function that provides a list of the contexts the reported data accesses happen in.
+    Typically, such a context is the "ambient", innermost, encompassing CertLogic expression.
+    As an example: for the expression `{ "extractFromUVCI": [ { "var": "ci" }, 1 ] }`, the only data access that happens pertains to `ci`, and its context is this entire expression.
 
 These features can be imported using `import { ... } from "certlogic-js/dist/validation`.
 (Unfortunately, for now you need to add the `/dist` fragment to the import path. This will be fixed later on.)

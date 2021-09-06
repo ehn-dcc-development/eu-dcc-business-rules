@@ -53,9 +53,9 @@ internal class TruthyFalsyTests {
 /**
  * Should be in sync with the `describe("extractFromUVCI", ...`-part of `test-internals.ts` from `certlogic-js`.
  */
-internal class ExtractFromUVCI {
+internal class ExtractFromUVCITests {
 
-    fun checkForThat(uvci: String?, assertions: List<Pair<Int, String?>>): Unit =
+    internal fun checkForThat(uvci: String?, assertions: List<Pair<Int, String?>>): Unit =
         assertions.forEach {
             assertEquals(it.second, extractFromUVCI(uvci, it.first))
         }

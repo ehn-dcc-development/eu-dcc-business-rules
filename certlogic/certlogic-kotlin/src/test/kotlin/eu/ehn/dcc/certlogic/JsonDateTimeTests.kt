@@ -8,7 +8,7 @@ import kotlin.test.assertEquals
  */
 internal class JsonDateTimeTests {
 
-    fun check(dateTimeLike: String, expected: String, message: String? = null) {
+    private fun check(dateTimeLike: String, expected: String, message: String? = null) {
         assertEquals(expected, JsonDateTime.fromString(dateTimeLike).asText(), message)
     }
 

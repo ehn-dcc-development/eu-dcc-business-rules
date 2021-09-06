@@ -1,6 +1,6 @@
 const { equal } = require("chai").assert
 
-import { validateFormat } from "../../validation/format-validator"
+import { validateFormat } from "../../validation"
 
 
 const assertErrors = (expr: any, ...messages: string[]) => {
@@ -38,10 +38,16 @@ describe("operation objects", () => {
     it("should recognise invalid operation objects", () => {
         assertErrors({}, "expression object must have exactly one key, but it has 0")
         assertErrors({ foo: "bar", alice: "bob" }, "expression object must have exactly one key, but it has 2")
-        assertErrors({ all: [] }, `operation not of the form { "<operator>": [ <values...> ] }`)
+        assertErrors({ all: "foo" }, `operation not of the form { "<operator>": [ <values...> ] }`)
+        assertErrors({ all: 42.0 }, `operation not of the form { "<operator>": [ <values...> ] }`)
+        assertErrors({ all: true }, `operation not of the form { "<operator>": [ <values...> ] }`)
+        assertErrors({ all: false }, `operation not of the form { "<operator>": [ <values...> ] }`)
+        assertErrors({ all: undefined }, `operation not of the form { "<operator>": [ <values...> ] }`)
+        assertErrors({ all: null }, `operation not of the form { "<operator>": [ <values...> ] }`)
     })
 
     it("should recognise unknown operators", () => {
+        assertErrors({ all: [] }, `unrecognised operator: "all"`)
         assertErrors({ all: [ null ] }, `unrecognised operator: "all"`)
     })
 
