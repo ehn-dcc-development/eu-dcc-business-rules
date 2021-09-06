@@ -19,7 +19,7 @@ if (!existsSync(exprPath)) {
 try {
     const expr = JSON.parse(readFileSync(exprPath, "utf8").toString())
     console.log(JSON.stringify(validate(expr), null, 2))
-} catch (e) {
+} catch (e: any) {
     console.error(`couldn't read file ${exprPath} as JSON: ${e.message}`)
 }
 
