@@ -39,12 +39,15 @@ or the equivalent ES6- statement
 
 * [`json-logic-java`](https://github.com/jamsesso/json-logic-java): Java implementation of JsonLogic which has been verified to comply with the CertLogic test suite.
     Releases are available [on GitHub](https://github.com/jamsesso/json-logic-java/releases), and also on [Maven Central](https://search.maven.org/artifact/io.github.jamsesso/json-logic-java).
+    To add the custom operations necessary for compliance with CertLogic: see [this repo by Ilie Circiumaru](https://github.com/iliecirciumaru/dcc-business-rules-java).
 
 
 ## Swift
 
-[`json-logic-swift`](https://github.com/eu-digital-green-certificates/json-logic-swift): a Swift implementation of JsonLogic, conforming to the CertLogic spec.
+* [`json-logic-swift`](https://github.com/eu-digital-green-certificates/json-logic-swift): a Swift implementation of JsonLogic, conforming to the CertLogic spec.
   Releases are available [on GitHub](https://github.com/eu-digital-green-certificates/json-logic-swift/releases/latest).
+* 
+* [`dgc-certlogic-ios`](https://github.com/eu-digital-green-certificates/dgc-certlogic-ios): a Swift implementation of CertLogic.
 
 
 ## Go
