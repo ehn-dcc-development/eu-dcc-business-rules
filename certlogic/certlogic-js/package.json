@@ -1,6 +1,6 @@
 {
   "name": "certlogic-js",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "description": "Implementation of CertLogic in TypeScript (including validation).",
   "keywords": [
     "json",
@@ -29,7 +29,8 @@
   },
   "bin": {
     "certlogic-run": "dist/cli.js",
-    "certlogic-validate": "dist/validation/cli.js"
+    "certlogic-validate": "dist/validation/cli.js",
+    "certlogic-desugar": "dist/misc/desugar-cli.js"
   },
   "author": "Meinte Boersma <meinte.boersma@gmail.com>",
   "contributors": [
