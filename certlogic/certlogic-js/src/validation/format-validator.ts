@@ -1,7 +1,7 @@
 import { isInt } from "../internals"
 
 import { ValidationError } from "./typings"
-import { timeUnits } from "../typings"
+import { CertLogicExpression, CertLogicOperation, timeUnits } from "../typings"
 
 
 const validateVar = (expr: any, values: any): ValidationError[] => {

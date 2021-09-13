@@ -1,5 +1,10 @@
 # Change log
 
+# 0.11.0
+
+* Implement type guard functions `isCertLogicExpression` and `isCertLogicOperation` for the CertLogic types
+
+
 # 0.10.0
 
 * Add a `dataAccessesWithContext` function in the `validation` sub package
