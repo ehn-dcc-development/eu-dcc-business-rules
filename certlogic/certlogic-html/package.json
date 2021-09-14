@@ -20,6 +20,7 @@
   },
   "main": "dist/index.js",
   "scripts": {
+    "postinstall": "mkdir -p dist",
     "build": "cp src/styling.css dist/ ; tsc",
     "watch-build": "tsc --watch --incremental",
     "clean": "rm -rf dist/ && rm -rf node_modules/ && rm -rf package-lock.json && rm -rf yarn.lock"
