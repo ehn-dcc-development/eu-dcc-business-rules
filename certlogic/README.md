@@ -30,6 +30,7 @@ This (part of the) repository contains:
   * [Dart](./certlogic-dart), as Dart module - also available directly from [pub.dev](https://pub.dev/packages/certlogic_dart).
 * A [build script](./build.sh) to build `certlogic-js`, and `certlogic-kotlin`.
 * The [specification](./specification/README.md) + a test suite, and JSON Schemas.
+* A NPM package that implements a HTML-renderer for CertLogic expressions.
 
 
 ## Testing & Status
