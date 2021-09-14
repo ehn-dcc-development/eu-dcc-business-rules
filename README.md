@@ -42,11 +42,12 @@ Various code in this repo assumes that you've cloned the following two repos rig
 
 This repository contains the following:
 
-* [Documentation](./documentation/README.md).
 * [CertLogic](./certlogic/README.md): a specification, reference implementations for various platforms, a test suite, and a validation tool.
   CertLogic is generic, and not tied to the DCC, to make it easier to understand, test, expand, etc. independently.
-* [RulesRunner](./rules-runner/README.md): implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
+* [Documentation](./documentation/README.md).
 * [JsonLogic](./jsonlogic/): documentation and code relating to JsonLogic.
+* [CertLogic editor](./mps/README.md): implemented with MPS.
+* [RulesRunner](./rules-runner/README.md): (**deprecated**) implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
 
 
 ## Testing & Status
