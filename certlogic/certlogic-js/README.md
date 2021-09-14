@@ -11,11 +11,12 @@ This NPM package consists of an implementation of CertLogic in JavaScript(/TypeS
 
 This NPM package exposes the following top-level features:
 
-* `CertLogicExpression`, `TimeUnit`: TypeScript types to capture CertLogic expressions, and units of time (currently only **hour** and **day**), respectively
+* `CertLogicExpression`, `CertLogicOperation`, `TimeUnit`: TypeScript types to capture CertLogic expressions (for generic, respectively operation expressions), and units of time, respectively.
+    The first two of these types are backed by type guard functions named `isCertLogicExpression`, and `isCertLogicOperation`, respectively.
 * `evaluate`: a function that takes a CertLogic expression, and a data context, and evaluates that expression with the given data context.
   Note that the function will throw an `Error` if it encounters any problem, rather than returning some default value.
-* `version`: a constant containing the current version (taken from the [`package.json`](./package.json))
-* `isInt`: a function to determine whether a given value represents an integer
+* `version`: a constant containing the current *implementation* version (taken from the [`package.json`](./package.json)).
+* `isInt`: a function to determine whether a given value represents an integer.
 
 It also exposes a sub package `certlogic-js/validation` for validation, which has the following features:
 

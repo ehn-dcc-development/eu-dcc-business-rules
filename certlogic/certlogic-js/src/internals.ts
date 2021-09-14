@@ -1,7 +1,11 @@
 import { TimeUnit } from "./typings"
 
-const isDictionary = (value: any): value is object =>
+/**
+ * @returns Whether the given `value` is a "dictionary object".
+ */
+export const isDictionary = (value: any): value is object =>
     typeof value === "object" && value !== null && !Array.isArray(value)
+
 
 /**
  * @returns Whether the given `value` is considered *falsy* by CertLogic.
