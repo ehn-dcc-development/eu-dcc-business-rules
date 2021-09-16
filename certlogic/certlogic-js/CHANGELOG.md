@@ -1,5 +1,10 @@
 # Change log
 
+# 0.12.0
+
+* Implement a desugaring operation in the `misc` sub package
+
+
 # 0.11.0
 
 * Implement type guard functions `isCertLogicExpression` and `isCertLogicOperation` for the CertLogic types

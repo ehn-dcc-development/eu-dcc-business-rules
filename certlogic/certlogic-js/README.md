@@ -34,6 +34,12 @@ These features can be imported using `import { ... } from "certlogic-js/dist/val
 
 (Formerly, this sub package was the `certlogic-validation` NPM package.)
 
+Finally, it also exposes a sub package `certlogic-js/misc` which contains additional features/conveniences:
+
+* `desugar`: a function to "desugar" "extended CertLogic expression" to proper CertLogic expressions.
+    At the moment, this only pertains to an additional `or` expression, which is desugared using [De Morgan's laws](https://en.wikipedia.org/wiki/De_Morgan%27s_laws).
+    Note that *no specification is provided* for the "extended CertLogic expressions".
+
 Note that documentation is...sparse outside of the [CertLogic specification](../specification/README.md), and the [overall documentation](https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/documentation) around CertLogic and DCC business/validation rules.
 In particular, code-level documentation is largely absent.
 On the other hand: the [TypeScript source code](./src) is likely easy enough to understand.
@@ -41,20 +47,23 @@ On the other hand: the [TypeScript source code](./src) is likely easy enough to 
 
 ## Commandline
 
-This NPM package exposes two CLI commands: `certlogic-run`, and `certlogic-validate.
+This NPM package exposes three CLI commands: `certlogic-run`, `certlogic-validate`, and `desugar-cli`.
 These can be used as follows:
 
     $ npx certlogic-run <path of JSON file containing CertLogic expression> <path of JSON file containing the data context>
     $ npx certlogic-validate <path of JSON file containing CertLogic expression>
+    $ npx certlogic-desugar < <path of JSON file containing extended CertLogic expression>
 
 or as
 
     $ ./node_modules/.bin/certlogic-run <path of JSON file containing CertLogic expression> <path of JSON file containing the data context>
     $ ./node_modules/.bin/certlogic-validate <path of JSON file containing CertLogic expression>
+    $ ./node_modules/.bin/certlogic-desugar < <path of JSON file containing extended CertLogic expression>
 
 (respectively).
 
 inside any NPM package that has `certlogic-js` installed as dependency.
+Note that for `certlogic-desugar`, the "sugared" expression in input on `stdin`, and the desugared expression is output on `stdout`.
 
 
 ## Testing
