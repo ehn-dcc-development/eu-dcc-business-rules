@@ -1,12 +1,16 @@
 const { isTrue } = require("chai").assert
 
-import { version } from "../index"
+import { implementationVersion, specificationVersion } from "../index"
 
 
-describe("version", () => {
+describe("versions", () => {
 
-    it("should be able to say which (semver) version this engine is at", () => {
-        isTrue(version.match(/^\d+\.\d+\.\d+$/) !== null)
+    it("should be able to say which implementation version (semver) this engine is at", () => {
+        isTrue(implementationVersion.match(/^\d+\.\d+\.\d+$/) !== null)
+    })
+
+    it("should be able to say which specification version (semver) this engine is compatible with", () => {
+        isTrue(specificationVersion.match(/^\d+\.\d+\.\d+$/) !== null)
     })
 
 })

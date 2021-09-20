@@ -1,5 +1,10 @@
 # Change log
 
+# 1.0.0
+
+* **breaking change:** Expose implementation and specification versions separately
+
+
 # 0.12.0
 
 * Implement a desugaring operation in the `misc` sub package
