@@ -2,6 +2,7 @@
 
 | Version | Date | Changes |
 |---|---|---|
+| 1.2.2 | 20210921 | Clarify semantics of the `in` operation, and of evaluation in general.
 | 1.2.1 | 20210810 | Fix incorrect format in specification.
 | 1.2.0 | 20210729 | Add an `extractFromUVCI` operation.
 | 1.1.0 | 20210709 | Add “month” and “year” to the time units available for the `plusTime` operation.

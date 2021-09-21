@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.2.1**.
+The semantic version identification of this specification is: **1.2.2**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -24,18 +24,21 @@ CertLogic _logical_ expressions are of the following form, _except_ for data acc
 
     {
         "<operation id>": [
-            <first argument>,
-            <second argument>,
+            <operand 1>,
+            <operand 2>,
             // ...
-            <last argument>
+            <operand n>
         ]
     }
 
 The CertLogic evaluator function always evaluates a _valid_ CertLogic expression to some value, never throwing an error.
-Operating on a `null` value evaluates to `null` in most, but not all, cases.
-However, it might throw on an _invalid_ expression, which is any expression object with an unknown `<operation id>`, or with a known one that doesn't follow the specification.
-As a result, the CertLogic evaluator does not exhibit undefined behaviour, but simply errors out.
+However, it might throw an error on an _invalid_ expression, which is any expression object with an unknown `<operation id>`, or with a known one that doesn't follow the specification.
+As a result, the CertLogic evaluator does not exhibit undefined behaviour, but simply throws an error.
 It's advisable to `try-catch` the evaluation, and return `false` result if that happens when evaluating a validation rule.
+
+Any operation evaluates its operands lazily, i.e. when it needs to, before producing a value itself.
+In case of an error, the first-occurring error is thrown.
+Operating on a `null` value evaluates to `null` in most, but not all, cases - this is specified below, per operation.
 
 A JSON array evaluates to an array with every item evaluated separately.
 If a JSON object (not an array) is a literal, being a boolean, an integer, or a string, it evaluates to itself.
@@ -162,6 +165,8 @@ _Note:_ this might still be restricted further to only allow strings and integer
 
 The `in` operator checks whether `<operand 1>` is a member of `<operand 2>`, which must be an array - possibly empty.
 (This must be checked beforehand through other means: operating on a non-array `<operand 2>` is considered an error.)
+Note that `<operand 1>` doesn't need to be a string, and nor does `<operand 2>` need to be an array of strings.
+The types of `<operand 1>` and the it
 
 The `and` operator can be used _variadically_: it can have any number of operands greater than 1.
 All operands must be either truthy or falsy - no “inbetween” values that are neither are allowed.
@@ -277,7 +282,7 @@ In any case, at least the behaviour of the “allowed”-part of the specificati
 
 A comprehensive test suite is contained in the [`testSuite` directory](./testSuite), as a collection of JSON files.
 These files conform to a [JSON Schema](./schemas/CertLogic-testSuite.json).
-The test suite is (currently) executed by the [`test-suites` Mocha test](../certlogic-js/src/test/run-testSuite.ts), and the [`CertLogicTests` JUnit/Kotlin ](../certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/CertLogicTests.kt).
+The test suite is (currently) executed by the [`test-suites` Mocha test](../certlogic-js/src/test/run-testSuite.ts), and the [`CertLogicTests` JUnit/Kotlin ](../certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/certlogicTests.kt).
 
 
 ### Schemas
