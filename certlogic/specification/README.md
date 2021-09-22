@@ -20,7 +20,7 @@ This means that:
 * These JSON values can be finitely serialised, and identically deserialised.
 * JSON objects anywhere in any of these values have at most one incoming reference (that of their parent), and no outgoing references, except to children.
 
-CertLogic _logical_ expressions are of the following form, _except_ for data access (`var`) - see below.
+CertLogic expression objects are of the following form, _except_ for data access (`var`) - see below.
 
     {
         "<operation id>": [
@@ -32,12 +32,18 @@ CertLogic _logical_ expressions are of the following form, _except_ for data acc
     }
 
 The CertLogic evaluator function always evaluates a _valid_ CertLogic expression to some value, never throwing an error.
-However, it might throw an error on an _invalid_ expression, which is any expression object with an unknown `<operation id>`, or with a known one that doesn't follow the specification.
+However, it might throw an error for an _invalid_ expression, meaning it's an expression object with an unknown `<operation id>`, or with a known one with the rest of the object not following the specification for that operation.
+This includes type mismatches that aren't detected through upfront validation.
 As a result, the CertLogic evaluator does not exhibit undefined behaviour, but simply throws an error.
 It's advisable to `try-catch` the evaluation, and return `false` result if that happens when evaluating a validation rule.
+(CertLogic expressions are encouraged to _always_ evaluate without error, on any input, not just for "happy paths".)
 
-Any operation evaluates its operands lazily, i.e. when it needs to, before producing a value itself.
-In case of an error, the first-occurring error is thrown.
+The CertLogic evaluator function checks the validity of the expression first, before evaluating any of its operands, and before producing a value.
+In case of an error, generally the first-occurring error is thrown, but this specification doesn't specify a precise meaning for "first-occurring".
+(It's not the intent of this specification to be absolutely precise about the order of evaluation of operands in the face of errors occurring.)
+
+Not every operation always evaluates all of its operands: exceptions to this rule are specified below, per applicable operation.
+Type mismatches can only be detected after evaluation of operands.
 Operating on a `null` value evaluates to `null` in most, but not all, cases - this is specified below, per operation.
 
 A JSON array evaluates to an array with every item evaluated separately.
@@ -137,7 +143,7 @@ Conditional logic can be implemented through an operation of the following form:
         ]
     }
 
-If the `<guard>` evaluates to a truthy value, then the `<then>` expression is evaluated, otherwise the `<else>` expression.
+If the `<guard>` evaluates to a truthy value, then the `<then>` expression is evaluated (and not before), otherwise the `<else>` expression is evaluated (and not before).
 
 
 ### Operations with infix operators
@@ -169,8 +175,9 @@ Note that `<operand 1>` doesn't need to be a string, and nor does `<operand 2>` 
 The types of `<operand 1>` and the it
 
 The `and` operator can be used _variadically_: it can have any number of operands greater than 1.
-All operands must be either truthy or falsy - no “inbetween” values that are neither are allowed.
+All operands must evaluate to either a truthy or falsy value - no “inbetween” values that are neither are allowed, and an error is thrown when that happens.
 An operation with the `and` operator returns the first of its operand that evaluates to a falsy value, or the evaluation of the last value.
+Operands are evaluated lazily (so until one evaluates to a falsy value, or an error occurs because of the evaluation of one), and in order.
 
 The comparison operators `>`, `<`, `>=`, `<=`, `after`, `before`, `not-after`, `not-before` (but not equality `===`) can be used in (the customary) infix form (`n` = 2), or in the ternary form (`n` = 3).
 The ternary form
