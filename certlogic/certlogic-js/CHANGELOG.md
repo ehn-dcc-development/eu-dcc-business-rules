@@ -1,5 +1,10 @@
 # Change log
 
+# 1.0.2
+
+* Update stated specification version to 1.2.2.
+
+
 # 1.0.1
 
 * Fix that the `validate` function in `certlogic-js` threw an exception for a `plusTime` operation with invalid time unit.
