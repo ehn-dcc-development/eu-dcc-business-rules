@@ -2,4 +2,4 @@ export type { CertLogicExpression, CertLogicOperation, isCertLogicExpression, is
 export { isInt } from "./internals" // (export other internals only when necessary)
 export { evaluate } from "./evaluator"
 export const implementationVersion = require("../package.json").version
-export const specificationVersion = "1.2.1"
+export const specificationVersion = "1.2.2"
