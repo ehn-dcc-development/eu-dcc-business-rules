@@ -1,5 +1,11 @@
 # Change log
 
+# 1.0.1
+
+* Fix that the `validate` function in `certlogic-js` threw an exception for a `plusTime` operation with invalid time unit.
+* Update dev-dependencies of `certlogic-js`.
+
+
 # 1.0.0
 
 * **breaking change:** Expose implementation and specification versions separately
