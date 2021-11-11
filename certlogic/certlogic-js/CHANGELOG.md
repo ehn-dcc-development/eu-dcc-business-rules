@@ -1,5 +1,13 @@
 # Change log
 
+# 1.0.3
+
+* Fix a circular dependency in the transpiled source (API doesn't change)
+* Build in check for ciruclar dependency in the transpiled source
+* Document development details in README
+* Remove unnecessary escaping from regex
+
+
 # 1.0.2
 
 * Update stated specification version to 1.2.2.
@@ -7,8 +15,8 @@
 
 # 1.0.1
 
-* Fix that the `validate` function in `certlogic-js` threw an exception for a `plusTime` operation with invalid time unit.
-* Update dev-dependencies of `certlogic-js`.
+* Fix that the `validate` function in `certlogic-js` threw an exception for a `plusTime` operation with invalid time unit
+* Update dev-dependencies of `certlogic-js`
 
 
 # 1.0.0

@@ -1,5 +1,5 @@
 import { desugar } from "./desugar"
-import { isCertLogicExpression } from "../typings"
+import { isCertLogicExpression } from "../validation"
 
 
 process.stdin.resume()

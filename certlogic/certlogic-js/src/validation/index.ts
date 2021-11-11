@@ -10,3 +10,21 @@ import { ValidationError } from "./typings"
  */
 export const validate = (expr: any): ValidationError[] => validateFormat(expr)
 
+
+import { CertLogicExpression, CertLogicOperation } from "../typings"
+
+/**
+ * Type guard function to be able to infer `any` value reliably as a CertLogicExpression.
+ */
+export const isCertLogicExpression = (expr: any): expr is CertLogicExpression =>
+    validate(expr).length === 0
+
+
+import { isDictionary } from "../internals"
+
+/**
+ * Type guard function to be able to infer `any` value reliably as a CertLogicOperation.
+ */
+export const isCertLogicOperation = (expr: any): expr is CertLogicOperation =>
+    isCertLogicExpression(expr) && isDictionary(expr)
+
