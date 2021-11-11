@@ -67,9 +67,31 @@ inside any NPM package that has `certlogic-js` installed as dependency.
 Note that for `certlogic-desugar`, the "sugared" expression in input on `stdin`, and the desugared expression is output on `stdout`.
 
 
-## Testing
+## Development
 
-Executing the tests requires the [test suite](https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/certlogic/testSuite), located directly next to this directory.
+Transpiling the TypeScript source to JavaScript can be done by running any of the following:
+
+    $ tsc
+    $ npm run build
+
+The transpiled source is located in `dist/`.
+
+Checking for circular dependencies in the transpiled source can be done as follows:
+
+    $ [npx ] npx dpdm dist/ --circular --exit-code circular:1
+    $ npm run check-deps
+
+(The latter command also transpiles the source.)
+This command should exit with error code 1 in case of a circular dependency in the transpiled source.
+
+Unit tests can be executed by running any of the following:
+
+    $ [npx ] mocha --recursive dist/test
+    $ npm test
+
+(The latter command also transpiles the source.)
+
+Some of the unit tests rely on the [test suite](https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/certlogic/testSuite), which must be present on the relative path `../specification/`.
 
 
 ## Licensing
