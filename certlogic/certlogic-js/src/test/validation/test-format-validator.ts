@@ -1,7 +1,6 @@
 const { equal, isFalse } = require("chai").assert
 
-import { isCertLogicExpression } from "../../typings"
-import { validateFormat } from "../../validation"
+import { isCertLogicExpression, validateFormat } from "../../validation"
 
 
 const assertErrors = (expr: any, ...messages: string[]) => {

@@ -1,6 +1,6 @@
 {
   "name": "certlogic-js",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Implementation of CertLogic in TypeScript",
   "keywords": [
     "json",
@@ -23,9 +23,11 @@
     "build": "tsc",
     "watch-build": "tsc --watch --incremental",
     "pretest": "npm run build",
-    "test": "mocha  --recursive dist/test",
-    "watch-test": "mocha --watch  --recursive dist/test",
-    "clean": "rm -rf dist/ && rm -rf node_modules/ && rm -rf package-lock.json && rm -rf yarn.lock"
+    "test": "mocha --recursive dist/test",
+    "watch-test": "mocha --watch --recursive dist/test",
+    "clean": "rm -rf dist/ && rm -rf node_modules/ && rm -rf package-lock.json && rm -rf yarn.lock",
+    "check-deps": "dpdm dist/ --circular --exit-code circular:1",
+    "precheck-deps": "npm run build"
   },
   "bin": {
     "certlogic-run": "dist/cli.js",
@@ -40,10 +42,10 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/chai": "^4.2.22",
-    "@types/deep-equal": "^1.0.1",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.10.5",
     "chai": "^4.3.4",
+    "dpdm": "^3.8.0",
     "mocha": "^9.1.2",
     "typescript": "^4.4.4"
   }

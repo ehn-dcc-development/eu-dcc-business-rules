@@ -1,7 +1,7 @@
 import { isInt } from "../internals"
 
 import { ValidationError } from "./typings"
-import { CertLogicExpression, CertLogicOperation, timeUnits } from "../typings"
+import { timeUnits } from "../typings"
 
 
 const validateVar = (expr: any, values: any): ValidationError[] => {
@@ -9,7 +9,7 @@ const validateVar = (expr: any, values: any): ValidationError[] => {
         return [ { expr, message: `not of the form { "var": "<path>" }` } ]
     }
     const path = values
-    return (path === "" || path.match(/^([^\.]+?)(\.[^\.]+?)*$/))
+    return (path === "" || path.match(/^([^.]+?)(\.[^.]+?)*$/))
         ? []
         : [ { expr, message: `data access path doesn't have a valid format: ${path}` } ]
 }
