@@ -6,6 +6,9 @@
 * Build in check for ciruclar dependency in the transpiled source
 * Document development details in README
 * Remove unnecessary escaping from regex
+* Add an NPM ignore to only ship what's really needed
+* Specify types of stated specification and implementation versions
+* Remove types dependency of removed dependency (`deep-equal`)
 
 
 # 1.0.2

@@ -42,7 +42,6 @@
   "license": "Apache-2.0",
   "devDependencies": {
     "@types/chai": "^4.2.22",
-    "@types/deep-equal": "^1.0.1",
     "@types/mocha": "^9.0.0",
     "@types/node": "^16.10.5",
     "chai": "^4.3.4",
