@@ -1,5 +1,11 @@
 # Change log
 
+# 1.0.4
+
+* Implement factory functions for internal use, but don't expose these (yet)
+* Fix some typings (but effectively no changes to API)
+
+
 # 1.0.3
 
 * Fix a circular dependency in the transpiled source (API doesn't change)
