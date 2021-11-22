@@ -192,7 +192,7 @@ const evaluateReduce = (operand: CertLogicExpression, lambda: CertLogicExpressio
 }
 
 
-const evaluateExtractFromUVCI = (operand: CertLogicExpression, index: CertLogicExpression, data: any): string | null => {
+const evaluateExtractFromUVCI = (operand: CertLogicExpression, index: number, data: any): string | null => {
     const evalOperand = evaluate(operand, data)
     if (!(evalOperand === null || typeof evalOperand === "string")) {
         throw new Error(`"UVCI" argument (#1) of "extractFromUVCI" must be either a string or null`)

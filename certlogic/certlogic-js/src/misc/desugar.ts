@@ -1,6 +1,12 @@
 import { CertLogicExpression, CertLogicOperation } from "../typings"
+import { not_ } from "../factories"
 
-const not = (expr: CertLogicExpression): CertLogicExpression => ({ "!": [ expr ] })
+
+const or_ = (operands: CertLogicExpression[]): CertLogicOperation =>
+    not_({
+        "and": operands.map((operand) => not_(operand))
+    })
+
 
 /**
  * Desugars the given “extended” CertLogic expression to an “official” CertLogic expression.
@@ -12,13 +18,11 @@ export const desugar = (expr: any): CertLogicExpression => {
         return expr.map(desugar)
     }
     if (typeof expr === "object" && Object.entries(expr).length === 1) {
-        const [ operator, operands ] = Object.entries(expr)[0]
+        const [ operator, operands ] = Object.entries(expr)[0] as [ string, CertLogicExpression[] ]
         switch (operator) {
-            case "or": return not({
-                "and": (operands as any[]).map((operand: CertLogicExpression) => not(desugar(operand)))
-            })
+            case "or": return or_(operands.map(desugar))
             case "var": return expr
-            default: return { [operator]: (operands as any[]).map(desugar) } as CertLogicOperation
+            default: return { [operator]: operands.map(desugar) } as CertLogicOperation
         }
     }
     return expr
