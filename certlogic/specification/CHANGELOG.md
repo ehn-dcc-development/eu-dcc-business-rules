@@ -2,6 +2,7 @@
 
 | Version | Date | Changes |
 |---|---|---|
+| 1.2.3 | 20211209 | Clarify semantics of the `plusTime` operation.
 | 1.2.2 | 20211014 | Clarify semantics of the `in` operation, and of evaluation (and its order) in general.
 | 1.2.1 | 20210810 | Fix incorrect format in specification.
 | 1.2.0 | 20210729 | Add an `extractFromUVCI` operation.
