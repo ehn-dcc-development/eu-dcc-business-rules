@@ -1,5 +1,10 @@
 # Change log
 
+# 1.1.0
+
+* Add a miscellaneous function `asCompactText` to the `misc` sub package.
+
+
 # 1.0.4
 
 * Implement factory functions for internal use, but don't expose these (yet)
