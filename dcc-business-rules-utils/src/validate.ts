@@ -71,7 +71,6 @@ const validateMetaData = (rule: Rule): string[] => {
 }
 
 
-
 export type RuleValidationResult = {
     ruleId: string
     hasErrors: boolean
