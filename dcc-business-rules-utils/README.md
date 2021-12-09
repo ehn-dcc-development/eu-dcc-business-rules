@@ -1,5 +1,15 @@
 # DCC Business Rules Utilities
 
+This NPM package contains a number of useful “things” for working with EU DCC business rules conforming to the [EU DCC Validation Rules specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/eu-dcc_validation-rules_en.pdf) (link to PDF).
+These things are:
+
+* A TypeScript type for a rule: `Rule`.
+* A `validateRule` function that validates a rule against the JSON Schema, as well as against a number of other constraints (most of which are also checked for by the EU DCC Gateway).
+* A `normalCopyOf` function to make a copy of a `Rule` object with fields in a normalised key order.
+* A `hasRulesForAllEventTypes` function that checks for a rule set whether it covers all events.
+    That's useful to avoid that a rule set doesn't have rules for a particular event type (recovery, test, vaccination), which is not the same as not accepting any DCC of that missing event type.
+    Note: this function only looks at the rules' stated value of `CertificateType`, regardless of whether that value matches the actual `Logic`.
+
 
 ## Development
 
@@ -17,13 +27,6 @@ Checking for circular dependencies in the transpiled source can be done as follo
 
 (The latter command also transpiles the source.)
 This command should exit with error code 1 in case of a circular dependency in the transpiled source.
-
-Unit tests can be executed by running any of the following:
-
-    $ [npx ] mocha --recursive dist/test
-    $ npm test
-
-(The latter command also transpiles the source.)
 
 
 ## Licensing

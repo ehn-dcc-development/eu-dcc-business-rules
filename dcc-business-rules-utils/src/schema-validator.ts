@@ -9,6 +9,7 @@ const addFormats = require("ajv-formats")
 addFormats(ajv)
 
 
+// (not exported through index.ts:)
 export const createSchemaValidator = (schema: any): (json: any) => ErrorObject[] => {
     const ajvSchemaValidator = ajv.compile(schema)
     return (json: any): ErrorObject[] => {

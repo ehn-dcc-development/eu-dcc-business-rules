@@ -80,6 +80,9 @@ export type RuleValidationResult = {
     metaDataErrors: string[]
 }
 
+/**
+ * Validates the given JSON value as a DCC business rule.
+ */
 export const validateRule = (rule: any): RuleValidationResult => {
     const schemaValidationsErrors = ruleSchemaValidator(rule)
     const logicValidationErrors = validateFormat(rule.Logic)
@@ -96,7 +99,11 @@ export const validateRule = (rule: any): RuleValidationResult => {
 }
 
 
-export const hasRulesForAllCertificateTypes = (rules: Rule[]) => {
+/**
+ * Returns whether the given rules - assumed to constitute all the rules for one country/region - has rules for all event types,
+ * based on the value of the `CertificateType` field of the rules.
+ */
+export const hasRulesForAllEventTypes = (rules: Rule[]) => {
     const hasType = (certificateType: CertificateType) => rules.some((rule) => rule.CertificateType === certificateType)
     return hasType("Recovery") && hasType("Test") && hasType("Vaccination")
 }
