@@ -42,8 +42,9 @@ Various code in this repo assumes that you've cloned the following two repos rig
 
 This repository contains the following:
 
-* [CertLogic](./certlogic/README.md): a specification, reference implementations for various platforms, a test suite, and a validation tool.
+* [CertLogic](./certlogic/README.md): a specification, reference implementations for various platforms (JavaScript, Kotlin, Dart), a test suite, a validation tool, and a HTML renderer.
   CertLogic is generic, and not tied to the DCC, to make it easier to understand, test, expand, etc. independently.
+* [DCC Business Rules Utilities](./dcc-business-rules-utils/README.md): a JavaScript library that contains useful “things” for working with EU DCC business rules.
 * [Documentation](./documentation/README.md).
 * [JsonLogic](./jsonlogic/): documentation and code relating to JsonLogic.
 * [CertLogic editor](./mps/README.md): implemented with MPS.
