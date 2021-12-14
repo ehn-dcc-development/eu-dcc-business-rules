@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.2.2**.
+The semantic version identification of this specification is: **1.2.3**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -215,11 +215,10 @@ A date-time offset operation has the following form:
         ]
     }
 
-A time unit (string) can be one of: "year", "month", "day", "hour".
-This operation is the *only* way to construct date-time values.
-Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap seconds.
-
-To convert a date(-time) string without offsetting, specify an amount of `0`, and any time unit.
+A time unit is one of the following string values: "year", "month", "day", "hour".
+This operation is the *only* way to construct date-time values in CertLogic.
+Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap years or leap seconds.
+To convert a date(-time) string to a date-time value, specify an amount of `0`, and any time unit.
 
 
 ### Reduction (`reduce`)
