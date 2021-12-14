@@ -247,13 +247,18 @@ All other special array operations can be implemented using (only) a `reduce` op
 To be able to access values in the original data context, CertLogic *may* expand beyond JsonLogic at some point by also adding a key-value pair with key `"data"` to the data object passed to the `<lambda>`, whose value is the original data context.
 
 
-### Extract data from an UVCI (`extractFromUVCI`)
+### Extract data from an UCI (`extractFromUVCI`)
 
-A DCC can contain UVCIs.
-Use cases exist which make it necessary to make decisions based on information contained in a UVCI.
-For more background information on the UVCI format, and design decisions around this operation: see [here](../../documentation/design-choices.md#operation-extract-from-UVCI).
+A DCC can contain UCIs - see [Annex 2 of this document](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
 
-An UVCI-extraction operation has the following form:
+*Note* that since the publication of that document the term “Unique Vaccination Certificate Identifier” and its abbreviation “UVCI” have been deprecated in favour of “Unique Certificate Identifier” (UCI).
+For backward compatibility, code and data may still use “UVCI”.
+In particular, the optional prefix of a UCI's prefix is still `URN:UVCI:`.
+
+Use cases exist which make it necessary to make decisions based on information contained in a UCI.
+For more background information on the UCI format, and design decisions around this operation: see [here](../../documentation/design-choices.md#operation-extract-from-UVCI).
+
+An UCI-extraction operation has the following form:
 
     {
         "extractFromUVCI": [
@@ -266,7 +271,7 @@ The `<operand>` must be a string value, or `null`: anything else is an error.
 The `<index>` must be an integer.
 If the operand is `null`, `null` will be returned.
 
-The `extractFromUVCI` operation tries to interpret the given operand (now assumed to be not `null`, and a string) as a UVCI string according to Annex 2 in the [UVCI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
+The `extractFromUVCI` operation tries to interpret the given operand (now assumed to be not `null`, and a string) as a UCI string according to Annex 2 of [this document](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf).
 It's *not* checked for compliance with this specification: see the [design decisions](../../documentation/design-choices.md#operation-extract-from-UVCI) for an explanation why that is.
 
 The string is split on separator characters (`/`, `#`, `:`) into string fragments.
@@ -308,6 +313,6 @@ A validator is provided in the form of the [`certlogic-js/validation` NPM sub pa
 
 ### Differences with JsonLogic implementations
 
-CertLogic is a subset of JsonLogic, but with custom operations that are specific to the domain of DCC added - currently: `plusTime`, and `extractFromUCVI`.
+CertLogic is a subset of JsonLogic, but with custom operations that are specific to the domain of DCC added - currently: `plusTime`, and `extractFromUVCI`.
 Implementors of the DCC validator using a JsonLogic implementation instead of a CertLogic implementation need to provide these custom operations to JsonLogic as well - see the [first paragraph of this document](../../documentation/implementations.md).
 
