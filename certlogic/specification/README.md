@@ -216,9 +216,11 @@ A date-time offset operation has the following form:
     }
 
 A time unit is one of the following string values: "year", "month", "day", "hour".
-This operation is the *only* way to construct date-time values in CertLogic.
-Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap years or leap seconds.
+This operation is the *only* way to _construct_ date-time values in CertLogic.
 To convert a date(-time) string to a date-time value, specify an amount of `0`, and any time unit.
+Note that `plusTime` does not permit other date-time values: expressions such as `plusTime(plusTime("...", 0, "hour")`, 10, "day") are not valid.
+
+Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap years or leap seconds.
 
 
 ### Reduction (`reduce`)
