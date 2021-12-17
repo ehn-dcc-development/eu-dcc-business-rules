@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.2.3**.
+The semantic version identification of this specification is: **1.2.4**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
