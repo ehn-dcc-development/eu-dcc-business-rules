@@ -41,7 +41,8 @@ class Assertion {
     );
   }
 
-  factory Assertion.fromJson(String source) => Assertion.fromMap(json.decode(source));
+  factory Assertion.fromJson(String source) =>
+      Assertion.fromMap(json.decode(source));
 }
 
 class TestCase {
@@ -62,11 +63,13 @@ class TestCase {
       name: map['name'],
       directive: testDirectiveFromString(map['directive']),
       certLogicExpression: map['certLogicExpression'],
-      assertions: List<Assertion>.from(map['assertions']?.map((x) => Assertion.fromMap(x)) ?? []),
+      assertions: List<Assertion>.from(
+          map['assertions']?.map((x) => Assertion.fromMap(x)) ?? []),
     );
   }
 
-  factory TestCase.fromJson(String source) => TestCase.fromMap(json.decode(source));
+  factory TestCase.fromJson(String source) =>
+      TestCase.fromMap(json.decode(source));
 }
 
 class TestSuite {
@@ -88,5 +91,6 @@ class TestSuite {
     );
   }
 
-  factory TestSuite.fromJson(String source) => TestSuite.fromMap(json.decode(source));
+  factory TestSuite.fromJson(String source) =>
+      TestSuite.fromMap(json.decode(source));
 }

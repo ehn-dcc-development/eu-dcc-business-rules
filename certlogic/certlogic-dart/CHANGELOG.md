@@ -1,3 +1,7 @@
+## 0.0.6 28/12/2021
+
+* Implemented extractFromUVCI with alias extractFromUCI
+
 ## 0.0.5
 
 * Invalid data access (`var` operation) on `null` now also throws
