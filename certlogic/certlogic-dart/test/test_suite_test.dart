@@ -27,11 +27,20 @@ void main() {
         testCase.assertions.forEach((assertion) {
           if (assertion.directive == TestDirective.SKIP) return;
           try {
-            final result = CertLogic.evaluate(assertion.certLogicExpression ?? testCase.certLogicExpression, assertion.data);
+            var result;
+            try {
+              result = CertLogic.evaluate(assertion.certLogicExpression ?? testCase.certLogicExpression, assertion.data);
+            } catch (e) {
+              if (e is CertLogicException) {
+                result = null;
+              } else {
+                rethrow;
+              }
+            }
             expect(result, assertion.expected);
             success++;
           } catch (e) {
-            failedNames.add(assertion.message ?? testCase.name);
+            failedNames.add('${testCase.name} - ${assertion.message}');
           }
         });
       });

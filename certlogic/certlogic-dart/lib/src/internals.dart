@@ -43,4 +43,18 @@ class CertLogicInternals {
         return DateTime.utc(dateTime.year + amount, dateTime.month, dateTime.day, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
     }
   }
+
+  static const optionalPrefix = "URN:UVCI:";
+
+  /// returns The fragment with given index from the UVCI string
+  ///  (see Annex 2 in the [UVCI specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/vaccination-proof_interoperability-guidelines_en.pdf)),
+  ///  or `null` when that fragment doesn't exist.
+  static String? extractFromUVCI(String? uvci, int index) {
+    if (uvci == null || index < 0) {
+      return null;
+    }
+    final prefixlessUvci = uvci.startsWith(optionalPrefix) ? uvci.substring(optionalPrefix.length) : uvci;
+    final fragments = prefixlessUvci.split(RegExp(r'[/#:]'));
+    return index < fragments.length ? fragments[index] : null;
+  }
 }
