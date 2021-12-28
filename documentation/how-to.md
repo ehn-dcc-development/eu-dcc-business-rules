@@ -78,108 +78,6 @@ The following things can be helpful:
     (That will be addressed later on.)
 
 
-## Testing a rule
-
-Any rule should come with automated tests that exercise it.
-Such tests corroborate the rule writer's intention, but can also be used to check the validity of the execution of the same rule by different rules engines.
-That's particularly helpful with implementors of verifier apps having free choice in what rules engine to use.
-
-**TODO**  bring up-to-date with other repo
-
-The `rules-runner-js` NPM package exposes a CLI command `test-rule-set` to test the rules in a rule set on a per-rule basis.
-The usage of this CLI command is as follows:
-
-    $ ./node_modules/.bin/test-rule-set --rule-set=<path to JSON file with rule set> --value-sets=<path to JSON with value sets> --tests=<path to directory with rule tests>
-
-Tests for a rule reside in JSON files which conform to [the RuleTests JSON Schema](???).
-The `test-rule-set` command tries to load the rule set, and value sets JSON files, and all JSON files in the indicated `tests` directory.
-It then runs all rules' tests, checking whether the rule evaluates without erroring on each test, and matches the expected outcome.
-`test-rule-set` also checks whether the test files are in 1-to-1 correspondence to the rules in the rule set, reporting when a rule does not have a corresponding test file, and vice versa.
-
-To test this functionality you can run the script `run-tests.sh`, which tests all rule sets present against their (respective) tests.
-
-    $ (rulesets) ./run-tests.sh
-
-
-## Running rules
-
-Rule sets can be run using _rules runners_ for JavaScript and for Kotlin/Java.
-These rules runners rely on a CertLogic rule engine, written in the same languages (respectively).
-All rules runners can be found [here](../rules-runner/README.md).
-
-
-### Running rules in JavaScript
-
-The `rules-runner-js` NPM package exposes (among other things) the `runRule` and `runRuleSet` functions, and the `run-rule-set` and `test-rule-set` CLI commands.
-Install this package from the CLI, as follows:
-
-    $ npm add <relative path to>/rules-runner-js
-
-(The relative path is needed as long as this package didn't land in the NPM Registry.)
-
-You should most likely only use the `runRuleSet` function, as follows:
-
-```typescript
-import { runRuleSet } from "rules-runner-js"
-
-runRuleSet(<JSON of a rule set>, <data context>)
-```
-
-You have to take care yourself of reading a JSON file containing the rule set, and assembling a data context.
-Also make sure to have a look at the [TypeScript typings involved](../rules-runner/javascript/rules-runner-js/src/typings.ts).
-
-You can also run rules directly from the CLI, as follows:
-
-    $ ./node_modules/.bin/run-rule-set <#1: rule set> <#2: value sets> <#3: DCC payload> <#4: extra parameters>
-
-These CLI arguments are positional, and represent paths to JSON files with the indicated role.
-This CLI command will output the evaluation result of the rule set to `stdout`.
-
-Running rules like this is *not* recommended for actual use: the main use of this method is for learning and testing purposes.
-
-
-### Running rules in Kotlin
-
-To be able to use the `rules-runner-kotlin` Maven/Kotlin module, you must build it and (first) its dependency `certlogic-kotlin`.
-You can do that either by running the [central build script](../build.sh), or by running
-
-    $ mvn install
-
-directly in in the roots of those modules.
-
-The `rules-runner-Kotlin` Maven/Kotlin module exposes the `Rule.runRule` and `RuleSet.runRuleSet` extension methods in the package `eu.ehn.dcc.rulesets`.
-The latter can be used as follows:
-
-```kotlin
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node.JsonNodeFactory
-import com.fasterxml.jackson.databind.node.ObjectNode
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
-import java.io.File
-
-val objectMapper = jacksonObjectMapper().also {
-    it.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-}
-
-inline fun <reified T> readJson(file: File): T = objectMapper.readValue(file)
-
-
-val ruleSet = readJson<RuleSet>(File(<path to JSON file with rule set>))
-val data = JsonNodeFactory.instance.objectNode()
-    .set<ObjectNode>("payload", payload)
-        .set<ObjectNode>("external", JsonNodeFactory.instance.objectNode()
-            .set<ObjectNode>("valueSets", valueSets)
-            .put("validationClock", validationClock)
-        )
-
-runRuleSet(ruleSet, data)
-```
-
-Feel free to replace the use of `java.io.File` with an alternative more suitable in the context of e.g. Android.
-
-
 ## Using CertLogic as dependency
 
 ### NPM
@@ -194,13 +92,12 @@ Its alternative is [yarn](https://yarnpkg.com/).
 
 ### Gradle
 
-The following `build.gradle` Gradle build script fragment sets up the dependencies on `rules-runner-kotlin` and `certlogic-kotlin`:
+The following `build.gradle` Gradle build script fragment sets up the dependency on the `certlogic-kotlin` module:
 
 ```groovy
 dependencies {
     implementation project(':decoder')
     implementation 'eu.ehn.dcc.certlogic:certlogic-kotlin:0.7.7-SNAPSHOT'
-    implementation 'eu.ehn.dcc:rules-runner-kotlin:0.5.0-SNAPSHOT'
     // …
 }
 ```
@@ -244,14 +141,9 @@ The following XML fragment specifies the dependencies in a `pom.xml` when using 
         <artifactId>certlogic-kotlin</artifactId>
         <version>0.7.7-SNAPSHOT</version>
     </dependency>
-    <dependency>
-        <groupId>eu.ehn.dcc</groupId>
-        <artifactId>rules-runner-kotlin</artifactId>
-        <version>0.7.7-SNAPSHOT</version>
-    </dependency>
 </dependencies>
 ```
 
-For now, this assumes that both modules have been `mvn install`-ed to the local Maven repository (usually physically located in `~/.m2`).
-When the Kotlin Certlogic and rules-runner modules are available on Maven Central, `0.7.7-SNAPSHOT` (or whatever snapshot version number is mentioned) should be replaced with non-snapshot version numbers.
+For now, this assumes that this module has been `mvn install`-ed to the local Maven repository (usually physically located in `~/.m2`).
+When the Kotlin Certlogic module is available on Maven Central, `0.7.7-SNAPSHOT` (or whatever snapshot version number is mentioned) should be replaced with non-snapshot version numbers.
 
