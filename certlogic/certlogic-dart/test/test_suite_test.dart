@@ -12,7 +12,9 @@ void main() {
     for (final path in [sharedTestSuitePath, localTestSuitePath]) {
       final directory = Directory(path);
       final entries = directory.listSync(recursive: true).toList();
-      final files = entries.where((element) => element.path.endsWith('.json')).map((element) => File(element.path));
+      final files = entries
+          .where((element) => element.path.endsWith('.json'))
+          .map((element) => File(element.path));
       final failedNames = [];
       var success = 0;
       for (final file in files) {
@@ -26,7 +28,10 @@ void main() {
             try {
               var result;
               try {
-                result = CertLogic.evaluate(assertion.certLogicExpression ?? testCase.certLogicExpression, assertion.data);
+                result = CertLogic.evaluate(
+                    assertion.certLogicExpression ??
+                        testCase.certLogicExpression,
+                    assertion.data);
               } catch (e) {
                 if (e is CertLogicException) {
                   result = null;

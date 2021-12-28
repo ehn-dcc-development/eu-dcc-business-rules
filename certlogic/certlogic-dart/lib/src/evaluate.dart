@@ -49,7 +49,8 @@ class CertLogic {
     return _maybeTrimmed(returnData);
   }
 
-  static dynamic _evaluateIf(dynamic guard, dynamic then, dynamic elseDo, dynamic data) {
+  static dynamic _evaluateIf(
+      dynamic guard, dynamic then, dynamic elseDo, dynamic data) {
     final dynamic evalGuard = _evaluate(guard, data);
     if (CertLogicInternals.isTruthy(evalGuard)) {
       return _evaluate(then, data);
@@ -58,15 +59,18 @@ class CertLogic {
     }
   }
 
-  static String? _evaluateExtractFromUVCI(dynamic operand, int index, dynamic data) {
+  static String? _evaluateExtractFromUVCI(
+      dynamic operand, int index, dynamic data) {
     final evalOperand = _evaluate(operand, data);
     if (evalOperand is! String) {
-      throw CertLogicException('"UVCI" argument (#1) of "extractFromUVCI" must be either a string or null');
+      throw CertLogicException(
+          '"UVCI" argument (#1) of "extractFromUVCI" must be either a string or null');
     }
     return CertLogicInternals.extractFromUVCI(evalOperand, index);
   }
 
-  static bool Function(dynamic l, dynamic r) _compareFunctionFor(String operatorAsString) {
+  static bool Function(dynamic l, dynamic r) _compareFunctionFor(
+      String operatorAsString) {
     return (dynamic l, dynamic r) {
       num left = 0;
       if (l is DateTime) {
@@ -105,13 +109,16 @@ class CertLogic {
       case 2:
         return compFunc(values.elementAt(0), values.elementAt(1));
       case 3:
-        return compFunc(values.elementAt(0), values.elementAt(1)) && compFunc(values.elementAt(1), values.elementAt(2)!);
+        return compFunc(values.elementAt(0), values.elementAt(1)) &&
+            compFunc(values.elementAt(1), values.elementAt(2)!);
       default:
-        throw CertLogicException("invalid number of operands to a '$operatorAsString' operation");
+        throw CertLogicException(
+            "invalid number of operands to a '$operatorAsString' operation");
     }
   }
 
-  static String _comparisonOperatorForDateTimeComparison(String operatorAsString) {
+  static String _comparisonOperatorForDateTimeComparison(
+      String operatorAsString) {
     switch (operatorAsString) {
       case 'after':
         return '>';
@@ -126,11 +133,13 @@ class CertLogic {
     }
   }
 
-  static dynamic _evaluateInfix(String operatorAsString, Iterable values, dynamic data) {
+  static dynamic _evaluateInfix(
+      String operatorAsString, Iterable values, dynamic data) {
     switch (operatorAsString) {
       case 'and':
         if (values.length < 2) {
-          throw CertLogicException("an 'and' operation must have at least 2 operands");
+          throw CertLogicException(
+              "an 'and' operation must have at least 2 operands");
         }
         break;
       case '<':
@@ -141,10 +150,14 @@ class CertLogic {
       case 'before':
       case 'not-after':
       case 'not-before':
-        if (values.length < 2 || values.length > 3) throw CertLogicException("an operation with operator '$operatorAsString' must have 2 or 3 operands");
+        if (values.length < 2 || values.length > 3)
+          throw CertLogicException(
+              "an operation with operator '$operatorAsString' must have 2 or 3 operands");
         break;
       default:
-        if (values.length != 2) throw CertLogicException("an operation with operator '$operatorAsString' must have 2 operands");
+        if (values.length != 2)
+          throw CertLogicException(
+              "an operation with operator '$operatorAsString' must have 2 operands");
         break;
     }
     final evalArgs = values.map<dynamic>((dynamic arg) => _evaluate(arg, data));
@@ -156,7 +169,8 @@ class CertLogic {
           dynamic r = evalArgs.elementAt(1);
           if (r is Map) r = r.keys;
           if (r is! Iterable) {
-            throw CertLogicException("right-hand side of an 'in' operation must be an array");
+            throw CertLogicException(
+                "right-hand side of an 'in' operation must be an array");
           }
           return r.contains(evalArgs.elementAt(0));
         }
@@ -165,7 +179,8 @@ class CertLogic {
           final dynamic l = evalArgs.elementAt(0);
           final dynamic r = evalArgs.elementAt(1);
           if (l is! num || r is! num) {
-            throw CertLogicException('operands of this operation must both be integers');
+            throw CertLogicException(
+                'operands of this operation must both be integers');
           }
           return l + r;
         }
@@ -178,7 +193,8 @@ class CertLogic {
       case '>=':
         {
           if (!evalArgs.every((dynamic e) => e is num)) {
-            throw CertLogicException('all operands of a comparison operation must be of integer type');
+            throw CertLogicException(
+                'all operands of a comparison operation must be of integer type');
           }
           return _compare(operatorAsString, evalArgs);
         }
@@ -188,12 +204,16 @@ class CertLogic {
       case 'not-before':
         {
           if (!evalArgs.every((dynamic e) => e is DateTime)) {
-            throw CertLogicException('all operands of a date-time comparison must be date-times');
+            throw CertLogicException(
+                'all operands of a date-time comparison must be date-times');
           }
-          return _compare(_comparisonOperatorForDateTimeComparison(operatorAsString), evalArgs);
+          return _compare(
+              _comparisonOperatorForDateTimeComparison(operatorAsString),
+              evalArgs);
         }
       default:
-        throw CertLogicException("unhandled infix operator '$operatorAsString'");
+        throw CertLogicException(
+            "unhandled infix operator '$operatorAsString'");
     }
   }
 
@@ -205,36 +225,44 @@ class CertLogic {
     if (CertLogicInternals.isTruthy(operand)) {
       return false;
     }
-    throw CertLogicException('operand of ! _evaluates to something neither truthy, nor falsy: $operand');
+    throw CertLogicException(
+        'operand of ! _evaluates to something neither truthy, nor falsy: $operand');
   }
 
-  static DateTime _evaluatePlusTime(dynamic dateOperand, dynamic amount, String unit, dynamic data) {
+  static DateTime _evaluatePlusTime(
+      dynamic dateOperand, dynamic amount, String unit, dynamic data) {
     if (amount is! num) {
-      throw CertLogicException("'amount' argument (#2) of 'plusTime' must be an integer");
+      throw CertLogicException(
+          "'amount' argument (#2) of 'plusTime' must be an integer");
     }
     if (!['day', 'hour', 'month', 'year'].contains(unit)) {
-      throw CertLogicException("'unit' argument (#3) of 'plusTime' must be a string 'year', 'month', 'day' or 'hour'");
+      throw CertLogicException(
+          "'unit' argument (#3) of 'plusTime' must be a string 'year', 'month', 'day' or 'hour'");
     }
     final dynamic dateTimeStr = _evaluate(dateOperand, data);
     if (dateTimeStr is! String) {
       throw CertLogicException("date argument of 'plusTime' must be a string");
     }
-    return CertLogicInternals.plusTime(dateTimeStr, amount.toInt(), CertLogicTimeUnits.fromString(unit));
+    return CertLogicInternals.plusTime(
+        dateTimeStr, amount.toInt(), CertLogicTimeUnits.fromString(unit));
   }
 
-  static dynamic _evaluateReduce(dynamic operand, dynamic lambda, dynamic initial, dynamic data) {
+  static dynamic _evaluateReduce(
+      dynamic operand, dynamic lambda, dynamic initial, dynamic data) {
     final dynamic evalOperand = _evaluate(operand, data);
     dynamic evalInitial() => _evaluate(initial, data);
     if (evalOperand == null) {
       return evalInitial();
     }
     if (evalOperand is! Iterable) {
-      throw CertLogicException('operand of reduce _evaluated to a non-null non-array');
+      throw CertLogicException(
+          'operand of reduce _evaluated to a non-null non-array');
     }
 
     var accumulator = evalInitial();
     evalOperand.forEach((dynamic current) {
-      accumulator = _evaluate(lambda, {'current': current, 'accumulator': accumulator});
+      accumulator =
+          _evaluate(lambda, {'current': current, 'accumulator': accumulator});
     });
     return accumulator;
   }
@@ -267,7 +295,8 @@ class CertLogic {
         return _evaluateVar(values, data);
       }
       if (values is! List || values.isEmpty) {
-        throw CertLogicException("operation not of the form { '<operator>': [ <values...> ] }");
+        throw CertLogicException(
+            "operation not of the form { '<operator>': [ <values...> ] }");
       }
       if (operatorAsString == 'if') {
         final dynamic guard = values[0];
@@ -275,20 +304,36 @@ class CertLogic {
         final dynamic elseDo = values[2];
         return _evaluateIf(guard, then, elseDo, data);
       }
-      if (['===', 'and', '>', '<', '>=', '<=', 'in', '+', 'after', 'before', 'not-after', 'not-before'].contains(operatorAsString)) {
+      if ([
+        '===',
+        'and',
+        '>',
+        '<',
+        '>=',
+        '<=',
+        'in',
+        '+',
+        'after',
+        'before',
+        'not-after',
+        'not-before'
+      ].contains(operatorAsString)) {
         return _evaluateInfix(operatorAsString, values, data);
       }
       if (operatorAsString == '!') {
         return _evaluateNot(values[0], data);
       }
       if (operatorAsString == 'plusTime') {
-        return _evaluatePlusTime(values[0], values[1], values[2] as String, data);
+        return _evaluatePlusTime(
+            values[0], values[1], values[2] as String, data);
       }
       if (operatorAsString == 'reduce') {
         return _evaluateReduce(values[0], values[1], values[2], data);
       }
-      if (operatorAsString == 'extractFromUVCI' || operatorAsString == 'extractFromUCI') {
-        return _evaluateExtractFromUVCI(values.elementAt(0), values.elementAt(1), data);
+      if (operatorAsString == 'extractFromUVCI' ||
+          operatorAsString == 'extractFromUCI') {
+        return _evaluateExtractFromUVCI(
+            values.elementAt(0), values.elementAt(1), data);
       }
       throw CertLogicException("unrecognised operator: '$operatorAsString'");
     }
