@@ -1,0 +1,96 @@
+{
+  "name": "in operation with whitespace",
+  "cases": [
+    {
+      "name": "should work",
+      "certLogicExpression": {
+        "in": [
+          {
+            "var": ""
+          },
+          [
+            "foo",
+            "bar"
+          ]
+        ]
+      },
+      "assertions": [
+        {
+          "data": "foo",
+          "expected": true
+        },
+        {
+          "data": "bar",
+          "expected": true
+        },
+        {
+          "message": "spacing before",
+          "data": " bar",
+          "expected": true
+        },
+        {
+          "message": "spacing after",
+          "data": "bar ",
+          "expected": true
+        },
+        {
+          "message": "spacing before and after",
+          "data": "\n bar \n",
+          "expected": true
+        },
+        {
+          "data": 0,
+          "expected": false
+        },
+        {
+          "data": null,
+          "expected": false
+        }
+      ]
+    },
+    {
+      "name": "should work with empty right-hand side",
+      "certLogicExpression": {
+        "in": [
+          {
+            "var": ""
+          },
+          []
+        ]
+      },
+      "assertions": [
+        {
+          "data": "foo",
+          "expected": false
+        },
+        {
+          "data": "",
+          "expected": false
+        },
+        {
+          "data": null,
+          "expected": false
+        },
+        {
+          "data": "bar",
+          "expected": false
+        },
+        {
+          "message": "spacing before",
+          "data": " bar",
+          "expected": false
+        },
+        {
+          "message": "spacing after",
+          "data": "bar ",
+          "expected": false
+        },
+        {
+          "message": "spacing before and after",
+          "data": "\n bar \n",
+          "expected": false
+        }
+      ]
+    }
+  ]
+}

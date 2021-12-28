@@ -57,6 +57,10 @@ dart test
 The output should be as follows:
 ```
 00:01 +16: test/test_suite_test.dart: validate test suite
+--- ../specification/testSuite ---
 181 succeeded and 0 failed
+--- test/testSuite ---
+14 succeeded and 0 failed
+✓ validate test suite
 00:01 +17: All tests passed!
 ```

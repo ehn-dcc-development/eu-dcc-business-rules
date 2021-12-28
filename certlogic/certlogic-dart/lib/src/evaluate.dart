@@ -1,22 +1,30 @@
 import 'package:certlogic_dart/src/internals.dart';
 import 'package:certlogic_dart/src/typings.dart';
 
+/// An error thrown by this package
 class CertLogicException implements Exception {
-  final String message;
+  final String _message;
 
-  const CertLogicException(this.message);
+  const CertLogicException(this._message);
 
-  String toString() => 'CertLogicException: $message';
+  @override
+  String toString() => 'CertLogicException: $_message';
 }
 
 /// The library, you can use the static functions, so you don't need to instantiate this class
 class CertLogic {
-  /// Evaluate a variable
+  static bool _trimData = false;
+
+  static dynamic _maybeTrimmed(dynamic data) {
+    if (data is! String || !_trimData) return data;
+    return data.trim();
+  }
+
   static dynamic _evaluateVar(dynamic value, dynamic data) {
     if (value is! String) {
       throw CertLogicException("not of the form { 'var': '<path>' }");
     }
-    if (value == '') return data;
+    if (value == '') return _maybeTrimmed(data);
     var returnData = data;
     value.split('.').forEach((fragment) {
       if (returnData == null) return;
@@ -38,20 +46,20 @@ class CertLogic {
         return;
       }
     });
-    return returnData;
+    return _maybeTrimmed(returnData);
   }
 
   static dynamic _evaluateIf(dynamic guard, dynamic then, dynamic elseDo, dynamic data) {
-    final dynamic evalGuard = evaluate(guard, data);
+    final dynamic evalGuard = _evaluate(guard, data);
     if (CertLogicInternals.isTruthy(evalGuard)) {
-      return evaluate(then, data);
+      return _evaluate(then, data);
     } else {
-      return evaluate(elseDo, data);
+      return _evaluate(elseDo, data);
     }
   }
 
   static String? _evaluateExtractFromUVCI(dynamic operand, int index, dynamic data) {
-    final evalOperand = evaluate(operand, data);
+    final evalOperand = _evaluate(operand, data);
     if (evalOperand is! String) {
       throw CertLogicException('"UVCI" argument (#1) of "extractFromUVCI" must be either a string or null');
     }
@@ -139,7 +147,7 @@ class CertLogic {
         if (values.length != 2) throw CertLogicException("an operation with operator '$operatorAsString' must have 2 operands");
         break;
     }
-    final evalArgs = values.map<dynamic>((dynamic arg) => evaluate(arg, data));
+    final evalArgs = values.map<dynamic>((dynamic arg) => _evaluate(arg, data));
     switch (operatorAsString) {
       case '===':
         return evalArgs.elementAt(0) == evalArgs.elementAt(1);
@@ -190,7 +198,7 @@ class CertLogic {
   }
 
   static bool _evaluateNot(dynamic operandExpr, dynamic data) {
-    final dynamic operand = evaluate(operandExpr, data);
+    final dynamic operand = _evaluate(operandExpr, data);
     if (CertLogicInternals.isFalsy(operand)) {
       return true;
     }
@@ -207,7 +215,7 @@ class CertLogic {
     if (!['day', 'hour', 'month', 'year'].contains(unit)) {
       throw CertLogicException("'unit' argument (#3) of 'plusTime' must be a string 'year', 'month', 'day' or 'hour'");
     }
-    final dynamic dateTimeStr = evaluate(dateOperand, data);
+    final dynamic dateTimeStr = _evaluate(dateOperand, data);
     if (dateTimeStr is! String) {
       throw CertLogicException("date argument of 'plusTime' must be a string");
     }
@@ -215,8 +223,8 @@ class CertLogic {
   }
 
   static dynamic _evaluateReduce(dynamic operand, dynamic lambda, dynamic initial, dynamic data) {
-    final dynamic evalOperand = evaluate(operand, data);
-    dynamic evalInitial() => evaluate(initial, data);
+    final dynamic evalOperand = _evaluate(operand, data);
+    dynamic evalInitial() => _evaluate(initial, data);
     if (evalOperand == null) {
       return evalInitial();
     }
@@ -226,14 +234,19 @@ class CertLogic {
 
     var accumulator = evalInitial();
     evalOperand.forEach((dynamic current) {
-      accumulator = evaluate(lambda, {'current': current, 'accumulator': accumulator});
+      accumulator = _evaluate(lambda, {'current': current, 'accumulator': accumulator});
     });
     return accumulator;
   }
 
   /// The evaluate function, this function will evaluate the given expression using the given data
   /// Note that for the dgc-business-rules you should also provide the external values in the data field
-  static dynamic evaluate(dynamic expr, dynamic data) {
+  static dynamic evaluate(dynamic expr, dynamic data, {bool trimData: true}) {
+    _trimData = trimData;
+    return _evaluate(expr, data);
+  }
+
+  static dynamic _evaluate(dynamic expr, dynamic data) {
     if (expr is String || expr is num || expr is bool) {
       return expr;
     }
@@ -241,7 +254,7 @@ class CertLogic {
       throw CertLogicException('invalid CertLogic expression: $expr');
     }
     if (expr is Iterable) {
-      return expr.map<dynamic>((dynamic item) => evaluate(item, data));
+      return expr.map<dynamic>((dynamic item) => _evaluate(item, data));
     }
     if (expr is Map) {
       final keys = expr.keys;

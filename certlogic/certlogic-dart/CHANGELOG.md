@@ -1,6 +1,7 @@
 ## 0.0.6 28/12/2021
 
 * Implemented extractFromUVCI with alias extractFromUCI
+* Trim data parameter to fix issue with incorrect generated certificates
 
 ## 0.0.5
 
