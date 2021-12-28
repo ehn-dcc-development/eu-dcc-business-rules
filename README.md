@@ -48,7 +48,6 @@ This repository contains the following:
 * [Documentation](./documentation/README.md).
 * [JsonLogic](./jsonlogic/): documentation and code relating to JsonLogic.
 * [CertLogic editor](./mps/README.md): implemented with MPS.
-* [RulesRunner](./rules-runner/README.md): (**deprecated**) implementations of components for running rule(set)s against a DCC payload, for various platforms, including testing.
 
 
 ## Testing & Status
