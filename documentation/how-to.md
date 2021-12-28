@@ -59,18 +59,7 @@ The following things can be helpful:
 
 * The CertLogic specification is stricter than what can be expressed in a JSON Schema.
     To validate a CertLogic expression against the specification, the [`certlogic-js/validation` NPM sub package](../certlogic-js/README.md) can be used.
-    This sub package is part of the `certlogic-js` NPM package that can be installed using the CLI command
-
-        $ npm add certlogic-js
-
-    (The `$` represents the CLI prompt.)
-    This commands takes one CLI argument: a path to a JSON file containing a CertLogic expression.
-    It will print a list of validation errors to `stdout` - if that's empty, the CertLogic expression is correct.
-
-    It requires [NPM](https://www.npmjs.com/) ([Node.js](https://nodejs.org/)'s package manager) or its alternative [yarn](https://yarnpkg.com/).
-    For the moment, this tool has to be installed from this GitHub repository, using a relative path.
-
-    The tool exposes an executable `certlogic-validate`, which can be run from the CLI as follows:
+    The `certlogic-js` NPM module exposes an executable `certlogic-validate`, which can be run from the CLI as follows:
 
         $ npx certlogic-validate <path to JSON file containing a single CertLogic expression>
 
@@ -78,12 +67,15 @@ The following things can be helpful:
 
         $ ./node_modules/.bin/certlogic-validate <path to JSON file containing a single CertLogic expression>
 
+    (The `$` represents the CLI prompt.)
+    This commands takes one CLI argument: a path to a JSON file containing a CertLogic expression.
+    It will print a list of validation errors to `stdout` - if that's empty, the CertLogic expression is correct.
     This works from the directory where you installed `certlogic-js`.
     Alternatively, you can use `npx` (when installed) to directly execute it.
     Inside NPM `scripts`, you can remove the `./node_modules/.bin/` prefix.
 
-* The `certlogic-js` validator tool does not have or use any knowledge about the shape of the data the given CertLogic expression is executed against.
-    That will be addressed later on.
+    The `certlogic-js` validator tool does not have or use any knowledge about the shape of the data the given CertLogic expression is executed against.
+    (That will be addressed later on.)
 
 
 ## Testing a rule
@@ -188,7 +180,19 @@ runRuleSet(ruleSet, data)
 Feel free to replace the use of `java.io.File` with an alternative more suitable in the context of e.g. Android.
 
 
-#### Gradle
+## Using CertLogic as dependency
+
+### NPM
+
+The `certlogic-js` [NPM](https://www.npmjs.com/) package can be installed using the CLI command
+
+    $ npm add certlogic-js
+
+NPM is the package manager shipped by default with [Node.js](https://nodejs.org/).
+Its alternative is [yarn](https://yarnpkg.com/).
+
+
+### Gradle
 
 The following `build.gradle` Gradle build script fragment sets up the dependencies on `rules-runner-kotlin` and `certlogic-kotlin`:
 
@@ -229,7 +233,7 @@ allprojects {
 ```
 
 
-#### Maven
+### Maven
 
 The following XML fragment specifies the dependencies in a `pom.xml` when using Maven:
 
