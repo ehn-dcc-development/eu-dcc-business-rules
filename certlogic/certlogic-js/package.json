@@ -25,7 +25,7 @@
     "pretest": "npm run build",
     "test": "mocha --recursive dist/test",
     "watch-test": "mocha --watch --recursive dist/test",
-    "clean": "rm -rf dist/ && rm -rf node_modules/ && rm -rf package-lock.json && rm -rf yarn.lock",
+    "clean": "rm -rf dist/ && rm -rf node_modules/",
     "check-deps": "dpdm dist/ --circular --exit-code circular:1",
     "precheck-deps": "npm run build"
   },

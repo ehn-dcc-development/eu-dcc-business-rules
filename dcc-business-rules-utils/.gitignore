@@ -1,8 +1,6 @@
 # the usual:
 /dist/
 /node_modules/
-/package-lock.json
-/yarn.lock
 
 # JSON Schema for rules (downloaded by build.sh):
 /src/validation-rule.schema.json
