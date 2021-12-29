@@ -1,0 +1,21 @@
+name: Run overall build script
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        node-version: [15.x]
+    steps:
+     - uses: actions/checkout@v2
+     - name: Install Node
+       uses: actions/setup-node@v1
+       with:
+          node-version: '15.x'
+     - name: Run build script
+       run:  sh build.sh
