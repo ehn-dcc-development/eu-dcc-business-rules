@@ -1,3 +1,4 @@
 /build.sh
-/src/
+/dist/test/
+/src/test/
 /tsconfig.json
