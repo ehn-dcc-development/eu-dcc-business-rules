@@ -9,6 +9,8 @@ These things are:
 * A `hasRulesForAllEventTypes` function that checks for a rule set whether it covers all events.
     That's useful to avoid that a rule set doesn't have rules for a particular event type (recovery, test, vaccination), which is not the same as not accepting any DCC of that missing event type.
     Note: this function only looks at the rules' stated value of `CertificateType`, regardless of whether that value matches the actual `Logic`.
+* A `parseRuleId` function to parse a (valid) rule ID (in field `Identifier` of a `Rule`) into its constituent parts.
+    That's useful to perform queries on collections of (versions of) rules.
 
 
 ## Development
