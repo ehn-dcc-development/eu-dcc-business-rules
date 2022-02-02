@@ -4,6 +4,9 @@
 
 * Upgrade dependencies
 * Commit NPM and Yarn lock files to repo
+* Make some minor code improvements:
+  * Style and naming consistency
+  * Clean-up of comments
 
 
 ## 1.1.0
