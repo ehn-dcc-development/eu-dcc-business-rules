@@ -1,23 +1,19 @@
 import { CertLogicExpression, TimeUnit, timeUnits } from "./typings"
-import { extractFromUVCI, isFalsy, isInt, isTruthy, plusTime } from "./internals"
+import {
+    access,
+    extractFromUVCI,
+    isFalsy,
+    isInt,
+    isTruthy,
+    plusTime
+} from "./internals"
 
 
-const evaluateVar = (value: any, data: any): any => {
-    if (typeof value !== "string") {
+const evaluateVar = (path: any, data: any): any => {
+    if (typeof path !== "string") {
         throw new Error(`not of the form { "var": "<path>" }`)
     }
-    const path = value
-    if (path === "") {  // "it"
-        return data
-    }
-    return path.split(".").reduce((acc, fragment) => {
-        if (acc === null) {
-            return null
-        }
-        const index = parseInt(fragment, 10)
-        const value = isNaN(index) ? acc[fragment] : acc[index]
-        return value === undefined ? null : value
-    }, data)
+    return access(data, path)
 }
 
 

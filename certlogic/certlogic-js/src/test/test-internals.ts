@@ -1,6 +1,7 @@
-const { equal, isFalse, isTrue } = require("chai").assert
+const { deepEqual, equal, isFalse, isTrue } = require("chai").assert
 
 import {
+    access,
     dateFromString,
     extractFromUVCI,
     isDictionary,
@@ -238,6 +239,50 @@ describe("extractFromUVCI", () => {
         equal(extractFromUVCI(uvci, 3), "")
         equal(extractFromUVCI(uvci, 4), "")
         equal(extractFromUVCI(uvci, 5), "f")
+    })
+
+})
+
+
+describe("perform data access", () => {
+
+    const assert = (data: any, path: string, expected: any) =>
+        deepEqual(access(data, path), expected)
+
+    it("empty string ~ 'it'", () => {
+        assert({}, "", {})
+        assert("", "", "")
+        assert(null, "", null)
+    })
+
+    it("null stays null", () => {
+        assert(null, "x", null)
+        assert(null, "10", null)
+        assert(null, "x.y", null)
+        assert(null, "x.0.z", null)
+    })
+
+    it("array access", () => {
+        const array = [0, 1, 1, 2, 3, 5]
+        assert(array, "5", 5)
+        assert(array, "-1", null)
+        assert(array, "42", null)
+    })
+
+    it("access on non-objects/arrays -> null", () => {
+        assert("foo", "x", null)
+        assert(42, "x", null)
+        assert(true, "x", null)
+    })
+
+    it("object access", () => {
+        const object = { x: "foo" }
+        assert(object, "x", "foo")
+    })
+
+    it("nested object access", () => {
+        const object = { x: [ { z: "foo" } ] }
+        assert(object, "x.0.z", "foo")
     })
 
 })

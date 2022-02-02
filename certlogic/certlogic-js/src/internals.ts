@@ -82,6 +82,10 @@ export const dateFromString = (str: string) => {
 }
 
 
+/**
+ * @returns A {@link Date} that's the result of parsing `dateTimeLikeStr` as an ISO 8601 string using {@link dateFromString},
+ * with the indicated number of time units added to it.
+ */
 export const plusTime = (dateTimeLikeStr: string, amount: number, unit: TimeUnit): Date => {
     const dateTime = dateFromString(dateTimeLikeStr)
     if (amount === 0) {
@@ -121,4 +125,20 @@ export const extractFromUVCI = (uvci: string | null, index: number): string | nu
     return index < fragments.length ? fragments[index] : null
 }
 
+
+/**
+ * @returns The value found within `data` at the given `path`
+ *  - this is the semantics of CertLogic's "var" operation.
+ */
+export const access = (data: any, path: string): any =>
+    path === "" // == "it"
+        ? data
+        : path.split(".").reduce((acc, fragment) => {
+            if (acc === null) {
+                return null
+            }
+            const index = parseInt(fragment, 10)
+            const value = isNaN(index) ? acc[fragment] : acc[index]
+            return value === undefined ? null : value
+        }, data)
 

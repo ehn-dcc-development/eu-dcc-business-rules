@@ -11,6 +11,7 @@
   * Add unit tests for type predicate functions
 * Prevent emission of source map files since we're not shipping the original TypeScript source that it points to
 * Add typings meta data to `package.json`
+* Extract data access to a separate internal function (for re-use elsewhere)
 
 
 ## 1.1.0
