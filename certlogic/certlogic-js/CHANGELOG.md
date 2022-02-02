@@ -10,6 +10,7 @@
 * Use the `unknown` type instead of the `any` type in the signature of type predicate functions
   * Add unit tests for type predicate functions
 * Prevent emission of source map files since we're not shipping the original TypeScript source that it points to
+* Add typings meta data to `package.json`
 
 
 ## 1.1.0

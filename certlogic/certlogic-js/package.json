@@ -19,6 +19,7 @@
     "url": "https://github.com/ehn-dcc-development/dgc-business-rules/issues"
   },
   "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "watch-build": "tsc --watch --incremental",
