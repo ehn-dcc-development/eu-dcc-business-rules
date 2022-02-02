@@ -1,5 +1,5 @@
 import { CertLogicExpression, TimeUnit, timeUnits } from "./typings"
-import { extractFromUVCI, isDate, isFalsy, isInt, isTruthy, plusTime } from "./internals"
+import { extractFromUVCI, isFalsy, isInt, isTruthy, plusTime } from "./internals"
 
 
 const evaluateVar = (value: any, data: any): any => {
@@ -138,7 +138,7 @@ const evaluateInfix = (operator: string, values: CertLogicExpression[], data: an
         case "before":
         case "not-after":
         case "not-before": {
-            if (!evalArgs.every(isDate)) {
+            if (!evalArgs.every((evalArg) => evalArg instanceof Date)) {
                 throw new Error(`all operands of a date-time comparison must be date-times`)
             }
             return compare(comparisonOperatorForDateTimeComparison(operator), evalArgs)

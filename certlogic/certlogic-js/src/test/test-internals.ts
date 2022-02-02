@@ -1,7 +1,32 @@
 const { equal, isFalse, isTrue } = require("chai").assert
 
-import { dateFromString, extractFromUVCI, isFalsy, isTruthy, plusTime } from "../internals"
+import {
+    dateFromString,
+    extractFromUVCI,
+    isDictionary,
+    isFalsy,
+    isInt,
+    isTruthy,
+    plusTime
+} from "../internals"
 import { TimeUnit } from "../typings"
+
+
+describe("dictionaries",() => {
+
+    it("type predicate function works", () => {
+        isFalse(isDictionary(undefined))
+        isFalse(isDictionary(null))
+        isFalse(isDictionary(42.0))
+        isFalse(isDictionary("foo"))
+        isFalse(isDictionary(new Date()))
+        isFalse(isDictionary([]))
+        isFalse(isDictionary([ 1, 2, 3 ]))
+        isTrue(isDictionary({}))
+        isTrue(isDictionary({ "foo": "bar" }))
+    })
+
+})
 
 
 describe("truthy and falsy", () => {
@@ -34,6 +59,26 @@ describe("truthy and falsy", () => {
         isTrue(isFalsy(""))
         isFalse(isFalsy(42))
         isTrue(isFalsy(0))
+    })
+
+})
+
+
+describe("integers", () => {
+
+    it("type predicate function works", () => {
+        isFalse(isInt(undefined))
+        isFalse(isInt(null))
+        isFalse(isInt({}))
+        isFalse(isInt([]))
+        isFalse(isInt("foo"))
+        isFalse(isInt(new Date()))
+        isFalse(isInt(Math.PI))
+        isFalse(isInt(NaN))
+        isFalse(isInt(Infinity))
+        isTrue(isInt(0))
+        isTrue(isInt(-1))
+        isTrue(isInt(42))
     })
 
 })

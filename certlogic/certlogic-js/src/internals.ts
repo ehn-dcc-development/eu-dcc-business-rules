@@ -1,10 +1,16 @@
 import { TimeUnit } from "./typings"
 
+
+export type Dictionary = { [key: string]: any }
+
 /**
  * @returns Whether the given `value` is a "dictionary object".
  */
-export const isDictionary = (value: any): value is object =>
-    typeof value === "object" && value !== null && !Array.isArray(value)
+export const isDictionary = (value: unknown): value is Dictionary =>
+        typeof value === "object"
+    &&  value !== null
+    &&  (value.toString() === "[object Object]")
+    &&  !Array.isArray(value)
 
 
 /**
@@ -13,7 +19,7 @@ export const isDictionary = (value: any): value is object =>
  * Truthy and falsy values can be used for conditional logic, e.g. the guard of an `if`-expression.
  * Values that are neither truthy nor falsy (many of which exist) can't be used for that.
  */
-export const isFalsy = (value: any) =>
+export const isFalsy = (value: unknown) =>
        value === false
     || value === null
     || (typeof value === "string" && value === "")
@@ -25,7 +31,7 @@ export const isFalsy = (value: any) =>
  * @returns Whether the given `value` is considered *truthy* by CertLogic.
  * @see isFalsy
  */
-export const isTruthy = (value: any) =>
+export const isTruthy = (value: unknown) =>
        value === true
     || (typeof value === "string" && value !== "")
     || (typeof value === "number" && value !== 0)
@@ -33,9 +39,19 @@ export const isTruthy = (value: any) =>
     || (isDictionary(value) && Object.keys(value).length > 0)
 
 
-export const isInt = (value: any): value is number => typeof value === "number" && Number.isInteger(value)
+/**
+ * @returns Whether the given value is an integer number.
+ */
+export const isInt = (value: unknown): value is number =>
+    typeof value === "number" && Number.isInteger(value)
 
-export const isDate = (value: any): value is Date => typeof value === "object" && "toISOString" in value
+
+/**
+ * Named function to check whether something is a {@link Date}.
+ * @deprecated from 2.0.0 onwards (planned) - use `value instanceof Date` instead.
+ */
+export const isDate = (value: unknown): value is Date =>
+    value instanceof Date
 
 
 const leftPad = (str: string, len: number, char: string): string => char.repeat(len - str.length) + str

@@ -7,6 +7,8 @@
 * Make some minor code improvements:
   * Style and naming consistency
   * Clean-up of comments
+* Use the `unknown` type instead of the `any` type in the signature of type predicate functions
+  * Add unit tests for type predicate functions
 
 
 ## 1.1.0
