@@ -1,6 +1,6 @@
 {
   "name": "certlogic-js",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Implementation of CertLogic in TypeScript",
   "keywords": [
     "json",
@@ -41,12 +41,12 @@
   ],
   "license": "Apache-2.0",
   "devDependencies": {
-    "@types/chai": "^4.2.22",
-    "@types/mocha": "^9.0.0",
-    "@types/node": "^16.10.5",
-    "chai": "^4.3.4",
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "@types/node": "^17.0.14",
+    "chai": "^4.3.6",
     "dpdm": "^3.8.0",
-    "mocha": "^9.1.2",
-    "typescript": "^4.4.4"
+    "mocha": "^9.2.0",
+    "typescript": "^4.5.5"
   }
 }

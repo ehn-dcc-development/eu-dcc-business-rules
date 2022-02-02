@@ -1,5 +1,11 @@
 # Change log
 
+## 1.1.1
+
+* Upgrade dependencies
+* Commit NPM and Yarn lock files to repo
+
+
 ## 1.1.0
 
 * Add a miscellaneous function `renderAsCompactText` to the `misc` sub package.
