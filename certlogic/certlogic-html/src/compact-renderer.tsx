@@ -30,9 +30,7 @@ export const CompactExprRendering = ({ expr }: { expr: CertLogicExpression }) =>
         </div>
     }
     if (typeof expr === "object") {
-        const keys = Object.keys(expr)
-        const operator = keys[0]
-        const values = (expr as any)[operator]
+        const [ operator, values ] = Object.entries(expr)[0]
         switch (operator) {
             case "var": {
                 return <div className="operation">
@@ -77,9 +75,14 @@ export const CompactExprRendering = ({ expr }: { expr: CertLogicExpression }) =>
             case "+":
             case "in": {
                 return <div className="operation">
-                    <CompactExprRendering expr={values[0]} />
-                    <span className="keyword push-both">{operator}</span>{/* TODO  prettify operator */}
-                    <CompactExprRendering expr={values[1]} />
+                    {(values as CertLogicExpression[]).map((operand, index) =>
+                        <div className="inline" key={index}>
+                            {index > 0 &&
+                                <span className="keyword push-both">{operator}</span>
+                            }
+                            <CompactExprRendering expr={operand} />
+                        </div>
+                    )}
                 </div>
             }
             case "!": {
