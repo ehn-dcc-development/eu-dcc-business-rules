@@ -25,7 +25,7 @@ export const isFalsy = (value: unknown) =>
     || (typeof value === "string" && value === "")
     || (typeof value === "number" && value === 0)
     || (Array.isArray(value) && value.length === 0)
-    || (isDictionary(value) && Object.keys(value).length === 0)
+    || (isDictionary(value) && Object.entries(value).length === 0)
 
 /**
  * @returns Whether the given `value` is considered *truthy* by CertLogic.
@@ -36,7 +36,7 @@ export const isTruthy = (value: unknown) =>
     || (typeof value === "string" && value !== "")
     || (typeof value === "number" && value !== 0)
     || (Array.isArray(value) && value.length > 0)
-    || (isDictionary(value) && Object.keys(value).length > 0)
+    || (isDictionary(value) && Object.entries(value).length > 0)
 
 
 /**

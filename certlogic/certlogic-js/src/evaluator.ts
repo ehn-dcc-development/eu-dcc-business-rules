@@ -211,12 +211,11 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
         return (expr as CertLogicExpression[]).map((item) => evaluate(item, data))
     }
     if (typeof expr === "object") {
-        const keys = Object.keys(expr)
-        if (keys.length !== 1) {
+        const entries = Object.entries(expr)
+        if (entries.length !== 1) {
             throw new Error(`unrecognised expression object encountered`)
         }
-        const operator = keys[0]
-        const values = (expr as any)[operator]
+        const [ operator, values ] = entries[0]
         if (operator === "var") {
             return evaluateVar(values, data)
         }

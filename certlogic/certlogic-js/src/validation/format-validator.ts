@@ -121,12 +121,11 @@ const validate = (expr: unknown): ValidationError[] => {
         return (expr as any[]).flatMap(validate)
     }
     if (typeof expr === "object") {
-        const keys = Object.keys(expr)
-        if (keys.length !== 1) {
-            return withError(`expression object must have exactly one key, but it has ${keys.length}`)
+        const entries = Object.entries(expr)
+        if (entries.length !== 1) {
+            return withError(`expression object must have exactly one key, but it has ${entries.length}`)
         }
-        const operator = keys[0]
-        const values = (expr as any)[operator]
+        const [ operator, values ] = entries[0]
         if (operator === "var") {
             return validateVar(expr, values)
         }

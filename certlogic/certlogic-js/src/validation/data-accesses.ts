@@ -12,9 +12,7 @@ const gatherFrom = (expr: CertLogicExpression, parent?: CertLogicExpression): Da
         return (expr as CertLogicExpression[]).flatMap(recurse)
     }
     if (typeof expr === "object") {
-        const keys = Object.keys(expr)
-        const operator = keys[0]
-        const values = (expr as any)[operator]
+        const [ operator, values ] = Object.entries(expr)[0]
         switch (operator) {
 
             case "var": return [ { path: values, context: parent ?? expr } ]
