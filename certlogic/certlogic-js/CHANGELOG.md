@@ -1,5 +1,10 @@
 # Change log
 
+## 1.1.2
+
+* Improve types in source of `renderAsCompactText`
+
+
 ## 1.1.1
 
 * Upgrade dependencies

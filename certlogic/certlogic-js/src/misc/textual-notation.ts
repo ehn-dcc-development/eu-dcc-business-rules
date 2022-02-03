@@ -11,12 +11,15 @@ import { CertLogicExpression } from "../typings"
  */
 export const renderAsCompactText = (expr: CertLogicExpression): string => {
     if (Array.isArray(expr)) {
-        return `[ ${expr.map(renderAsCompactText).join(", ")} ]`
+        return `[ ${(expr as CertLogicExpression[]).map(renderAsCompactText).join(", ")} ]`
     }
     if (typeof expr === "object" && Object.entries(expr).length === 1) {
-        const [ operator, operands ] = Object.entries(expr)[0]
+        const [ operator, values ] = Object.entries(expr)[0]
+        if (operator === "var") {
+            return `/${values}`
+        }
+        const operands = values as CertLogicExpression[]
         switch (operator) {
-            case "var": return `/${operands}`
             case "if": return `if (${renderAsCompactText(operands[0])}) then (${renderAsCompactText(operands[1])}) else (${renderAsCompactText(operands[2])})`
             case "===":
             case "and":
@@ -30,14 +33,14 @@ export const renderAsCompactText = (expr: CertLogicExpression): string => {
             case "before":
             case "not-after":
             case "not-before":
-                return operands.map(renderAsCompactText).map((r: CertLogicExpression) => `(${r})`).join(` ${operator} `)
+                return (operands as CertLogicExpression[]).map(renderAsCompactText).map((r) => `(${r})`).join(` ${operator} `)
             case "!": return `not (${renderAsCompactText(operands[0])})`
-            case "plusTime": return `(${renderAsCompactText(operands[0])}) ${operands[1] >= 0 ? "+" : ""}${operands[1]} ${operands[2]}${Math.abs(operands[1]) === 1 ? "" : "s"}`
+            case "plusTime": return `(${renderAsCompactText(operands[0])}) ${operands[1] >= 0 ? "+" : ""}${operands[1]} ${operands[2]}${Math.abs(operands[1] as number) === 1 ? "" : "s"}`
             case "reduce": return `(${renderAsCompactText(operands[0])}).reduce((current, accumulator) → ${renderAsCompactText(operands[1])}, ${renderAsCompactText(operands[2])})`
             case "extractFromUVCI": return `extract fragment ${operands[1]} from UVCI (${renderAsCompactText(operands[0])})`
         }
     }
-    // ultimate fall-back:
-    return JSON.stringify(expr, null, 2)
+    // fall-back:
+    return JSON.stringify(expr)
 }
 
