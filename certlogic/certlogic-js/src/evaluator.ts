@@ -1,23 +1,19 @@
 import { CertLogicExpression, TimeUnit, timeUnits } from "./typings"
-import { extractFromUVCI, isDate, isFalsy, isInt, isTruthy, plusTime } from "./internals"
+import {
+    access,
+    extractFromUVCI,
+    isFalsy,
+    isInt,
+    isTruthy,
+    plusTime
+} from "./internals"
 
 
-const evaluateVar = (value: any, data: any): any => {
-    if (typeof value !== "string") {
+const evaluateVar = (path: any, data: any): any => {
+    if (typeof path !== "string") {
         throw new Error(`not of the form { "var": "<path>" }`)
     }
-    const path = value
-    if (path === "") {  // "it"
-        return data
-    }
-    return path.split(".").reduce((acc, fragment) => {
-        if (acc === null) {
-            return null
-        }
-        const index = parseInt(fragment, 10)
-        const value = isNaN(index) ? acc[fragment] : acc[index]
-        return value === undefined ? null : value
-    }, data)
+    return access(data, path)
 }
 
 
@@ -138,7 +134,7 @@ const evaluateInfix = (operator: string, values: CertLogicExpression[], data: an
         case "before":
         case "not-after":
         case "not-before": {
-            if (!evalArgs.every(isDate)) {
+            if (!evalArgs.every((evalArg) => evalArg instanceof Date)) {
                 throw new Error(`all operands of a date-time comparison must be date-times`)
             }
             return compare(comparisonOperatorForDateTimeComparison(operator), evalArgs)
@@ -148,15 +144,15 @@ const evaluateInfix = (operator: string, values: CertLogicExpression[], data: an
 }
 
 
-const evaluateNot = (operandExpr: CertLogicExpression, data: any): any => {
-    const operand = evaluate(operandExpr, data)
-    if (isFalsy(operand)) {
+const evaluateNot = (operand: CertLogicExpression, data: any): any => {
+    const evalOperand = evaluate(operand, data)
+    if (isFalsy(evalOperand)) {
         return true
     }
-    if (isTruthy(operand)) {
+    if (isTruthy(evalOperand)) {
         return false
     }
-    throw new Error(`operand of ! evaluates to something neither truthy, nor falsy: ${operand}`)
+    throw new Error(`operand of ! evaluates to something neither truthy, nor falsy: ${evalOperand}`)
 }
 
 
@@ -214,7 +210,7 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
     if (Array.isArray(expr)) {
         return (expr as CertLogicExpression[]).map((item) => evaluate(item, data))
     }
-    if (typeof expr === "object") { // That includes Date objects, but those have no keys, so are returned as-is.
+    if (typeof expr === "object") {
         const keys = Object.keys(expr)
         if (keys.length !== 1) {
             throw new Error(`unrecognised expression object encountered`)

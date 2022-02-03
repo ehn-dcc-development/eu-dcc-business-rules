@@ -42,7 +42,7 @@ describe("rendering as compact text", () => {
     })
 
     /*
-     * The + and and operators serve as a catch-all for all binary operators,
+     * The "+" and "and" operators serve as a catch-all for all binary operators,
      * which are therefore not tested explicitly.
      */
 

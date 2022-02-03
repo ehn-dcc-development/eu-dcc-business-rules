@@ -4,7 +4,7 @@ import { ValidationError } from "./typings"
 import { timeUnits } from "../typings"
 
 
-const validateVar = (expr: any, values: any): ValidationError[] => {
+const validateVar = (expr: unknown, values: unknown): ValidationError[] => {
     if (typeof values !== "string") {
         return [ { expr, message: `not of the form { "var": "<path>" }` } ]
     }
@@ -15,7 +15,7 @@ const validateVar = (expr: any, values: any): ValidationError[] => {
 }
 
 
-const validateIf = (expr: any, values: any[]): ValidationError[] => {
+const validateIf = (expr: unknown, values: unknown[]): ValidationError[] => {
     const errors = []
     if (values.length !== 3) {
         errors.push({ expr, message: `an "if"-operation must have exactly 3 values/operands, but it has ${values.length}` })
@@ -24,7 +24,7 @@ const validateIf = (expr: any, values: any[]): ValidationError[] => {
     return errors
 }
 
-const validateInfix = (expr: any, operator: string, values: any[]): ValidationError[] => {
+const validateInfix = (expr: unknown, operator: string, values: unknown[]): ValidationError[] => {
     const errors = []
     let maxOperands = values.length
     switch (operator) {
@@ -60,13 +60,13 @@ const validateInfix = (expr: any, operator: string, values: any[]): ValidationEr
     return errors
 }
 
-const validateNot = (expr: any, values: any[]): ValidationError[] => {
+const validateNot = (expr: unknown, values: unknown[]): ValidationError[] => {
     return values.length === 1
         ? validate(values[0])
         : [ { expr, message: `a !-operation (logical not/negation) must have exactly 1 operand, but it has ${values.length}` } ]
 }
 
-const validatePlusTime = (expr: any, values: any[]): ValidationError[] => {
+const validatePlusTime = (expr: unknown, values: unknown[]): ValidationError[] => {
     const errors = []
     if (values.length !== 3) {
         errors.push({ expr, message: `a "plusTime"-operation must have exactly 3 values/operands, but it has ${values.length}` })
@@ -77,13 +77,13 @@ const validatePlusTime = (expr: any, values: any[]): ValidationError[] => {
     if (values[1] !== undefined && !isInt(values[1])) {
         errors.push({ expr, message: `"amount" argument (#2) of "plusTime" must be an integer, but it is: ${values[1]}` })
     }
-    if (values[2] !== undefined && timeUnits.indexOf(values[2]) === -1) {
+    if (values[2] !== undefined && timeUnits.indexOf(values[2] as any) === -1) {
         errors.push({ expr, message: `"unit" argument (#3) of "plusTime" must be a string equal to one of ${timeUnits.join(", ")}, but it is: ${values[2]}` })
     }
     return errors
 }
 
-const validateReduce = (expr: any, values: any[]): ValidationError[] => {
+const validateReduce = (expr: unknown, values: unknown[]): ValidationError[] => {
     const errors = []
     if (values.length !== 3) {
         errors.push({ expr, message: `a "reduce"-operation must have exactly 3 values/operands, but it has ${values.length}` })
@@ -92,7 +92,7 @@ const validateReduce = (expr: any, values: any[]): ValidationError[] => {
     return errors
 }
 
-const validateExtractFromUVCI = (expr: any, values: any[]): ValidationError[] => {
+const validateExtractFromUVCI = (expr: unknown, values: unknown[]): ValidationError[] => {
     const errors = []
     if (values.length !== 2) {
         errors.push({ expr, message: `an "extractFromUVCI"-operation must have exactly 2 values/operands, but it has ${values.length}` })
@@ -106,7 +106,7 @@ const validateExtractFromUVCI = (expr: any, values: any[]): ValidationError[] =>
     return errors
 }
 
-const validate = (expr: any): ValidationError[] => {
+const validate = (expr: unknown): ValidationError[] => {
     const withError = (message: string): ValidationError[] => [ { expr, message } ]
     if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean") {
         return []

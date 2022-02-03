@@ -8,23 +8,24 @@ import { ValidationError } from "./typings"
 /**
  * Validate the given CertLogic expression, and return any violations as {@link ValidationError validation errors}.
  */
-export const validate = (expr: any): ValidationError[] => validateFormat(expr)
+export const validate = (expr: unknown): ValidationError[] => validateFormat(expr)
 
 
 import { CertLogicExpression, CertLogicOperation } from "../typings"
 
 /**
- * Type guard function to be able to infer `any` value reliably as a CertLogicExpression.
+ * Type predicate function to be able to infer `any` value reliably as a CertLogicExpression.
  */
-export const isCertLogicExpression = (expr: any): expr is CertLogicExpression =>
+export const isCertLogicExpression = (expr: unknown): expr is CertLogicExpression =>
     validate(expr).length === 0
 
 
 import { isDictionary } from "../internals"
 
 /**
- * Type guard function to be able to infer `any` value reliably as a CertLogicOperation.
+ * Type predicate function to be able to infer `any` value reliably as a CertLogicOperation.
  */
-export const isCertLogicOperation = (expr: any): expr is CertLogicOperation =>
+export const isCertLogicOperation = (expr: unknown): expr is CertLogicOperation =>
     isCertLogicExpression(expr) && isDictionary(expr)
+// TODO  test type predicate
 

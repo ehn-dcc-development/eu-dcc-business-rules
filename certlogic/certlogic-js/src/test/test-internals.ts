@@ -1,7 +1,33 @@
-const { equal, isFalse, isTrue } = require("chai").assert
+const { deepEqual, equal, isFalse, isTrue } = require("chai").assert
 
-import { dateFromString, extractFromUVCI, isFalsy, isTruthy, plusTime } from "../internals"
+import {
+    access,
+    dateFromString,
+    extractFromUVCI,
+    isDictionary,
+    isFalsy,
+    isInt,
+    isTruthy,
+    plusTime
+} from "../internals"
 import { TimeUnit } from "../typings"
+
+
+describe("dictionaries",() => {
+
+    it("type predicate function works", () => {
+        isFalse(isDictionary(undefined))
+        isFalse(isDictionary(null))
+        isFalse(isDictionary(42.0))
+        isFalse(isDictionary("foo"))
+        isFalse(isDictionary(new Date()))
+        isFalse(isDictionary([]))
+        isFalse(isDictionary([ 1, 2, 3 ]))
+        isTrue(isDictionary({}))
+        isTrue(isDictionary({ "foo": "bar" }))
+    })
+
+})
 
 
 describe("truthy and falsy", () => {
@@ -34,6 +60,26 @@ describe("truthy and falsy", () => {
         isTrue(isFalsy(""))
         isFalse(isFalsy(42))
         isTrue(isFalsy(0))
+    })
+
+})
+
+
+describe("integers", () => {
+
+    it("type predicate function works", () => {
+        isFalse(isInt(undefined))
+        isFalse(isInt(null))
+        isFalse(isInt({}))
+        isFalse(isInt([]))
+        isFalse(isInt("foo"))
+        isFalse(isInt(new Date()))
+        isFalse(isInt(Math.PI))
+        isFalse(isInt(NaN))
+        isFalse(isInt(Infinity))
+        isTrue(isInt(0))
+        isTrue(isInt(-1))
+        isTrue(isInt(42))
     })
 
 })
@@ -193,6 +239,50 @@ describe("extractFromUVCI", () => {
         equal(extractFromUVCI(uvci, 3), "")
         equal(extractFromUVCI(uvci, 4), "")
         equal(extractFromUVCI(uvci, 5), "f")
+    })
+
+})
+
+
+describe("perform data access", () => {
+
+    const assert = (data: any, path: string, expected: any) =>
+        deepEqual(access(data, path), expected)
+
+    it("empty string ~ 'it'", () => {
+        assert({}, "", {})
+        assert("", "", "")
+        assert(null, "", null)
+    })
+
+    it("null stays null", () => {
+        assert(null, "x", null)
+        assert(null, "10", null)
+        assert(null, "x.y", null)
+        assert(null, "x.0.z", null)
+    })
+
+    it("array access", () => {
+        const array = [0, 1, 1, 2, 3, 5]
+        assert(array, "5", 5)
+        assert(array, "-1", null)
+        assert(array, "42", null)
+    })
+
+    it("access on non-objects/arrays -> null", () => {
+        assert("foo", "x", null)
+        assert(42, "x", null)
+        assert(true, "x", null)
+    })
+
+    it("object access", () => {
+        const object = { x: "foo" }
+        assert(object, "x", "foo")
+    })
+
+    it("nested object access", () => {
+        const object = { x: [ { z: "foo" } ] }
+        assert(object, "x.0.z", "foo")
     })
 
 })

@@ -1,16 +1,23 @@
-const { equal, isFalse } = require("chai").assert
+const { equal, isFalse, isTrue } = require("chai").assert
 
-import { isCertLogicExpression, validateFormat } from "../../validation"
+import {
+    isCertLogicExpression,
+    isCertLogicOperation,
+    validateFormat
+} from "../../validation"
 
 
 const assertErrors = (expr: any, ...messages: string[]) => {
-    const result = validateFormat(expr)
-    equal(result.length, messages.length, "number of errors")
-    result.forEach((error, index) => {
+    const errors = validateFormat(expr)
+    equal(errors.length, messages.length, "number of errors")
+    errors.forEach((error, index) => {
         equal(error.expr, expr)
         equal(error.message, messages[index])
         isFalse(isCertLogicExpression(expr))
     })
+    if (errors.length === 0) {
+        isTrue(isCertLogicExpression(expr))
+    }
 }
 
 
@@ -61,6 +68,7 @@ describe("var operations", () => {
         assertErrors({ var: undefined }, `not of the form { "var": "<path>" }`)
         assertErrors({ var: 0 }, `not of the form { "var": "<path>" }`)
         assertErrors({ var: "x" })
+        isTrue(isCertLogicOperation({ var: "x" }))
         assertErrors({ var: "x.0.y" })
         assertErrors({ var: "1" })
         assertErrors({ var: "x." }, "data access path doesn't have a valid format: x.")
