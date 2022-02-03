@@ -3,6 +3,7 @@
 ## 1.1.2
 
 * Improve types in source of `renderAsCompactText`
+* (fix:) Really prevent emission of all source map files, not just for the `.d.ts`-files
 
 
 ## 1.1.1
