@@ -5,9 +5,25 @@ import {Rule, RuleType} from "./rule"
 import {CompressedValueSets} from "./valueSets"
 
 
+/**
+ * The parameters that explicitly play a role in validating a DCC,
+ * because rule selection is based on them.
+ */
 export type ValidationParameters = {
+    /**
+     * The Country of Arrival: the country that the traveler attempts to enter.
+     * A country 2-code ~ ISO 3166-1 alpha-2.
+     */
     CoA: string
+    /**
+     * The Country of Issuance: the country that has issued the DCC presented (for validation) by the traveler.
+     * A country 2-code ~ ISO 3166-1 alpha-2.
+     */
     CoI: string
+    /**
+     * The point in time at which the validation is (supposedly) performed.
+     * An ISO 8601 timestamp.
+     */
     validationTime: string
 }
 
