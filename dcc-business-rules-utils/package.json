@@ -1,6 +1,6 @@
 {
   "name": "dcc-business-rules-utils",
-  "version": "0.2.0",
+  "version": "0.3.0-beta.0",
   "description": "Various utils for working with DCC business/validation rules",
   "keywords": [
     "json",
@@ -24,10 +24,7 @@
     "build": "tsc",
     "watch-build": "tsc --watch --incremental",
     "test": "mocha --recursive dist/test/",
-    "watch-test": "mocha --recursive --watch dist/test/",
-    "clean": "rm -rf dist/ && rm -rf node_modules/",
-    "check-deps": "dpdm dist/ --circular --exit-code circular:1",
-    "precheck-deps": "npm run build"
+    "watch-test": "mocha --recursive --watch dist/test/"
   },
   "author": "Meinte Boersma <meinte.boersma@gmail.com>",
   "license": "Apache-2.0",

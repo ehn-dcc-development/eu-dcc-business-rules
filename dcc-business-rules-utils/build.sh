@@ -2,7 +2,8 @@
 
 set -e
 
-npm run clean
+rm -rf dist/
+rm -rf node_modules/
 npm install
 
 echo "Downloading JSON Schema for rules..."
@@ -11,7 +12,8 @@ curl https://raw.githubusercontent.com/eu-digital-green-certificates/dgc-gateway
 npm run build
 cp src/validation-rule.schema.json dist/
 
+npm test
+
 # check for circular dependencies, and exit in case one's present:
 npx dpdm dist/ --circular --exit-code circular:1
-# Don't use npm run check-deps to avoid re-transpiling the source (and missing the exit code).
 
