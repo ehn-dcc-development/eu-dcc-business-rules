@@ -10,6 +10,13 @@ export type Description = {
     desc: string
 }
 
+/**
+ * Captures a validation rule, or rather:
+ * a <em>version</em> of a rule, with its validity range.
+ *
+ * Collections (arrays) of rules can have items with the same `Identifier`,
+ * but they should have different `Version`s.
+ */
 export type Rule = {
     Identifier: string
     Type: RuleType

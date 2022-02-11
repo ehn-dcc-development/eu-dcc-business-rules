@@ -33,9 +33,9 @@ export type ValidationParameters = {
  * with each group consisting of items with the same key value, determined by the key function.
  * Each group corresponds to a unique key value, and is non-empty.
  */
-const groupBy = <T>(array: T[], keyFn: (t: T) => string):  (T[])[] =>
+const groupBy = <T>(array: T[], keyFn: (t: T) => string): (T[])[] =>
     Object.values(
-        array.reduce((acc: GroupMap<T>, value) => {
+        array.reduce((acc: { [key: string]: T[] }, value) => {
             const key = keyFn(value)
             if (acc[key] === undefined) {
                 acc[key] = []
@@ -44,7 +44,6 @@ const groupBy = <T>(array: T[], keyFn: (t: T) => string):  (T[])[] =>
             return acc
         }, {})
     )
-type GroupMap<T> = { [key: string]: T[] }
 
 
 /**
@@ -67,30 +66,30 @@ const selectLatestVersions = (rules: Rule[]): Rule[] =>
  * The rules may be retrieved from a National Backend to the EU DCC Gateway.
  */
 export const validateDcc = (
-            rules: Rule[],
+            ruleVersions: Rule[],
             parameters: ValidationParameters,
             valueSets: CompressedValueSets,
             dccPayload: any
         ): boolean => {
 
     const validationClock = new Date(parameters.validationTime)
-    const validRules = rules.filter((rule) =>
-        new Date(rule.ValidFrom) <= validationClock && validationClock < new Date(rule.ValidTo)
-    )
-    const selectRules = (type: RuleType, country: string) =>
+    const currentlyValidRuleVersions = ruleVersions.filter((rule) =>
+            new Date(rule.ValidFrom) <= validationClock && validationClock < new Date(rule.ValidTo)
+        )
+    const selectRuleVersions = (type: RuleType, country: string) =>
         selectLatestVersions(
-            validRules.filter((rule) => rule.Type === type && rule.Country === country)
+            currentlyValidRuleVersions.filter((rule) => rule.Type === type && rule.Country === country)
         )
 
-    const acceptanceRules = selectRules("Acceptance", parameters.CoA)
-    const invalidationRules = selectRules("Invalidation", parameters.CoI)
+    const acceptanceRules = selectRuleVersions("Acceptance", parameters.CoA)
+    const invalidationRules = selectRuleVersions("Invalidation", parameters.CoI)
 
     const data = {
         payload: dccPayload,
         external: {
             validationClock: parameters.validationTime,
             countryCode: parameters.CoA,
-            // TODO  exp, iat
+            // TODO  ?: exp, iat(, kid)
             valueSets
         }
     }
