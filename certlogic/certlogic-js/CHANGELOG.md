@@ -1,10 +1,19 @@
 # Change log
 
+## 1.1.3
+
+* Changed desugaring of `"or"` (in the `misc` sub package) to align semantically with that of the `"and"` operation:
+  the first truthy operand is returned, or the last operand (which is then falsy).
+  This replaces the semantics where a desugared `"or"` always returned a boolean value, due to the use of [De Morgan's laws](https://en.wikipedia.org/wiki/De_Morgan%27s_laws).
+  (Also: a single operand `"or"` reduces to that operand.)
+
+
 ## 1.1.2
 
 * Improve types in source of `renderAsCompactText`
 * (fix:) Really prevent emission of all source map files, not just for the `.d.ts`-files
-* Replace use of `Object.keys(...)` with equivalent use of `Object.entries(...)` - shorter code; maybe some performance improvement?
+* Replace use of `Object.keys(...)` with equivalent use of `Object.entries(...)`.
+  Advantage: shorter code, and maybe some performance improvement?
 
 
 ## 1.1.1
