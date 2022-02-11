@@ -1,52 +1,53 @@
 const { deepEqual } = require("chai").assert
 
+import { if_ } from "../../factories"
+import { CertLogicExpression, evaluate } from "../../index"
+
 import { desugar } from "../../misc"
-import { and_, not_ } from "../../factories"
 
 
 describe("desugaring", () => {
 
-    it("should work for nested ORs", () => {
-        const expectedDesugaring = {
-            "!": [
-                {
-                    "and": [
-                        {
-                            "!": [ false ]
-                        },
-                        {
-                            "!": [ true ]
-                        },
-                        {
-                            "!": [
-                                {
-                                    "!": [
-                                        {
-                                            "and": [
-                                                {
-                                                    "!": [ false ]
-                                                },
-                                                {
-                                                    "!": [ false ]
-                                                }
-                                            ]
-                                        }
-                                    ]
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        }
-        deepEqual(
-            desugar({ "or": [ false, true, { "or": [ false, false ] }] }),
-            expectedDesugaring
+    const assert = (expr: any, expectedDesugared: CertLogicExpression, expectedEvaluationResult: any) => {
+        const actualDesugared = desugar(expr)
+        deepEqual(actualDesugared, expectedDesugared)
+        deepEqual(evaluate(actualDesugared, {}), expectedEvaluationResult)
+    }
+
+    it("should work for a 0-operand or", () => {
+        assert({ "or": [] }, true, true)
+    })
+
+    it("should work for a 1-operand or", () => {
+        assert({ "or": [ false ] }, false, false)
+        assert({ "or": [ true ] }, true, true)
+    })
+
+    it("should work for a 2-operand or", () => {
+        assert(
+            { "or": [ [], true ] },
+            if_([], [], true),
+            true
         )
-        // check equivalence with same expression constructed through factory methods:
-        deepEqual(
-            expectedDesugaring,
-            not_(and_(not_(false), not_(true), not_(not_(and_(not_(false), not_(false))))))
+        assert(
+            { "or": [ "foo", false ] },
+            if_("foo", "foo", false), "foo"
+        )
+    })
+
+    it("should work for a 3-operand or", () => {
+        assert(
+            { "or": [ [], true, false ] },
+            if_([], [], if_(true, true, false)),
+            true
+        )
+    })
+
+    it("should work for nested ORs", () => {
+        assert(
+            { "or": [ false, true, { "or": [ false, false ] }] },
+            if_(false, false, if_(true, true, if_(false, false, false))),
+            true
         )
     })
 

@@ -32,10 +32,10 @@
   "resolved" "https://registry.npmjs.org/@types/mocha/-/mocha-9.1.0.tgz"
   "version" "9.1.0"
 
-"@types/node@*", "@types/node@^17.0.14":
-  "integrity" "sha512-SbjLmERksKOGzWzPNuW7fJM7fk3YXVTFiZWB/Hs99gwhk+/dnrQRPBQjPW9aO+fi1tAffi9PrwFvsmOKmDTyng=="
-  "resolved" "https://registry.npmjs.org/@types/node/-/node-17.0.14.tgz"
-  "version" "17.0.14"
+"@types/node@*", "@types/node@^17.0.17":
+  "integrity" "sha512-e8PUNQy1HgJGV3iU/Bp2+D/DXh3PYeyli8LgIwsQcs1Ar1LoaWHSIT6Rw+H2rNJmiq6SNWiDytfx8+gYj7wDHw=="
+  "resolved" "https://registry.npmjs.org/@types/node/-/node-17.0.17.tgz"
+  "version" "17.0.17"
 
 "@types/yargs-parser@*":
   "integrity" "sha512-7tFImggNeNBVMsn0vLrpn1H1uPrUBdnARPTpZoitY37ZrdJREzf7I16tMrlK3hen349gr1NYh8CmZQa7CTG6Aw=="
