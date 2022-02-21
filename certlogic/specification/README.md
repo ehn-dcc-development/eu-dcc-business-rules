@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.2.4**.
+The semantic version identification of this specification is: **1.2.5**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -57,7 +57,8 @@ If a JSON object (not an array) is a literal, being a boolean, an integer, or a 
 Allowed falsy values are: `false`, `null`, the empty string (`""`), the zero integer (`0`), the empty array (`[]`), and the empty object (`{}`).
 Allowed truthy values are: `true`, any non-empty string (meaning: length > 0), any non-zero integer, any non-empty array, and any object with at least one key-value-pair.
 
-Truthy and falsy are not mutually exclusive: values exist which are neither truthy, nor falsy.
+Truthy and falsy are disjoint notions: no value can be both truthy and falsy.
+Values exist which are neither truthy, nor falsy.
 The reason to do this is that JsonLogic has a notion of truthy/falsy that differs from the usual JavaScript one, precisely to aid in cross-platform adoption.
 CertLogic restricts this notion even further to avoid confusion, or unjust reliance on behaviour that's perceived as “common” but isn't (cross-platform).
 
