@@ -4,11 +4,11 @@ import { dateFromString } from "certlogic-js/dist/internals"
 import { dataAccesses, validateFormat, ValidationError } from "certlogic-js/dist/validation"
 import { gt } from "semver"
 
-import { createSchemaValidator } from "./schema-validator"
-import { CertificateType, Rule } from "./typings"
+import { createJsonValidatorForSchema } from "./json-validator"
+import { CertificateType, Rule } from "./rule"
 
 
-const ruleSchemaValidator = createSchemaValidator(require("./validation-rule.schema.json"))
+const ruleSchemaValidator = createJsonValidatorForSchema(require("./validation-rule.schema.json"))
 
 
 const areEqual = (leftSet: string[], rightSet: string[]): boolean =>

@@ -10,7 +10,7 @@ addFormats(ajv)
 
 
 // (not exported through index.ts:)
-export const createSchemaValidator = (schema: any): (json: any) => ErrorObject[] => {
+export const createJsonValidatorForSchema = (schema: any): (json: any) => ErrorObject[] => {
     const ajvSchemaValidator = ajv.compile(schema)
     return (json: any): ErrorObject[] => {
         const valid = ajvSchemaValidator(json)
