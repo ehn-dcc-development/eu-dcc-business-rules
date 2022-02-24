@@ -61,28 +61,37 @@ const selectLatestVersions = (rules: Rule[]): Rule[] =>
 
 
 /**
+ * Selects the versions of the rules,
+ * selected from the given `rules` based on `country` and `type`,
+ * that are applicable at the given moment (`dateTime`).
+ * (For stability, the rules returned are sorted by the values of their `Identifier` fields.)
+ */
+export const applicableRuleVersions = (rules: Rule[], country: string, type: RuleType, dateTime: Date): Rule[] => {
+    const applicableRuleVersionsForSelection = rules.filter((rule) =>
+            rule.Country === country
+        &&  rule.Type === type
+        &&  new Date(rule.ValidFrom) <= dateTime && dateTime < new Date(rule.ValidTo)
+    )
+    return selectLatestVersions(applicableRuleVersionsForSelection)
+        .sort((l, r) => l.Identifier < r.Identifier ? -1 : 1)   // === 0 isn't hit because they're IDs
+}
+
+
+/**
  * Validates the given DCC (HCERT payload) against the rules that are selected based on the given parameters.
  * (It also required the value sets to be input in “compressed” format.)
  * The rules may be retrieved from a National Backend to the EU DCC Gateway.
  */
 export const validateDcc = (
-            ruleVersions: Rule[],
+            rules: Rule[],
             parameters: ValidationParameters,
             valueSets: CompressedValueSets,
             dccPayload: any
         ): boolean => {
 
-    const validationClock = new Date(parameters.validationTime)
-    const currentlyValidRuleVersions = ruleVersions.filter((rule) =>
-            new Date(rule.ValidFrom) <= validationClock && validationClock < new Date(rule.ValidTo)
-        )
-    const selectRuleVersions = (type: RuleType, country: string) =>
-        selectLatestVersions(
-            currentlyValidRuleVersions.filter((rule) => rule.Type === type && rule.Country === country)
-        )
-
-    const acceptanceRules = selectRuleVersions("Acceptance", parameters.CoA)
-    const invalidationRules = selectRuleVersions("Invalidation", parameters.CoI)
+    const dateTime = new Date(parameters.validationTime)
+    const acceptanceRules = applicableRuleVersions(rules, parameters.CoA, "Acceptance", dateTime)
+    const invalidationRules = applicableRuleVersions(rules, parameters.CoI, "Invalidation", dateTime)
 
     const data = {
         payload: dccPayload,

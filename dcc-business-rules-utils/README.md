@@ -1,6 +1,6 @@
 # DCC Business Rules Utilities
 
-Version: 0.3.0
+Version: 0.4.0
 
 This NPM package contains a number of useful “things” for working with EU DCC business rules conforming to the [EU DCC Validation Rules specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/eu-dcc_validation-rules_en.pdf) (link to PDF).
 These things are:
@@ -15,6 +15,7 @@ These things are:
 * A `parseRuleId` function to parse a (valid) rule ID (in field `Identifier` of a `Rule`) into its constituent parts.
     That's useful to perform queries on collections of (versions of) rules.
 * A type `ValidationParameters`, and a function `validateDcc` to -you guessed it!- be able to validate a DCC.
+    The underlying selection logic is available through the `applicableRuleVersions` function.
 * Types `ValueSets`, `CompressedValueSets`, and a function `compressValueSets` to transform value sets coming from the EU DCC Gateway into the format necessary by the `validateDcc` function.
 
 

@@ -1,5 +1,10 @@
 # Change log
 
+## 0.4.0
+
+* Extract rule selection logic as a separate API endpoint.
+
+
 ## 0.3.0
 
 * Improve description of existing functionality, and of development practices.

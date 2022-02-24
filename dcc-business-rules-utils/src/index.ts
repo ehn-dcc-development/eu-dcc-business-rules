@@ -2,4 +2,4 @@ export { CertificateType, Description, normalCopyOf, Rule, RuleType } from "./ru
 export { AffectedFieldsValidationResult, hasRulesForAllEventTypes, RuleValidationResult, validateRule } from "./rule-validator"
 export { ParsedRuleIdentifier, parseRuleId } from "./id-parsing"
 export { CompressedValueSets, compressValueSets, ValueSets } from "./valueSets"
-export { ValidationParameters, validateDcc } from "./dcc-validator"
+export { applicableRuleVersions, ValidationParameters, validateDcc } from "./dcc-validator"
