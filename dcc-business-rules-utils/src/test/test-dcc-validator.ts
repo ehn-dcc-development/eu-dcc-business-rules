@@ -1,7 +1,7 @@
-const {isFalse, isTrue} = require("chai").assert
+const {equal, isFalse} = require("chai").assert
 import {CertLogicExpression} from "certlogic-js"
 
-import {validateDcc, Rule, parseRuleId} from "../index"
+import {applicableRuleVersions, validateDcc, Rule, parseRuleId} from "../index"
 
 
 type Versioning = {
@@ -33,7 +33,7 @@ const versioning = (version: string, validFrom: string, validTo: string): Versio
     ({ version, validFrom, validTo })
 
 
-describe("DCC validator", () => {
+describe("applicableRuleVersions (rules selection)", () => {
 
     it("picks the correct (Acceptance) rule version", () => {
         const ruleVersion = (version: string, validFrom: string, validTo: string, expr: CertLogicExpression): Rule =>
@@ -43,8 +43,15 @@ describe("DCC validator", () => {
             ruleVersion("1.3.0", "2021-12-01", "2029-01-01", true),  // should be selected, despite 1.2.0 being earlier in this array, and having a later ValidFrom
             ruleVersion("1.4.0", "2022-03-01", "2030-01-01", false)
         ]
-        isTrue(validateDcc(rules, { validationTime: "2022-02-01", CoA: "YY", CoI: "XX" }, {}, {}))
+        const selection = applicableRuleVersions(rules, "YY", "Acceptance", new Date("2022-02-01"))
+        equal(selection.length, 1)
+        equal(selection[0], rules[1])
     })
+
+})
+
+
+describe("validateDcc (DCC validator)", () => {
 
     it("invalidates a DCC because of an Invalidation rule", () => {
         const rules: Rule[] = [
