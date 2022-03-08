@@ -9,8 +9,8 @@ npm install
 rm yarn.lock  # (For some reason, running yarn with an existing Yarn lock file often seems to error on this repo.)
 yarn
 
-echo "Downloading JSON Schema for rules..."
 curl --silent https://raw.githubusercontent.com/eu-digital-green-certificates/dgc-gateway/main/src/main/resources/validation-rule.schema.json > src/validation-rule.schema.json
+echo "Downloaded JSON Schema for rules."
 
 npm run build
 cp src/validation-rule.schema.json dist/
