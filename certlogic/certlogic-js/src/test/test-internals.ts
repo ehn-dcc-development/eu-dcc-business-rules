@@ -251,8 +251,10 @@ describe("perform data access", () => {
 
     it("empty string ~ 'it'", () => {
         assert({}, "", {})
+        assert([], "", [])
         assert("", "", "")
         assert(null, "", null)
+        assert(undefined, "", undefined)
     })
 
     it("null stays null", () => {
