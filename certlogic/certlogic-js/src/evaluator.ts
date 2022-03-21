@@ -1,10 +1,8 @@
 import { CertLogicExpression, TimeUnit, timeUnits } from "./typings"
 import {
-    access,
+    access, boolsiness,
     extractFromUVCI,
-    isFalsy,
     isInt,
-    isTruthy,
     plusTime
 } from "./internals"
 
@@ -28,13 +26,11 @@ const evaluateIf = (guard: CertLogicExpression, then: CertLogicExpression, else_
         throw new Error(`an if-operation must have an else (argument #3)`)
     }
     const evalGuard = evaluate(guard, data)
-    if (isTruthy(evalGuard)) {
-        return evaluate(then, data)
+    switch (boolsiness(evalGuard)) {
+        case true: return evaluate(then, data)
+        case false: return evaluate(else_, data)
+        case undefined: throw new Error(`if-guard evaluates to something neither truthy, nor falsy: ${evalGuard}`)
     }
-    if (isFalsy(evalGuard)) {
-        return evaluate(else_, data)
-    }
-    throw new Error(`if-guard evaluates to something neither truthy, nor falsy: ${evalGuard}`)
 }
 
 
@@ -111,13 +107,11 @@ const evaluateInfix = (operator: string, values: CertLogicExpression[], data: an
         }
         case "and": return values.reduce(
             (acc: any, current: CertLogicExpression) => {
-                if (isFalsy(acc)) {
-                    return acc
+                switch (boolsiness(acc)) {
+                    case false: return acc
+                    case true: return evaluate(current, data)
+                    case undefined: throw new Error(`all operands of an "and" operation must be either truthy or falsy`)
                 }
-                if (isTruthy(acc)) {
-                    return evaluate(current, data)
-                }
-                throw new Error(`all operands of an "and" operation must be either truthy or falsy`)
             },
             true
         )
@@ -146,13 +140,11 @@ const evaluateInfix = (operator: string, values: CertLogicExpression[], data: an
 
 const evaluateNot = (operand: CertLogicExpression, data: any): any => {
     const evalOperand = evaluate(operand, data)
-    if (isFalsy(evalOperand)) {
-        return true
+    switch (boolsiness(evalOperand)) {
+        case false: return true
+        case true: return false
+        case undefined: throw new Error(`operand of ! evaluates to something neither truthy, nor falsy: ${evalOperand}`)
     }
-    if (isTruthy(evalOperand)) {
-        return false
-    }
-    throw new Error(`operand of ! evaluates to something neither truthy, nor falsy: ${evalOperand}`)
 }
 
 

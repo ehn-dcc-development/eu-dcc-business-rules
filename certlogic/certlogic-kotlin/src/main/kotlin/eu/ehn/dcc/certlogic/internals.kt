@@ -23,6 +23,22 @@ internal fun isTruthy(value: JsonNode): Boolean = when (value) {
     else -> false
 }
 
+/**
+ * Determines “boolsiness” of the given JSON value:
+ *
+ *  * `true` &harr; truthy
+ *  * `false` &harr; falsy
+ *  * `null` &harr; neither
+ */
+internal fun boolsiness(value: JsonNode): Boolean? {
+    if (isFalsy(value)) {
+        return false
+    }
+    if (isTruthy(value)) {
+        return true
+    }
+    return null
+}
 
 internal fun intCompare(operator: String, l: Int, r: Int): Boolean =
     when (operator) {
@@ -50,7 +66,7 @@ internal fun comparisonOperatorForDateTimeComparison(operator: String): String =
     }
 
 
-internal val optionalPrefix = "URN:UVCI:"
+internal const val optionalPrefix = "URN:UVCI:"
 internal fun extractFromUVCI(uvci: String?, index: Int): String? {
     if (uvci == null || index < 0) {
         return null

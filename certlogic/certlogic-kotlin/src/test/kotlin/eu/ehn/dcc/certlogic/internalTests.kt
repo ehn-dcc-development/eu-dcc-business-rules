@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test
 /**
  * Should be in sync with the `describe("truthy and falsy", ...`-part of `test-internals.ts` from `certlogic-js`.
  */
-internal class TruthyFalsyTests {
+internal class BoolsinessTests {
 
     @Test
     fun `test isTruthy`() {
@@ -45,6 +45,26 @@ internal class TruthyFalsyTests {
         assertTrue(isFalsy(TextNode.valueOf("")))
         assertFalse(isFalsy(IntNode.valueOf(42)))
         assertTrue(isFalsy(IntNode.valueOf(0)))
+    }
+
+    @Test
+    fun `test boolsiness`() {
+        // (no undefined)
+        assertEquals(false, boolsiness(NullNode.instance))
+        assertEquals(false, boolsiness(BooleanNode.FALSE))
+        assertEquals(true, boolsiness(BooleanNode.TRUE))
+        assertEquals(false, boolsiness(JsonNodeFactory.instance.arrayNode()), "empty array")
+        assertEquals(
+            true,
+            boolsiness(JsonNodeFactory.instance.arrayNode().add(TextNode.valueOf("foo"))),
+            "non-empty array"
+        )
+        assertEquals(false, boolsiness(JsonNodeFactory.instance.objectNode()), "empty object")
+        assertEquals(true, isTruthy(JsonNodeFactory.instance.objectNode().put("foo", "bar")), "non-empty object")
+        assertEquals(true, boolsiness(TextNode.valueOf("foo")))
+        assertEquals(false, boolsiness(TextNode.valueOf("")))
+        assertEquals(true, boolsiness(IntNode.valueOf(42)))
+        assertEquals(false, boolsiness(IntNode.valueOf(0)))
     }
 
 }

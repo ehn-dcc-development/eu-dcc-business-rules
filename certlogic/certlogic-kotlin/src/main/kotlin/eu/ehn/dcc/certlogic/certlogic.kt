@@ -29,13 +29,11 @@ internal fun evaluateVar(args: JsonNode, data: JsonNode): JsonNode {
 
 internal fun evaluateIf(guard: JsonNode, then: JsonNode, else_: JsonNode, data: JsonNode): JsonNode {
     val evalGuard = evaluate(guard, data)
-    if (isTruthy(evalGuard)) {
-        return evaluate(then, data)
+    return when (boolsiness(evalGuard)) {
+        true -> evaluate(then, data)
+        false -> evaluate(else_, data)
+        null -> throw RuntimeException("if-guard evaluates to something neither truthy, nor falsy: $evalGuard")
     }
-    if (isFalsy(evalGuard)) {
-        return evaluate(else_, data)
-    }
-    throw RuntimeException("if-guard evaluates to something neither truthy, nor falsy: $evalGuard")
 }
 
 
@@ -64,10 +62,10 @@ internal fun evaluateInfix(operator: String, args: ArrayNode, data: JsonNode): J
             IntNode.valueOf(evalArgs[0].intValue() + evalArgs[1].intValue())
         }
         "and" -> args.fold(BooleanNode.TRUE as JsonNode) { acc, current ->
-            when {
-                isFalsy(acc) -> acc
-                isTruthy(acc) -> evaluate(current, data)
-                else -> throw RuntimeException("all operands of an \"and\" operation must be either truthy or falsy")
+            when (boolsiness(acc)) {
+                false -> acc
+                true -> evaluate(current, data)
+                null -> throw RuntimeException("all operands of an \"and\" operation must be either truthy or falsy")
             }
         }
         "<", ">", "<=", ">=" -> {
@@ -93,13 +91,11 @@ internal fun evaluateInfix(operator: String, args: ArrayNode, data: JsonNode): J
 
 internal fun evaluateNot(operandExpr: JsonNode, data: JsonNode): JsonNode {
     val operand = evaluate(operandExpr, data)
-    if (isFalsy(operand)) {
-        return BooleanNode.TRUE
+    return when (boolsiness(operand)) {
+        false -> BooleanNode.TRUE
+        true -> BooleanNode.FALSE
+        null -> throw RuntimeException("operand of ! evaluates to something neither truthy, nor falsy: $operand")
     }
-    if (isTruthy(operand)) {
-        return BooleanNode.FALSE
-    }
-    throw RuntimeException("operand of ! evaluates to something neither truthy, nor falsy: $operand")
 }
 
 

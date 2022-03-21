@@ -1,7 +1,7 @@
 const { deepEqual, equal, isFalse, isTrue } = require("chai").assert
 
 import {
-    access,
+    access, boolsiness,
     dateFromString,
     extractFromUVCI,
     isDictionary,
@@ -60,6 +60,21 @@ describe("truthy and falsy", () => {
         isTrue(isFalsy(""))
         isFalse(isFalsy(42))
         isTrue(isFalsy(0))
+    })
+
+    it("boolsiness", () => {
+        equal(boolsiness(undefined), undefined)
+        equal(boolsiness(null), false)
+        equal(boolsiness(false), false)
+        equal(boolsiness(true), true)
+        equal(boolsiness([]), false)
+        equal(boolsiness([ "foo" ]), true)
+        equal(boolsiness({}), false)
+        equal(boolsiness({ foo: "bar" }), true)
+        equal(boolsiness("foo"), true)
+        equal(boolsiness(""), false)
+        equal(boolsiness(42), true)
+        equal(boolsiness(0), false)
     })
 
 })

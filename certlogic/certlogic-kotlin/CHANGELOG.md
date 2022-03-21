@@ -1,5 +1,10 @@
 # Change log
 
+# 0.11.0
+
+* Introduce the concept of “boolsiness” (internally) by means of a type `Boolsiness` and a function `boolsiness`.
+
+
 # 0.10.0
 
 * Add a `dataAccesses` Kotlin file with `dataAccesses` and `dataAccessesWithContext` functions

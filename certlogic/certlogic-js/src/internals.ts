@@ -40,6 +40,29 @@ export const isTruthy = (value: unknown) =>
 
 
 /**
+ * Type to encode truthy/falsy/neither (AKA “boolsiness”):
+ *
+ *  * `true` &harr; truthy
+ *  * `false` &harr; falsy
+ *  * `undefined` &harr; neither
+ */
+export type Boolsiness = boolean | undefined
+
+/**
+ * Determines boolsiness of the given JSON value.
+ */
+export const boolsiness = (value: unknown): Boolsiness => {
+    if (isTruthy(value)) {
+        return true
+    }
+    if (isFalsy(value)) {
+        return false
+    }
+    return undefined
+}
+
+
+/**
  * @returns Whether the given value is an integer number.
  */
 export const isInt = (value: unknown): value is number =>
