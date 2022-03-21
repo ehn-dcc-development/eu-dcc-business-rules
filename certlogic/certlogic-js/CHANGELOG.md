@@ -6,6 +6,7 @@
   the first truthy operand is returned, or the last operand (which is then falsy).
   This replaces the semantics where a desugared `"or"` always returned a boolean value, due to the use of [De Morgan's laws](https://en.wikipedia.org/wiki/De_Morgan%27s_laws).
   (Also: an `"or"` with a single operand reduces to that operand.)
+* Build improvement: perform deduplication of (nested) dependencies.
 
 
 ## 1.1.2
