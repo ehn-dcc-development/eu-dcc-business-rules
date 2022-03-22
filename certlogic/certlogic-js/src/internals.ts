@@ -70,6 +70,19 @@ export const isInt = (value: unknown): value is number =>
 
 
 /**
+ * A type for all CertLogic single-value literals.
+ */
+export type CertLogicLiteral = string | number | boolean
+
+/**
+ * Determine whether the given value is a valid CertLogic literal expression,
+ * meaning: a string, an integer number, or a boolean.
+ */
+export const isCertLogicLiteral = (expr: any): expr is CertLogicLiteral =>
+    typeof expr === "string" || isInt(expr) || typeof expr === "boolean"
+
+
+/**
  * Named function to check whether something is a {@link Date}.
  * @deprecated from 2.0.0 onwards (planned) - use `value instanceof Date` instead.
  */

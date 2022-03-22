@@ -1,7 +1,7 @@
 import { CertLogicExpression, TimeUnit, timeUnits } from "./typings"
 import {
     access, boolsiness,
-    extractFromUVCI,
+    extractFromUVCI, isCertLogicLiteral,
     isInt,
     plusTime
 } from "./internals"
@@ -193,7 +193,7 @@ const evaluateExtractFromUVCI = (operand: CertLogicExpression, index: number, da
 
 
 export const evaluate = (expr: CertLogicExpression, data: any): any => {
-    if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean") {
+    if (isCertLogicLiteral(expr)) {
         return expr
     }
     if (expr === null) {

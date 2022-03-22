@@ -1,7 +1,6 @@
-import { isInt } from "../internals"
-
-import { ValidationError } from "./typings"
+import { isCertLogicLiteral, isInt } from "../internals"
 import { timeUnits } from "../typings"
+import { ValidationError } from "./typings"
 
 
 const validateVar = (expr: unknown, values: unknown): ValidationError[] => {
@@ -108,7 +107,7 @@ const validateExtractFromUVCI = (expr: unknown, values: unknown[]): ValidationEr
 
 const validate = (expr: unknown): ValidationError[] => {
     const withError = (message: string): ValidationError[] => [ { expr, message } ]
-    if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean") {
+    if (isCertLogicLiteral(expr)) {
         return []
     }
     if (typeof expr === "number") {

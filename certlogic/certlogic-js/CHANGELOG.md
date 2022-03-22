@@ -6,8 +6,14 @@
   the first truthy operand is returned, or the last operand (which is then falsy).
   This replaces the semantics where a desugared `"or"` always returned a boolean value, due to the use of [De Morgan's laws](https://en.wikipedia.org/wiki/De_Morgan%27s_laws).
   (Also: an `"or"` with a single operand reduces to that operand.)
+
 * Build improvement: perform deduplication of (nested) dependencies.
-* Introduce the concept of “boolsiness” (internally) by means of a type `Boolsiness` and a function `boolsiness`.
+
+* Added the following to the `internals`:
+  * The concept of “boolsiness” (internally) by means of a type `Boolsiness` and a function `boolsiness`.
+  * A `CertlogicLiteral` type, and a corresponding type guard function.
+
+  These can be imported (until they're re-exported by `index.ts`) as `import { ... } from "certlogic-js/dist/internals"`.
 
 
 ## 1.1.2
