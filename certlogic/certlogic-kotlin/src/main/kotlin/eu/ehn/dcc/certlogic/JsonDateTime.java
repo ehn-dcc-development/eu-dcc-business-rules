@@ -31,6 +31,14 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
      * @return a {@link JsonDateTime JSON date-time} of the given date/date-time
      */
     public static JsonDateTime fromString(String str) {
+        // parse short forms, specifically for date of births (DOBs) in EU DCCs:
+        if (str.matches("^\\d{4}$")) {
+            return JsonDateTime.fromStringInternal(str + "-01-01T00:00:00Z");
+        }
+        if (str.matches("^\\d{4}-\\d{2}$")) {
+            return JsonDateTime.fromStringInternal(str + "-01T00:00:00Z");
+        }
+
         if (str.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
             return JsonDateTime.fromStringInternal(str + "T00:00:00Z");
         }

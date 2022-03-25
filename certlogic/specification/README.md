@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.2.5**.
+The semantic version identification of this specification is: **1.3.0**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -74,11 +74,11 @@ Literal for the following (types of) values are not allowed: objects, `null`, an
 ### Dates and date-times
 
 Dates, and date-times (so: timestamps) can only be constructed by performing a `plusTime` operation, with a certain amount of years, months, hours or days added.
-Add 0 hours/days/months/years to represent the date(-time) as-is.
 This makes it possible to ensure consistent date/date-time representations across platforms, without being able to implicitly rely on the behaviour of native date/date-time types in combination with the other (allowed) operations.
-
 The following date and date-time formats are allowed:
 
+    YYYY
+    YYYY-MM
 	YYYY-MM-DD
 	YYYY-MM-DDThh:mm:ss
 	YYYY-MM-DDThh:mm:ssZ
@@ -97,14 +97,19 @@ The following date and date-time formats are allowed:
 	YYYY-MM-DDThh:mm:ss.S[+-]h:mm
 	YYYY-MM-DDThh:mm:ss.S[+-]hh:mm
 
-When a timezone offset is missing, the offset `Z` is assumed.
-The last eight formats specify sub-second time info, with any number of decimals being accepted.
-Any date(-time) is always normalised to milliseconds, with 3 places behind the decimal dot.
-All decimals beyond the 3rd one are ignored, effectively rounding _down_ to the nearest millisecond.
-
-Effectively, any date is always converted to the corresponding ms-precise date-time at midnight of that date.
-Note that that doesn't properly reflect the resolution of the input date.
+The `plusTime` operation always results in a timestamp with millisecond precision, regardless of the input.
+Note that that doesn't always properly reflect the resolution of the input.
 That effect has to be taken into account by the logic implementor.
+The following items describe this conversion:
+
+* For the two short date forms (first two formats), a missing MM or DD is assumed to be `01`.
+* A missing time part (so for dates), it is assumed to be `00:00:00.000`.
+* When a timezone offset is missing, the offset `Z` is assumed (including in the previous case).
+* The last eight formats specify sub-second time info, with any number of decimals being accepted.
+  Any date(-time) is always normalised to milliseconds, with 3 places behind the decimal dot.
+  All decimals beyond the 3rd one are ignored, effectively rounding _down_ to the nearest millisecond.
+
+Add 0 hours/days/months/years to represent the date(-time) as-is.
 
 
 ## Operations

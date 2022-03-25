@@ -4,7 +4,7 @@
 It is a [specified](https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md) subset of [JsonLogic](https://jsonlogic.com/), extended with necessary custom operations - e.g. for working with dates.
 It's part of the efforts surrounding the [Digital COVID Certificate](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en), and as such serves as the basis for defining _interchangeable_ validation rules on top of the DCC.
 
-This NPM package consists of an implementation of CertLogic in JavaScript(/TypeScript) which is compatible with version **1.2.5** of [the specification](https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/certlogic/specification/README.md).
+This NPM package consists of an implementation of CertLogic in JavaScript(/TypeScript) which is compatible with version **1.3.0** of [the specification](https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/certlogic/specification/README.md).
 
 
 ## API

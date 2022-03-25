@@ -97,6 +97,14 @@ const leftPad = (str: string, len: number, char: string): string => char.repeat(
  * @throws An {@see Error} in case the string couldn't be parsed as a date or date-time.
  */
 export const dateFromString = (str: string) => {
+    // parse short forms, specifically for date of births (DOBs) in EU DCCs:
+    if (str.match(/^\d{4}$/)) {
+        return new Date(`${str}-01-01`)
+    }
+    if (str.match(/^\d{4}-\d{2}$/)) {
+        return new Date(`${str}-01`)
+    }
+
     if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
         return new Date(str)
     }

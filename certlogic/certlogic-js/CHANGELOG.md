@@ -1,6 +1,9 @@
 # Change log
 
-## 1.1.3
+## 1.2.0
+
+* Widen `plusTime` operation to also accept “short dates” of the form YYYY or YYYY-MM.
+  This is intended for short forms of date of births (DOBs) in the EU DCC.
 
 * Changed desugaring of `"or"` (in the `misc` sub package) to align semantically with that of the `"and"` operation:
   the first truthy operand is returned, or the last operand (which is then falsy).

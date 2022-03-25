@@ -2,6 +2,7 @@
 
 | Version | Date | Changes |
 |---|---|---|
+| 1.3.0 | 20220325 | Widen `plusTime` operation to also accept short dates of the form YYYY or YYYY-MM.
 | 1.2.5 | 20220221 | Clarify truthy vs. falsy some more.
 | 1.2.4 | 20211217 | Clarify semantics of the `plusTime` operation a bit more. Rename “UVCI” (incl. misspellings) to “UCI” where possible.
 | 1.2.3 | 20211209 | Clarify semantics of the `plusTime` operation.

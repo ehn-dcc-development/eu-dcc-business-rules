@@ -61,4 +61,10 @@ internal class JsonDateTimeTests {
         check("2021-06-29T14:02:07Z", "2021-06-29T14:02:07.000Z", "BE")
     }
 
+    @Test
+    fun `should work for short forms of DOBs`() {
+        check("1997", "1997-01-01T00:00:00.000Z")
+        check("1997-04", "1997-04-01T00:00:00.000Z")
+    }
+
 }
