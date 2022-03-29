@@ -2,8 +2,9 @@
 
 ## 1.2.0
 
-* Widen `plusTime` operation to also accept “short dates” of the form YYYY or YYYY-MM.
-  This is intended for short forms of date of births (DOBs) in the EU DCC.
+* Add a `dccDateOfBirth` operation to convert date of birth (DOB) values in the EU DCC to a date.
+  Such DOBs may be “partial dates” of the form YYYY or YYYY-MM.
+  See [the specification](../specification/README.md#) for more details.
 
 * Changed desugaring of `"or"` (in the `misc` sub package) to align semantically with that of the `"and"` operation:
   the first truthy operand is returned, or the last operand (which is then falsy).

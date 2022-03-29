@@ -73,43 +73,16 @@ Literal for the following (types of) values are not allowed: objects, `null`, an
 
 ### Dates and date-times
 
-Dates, and date-times (so: timestamps) can only be constructed by performing a `plusTime` operation, with a certain amount of years, months, hours or days added.
-This makes it possible to ensure consistent date/date-time representations across platforms, without being able to implicitly rely on the behaviour of native date/date-time types in combination with the other (allowed) operations.
-The following date and date-time formats are allowed:
+Dates, and date-times (so: timestamps) can only be constructed using the following two operations:
 
-    YYYY
-    YYYY-MM
-	YYYY-MM-DD
-	YYYY-MM-DDThh:mm:ss
-	YYYY-MM-DDThh:mm:ssZ
-	YYYY-MM-DDThh:mm:ss[+-]h
-	YYYY-MM-DDThh:mm:ss[+-]hh
-	YYYY-MM-DDThh:mm:ss[+-]hmm
-	YYYY-MM-DDThh:mm:ss[+-]hhmm
-	YYYY-MM-DDThh:mm:ss[+-]h:mm
-	YYYY-MM-DDThh:mm:ss[+-]hh:mm
-	YYYY-MM-DDThh:mm:ss.S
-	YYYY-MM-DDThh:mm:ss.SZ
-	YYYY-MM-DDThh:mm:ss.S[+-]h
-	YYYY-MM-DDThh:mm:ss.S[+-]hh
-	YYYY-MM-DDThh:mm:ss.S[+-]hmm
-	YYYY-MM-DDThh:mm:ss.S[+-]hhmm
-	YYYY-MM-DDThh:mm:ss.S[+-]h:mm
-	YYYY-MM-DDThh:mm:ss.S[+-]hh:mm
+* A `plusTime` operation, which parses the given date(-time) string as a date-time, and adds a given amount of years, months, hours or days.
+* A `dccDateOfBirth` operation, which parses the given date-of-birth (which may be a partial date), and converts it to a date-time which is a “beneficial interpretation” of that date.
 
-The `plusTime` operation always results in a timestamp with millisecond precision, regardless of the input.
+This approach makes it possible to ensure consistent date/date-time representations across platforms, without being able to implicitly rely on the behaviour of native date/date-time types in combination with the other (allowed) operations.
+
+Both operations always result in a date-time with millisecond precision, regardless of the input.
 Note that that doesn't always properly reflect the resolution of the input.
 That effect has to be taken into account by the logic implementor.
-The following items describe this conversion:
-
-* For the two short date forms (first two formats), a missing MM or DD is assumed to be `01`.
-* A missing time part (so for dates), it is assumed to be `00:00:00.000`.
-* When a timezone offset is missing, the offset `Z` is assumed (including in the previous case).
-* The last eight formats specify sub-second time info, with any number of decimals being accepted.
-  Any date(-time) is always normalised to milliseconds, with 3 places behind the decimal dot.
-  All decimals beyond the 3rd one are ignored, effectively rounding _down_ to the nearest millisecond.
-
-Add 0 hours/days/months/years to represent the date(-time) as-is.
 
 
 ## Operations
@@ -222,11 +195,44 @@ A date-time offset operation has the following form:
     }
 
 A time unit is one of the following string values: "year", "month", "day", "hour".
-This operation is the *only* way to _construct_ date-time values in CertLogic.
-To convert a date(-time) string to a date-time value, specify an amount of `0`, and any time unit.
-Note that `plusTime` does not permit other date-time values: expressions such as `plusTime(plusTime("...", 0, "hour")`, 10, "day") are not valid.
+To convert a date(-time) string to a date-time value as-is, specify an amount of `0`, and any time unit.
+Example:
 
-Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap years or leap seconds.
+    { "plusTime": [ <date(-time) string-typed operand>, 0, "day" ] }
+
+(`"day"` can also be `"hour"`, `"month"`, or `"year"`.)
+
+The following date and date-time formats are allowed:
+
+    YYYY-MM-DD
+    YYYY-MM-DDThh:mm:ss
+    YYYY-MM-DDThh:mm:ssZ
+    YYYY-MM-DDThh:mm:ss[+-]h
+    YYYY-MM-DDThh:mm:ss[+-]hh
+    YYYY-MM-DDThh:mm:ss[+-]hmm
+    YYYY-MM-DDThh:mm:ss[+-]hhmm
+    YYYY-MM-DDThh:mm:ss[+-]h:mm
+    YYYY-MM-DDThh:mm:ss[+-]hh:mm
+    YYYY-MM-DDThh:mm:ss.S
+    YYYY-MM-DDThh:mm:ss.SZ
+    YYYY-MM-DDThh:mm:ss.S[+-]h
+    YYYY-MM-DDThh:mm:ss.S[+-]hh
+    YYYY-MM-DDThh:mm:ss.S[+-]hmm
+    YYYY-MM-DDThh:mm:ss.S[+-]hhmm
+    YYYY-MM-DDThh:mm:ss.S[+-]h:mm
+    YYYY-MM-DDThh:mm:ss.S[+-]hh:mm
+
+The following items describe this conversion for the `plustime` operation in more detail:
+
+* For the two short date forms (first two formats), a missing MM or DD is assumed to be `01`.
+* A missing time part (so for dates), it is assumed to be `00:00:00.000`.
+* When a timezone offset is missing, the offset `Z` is assumed (including in the previous case).
+* The last eight formats specify sub-second time info, with any number of decimals being accepted.
+  Any date(-time) is always normalised to milliseconds, with 3 places behind the decimal dot.
+  All decimals beyond the 3rd one are ignored, effectively rounding _down_ to the nearest millisecond.
+* Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap years or leap seconds.
+
+Note that `plusTime` does not permit other date-time values: expressions such as `plusTime(plusTime("...", 0, "hour")`, 10, "day") are not valid.
 
 
 ### Reduction (`reduce`)
@@ -288,6 +294,33 @@ The `URN:UVCI:` prefix is optional, and initial fragments `[ "URN", "UVCI" ]` wi
 The string `"a::c/#/f"` contains 6 fragments: `"a"`, `""`, `"c"`, `""`, `""`, `"f"`.
 
 
+### DCC Date of birth (`dccDateOfBirth`)
+
+A DCC represents the date of birth of the DCC's holder in the `dob` field as a string in one of the following formats:
+
+    YYYY
+    YYYY-MM
+    YYYY-MM-DD
+
+The `dccDateOfBirth` operation performs a conversion of a string value in any of these formats to a date-time, as follows:
+
+* `YYYY` is converted to `ZZZZ-01-01T00:00:00.000Z`, with `ZZZZ` = `YYYY` + 1 = first day of the year after `YYYY`.
+* `YYYY-MM` is converted to `YYYY-NN-01T00:00:00.000Z`, with `NN` = `MM` + 1  = first day of the month after `YYYY-MM`.
+* `YYYY-MM-DD` is converted to `YYYY-MM-DDT00:00:00.000Z` the same way that `{ "plusTime": [ "<YYYY-MM-DD>", 0, "<any time unit>" ] }` does.
+
+The primary use case for this operation is to check whether the DCC's holder is a minor, i.e. less than 18 years old.
+This can be achieved as follows:
+
+    {
+        "after": [
+            { "dccDateOfBirth": [ { "var": "payload.dob" } ] },
+            { "plusTime": [ { "var": "external.validationClock" }, -18, "year" ] }
+        ]
+    }
+
+This CertLogic expression yields `true` if the DCC's holder is deemed to be a minor, and `false` otherwise.
+
+
 ## Other aspects
 
 
@@ -321,6 +354,6 @@ A validator is provided in the form of the [`certlogic-js/validation` NPM sub pa
 
 ### Differences with JsonLogic implementations
 
-CertLogic is a subset of JsonLogic, but with custom operations that are specific to the domain of DCC added - currently: `plusTime`, and `extractFromUVCI`.
+CertLogic is a subset of JsonLogic, but with custom operations that are specific to the domain of DCC added - currently: `plusTime`, `extractFromUVCI`, and `dccDateOfBirth`.
 Implementors of the DCC validator using a JsonLogic implementation instead of a CertLogic implementation need to provide these custom operations to JsonLogic as well - see the [first paragraph of this document](../../documentation/implementations.md).
 

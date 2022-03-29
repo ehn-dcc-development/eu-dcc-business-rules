@@ -1,6 +1,6 @@
 import { CertLogicExpression, TimeUnit, timeUnits } from "./typings"
 import {
-    access, boolsiness,
+    access, boolsiness, dccDateOfBirth,
     extractFromUVCI, isCertLogicLiteral,
     isInt,
     plusTime
@@ -157,7 +157,7 @@ const evaluatePlusTime = (dateOperand: CertLogicExpression, amount: CertLogicExp
     }
     const dateTimeStr = evaluate(dateOperand, data)
     if (typeof dateTimeStr !== "string") {
-        throw new Error(`date argument of "plusTime" must be a string`)
+        throw new Error(`date argument (#1) of "plusTime" must be a string`)
     }
     return plusTime(dateTimeStr, amount, unit)
 }
@@ -189,6 +189,15 @@ const evaluateExtractFromUVCI = (operand: CertLogicExpression, index: number, da
         throw new Error(`"index" argument (#2) of "extractFromUVCI" must be an integer`)
     }
     return extractFromUVCI(evalOperand, index)
+}
+
+
+const evaluateDccDateOfBirth = (operand: CertLogicExpression, data: any): Date => {
+    const evalOperand = evaluate(operand, data)
+    if (!(typeof evalOperand === "string")) {
+        throw new Error(`operand of "dccDateOfBirth" must be a string`)
+    }
+    return dccDateOfBirth(evalOperand)
 }
 
 
@@ -232,6 +241,9 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
         }
         if (operator === "extractFromUVCI") {
             return evaluateExtractFromUVCI(values[0], values[1], data)
+        }
+        if (operator === "dccDateOfBirth") {
+            return evaluateDccDateOfBirth(values[0], data)
         }
         throw new Error(`unrecognised operator: "${operator}"`)
     }

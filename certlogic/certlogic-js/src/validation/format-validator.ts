@@ -105,6 +105,18 @@ const validateExtractFromUVCI = (expr: unknown, values: unknown[]): ValidationEr
     return errors
 }
 
+const validateDccDateOfBirth = (expr: unknown, values: unknown[]): ValidationError[] => {
+    const errors = []
+    if (values.length !== 1) {
+        errors.push({ expr, message: `a "dccDateOfBirth"-operation must have exactly 1 value/operand, but it has ${values.length}` })
+    }
+    if (values[0] !== undefined) {
+        errors.push(...validate(values[0]))
+    }
+    return errors
+}
+
+
 const validate = (expr: unknown): ValidationError[] => {
     const withError = (message: string): ValidationError[] => [ { expr, message } ]
     if (isCertLogicLiteral(expr)) {
@@ -148,6 +160,9 @@ const validate = (expr: unknown): ValidationError[] => {
         }
         if (operator === "extractFromUVCI") {
             return validateExtractFromUVCI(expr, values)
+        }
+        if (operator === "dccDateOfBirth") {
+            return validateDccDateOfBirth(expr, values)
         }
         return withError(`unrecognised operator: "${operator}"`)
     }

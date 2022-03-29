@@ -1,0 +1,118 @@
+{
+  "name": "recognising minors",
+  "cases": [
+    {
+      "name": "should work as binary operator",
+      "certLogicExpression": {
+        "after": [
+          {
+            "dccDateOfBirth": [
+              {
+                "var": "payload.dob"
+              }
+            ]
+          },
+          {
+            "plusTime": [
+              {
+                "var": "external.validationClock"
+              },
+              -18,
+              "year"
+            ]
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-01-01"
+            },
+            "external": {
+              "validationClock": "2021-12-31T23:59:59.999Z"
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-01-01"
+            },
+            "external": {
+              "validationClock": "2022-01-01"
+            }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-05-04"
+            },
+            "external": {
+              "validationClock": "2022-05-03"
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-05-04"
+            },
+            "external": {
+              "validationClock": "2022-05-04"
+            }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-02"
+            },
+            "external": {
+              "validationClock": "2022-03-01"
+            }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-02"
+            },
+            "external": {
+              "validationClock": "2022-02-28"
+            }
+          },
+          "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "dob": "2004"
+            },
+            "external": {
+              "validationClock": "2023-01-01"
+            }
+          },
+          "expected": false
+        },
+        {
+          "data": {
+            "payload": {
+              "dob": "2004"
+            },
+            "external": {
+              "validationClock": "2022-12-31"
+            }
+          },
+          "expected": true
+        }
+      ]
+    }
+  ]
+}

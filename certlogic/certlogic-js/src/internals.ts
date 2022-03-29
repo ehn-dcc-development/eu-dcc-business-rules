@@ -97,14 +97,6 @@ const leftPad = (str: string, len: number, char: string): string => char.repeat(
  * @throws An {@see Error} in case the string couldn't be parsed as a date or date-time.
  */
 export const dateFromString = (str: string) => {
-    // parse short forms, specifically for date of births (DOBs) in EU DCCs:
-    if (str.match(/^\d{4}$/)) {
-        return new Date(`${str}-01-01`)
-    }
-    if (str.match(/^\d{4}-\d{2}$/)) {
-        return new Date(`${str}-01`)
-    }
-
     if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
         return new Date(str)
     }
@@ -185,4 +177,27 @@ export const access = (data: any, path: string): any =>
             const value = isNaN(index) ? acc[fragment] : acc[index]
             return value === undefined ? null : value
         }, data)
+
+
+/**
+ * @returns: A JavaScript {@see Date} representing the given date that may be partial (YYYY[-MM[-DD]]).
+ * See [the CertLogic specification](https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md) for details.
+ */
+export const dccDateOfBirth = (str: string): Date => {
+    const timeSuffix = "T00:00:00.000Z"
+    if (str.match(/^\d{4}$/)) {
+        return new Date(`${Number(str)+1}-01-01${timeSuffix}`)
+    }
+    if (str.match(/^\d{4}-\d{2}$/)) {
+        const date = new Date(`${str}-01${timeSuffix}`)
+        date.setUTCMonth(date.getUTCMonth() + 1)
+        date.setUTCDate(1)
+        return date
+    }
+    if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        return new Date(`${str}${timeSuffix}`)
+    }
+
+    throw new Error(`can't parse "${str}" as an EU DCC date-of-birth`)
+}
 

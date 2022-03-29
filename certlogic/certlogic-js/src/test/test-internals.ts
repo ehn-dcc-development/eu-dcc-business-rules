@@ -1,8 +1,8 @@
-const { deepEqual, equal, isFalse, isTrue } = require("chai").assert
+const { deepEqual, equal, isFalse, isTrue, throws } = require("chai").assert
 
 import {
     access, boolsiness,
-    dateFromString,
+    dateFromString, dccDateOfBirth,
     extractFromUVCI,
     isDictionary,
     isFalsy,
@@ -108,7 +108,6 @@ describe("parsing of dates/date-times", () => {
 
     it("construct a date from a string without time information (compliant with a JSON Schema \"date\" formatted string)", () => {
         check("2021-05-04", "2021-05-04T00:00:00.000Z")
-        check("2021-05-04", "2021-05-04T00:00:00.000Z")
     })
 
     it("construct date-times from strings in RFC 3339 format (compliant with a JSON Schema \"date-time\" formatted string)", () => {
@@ -148,9 +147,12 @@ describe("parsing of dates/date-times", () => {
         check("2021-06-29T14:02:07Z", "2021-06-29T14:02:07.000Z", "BE")
     })
 
-    it("should work for short forms of DOBs", () => {
-        check("1997", "1997-01-01T00:00:00.000Z")
-        check("1997-04", "1997-04-01T00:00:00.000Z")
+    it("should not work for short forms of DOBs", () => {
+        const shouldFail = (str: string) => {
+            throws(() => dateFromString(str), Error, `not an allowed date or date-time format: ${str}`)
+        }
+        shouldFail("1997")
+        shouldFail("1997-04")
     })
 
 })
@@ -209,6 +211,11 @@ describe("plusTime", () => {
         check("2021-02-01T00:00:00.000Z", -1, "year", "2020-02-01T00:00:00.000Z")
         check("2021-02-01T00:00:00.000Z", 2, "year", "2023-02-01T00:00:00.000Z")
         check("2020-02-29T00:00:00.000Z", 1, "year", "2021-02-28T00:00:00.000Z")
+    })
+
+    it("works for leap years", () => {
+        check("2004-02-28", 18, "year", "2022-02-28T00:00:00.000Z")
+        check("2004-02-29", 18, "year", "2022-03-01T00:00:00.000Z")
     })
 
 })
@@ -305,6 +312,40 @@ describe("perform data access", () => {
     it("nested object access", () => {
         const object = { x: [ { z: "foo" } ] }
         assert(object, "x.0.z", "foo")
+    })
+
+})
+
+
+describe("dccDateOfBirth", () => {
+
+    const check = (dob: string, expected: string) => {
+        equal(dccDateOfBirth(dob).toISOString(), expected)
+    }
+
+    it("works for YYYY", () => {
+        check("2004", "2005-01-01T00:00:00.000Z")
+        check("2021", "2022-01-01T00:00:00.000Z")
+    })
+
+    it("works for YYYY-MM", () => {
+        check("2004-01", "2004-02-01T00:00:00.000Z")
+        check("2004-02", "2004-03-01T00:00:00.000Z")
+        check("2003-02", "2003-03-01T00:00:00.000Z")
+        check("2004-03", "2004-04-01T00:00:00.000Z")
+        check("2004-04", "2004-05-01T00:00:00.000Z")
+        check("2004-05", "2004-06-01T00:00:00.000Z")
+        check("2004-06", "2004-07-01T00:00:00.000Z")
+        check("2004-07", "2004-08-01T00:00:00.000Z")
+        check("2004-08", "2004-09-01T00:00:00.000Z")
+        check("2004-09", "2004-10-01T00:00:00.000Z")
+        check("2004-10", "2004-11-01T00:00:00.000Z")
+        check("2004-11", "2004-12-01T00:00:00.000Z")
+        check("2004-12", "2005-01-01T00:00:00.000Z")
+    })
+
+    it("works for YYYY-MM-DD", () => {
+        check("2021-05-04", "2021-05-04T00:00:00.000Z")
     })
 
 })

@@ -32,6 +32,7 @@ export type CertLogicOperation =
     | { "plusTime": [ CertLogicExpression, number, TimeUnit ] }
     | { "reduce": [ CertLogicExpression, CertLogicExpression, CertLogicExpression ] }
     | { "extractFromUVCI": [ CertLogicExpression, number ] }
+    | { "dccDateOfBirth": [ CertLogicExpression ] }
 
 
 /**

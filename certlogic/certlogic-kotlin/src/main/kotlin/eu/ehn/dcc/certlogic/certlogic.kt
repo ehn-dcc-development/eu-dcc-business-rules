@@ -119,7 +119,7 @@ internal fun evaluatePlusTime(dateOperand: JsonNode, amount: JsonNode, unit: Jso
     val timeUnit = TimeUnit.valueOf(unit.textValue())
     val dateTimeStr = evaluate(dateOperand, data)
     if (dateTimeStr !is TextNode) {
-        throw RuntimeException("date argument of \"plusTime\" must be a string")
+        throw RuntimeException("date argument (#1) of \"plusTime\" must be a string")
     }
     return JsonDateTime.fromString(dateTimeStr.asText()).plusTime(amount.intValue(), timeUnit)
 }
