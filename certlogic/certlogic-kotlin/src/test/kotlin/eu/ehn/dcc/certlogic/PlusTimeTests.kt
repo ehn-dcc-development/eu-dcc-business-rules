@@ -55,7 +55,13 @@ internal class PlusTimeTests {
         check("2021-02-01T00:00:00.000Z", 1, TimeUnit.year, "2022-02-01T00:00:00.000Z")
         check("2021-02-01T00:00:00.000Z", -1, TimeUnit.year, "2020-02-01T00:00:00.000Z")
         check("2021-02-01T00:00:00.000Z", 2, TimeUnit.year, "2023-02-01T00:00:00.000Z")
-        check("2020-02-29T00:00:00.000Z", 1, TimeUnit.year, "2021-02-28T00:00:00.000Z")
+        check("2020-02-29T00:00:00.000Z", 1, TimeUnit.year, "2021-03-01T00:00:00.000Z")
+    }
+
+    @Test
+    fun `works for leap years`() {
+        check("2004-02-28", 18, TimeUnit.year, "2022-02-28T00:00:00.000Z")
+        check("2004-02-29", 18, TimeUnit.year, "2022-03-01T00:00:00.000Z")
     }
 
 }

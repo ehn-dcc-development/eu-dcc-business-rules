@@ -31,14 +31,6 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
      * @return a {@link JsonDateTime JSON date-time} of the given date/date-time
      */
     public static JsonDateTime fromString(String str) {
-        // parse short forms, specifically for date of births (DOBs) in EU DCCs:
-        if (str.matches("^\\d{4}$")) {
-            return JsonDateTime.fromStringInternal(str + "-01-01T00:00:00Z");
-        }
-        if (str.matches("^\\d{4}-\\d{2}$")) {
-            return JsonDateTime.fromStringInternal(str + "-01T00:00:00Z");
-        }
-
         if (str.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
             return JsonDateTime.fromStringInternal(str + "T00:00:00Z");
         }
@@ -57,7 +49,7 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
             }
             return JsonDateTime.fromStringInternal(reformatted);
         }
-        throw new DateTimeParseException("not an allowed date or date-time format", str, 0);
+        throw new DateTimeParseException("not an allowed date or date-time format: " + str, str, 0);
     }
 
     /**
@@ -72,12 +64,36 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
         }
     }
 
+    public static JsonDateTime dccDateOfBirth(String dobString) {
+        if (dobString.matches("^\\d{4}$")) {
+            int year = Integer.parseInt(dobString.substring(0, 4)) + 1;
+            return fromString(String.format("%04d-%02d-%02d", year, 1, 1));
+        }
+        if (dobString.matches("^\\d{4}-\\d{2}$")) {
+            int year = Integer.parseInt(dobString.substring(0, 4));
+            int month = Integer.parseInt(dobString.substring(5, 7)) + 1;
+            if (month > 12) {
+                year++;
+                month = 1;
+            }
+            return fromString(String.format("%04d-%02d-%02d", year, month, 1));
+        }
+        if (dobString.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
+            return fromString(dobString);
+        }
+        throw new DateTimeParseException("can't parse " + dobString + " as an EU DCC date-of-birth", dobString, 0);
+    }
+
     public OffsetDateTime temporalValue() {
         return this._value;
     }
 
     protected JsonDateTime(OffsetDateTime dateTime) {
         this._value = dateTime;
+    }
+
+    private static boolean isNotBefore(OffsetDateTime left, OffsetDateTime right) {
+        return left.isEqual(right) || left.isAfter(right);
     }
 
     public JsonDateTime plusTime(int amount, TimeUnit unit) {
@@ -88,7 +104,15 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
             case day: return new JsonDateTime(this._value.plusDays(amount));
             case hour: return new JsonDateTime(this._value.plusHours(amount));
             case month: return new JsonDateTime(this._value.plusMonths(amount));
-            case year: return new JsonDateTime(this._value.plusYears(amount));
+            case year: {
+                int year = this._value.getYear();
+                boolean isLeapYear = year%400 == 0 || (year%4 == 0 && year%100 != 0);
+                boolean needsInc = isLeapYear && isNotBefore(this._value, OffsetDateTime.of(year, 2, 29, 0, 0, 0, 0, this._value.getOffset()));
+                return new JsonDateTime(this._value
+                        .plusYears(amount)
+                        .plusDays(needsInc ? 1 : 0)
+                    );
+            }
             default: throw new RuntimeException(String.format("time unit \"%s\" not handled", unit));
         }
     }

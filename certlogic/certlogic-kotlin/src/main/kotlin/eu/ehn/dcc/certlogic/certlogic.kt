@@ -158,6 +158,15 @@ internal fun evaluateExtractFromUVCI(operand: JsonNode, index: JsonNode, data: J
 }
 
 
+internal fun evaluateDccDateOfBirth(operand: JsonNode, data: JsonNode): JsonNode {
+    val evalOperand = evaluate(operand, data)
+    if (evalOperand !is TextNode) {
+        throw RuntimeException("operand of \"dccDateOfBirth\" must be a string")
+    }
+    return JsonDateTime.dccDateOfBirth(evalOperand.asText())
+}
+
+
 fun evaluate(expr: JsonNode, data: JsonNode): JsonNode = when (expr) {
     is TextNode -> expr
     is IntNode -> expr
@@ -182,6 +191,7 @@ fun evaluate(expr: JsonNode, data: JsonNode): JsonNode = when (expr) {
                 "plusTime" -> evaluatePlusTime(args[0], args[1], args[2], data)
                 "reduce" -> evaluateReduce(args[0], args[1], args[2], data)
                 "extractFromUVCI" -> evaluateExtractFromUVCI(args[0], args[1], data)
+                "dccDateOfBirth" -> evaluateDccDateOfBirth(args[0], data)
                 else -> throw RuntimeException("unrecognised operator: \"$operator\"")
             }
         }

@@ -2,6 +2,10 @@
 
 # 0.11.0
 
+* Add a `dccDateOfBirth` operation to convert date of birth (DOB) values in the EU DCC to a date.
+  Such DOBs may be “partial dates” of the form YYYY or YYYY-MM.
+  See [the specification](../specification/README.md#) for more details.
+
 * Introduce the concept of “boolsiness” (internally) by means of a type `Boolsiness` and a function `boolsiness`.
 
 
