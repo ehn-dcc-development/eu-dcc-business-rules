@@ -224,7 +224,6 @@ The following date and date-time formats are allowed:
 
 The following items describe this conversion for the `plustime` operation in more detail:
 
-* For the two short date forms (first two formats), a missing MM or DD is assumed to be `01`.
 * A missing time part (so for dates), it is assumed to be `00:00:00.000`.
 * When a timezone offset is missing, the offset `Z` is assumed (including in the previous case).
 * The last eight formats specify sub-second time info, with any number of decimals being accepted.
