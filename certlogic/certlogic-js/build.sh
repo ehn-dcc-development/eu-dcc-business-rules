@@ -4,6 +4,7 @@ set -e
 
 npm run clean
 npm install
+npm dedupe # also deduplicate dependencies
 npm test  # also builds the source
 
 # check for circular dependencies, and exit in case one's present:

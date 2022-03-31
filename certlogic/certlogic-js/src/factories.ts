@@ -33,3 +33,6 @@ export const reduce_ = (operand: CertLogicExpression, lambda: CertLogicExpressio
 export const extractFromUVCI_ = (operand: CertLogicExpression, index: number): CertLogicOperation =>
     ({ "extractFromUVCI": [ operand, index ] })
 
+export const dccDateOfBirth_ = (operand: CertLogicExpression): CertLogicOperation =>
+    ({ "dccDateOfBirth": [ operand ] })
+

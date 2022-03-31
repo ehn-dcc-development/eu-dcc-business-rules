@@ -40,10 +40,46 @@ export const isTruthy = (value: unknown) =>
 
 
 /**
+ * Type to encode truthy/falsy/neither (AKA “boolsiness”):
+ *
+ *  * `true` &harr; truthy
+ *  * `false` &harr; falsy
+ *  * `undefined` &harr; neither
+ */
+export type Boolsiness = boolean | undefined
+
+/**
+ * Determines boolsiness of the given JSON value.
+ */
+export const boolsiness = (value: unknown): Boolsiness => {
+    if (isTruthy(value)) {
+        return true
+    }
+    if (isFalsy(value)) {
+        return false
+    }
+    return undefined
+}
+
+
+/**
  * @returns Whether the given value is an integer number.
  */
 export const isInt = (value: unknown): value is number =>
     typeof value === "number" && Number.isInteger(value)
+
+
+/**
+ * A type for all CertLogic single-value literals.
+ */
+export type CertLogicLiteral = string | number | boolean
+
+/**
+ * Determine whether the given value is a valid CertLogic literal expression,
+ * meaning: a string, an integer number, or a boolean.
+ */
+export const isCertLogicLiteral = (expr: any): expr is CertLogicLiteral =>
+    typeof expr === "string" || isInt(expr) || typeof expr === "boolean"
 
 
 /**
@@ -141,4 +177,27 @@ export const access = (data: any, path: string): any =>
             const value = isNaN(index) ? acc[fragment] : acc[index]
             return value === undefined ? null : value
         }, data)
+
+
+/**
+ * @returns: A JavaScript {@see Date} representing the given date that may be partial (YYYY[-MM[-DD]]).
+ * See [the CertLogic specification](https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md) for details.
+ */
+export const dccDateOfBirth = (str: string): Date => {
+    const timeSuffix = "T00:00:00.000Z"
+    if (str.match(/^\d{4}$/)) {
+        return new Date(`${str}-12-31${timeSuffix}`)
+    }
+    if (str.match(/^\d{4}-\d{2}$/)) {
+        const date = new Date(`${str}-01${timeSuffix}`)
+        date.setUTCMonth(date.getUTCMonth() + 1)
+        date.setUTCDate(0)
+        return date
+    }
+    if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        return new Date(`${str}${timeSuffix}`)
+    }
+
+    throw new Error(`can't parse "${str}" as an EU DCC date-of-birth`)
+}
 

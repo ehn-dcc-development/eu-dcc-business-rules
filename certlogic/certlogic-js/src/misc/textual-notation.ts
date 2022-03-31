@@ -38,6 +38,7 @@ export const renderAsCompactText = (expr: CertLogicExpression): string => {
             case "plusTime": return `(${renderAsCompactText(operands[0])}) ${operands[1] >= 0 ? "+" : ""}${operands[1]} ${operands[2]}${Math.abs(operands[1] as number) === 1 ? "" : "s"}`
             case "reduce": return `(${renderAsCompactText(operands[0])}).reduce((current, accumulator) → ${renderAsCompactText(operands[1])}, ${renderAsCompactText(operands[2])})`
             case "extractFromUVCI": return `extract fragment ${operands[1]} from UVCI (${renderAsCompactText(operands[0])})`
+            case "dccDateOfBirth": return `(${renderAsCompactText(operands[0])}) as DOB`
         }
     }
     // fall-back:

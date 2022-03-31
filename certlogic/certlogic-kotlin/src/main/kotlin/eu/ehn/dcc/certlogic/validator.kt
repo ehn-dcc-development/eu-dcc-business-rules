@@ -108,6 +108,21 @@ internal fun validateExtractFromUVCI(expr: JsonNode, values: ArrayNode): List<Va
     )
 
 
+internal fun validateDccDateOfBirth(expr: JsonNode, values: ArrayNode): List<ValidationError> =
+    (
+        if (values.size() == 1)
+            emptyList()
+        else
+            listOf(ValidationError(expr, "a \"dccDateOfBirth\"-operation must have exactly 1 value/operand, but it has ${values.size()}"))
+    ) +
+    (
+        if (values.has(0))
+            validate(values[0])
+        else
+            emptyList()
+    )
+
+
 fun validate(expr: JsonNode): List<ValidationError> {
     fun withError(message: String) = listOf(ValidationError(expr, message))
     return when (expr) {
@@ -133,6 +148,7 @@ fun validate(expr: JsonNode): List<ValidationError> {
                 "plusTime" -> validatePlusTime(expr, values)
                 "reduce" -> validateReduce(expr, values)
                 "extractFromUVCI" -> validateExtractFromUVCI(expr, values)
+                "dccDateOfBirth" -> validateDccDateOfBirth(expr, values)
                 else -> withError("unrecognised operator: \"$operator\"")
             }
         }

@@ -1,10 +1,31 @@
 # Change log
 
+## 1.2.0
+
+* Add a `dccDateOfBirth` operation to convert date of birth (DOB) values in the EU DCC to a date.
+  Such DOBs may be “partial dates” of the form YYYY or YYYY-MM.
+  See [the specification](../specification/README.md#) for more details.
+
+* Changed desugaring of `"or"` (in the `misc` sub package) to align semantically with that of the `"and"` operation:
+  the first truthy operand is returned, or the last operand (which is then falsy).
+  This replaces the semantics where a desugared `"or"` always returned a boolean value, due to the use of [De Morgan's laws](https://en.wikipedia.org/wiki/De_Morgan%27s_laws).
+  (Also: an `"or"` with a single operand reduces to that operand.)
+
+* Build improvement: perform deduplication of (nested) dependencies.
+
+* Added the following to the `internals`:
+  * The concept of “boolsiness” (internally) by means of a type `Boolsiness` and a function `boolsiness`.
+  * A `CertlogicLiteral` type, and a corresponding type guard function.
+
+  These can be imported (until they're re-exported by `index.ts`) as `import { ... } from "certlogic-js/dist/internals"`.
+
+
 ## 1.1.2
 
 * Improve types in source of `renderAsCompactText`
 * (fix:) Really prevent emission of all source map files, not just for the `.d.ts`-files
-* Replace use of `Object.keys(...)` with equivalent use of `Object.entries(...)` - shorter code; maybe some performance improvement?
+* Replace use of `Object.keys(...)` with equivalent use of `Object.entries(...)`.
+  Advantage: shorter code, and maybe some performance improvement?
 
 
 ## 1.1.1

@@ -36,6 +36,7 @@ const gatherFrom = (expr: CertLogicExpression, parent?: CertLogicExpression): Da
             case "plusTime": return recurse(values[0])
             case "reduce": return [ /* operand: */values[0], /* initial: */values[2] ].flatMap(recurse)
             case "extractFromUVCI": return recurse(values[0])
+            case "dccDateOfBirth": return recurse(values[0])
 
             /*
              * Note: Array.slice and recurse(Array[index]) are resilient against missing values.

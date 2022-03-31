@@ -64,5 +64,9 @@ describe("rendering as compact text", () => {
         rendersAs(f.extractFromUVCI_("UVCI:NL:foo/bar", 2), `extract fragment 2 from UVCI ("UVCI:NL:foo/bar")`)
     })
 
+    it("works for DCC DOB operation", () => {
+        rendersAs(f.dccDateOfBirth_("2000-05-06"), `("2000-05-06") as DOB`)
+    })
+
 })
 

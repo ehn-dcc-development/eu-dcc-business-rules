@@ -1,6 +1,8 @@
 package eu.ehn.dcc.certlogic
 
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
+import java.time.format.DateTimeParseException
 import kotlin.test.assertEquals
 
 /**
@@ -59,6 +61,18 @@ internal class JsonDateTimeTests {
     fun `should work for some samples from the QA test data`() {
         check("2021-05-20T12:34:56+00:00", "2021-05-20T12:34:56.000Z", "SI")
         check("2021-06-29T14:02:07Z", "2021-06-29T14:02:07.000Z", "BE")
+    }
+
+    @Test
+    fun `should work for short forms of DOBs`() {
+        fun shouldFail(str: String) {
+            val exception = assertThrows<DateTimeParseException> {
+                JsonDateTime.fromString(str)
+            }
+            assertEquals("not an allowed date or date-time format: $str", exception.message)
+        }
+        shouldFail("1997")
+        shouldFail("1997-04")
     }
 
 }

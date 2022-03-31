@@ -1,10 +1,8 @@
 import { CertLogicExpression, TimeUnit, timeUnits } from "./typings"
 import {
-    access,
-    extractFromUVCI,
-    isFalsy,
+    access, boolsiness, dccDateOfBirth,
+    extractFromUVCI, isCertLogicLiteral,
     isInt,
-    isTruthy,
     plusTime
 } from "./internals"
 
@@ -28,13 +26,11 @@ const evaluateIf = (guard: CertLogicExpression, then: CertLogicExpression, else_
         throw new Error(`an if-operation must have an else (argument #3)`)
     }
     const evalGuard = evaluate(guard, data)
-    if (isTruthy(evalGuard)) {
-        return evaluate(then, data)
+    switch (boolsiness(evalGuard)) {
+        case true: return evaluate(then, data)
+        case false: return evaluate(else_, data)
+        case undefined: throw new Error(`if-guard evaluates to something neither truthy, nor falsy: ${evalGuard}`)
     }
-    if (isFalsy(evalGuard)) {
-        return evaluate(else_, data)
-    }
-    throw new Error(`if-guard evaluates to something neither truthy, nor falsy: ${evalGuard}`)
 }
 
 
@@ -111,13 +107,11 @@ const evaluateInfix = (operator: string, values: CertLogicExpression[], data: an
         }
         case "and": return values.reduce(
             (acc: any, current: CertLogicExpression) => {
-                if (isFalsy(acc)) {
-                    return acc
+                switch (boolsiness(acc)) {
+                    case false: return acc
+                    case true: return evaluate(current, data)
+                    case undefined: throw new Error(`all operands of an "and" operation must be either truthy or falsy`)
                 }
-                if (isTruthy(acc)) {
-                    return evaluate(current, data)
-                }
-                throw new Error(`all operands of an "and" operation must be either truthy or falsy`)
             },
             true
         )
@@ -146,13 +140,11 @@ const evaluateInfix = (operator: string, values: CertLogicExpression[], data: an
 
 const evaluateNot = (operand: CertLogicExpression, data: any): any => {
     const evalOperand = evaluate(operand, data)
-    if (isFalsy(evalOperand)) {
-        return true
+    switch (boolsiness(evalOperand)) {
+        case false: return true
+        case true: return false
+        case undefined: throw new Error(`operand of ! evaluates to something neither truthy, nor falsy: ${evalOperand}`)
     }
-    if (isTruthy(evalOperand)) {
-        return false
-    }
-    throw new Error(`operand of ! evaluates to something neither truthy, nor falsy: ${evalOperand}`)
 }
 
 
@@ -165,7 +157,7 @@ const evaluatePlusTime = (dateOperand: CertLogicExpression, amount: CertLogicExp
     }
     const dateTimeStr = evaluate(dateOperand, data)
     if (typeof dateTimeStr !== "string") {
-        throw new Error(`date argument of "plusTime" must be a string`)
+        throw new Error(`date argument (#1) of "plusTime" must be a string`)
     }
     return plusTime(dateTimeStr, amount, unit)
 }
@@ -200,8 +192,17 @@ const evaluateExtractFromUVCI = (operand: CertLogicExpression, index: number, da
 }
 
 
+const evaluateDccDateOfBirth = (operand: CertLogicExpression, data: any): Date => {
+    const evalOperand = evaluate(operand, data)
+    if (!(typeof evalOperand === "string")) {
+        throw new Error(`operand of "dccDateOfBirth" must be a string`)
+    }
+    return dccDateOfBirth(evalOperand)
+}
+
+
 export const evaluate = (expr: CertLogicExpression, data: any): any => {
-    if (typeof expr === "string" || isInt(expr) || typeof expr === "boolean") {
+    if (isCertLogicLiteral(expr)) {
         return expr
     }
     if (expr === null) {
@@ -240,6 +241,9 @@ export const evaluate = (expr: CertLogicExpression, data: any): any => {
         }
         if (operator === "extractFromUVCI") {
             return evaluateExtractFromUVCI(values[0], values[1], data)
+        }
+        if (operator === "dccDateOfBirth") {
+            return evaluateDccDateOfBirth(values[0], data)
         }
         throw new Error(`unrecognised operator: "${operator}"`)
     }

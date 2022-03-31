@@ -29,13 +29,11 @@ internal fun evaluateVar(args: JsonNode, data: JsonNode): JsonNode {
 
 internal fun evaluateIf(guard: JsonNode, then: JsonNode, else_: JsonNode, data: JsonNode): JsonNode {
     val evalGuard = evaluate(guard, data)
-    if (isTruthy(evalGuard)) {
-        return evaluate(then, data)
+    return when (boolsiness(evalGuard)) {
+        true -> evaluate(then, data)
+        false -> evaluate(else_, data)
+        null -> throw RuntimeException("if-guard evaluates to something neither truthy, nor falsy: $evalGuard")
     }
-    if (isFalsy(evalGuard)) {
-        return evaluate(else_, data)
-    }
-    throw RuntimeException("if-guard evaluates to something neither truthy, nor falsy: $evalGuard")
 }
 
 
@@ -64,10 +62,10 @@ internal fun evaluateInfix(operator: String, args: ArrayNode, data: JsonNode): J
             IntNode.valueOf(evalArgs[0].intValue() + evalArgs[1].intValue())
         }
         "and" -> args.fold(BooleanNode.TRUE as JsonNode) { acc, current ->
-            when {
-                isFalsy(acc) -> acc
-                isTruthy(acc) -> evaluate(current, data)
-                else -> throw RuntimeException("all operands of an \"and\" operation must be either truthy or falsy")
+            when (boolsiness(acc)) {
+                false -> acc
+                true -> evaluate(current, data)
+                null -> throw RuntimeException("all operands of an \"and\" operation must be either truthy or falsy")
             }
         }
         "<", ">", "<=", ">=" -> {
@@ -93,13 +91,11 @@ internal fun evaluateInfix(operator: String, args: ArrayNode, data: JsonNode): J
 
 internal fun evaluateNot(operandExpr: JsonNode, data: JsonNode): JsonNode {
     val operand = evaluate(operandExpr, data)
-    if (isFalsy(operand)) {
-        return BooleanNode.TRUE
+    return when (boolsiness(operand)) {
+        false -> BooleanNode.TRUE
+        true -> BooleanNode.FALSE
+        null -> throw RuntimeException("operand of ! evaluates to something neither truthy, nor falsy: $operand")
     }
-    if (isTruthy(operand)) {
-        return BooleanNode.FALSE
-    }
-    throw RuntimeException("operand of ! evaluates to something neither truthy, nor falsy: $operand")
 }
 
 
@@ -123,7 +119,7 @@ internal fun evaluatePlusTime(dateOperand: JsonNode, amount: JsonNode, unit: Jso
     val timeUnit = TimeUnit.valueOf(unit.textValue())
     val dateTimeStr = evaluate(dateOperand, data)
     if (dateTimeStr !is TextNode) {
-        throw RuntimeException("date argument of \"plusTime\" must be a string")
+        throw RuntimeException("date argument (#1) of \"plusTime\" must be a string")
     }
     return JsonDateTime.fromString(dateTimeStr.asText()).plusTime(amount.intValue(), timeUnit)
 }
@@ -162,6 +158,15 @@ internal fun evaluateExtractFromUVCI(operand: JsonNode, index: JsonNode, data: J
 }
 
 
+internal fun evaluateDccDateOfBirth(operand: JsonNode, data: JsonNode): JsonNode {
+    val evalOperand = evaluate(operand, data)
+    if (evalOperand !is TextNode) {
+        throw RuntimeException("operand of \"dccDateOfBirth\" must be a string")
+    }
+    return JsonDateTime.dccDateOfBirth(evalOperand.asText())
+}
+
+
 fun evaluate(expr: JsonNode, data: JsonNode): JsonNode = when (expr) {
     is TextNode -> expr
     is IntNode -> expr
@@ -186,6 +191,7 @@ fun evaluate(expr: JsonNode, data: JsonNode): JsonNode = when (expr) {
                 "plusTime" -> evaluatePlusTime(args[0], args[1], args[2], data)
                 "reduce" -> evaluateReduce(args[0], args[1], args[2], data)
                 "extractFromUVCI" -> evaluateExtractFromUVCI(args[0], args[1], data)
+                "dccDateOfBirth" -> evaluateDccDateOfBirth(args[0], data)
                 else -> throw RuntimeException("unrecognised operator: \"$operator\"")
             }
         }

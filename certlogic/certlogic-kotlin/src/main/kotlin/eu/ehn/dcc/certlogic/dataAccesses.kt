@@ -33,6 +33,7 @@ private fun gatherFrom(expr: JsonNode?, parent: JsonNode?): Iterable<DataAccessW
             "plusTime" -> values.at(0).flatMap(recurse) // 0: operand
             "reduce" -> values.at(0, 2).flatMap(recurse)    // 0: operand, 2: initial
             "extractFromUVCI" -> values.at(0).flatMap(recurse)  // 0: operand
+            "dccDateOfBirth" -> values.at(0).flatMap(recurse)  // 0: operand
 
             else -> throw Error("""operator not recognised by fields gatherer ("gatherFrom"): \"${operator}\"""")
         }
