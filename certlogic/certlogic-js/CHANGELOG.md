@@ -3,7 +3,8 @@
 ## 1.2.1
 
 * Align implementation of `and` operation with the specification: operands are evaluated lazily.
-* Fixed incorrect stated specification version to be 1.3.0.
+* Fixed incorrect stated specification version to 1.3.1.
+* Fix `plusTime` operation w.r.t. behaviour for leap days.
 
 
 ## 1.2.0

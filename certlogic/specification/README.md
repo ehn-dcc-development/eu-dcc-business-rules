@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.3.0**.
+The semantic version identification of this specification is: **1.3.1**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -229,9 +229,39 @@ The following items describe this conversion for the `plustime` operation in mor
 * The last eight formats specify sub-second time info, with any number of decimals being accepted.
   Any date(-time) is always normalised to milliseconds, with 3 places behind the decimal dot.
   All decimals beyond the 3rd one are ignored, effectively rounding _down_ to the nearest millisecond.
-* Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap years or leap seconds.
+* Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap days or leap seconds.
 
 Note that `plusTime` does not permit other date-time values: expressions such as `plusTime(plusTime("...", 0, "hour")`, 10, "day") are not valid.
+
+
+#### Leap days
+
+Note the following behaviour:
+
+| date | amount | time unit | result     |
+|-----|--------|------------|------------|
+| 2020-02-29 | 1 | day        | 2020-03-01 |
+| 2020-02-29 | 1 | month      | 2020-03-29 |
+| 2020-02-29 | 1 | year       | 2021-03-01 |
+
+The precise offsetting behaviour of `plusTime` is determined by the following JavaScript methods on the `Date` class:
+
+| time unit | JS methods | postfix |
+|-----------|------------|---------|
+| year      | `setUTCFullYear`, `getUTCFullYear` | `FullYear`
+| month     | `setUTCMonth`, `getUTCMonth` | `Month`
+| day       | `setUTCDate`, `getUTCDate` | `Date`
+| hour      | `setUTCHours`, `getUTCHours` | `Hours`
+
+These methods are then used as follows:
+
+```javascript
+dateTime.setUTC<postfix>(dateTime.getUTC<postfix> + amount)
+```
+
+where `dateTime` is the given date-time string converted to a `Date` object, `amount` is the given integer amount, and `<postfix>` can be read off from the table above.
+
+See [the (most recent) ECMA specification of the `Date` class](https://tc39.es/ecma262/#sec-date-objects) for more details.
 
 
 ### Reduction (`reduce`)

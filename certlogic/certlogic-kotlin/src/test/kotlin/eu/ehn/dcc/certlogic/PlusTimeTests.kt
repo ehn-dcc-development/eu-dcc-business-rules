@@ -46,22 +46,33 @@ internal class PlusTimeTests {
         check("2021-02-01T00:00:00.000Z", 1, TimeUnit.month, "2021-03-01T00:00:00.000Z")
         check("2021-12-01T00:00:00.000Z", 1, TimeUnit.month, "2022-01-01T00:00:00.000Z")
         check("2021-12-01T00:00:00.000Z", -12, TimeUnit.month, "2020-12-01T00:00:00.000Z")
-        check("2020-02-29T00:00:00.000Z", 1, TimeUnit.month, "2020-03-29T00:00:00.000Z")
     }
 
     @Test
     fun `works for year offsets`() {
         check("2021-02-01T00:00:00.000Z", 0, TimeUnit.year, "2021-02-01T00:00:00.000Z")
-        check("2021-02-01T00:00:00.000Z", 1, TimeUnit.year, "2022-02-01T00:00:00.000Z")
-        check("2021-02-01T00:00:00.000Z", -1, TimeUnit.year, "2020-02-01T00:00:00.000Z")
-        check("2021-02-01T00:00:00.000Z", 2, TimeUnit.year, "2023-02-01T00:00:00.000Z")
-        check("2020-02-29T00:00:00.000Z", 1, TimeUnit.year, "2021-03-01T00:00:00.000Z")
+        check("2021-07-01T00:00:00.000Z", 1, TimeUnit.year, "2022-07-01T00:00:00.000Z")
+        check("2021-10-01T00:00:00.000Z", -1, TimeUnit.year, "2020-10-01T00:00:00.000Z")
+        check("2021-12-01T00:00:00.000Z", 2, TimeUnit.year, "2023-12-01T00:00:00.000Z")
+        check("2004-02-28T00:00:00.000Z", -2, TimeUnit.year, "2002-02-28T00:00:00.000Z")
+        check("2004-02-28T00:00:00.000Z", 18, TimeUnit.year, "2022-02-28T00:00:00.000Z")
+        check("2004-02-28T00:00:00.000Z", -18, TimeUnit.year, "1986-02-28T00:00:00.000Z")
     }
 
     @Test
-    fun `works for leap years`() {
-        check("2004-02-28", 18, TimeUnit.year, "2022-02-28T00:00:00.000Z")
+    fun `works for leap days`() {
+        check("2020-02-29", 1, TimeUnit.day, "2020-03-01T00:00:00.000Z")
+        check("2020-03-01", -1, TimeUnit.day, "2020-02-29T00:00:00.000Z")
+        check("2020-02-29", 1, TimeUnit.month, "2020-03-29T00:00:00.000Z")
+        check("2020-03-29", -1, TimeUnit.month, "2020-02-29T00:00:00.000Z")
+        check("2020-02-29", 1, TimeUnit.year, "2021-03-01T00:00:00.000Z")
+        check("2021-03-01", -1, TimeUnit.year, "2020-03-01T00:00:00.000Z")
+        check("2020-02-29", -1, TimeUnit.year, "2019-03-01T00:00:00.000Z")
+        check("2020-02-29", 4, TimeUnit.year, "2024-02-29T00:00:00.000Z")
+        check("2020-02-29", -4, TimeUnit.year, "2016-02-29T00:00:00.000Z")
         check("2004-02-29", 18, TimeUnit.year, "2022-03-01T00:00:00.000Z")
+        check("2004-02-29", -18, TimeUnit.year, "1986-03-01T00:00:00.000Z")
+        check("2004-02-29", -2, TimeUnit.year, "2002-03-01T00:00:00.000Z")
     }
 
 }

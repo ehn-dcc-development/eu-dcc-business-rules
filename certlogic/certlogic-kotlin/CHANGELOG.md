@@ -3,6 +3,7 @@
 # 0.11.1
 
 * Align implementation of `and` operation with the specification: operands are evaluated lazily.
+* Fix `plusTime` operation w.r.t. behaviour for leap days.
 
 
 # 0.11.0
