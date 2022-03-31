@@ -66,8 +66,8 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
 
     public static JsonDateTime dccDateOfBirth(String dobString) {
         if (dobString.matches("^\\d{4}$")) {
-            int year = Integer.parseInt(dobString.substring(0, 4)) + 1;
-            return fromString(String.format("%04d-%02d-%02d", year, 1, 1));
+            int year = Integer.parseInt(dobString);
+            return fromString(String.format("%04d-12-31", year));
         }
         if (dobString.matches("^\\d{4}-\\d{2}$")) {
             int year = Integer.parseInt(dobString.substring(0, 4));
@@ -76,7 +76,7 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
                 year++;
                 month = 1;
             }
-            return fromString(String.format("%04d-%02d-%02d", year, month, 1));
+            return fromString(String.format("%04d-%02d-%02d", year, month, 1)).plusTime(-1, TimeUnit.day);
         }
         if (dobString.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
             return fromString(dobString);

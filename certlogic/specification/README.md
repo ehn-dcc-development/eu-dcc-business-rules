@@ -303,9 +303,11 @@ A DCC represents the date of birth of the DCC's holder in the `dob` field as a s
 
 The `dccDateOfBirth` operation performs a conversion of a string value in any of these formats to a date-time, as follows:
 
-* `YYYY` is converted to `ZZZZ-01-01T00:00:00.000Z`, with `ZZZZ` = `YYYY` + 1 = first day of the year after `YYYY`.
-* `YYYY-MM` is converted to `YYYY-NN-01T00:00:00.000Z`, with `NN` = `MM` + 1  = first day of the month after `YYYY-MM`.
+* `YYYY` is converted to `YYYY-12-31T00:00:00.000Z`.
+* `YYYY-MM` is converted to `YYYY-MM-DDT00:00:00.000Z`, with `DD` = last day of the month `YYYY-MM`.
 * `YYYY-MM-DD` is converted to `YYYY-MM-DDT00:00:00.000Z` the same way that `{ "plusTime": [ "<YYYY-MM-DD>", 0, "<any time unit>" ] }` does.
+
+As a mnemonic: `dccDateOfBirth` returns the last date consistent with the provided data.
 
 The primary use case for this operation is to check whether the DCC's holder is a minor, i.e. less than 18 years old.
 This can be achieved as follows:

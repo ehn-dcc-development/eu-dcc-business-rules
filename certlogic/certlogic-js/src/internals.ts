@@ -186,12 +186,12 @@ export const access = (data: any, path: string): any =>
 export const dccDateOfBirth = (str: string): Date => {
     const timeSuffix = "T00:00:00.000Z"
     if (str.match(/^\d{4}$/)) {
-        return new Date(`${Number(str)+1}-01-01${timeSuffix}`)
+        return new Date(`${str}-12-31${timeSuffix}`)
     }
     if (str.match(/^\d{4}-\d{2}$/)) {
         const date = new Date(`${str}-01${timeSuffix}`)
         date.setUTCMonth(date.getUTCMonth() + 1)
-        date.setUTCDate(1)
+        date.setUTCDate(0)
         return date
     }
     if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {

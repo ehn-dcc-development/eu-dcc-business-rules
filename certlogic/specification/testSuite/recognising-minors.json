@@ -1,8 +1,8 @@
 {
-  "name": "recognising minors",
+  "name": "recognising minors with the dccDateOfBirth operation",
   "cases": [
     {
-      "name": "should work as binary operator",
+      "name": "should work for full/exact dates (YYYY)",
       "certLogicExpression": {
         "after": [
           {
@@ -41,7 +41,7 @@
               "dob": "2004-01-01"
             },
             "external": {
-              "validationClock": "2022-01-01"
+              "validationClock": "2022-01-01T00:00:00.000Z"
             }
           },
           "expected": false
@@ -49,10 +49,46 @@
         {
           "data": {
             "payload": {
-              "dob": "2004-05-04"
+              "dob": "2004-01-01"
             },
             "external": {
-              "validationClock": "2022-05-03"
+              "validationClock": "2022-01-01T13:37:00.042Z"
+            }
+          },
+          "expected": false
+        }
+      ]
+    },
+    {
+      "name": "should work for partial dates YYYY-MM",
+      "certLogicExpression": {
+        "after": [
+          {
+            "dccDateOfBirth": [
+              {
+                "var": "payload.dob"
+              }
+            ]
+          },
+          {
+            "plusTime": [
+              {
+                "var": "external.validationClock"
+              },
+              -18,
+              "year"
+            ]
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-01"
+            },
+            "external": {
+              "validationClock": "2022-01-30T13:37:00.042Z"
             }
           },
           "expected": true
@@ -60,10 +96,10 @@
         {
           "data": {
             "payload": {
-              "dob": "2004-05-04"
+              "dob": "2004-01"
             },
             "external": {
-              "validationClock": "2022-05-04"
+              "validationClock": "2022-01-31T13:37:00.042Z"
             }
           },
           "expected": false
@@ -71,21 +107,46 @@
         {
           "data": {
             "payload": {
-              "dob": "2004-02"
+              "dob": "2004-01"
             },
             "external": {
-              "validationClock": "2022-03-01"
+              "validationClock": "2022-02-01T13:37:00.042Z"
             }
           },
           "expected": false
-        },
+        }
+      ]
+    },
+    {
+      "name": "should work for partial dates YYYY",
+      "certLogicExpression": {
+        "after": [
+          {
+            "dccDateOfBirth": [
+              {
+                "var": "payload.dob"
+              }
+            ]
+          },
+          {
+            "plusTime": [
+              {
+                "var": "external.validationClock"
+              },
+              -18,
+              "year"
+            ]
+          }
+        ]
+      },
+      "assertions": [
         {
           "data": {
             "payload": {
-              "dob": "2004-02"
+              "dob": "2004"
             },
             "external": {
-              "validationClock": "2022-02-28"
+              "validationClock": "2022-12-30T13:37:00.042Z"
             }
           },
           "expected": true
@@ -96,7 +157,7 @@
               "dob": "2004"
             },
             "external": {
-              "validationClock": "2023-01-01"
+              "validationClock": "2022-12-31T13:37:00.042Z"
             }
           },
           "expected": false
@@ -107,10 +168,69 @@
               "dob": "2004"
             },
             "external": {
-              "validationClock": "2022-12-31"
+              "validationClock": "2023-01-01T13:37:00.042Z"
+            }
+          },
+          "expected": false
+        }
+      ]
+    },
+    {
+      "name": "should work for partial dates YYYY-MM involving leap days",
+      "certLogicExpression": {
+        "after": [
+          {
+            "dccDateOfBirth": [
+              {
+                "var": "payload.dob"
+              }
+            ]
+          },
+          {
+            "plusTime": [
+              {
+                "var": "external.validationClock"
+              },
+              -18,
+              "year"
+            ]
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-02"
+            },
+            "external": {
+              "validationClock": "2022-02-27T13:37:00.042Z"
             }
           },
           "expected": true
+        },
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-02"
+            },
+            "external": {
+              "validationClock": "2022-02-28T13:37:00.042Z"
+            }
+          },
+          "expected": true,
+          "message": "last day of February 2004 is 29th + 18 years == 2022-03-01, so still a minor on 2022-02-28"
+        },
+        {
+          "data": {
+            "payload": {
+              "dob": "2004-02"
+            },
+            "external": {
+              "validationClock": "2022-03-01T13:37:00.042Z"
+            }
+          },
+          "expected": false
         }
       ]
     }
