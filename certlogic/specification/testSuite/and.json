@@ -19,26 +19,29 @@
             true,
             false
           ],
-          "expected": false
+          "expected": false,
+          "message": "true and false -> false"
         },
         {
           "data": [
             null,
             true
           ],
-          "expected": null
+          "expected": null,
+          "message": "null and true -> null"
         },
         {
           "data": [
             true,
             {}
           ],
-          "expected": {}
+          "expected": {},
+          "message": "true and {} -> {}"
         }
       ]
     },
     {
-      "name": "should work as ternary operator",
+      "name": "should return first falsy operand",
       "certLogicExpression": {
         "and": [
           {
@@ -59,7 +62,89 @@
             null,
             false
           ],
-          "expected": null
+          "expected": null,
+          "message": "true and null and false -> null"
+        },
+        {
+          "data": [
+            "",
+            true,
+            false
+          ],
+          "expected": "",
+          "message": "<empty string> and true and false -> <empty string>"
+        },
+        {
+          "data": [
+            true,
+            true,
+            0
+          ],
+          "expected": 0,
+          "message": "true and true and 0 -> 0"
+        }
+      ]
+    },
+    {
+      "name": "should return last truthy operand",
+      "certLogicExpression": {
+        "and": [
+          true,
+          true,
+          1
+        ]
+      },
+      "assertions": [
+        {
+          "data": {},
+          "expected": 1,
+          "message": "true and true and 1 -> 1"
+        }
+      ]
+    },
+    {
+      "name": "should evaluate operands lazily",
+      "certLogicExpression": {
+        "and": [
+          {
+            "var": "x"
+          },
+          {
+            "after": [
+              {
+                "plusTime": [
+                  {
+                    "var": "x"
+                  },
+                  0,
+                  "hour"
+                ]
+              },
+              {
+                "plusTime": [
+                  "1970-01-01",
+                  0,
+                  "hour"
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "assertions": [
+        {
+          "data": {
+            "x": ""
+          },
+          "expected": "",
+          "message": "evaluates to <empty string> while evaluating 2nd argument would throw an error"
+        },
+        {
+          "data": {
+            "x": "2022-04-01"
+          },
+          "expected": true,
+          "message": "evaluates 2nd argument when it's not falsy"
         }
       ]
     }

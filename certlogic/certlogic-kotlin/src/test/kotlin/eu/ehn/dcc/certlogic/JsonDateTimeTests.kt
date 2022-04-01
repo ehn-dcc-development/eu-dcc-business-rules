@@ -64,13 +64,14 @@ internal class JsonDateTimeTests {
     }
 
     @Test
-    fun `should work for short forms of DOBs`() {
+    fun `should work for partial dates and empty strings`() {
         fun shouldFail(str: String) {
             val exception = assertThrows<DateTimeParseException> {
                 JsonDateTime.fromString(str)
             }
             assertEquals("not an allowed date or date-time format: $str", exception.message)
         }
+        shouldFail("")
         shouldFail("1997")
         shouldFail("1997-04")
     }

@@ -43,6 +43,24 @@ internal fun evaluateInfix(operator: String, args: ArrayNode, data: JsonNode): J
         "<", ">", "<=", ">=", "after", "before", "not-after", "not-before" -> if (args.size() < 2 || args.size() > 3) throw RuntimeException("an operation with operator \"$operator\" must have 2 or 3 operands")
         else -> if (args.size() != 2) throw RuntimeException("an operation with operator \"$operator\" must have 2 operands")
     }
+    // handle `and` first, because it needs to evaluate its operands lazily:
+    if (operator == "and") {
+        return args.fold(BooleanNode.TRUE as JsonNode) { acc, current ->
+            when (boolsiness(acc)) {
+                false -> acc
+                true -> {
+                    val evalCurrent = evaluate(current, data)
+                    // check (immediately) if the evaluated operand is truthy or falsy:
+                    if (boolsiness(evalCurrent) == null) {
+                        throw RuntimeException("all operands of an \"and\" operation must be either truthy or falsy")
+                    }
+                    evalCurrent // (no return statement, as that returns from the whole function)
+                    // (evalCurrent -> acc, so its boolsiness is recomputed next iteration)
+                }
+                null -> throw IllegalStateException("should have thrown already")   // to keep compiler happy
+            }
+        }
+    }
     val evalArgs = args.map { arg -> evaluate(arg, data) }
     return when (operator) {
         "===" -> BooleanNode.valueOf(evalArgs[0] == evalArgs[1])
@@ -60,13 +78,6 @@ internal fun evaluateInfix(operator: String, args: ArrayNode, data: JsonNode): J
                 throw RuntimeException("operands of a "+" operator must both be integers")
             }
             IntNode.valueOf(evalArgs[0].intValue() + evalArgs[1].intValue())
-        }
-        "and" -> args.fold(BooleanNode.TRUE as JsonNode) { acc, current ->
-            when (boolsiness(acc)) {
-                false -> acc
-                true -> evaluate(current, data)
-                null -> throw RuntimeException("all operands of an \"and\" operation must be either truthy or falsy")
-            }
         }
         "<", ">", "<=", ">=" -> {
             if (!evalArgs.all { it is IntNode }) {

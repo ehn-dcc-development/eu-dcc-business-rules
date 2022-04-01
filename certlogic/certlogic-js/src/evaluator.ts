@@ -87,6 +87,26 @@ const evaluateInfix = (operator: string, values: CertLogicExpression[], data: an
             break
         }
     }
+    // handle `and` first, because it needs to evaluate its operands lazily:
+    if (operator === "and") {
+        return values.reduce(
+            (acc: any, current: CertLogicExpression) => {
+                switch (boolsiness(acc)) {
+                    case false: return acc
+                    case true: {
+                        const evalCurrent = evaluate(current, data)
+                        // check (immediately) if the evaluated operand is truthy or falsy:
+                        if (boolsiness(evalCurrent) === undefined) {
+                            throw new Error(`all operands of an "and" operation must be either truthy or falsy`)
+                        }
+                        return evalCurrent
+                        // (evalCurrent -> acc, so its boolsiness is recomputed next iteration)
+                    }
+                }
+            },
+            true
+        )
+    }
     const evalArgs = values.map((arg) => evaluate(arg, data))
     switch (operator) {
         case "===": return evalArgs[0] === evalArgs[1]
@@ -105,16 +125,6 @@ const evaluateInfix = (operator: string, values: CertLogicExpression[], data: an
             }
             return l + r
         }
-        case "and": return values.reduce(
-            (acc: any, current: CertLogicExpression) => {
-                switch (boolsiness(acc)) {
-                    case false: return acc
-                    case true: return evaluate(current, data)
-                    case undefined: throw new Error(`all operands of an "and" operation must be either truthy or falsy`)
-                }
-            },
-            true
-        )
         case "<":
         case ">":
         case "<=":

@@ -147,10 +147,11 @@ describe("parsing of dates/date-times", () => {
         check("2021-06-29T14:02:07Z", "2021-06-29T14:02:07.000Z", "BE")
     })
 
-    it("should not work for short forms of DOBs", () => {
+    it("should work for partial dates and empty strings", () => {
         const shouldFail = (str: string) => {
             throws(() => dateFromString(str), Error, `not an allowed date or date-time format: ${str}`)
         }
+        shouldFail("")
         shouldFail("1997")
         shouldFail("1997-04")
     })

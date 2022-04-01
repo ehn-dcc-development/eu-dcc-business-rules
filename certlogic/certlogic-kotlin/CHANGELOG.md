@@ -1,5 +1,10 @@
 # Change log
 
+# 0.11.1
+
+* Align implementation of `and` operation with the specification: operands are evaluated lazily.
+
+
 # 0.11.0
 
 * Add a `dccDateOfBirth` operation to convert date of birth (DOB) values in the EU DCC to a date.
