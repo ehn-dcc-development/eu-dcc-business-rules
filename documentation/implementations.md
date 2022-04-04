@@ -34,7 +34,7 @@ or the equivalent ES6- statement
 ## JVM
 
 * [`certlogic-kotlin`](../certlogic/certlogic-kotlin): a greenfield Kotlin implementation, 
-    Releases are available [on GitHub](https://github.com/ehn-dcc-development/dgc-business-rules/releases/tag/latest), and also as [GitHub Package](https://github.com/ehn-dcc-development/dgc-business-rules/packages/849466).
+    Releases are available [on GitHub](https://github.com/ehn-dcc-development/dgc-business-rules/releases/latest), and also as [GitHub Maven Package](https://github.com/ehn-dcc-development/dgc-business-rules/packages/849466).
     Note that you have to modify your `~/.m2/settings.xml` to be able to retrieve a GitHub Package: see [this page](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-apache-maven-registry).
 
 * [`json-logic-java`](https://github.com/jamsesso/json-logic-java): Java implementation of JsonLogic which has been verified to comply with the CertLogic test suite.
@@ -46,8 +46,6 @@ or the equivalent ES6- statement
 
 * [`json-logic-swift`](https://github.com/eu-digital-green-certificates/json-logic-swift): a Swift implementation of JsonLogic, conforming to the CertLogic spec.
   Releases are available [on GitHub](https://github.com/eu-digital-green-certificates/json-logic-swift/releases/latest).
-* 
-* [`dgc-certlogic-ios`](https://github.com/eu-digital-green-certificates/dgc-certlogic-ios): a Swift implementation of CertLogic.
 
 
 ## Go
