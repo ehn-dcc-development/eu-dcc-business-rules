@@ -1,5 +1,10 @@
 # Change log
 
+## 0.3.0
+
+* Add rendering of `dccDateOfBirth` operation.
+
+
 ## 0.2.0
 
 * Fix that not all operands of an infix operator were rendered.
