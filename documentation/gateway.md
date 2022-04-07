@@ -6,6 +6,8 @@ This document's purpose is to provide some (hopefully) helpful links and pointer
 * [GitHub repo of the implementation](https://github.com/eu-digital-green-certificates/dgc-gateway/)
     * [Documentation in repo &uarr;](https://github.com/eu-digital-green-certificates/dgc-gateway/tree/main/docs)
 
+* [An overview of the constraints checked by the Gateway's API](https://github.com/eu-digital-green-certificates/dgc-business-rules-testdata/blob/main/tooling/Gateway-constraints.adoc)
+
 * [Onboarding Checklist](https://github.com/eu-digital-green-certificates/dgc-participating-countries/blob/main/gateway/OnboardingChecklist.md) with useful info on URLs, and authentication (keys)
 
 * [Dutch DCGC integration tooling](https://github.com/minvws/nl-covid19-coronacheck-app-dgcg-integration)

@@ -1,5 +1,10 @@
 # Change log
 
+## 0.4.1
+
+* Upgrade deps, m.n. `certlogic-js` &rarr; 1.2.0
+
+
 ## 0.4.0
 
 * Extract rule selection logic as a separate API endpoint.
