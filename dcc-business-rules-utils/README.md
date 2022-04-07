@@ -1,6 +1,6 @@
 # DCC Business Rules Utilities
 
-Version: 0.4.0
+Version: 0.4.1
 
 This NPM package contains a number of useful “things” for working with EU DCC business rules conforming to the [EU DCC Validation Rules specification](https://ec.europa.eu/health/sites/default/files/ehealth/docs/eu-dcc_validation-rules_en.pdf) (link to PDF).
 These things are:
