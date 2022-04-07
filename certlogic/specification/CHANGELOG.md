@@ -2,6 +2,7 @@
 
 | Version | Date | Changes |
 |---|------|---|
+| 1.3.1 | 20220405 | Add a reference on precise behaviour of `plusTime` w.r.t. leap days.
 | 1.3.0 | 20220330 | Add a `dccDateOfBirth` operation to convert date of birth (DOB) values of the form `YYYY[-MM[-DD]]` in the EU DCC to dates. Also clarify documentation of `plusTime` (again).
 | 1.2.5 | 20220221 | Clarify truthy vs. falsy some more.
 | 1.2.4 | 20211217 | Clarify semantics of the `plusTime` operation a bit more. Rename “UVCI” (incl. misspellings) to “UCI” where possible.

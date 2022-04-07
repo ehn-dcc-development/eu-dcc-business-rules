@@ -134,11 +134,7 @@ export const plusTime = (dateTimeLikeStr: string, amount: number, unit: TimeUnit
     } else if (unit === "month") {
        dateTime.setUTCMonth(dateTime.getUTCMonth() + amount)
     } else if (unit === "year") {
-       const wasMonth = dateTime.getUTCMonth()
        dateTime.setUTCFullYear(dateTime.getUTCFullYear() + amount)
-       if (dateTime.getUTCMonth() > wasMonth) {
-           dateTime.setUTCDate(dateTime.getUTCDay() - 1)
-       }
     } else {
         throw new Error(`unknown time unit "${unit}"`)
     }

@@ -1,5 +1,12 @@
 # Change log
 
+## 1.2.1
+
+* Align implementation of `and` operation with the specification: operands are evaluated lazily.
+* Fixed incorrect stated specification version to 1.3.1.
+* Fix `plusTime` operation w.r.t. behaviour for leap days.
+
+
 ## 1.2.0
 
 * Add a `dccDateOfBirth` operation to convert date of birth (DOB) values in the EU DCC to a date.
@@ -56,7 +63,7 @@
 ## 1.0.3
 
 * Fix a circular dependency in the transpiled source (API doesn't change)
-* Build in check for ciruclar dependency in the transpiled source
+* Build in check for circular dependency in the transpiled source
 * Document development details in README
 * Remove unnecessary escaping from regex
 * Add an NPM ignore to only ship what's really needed

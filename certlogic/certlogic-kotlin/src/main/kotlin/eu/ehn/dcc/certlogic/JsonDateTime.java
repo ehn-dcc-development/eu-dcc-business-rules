@@ -92,8 +92,8 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
         this._value = dateTime;
     }
 
-    private static boolean isNotBefore(OffsetDateTime left, OffsetDateTime right) {
-        return left.isEqual(right) || left.isAfter(right);
+    private static boolean isLeapYear(int year) {
+        return year%400 == 0 || (year%4 == 0 && year%100 != 0);
     }
 
     public JsonDateTime plusTime(int amount, TimeUnit unit) {
@@ -105,12 +105,11 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
             case hour: return new JsonDateTime(this._value.plusHours(amount));
             case month: return new JsonDateTime(this._value.plusMonths(amount));
             case year: {
-                int year = this._value.getYear();
-                boolean isLeapYear = year%400 == 0 || (year%4 == 0 && year%100 != 0);
-                boolean needsInc = isLeapYear && isNotBefore(this._value, OffsetDateTime.of(year, 2, 29, 0, 0, 0, 0, this._value.getOffset()));
+                boolean startsOnLeapDay = this._value.getMonthValue() == 2 && this._value.getDayOfMonth() == 29;
+                boolean needsPlusOneDay = startsOnLeapDay && !isLeapYear(this._value.getYear() + amount);
                 return new JsonDateTime(this._value
                         .plusYears(amount)
-                        .plusDays(needsInc ? 1 : 0)
+                        .plusDays(needsPlusOneDay ? 1 : 0)
                     );
             }
             default: throw new RuntimeException(String.format("time unit \"%s\" not handled", unit));

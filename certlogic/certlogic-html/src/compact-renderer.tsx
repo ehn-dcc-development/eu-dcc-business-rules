@@ -119,6 +119,13 @@ export const CompactExprRendering = ({ expr }: { expr: CertLogicExpression }) =>
                     <span className="keyword">)</span>
                 </div>
             }
+            case "dccDateOfBirth": {
+                return <div className="operation">
+                    <span className="keyword">DCC-DOB(</span>
+                    <CompactExprRendering expr={values[0]} />
+                    <span className="keyword">)</span>
+                </div>
+            }
         }
     }
     return <span className="error">no rendering defined (yet) for: {JSON.stringify(expr)}</span>
