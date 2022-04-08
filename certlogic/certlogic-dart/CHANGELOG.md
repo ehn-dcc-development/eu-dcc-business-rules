@@ -1,4 +1,12 @@
-## 0.0.6 28/12/2021
+## 0.1.0 2022-04-08
+
+* Align implementation of `and` operation with the specification: operands are evaluated lazily.
+* Fix `plusTime` operation w.r.t. behaviour for leap days.
+* Add a `dccDateOfBirth` operation to convert date of birth (DOB) values in the EU DCC to a date.
+  Such DOBs may be “partial dates” of the form YYYY or YYYY-MM.
+  See [the specification](../specification/README.md#) for more details.
+
+## 0.0.6 2021-12-28
 
 * Implemented extractFromUVCI with alias extractFromUCI
 
