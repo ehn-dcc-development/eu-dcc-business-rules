@@ -2,8 +2,9 @@ import 'package:certlogic_dart/certlogic_dart.dart';
 import 'package:test/test.dart';
 
 void main() {
+
   group('truthy and falsy', () {
-    test('truthy ', () {
+    test('truthy', () {
       expect(CertLogicInternals.isTruthy(null), false);
       expect(CertLogicInternals.isTruthy(false), false);
       expect(CertLogicInternals.isTruthy(true), true);
@@ -17,7 +18,7 @@ void main() {
       expect(CertLogicInternals.isTruthy(0), false);
     });
 
-    test('falsy ', () {
+    test('falsy', () {
       expect(CertLogicInternals.isFalsy(null), true);
       expect(CertLogicInternals.isFalsy(false), true);
       expect(CertLogicInternals.isFalsy(true), false);
@@ -29,6 +30,20 @@ void main() {
       expect(CertLogicInternals.isFalsy(''), true);
       expect(CertLogicInternals.isFalsy(42), false);
       expect(CertLogicInternals.isFalsy(0), true);
+    });
+
+    test('boolsiness', () {
+      expect(CertLogicInternals.boolsiness(null), false);
+      expect(CertLogicInternals.boolsiness(false), false);
+      expect(CertLogicInternals.boolsiness(true), true);
+      expect(CertLogicInternals.boolsiness([]), false);
+      expect(CertLogicInternals.boolsiness(['foo']), true);
+      expect(CertLogicInternals.boolsiness({}), false);
+      expect(CertLogicInternals.boolsiness({'foo': 'bar'}), true);
+      expect(CertLogicInternals.boolsiness('foo'), true);
+      expect(CertLogicInternals.boolsiness(''), false);
+      expect(CertLogicInternals.boolsiness(42), true);
+      expect(CertLogicInternals.boolsiness(0), false);
     });
   });
 
@@ -42,7 +57,6 @@ void main() {
     test(
         'construct a date from a string without time information (compliant with a JSON Schema \'date\' formatted string)',
         () {
-      check('2021-05-04', '2021-05-04T00:00:00.000Z');
       check('2021-05-04', '2021-05-04T00:00:00.000Z');
     });
 
@@ -82,7 +96,7 @@ void main() {
     });
 
     test(
-        'construct date-times from strings which have a \'short\' timezone offset',
+        'construct date-times from strings which have a "short" timezone offset',
         () {
       check('2021-08-01T00:00:00+1:00', '2021-07-31T23:00:00.000Z');
     });
@@ -91,6 +105,20 @@ void main() {
       check('2021-05-20T12:34:56+00:00', '2021-05-20T12:34:56.000Z', 'SI');
       check('2021-06-29T14:02:07Z', '2021-06-29T14:02:07.000Z', 'BE');
     });
+
+    test('should fail on partial dates and empty strings', () {
+      void shouldFail(String str) {
+        expect(
+          () => CertLogicInternals.dateFromString(str),
+          throwsException,
+          reason: 'not an allowed date or date-time format: ${str}'
+        );
+      }
+      shouldFail('');
+      shouldFail('1997');
+      shouldFail('1997-04');
+    });
+
   });
 
   group('plusTime', () {
@@ -194,21 +222,50 @@ void main() {
           '2022-01-01T00:00:00.000Z');
       check('2021-12-01T00:00:00.000Z', -12, CertLogicTimeUnit.MONTH,
           '2020-12-01T00:00:00.000Z');
-      check('2020-02-29T00:00:00.000Z', 1, CertLogicTimeUnit.MONTH,
-          '2020-03-29T00:00:00.000Z');
     });
 
     test('works for year offsets', () {
       check('2021-02-01T00:00:00.000Z', 0, CertLogicTimeUnit.YEAR,
           '2021-02-01T00:00:00.000Z');
-      check('2021-02-01T00:00:00.000Z', 1, CertLogicTimeUnit.YEAR,
-          '2022-02-01T00:00:00.000Z');
-      check('2021-02-01T00:00:00.000Z', -1, CertLogicTimeUnit.YEAR,
-          '2020-02-01T00:00:00.000Z');
-      check('2021-02-01T00:00:00.000Z', 2, CertLogicTimeUnit.YEAR,
-          '2023-02-01T00:00:00.000Z');
-      check('2020-02-29T00:00:00.000Z', 1, CertLogicTimeUnit.YEAR,
-          '2021-02-28T00:00:00.000Z');
+      check('2021-07-01T00:00:00.000Z', 1, CertLogicTimeUnit.YEAR,
+          '2022-07-01T00:00:00.000Z');
+      check('2021-10-01T00:00:00.000Z', -1, CertLogicTimeUnit.YEAR,
+          '2020-10-01T00:00:00.000Z');
+      check('2021-12-01T00:00:00.000Z', 2, CertLogicTimeUnit.YEAR,
+          '2023-12-01T00:00:00.000Z');
+      check('2004-02-28T00:00:00.000Z', -2, CertLogicTimeUnit.YEAR,
+          '2002-02-28T00:00:00.000Z');
+      check('2004-02-28T00:00:00.000Z', 18, CertLogicTimeUnit.YEAR,
+          '2022-02-28T00:00:00.000Z');
+      check('2004-02-28T00:00:00.000Z', -18, CertLogicTimeUnit.YEAR,
+          '1986-02-28T00:00:00.000Z');
+    });
+
+    test('works for leap days', () {
+      check('2020-02-29', 1, CertLogicTimeUnit.DAY,
+          '2020-03-01T00:00:00.000Z');
+      check('2020-03-01', -1, CertLogicTimeUnit.DAY,
+          '2020-02-29T00:00:00.000Z');
+      check('2020-02-29', 1, CertLogicTimeUnit.MONTH,
+          '2020-03-29T00:00:00.000Z');
+      check('2020-03-29', -1, CertLogicTimeUnit.MONTH,
+          '2020-02-29T00:00:00.000Z');
+      check('2020-02-29', 1, CertLogicTimeUnit.YEAR,
+          '2021-03-01T00:00:00.000Z');
+      check('2021-03-01', -1, CertLogicTimeUnit.YEAR,
+          '2020-03-01T00:00:00.000Z');
+      check('2020-02-29', -1, CertLogicTimeUnit.YEAR,
+          '2019-03-01T00:00:00.000Z');
+      check('2020-02-29', 4, CertLogicTimeUnit.YEAR,
+          '2024-02-29T00:00:00.000Z');
+      check('2020-02-29', -4, CertLogicTimeUnit.YEAR,
+          '2016-02-29T00:00:00.000Z');
+      check('2004-02-29', 18, CertLogicTimeUnit.YEAR,
+          '2022-03-01T00:00:00.000Z');
+      check('2004-02-29', -18, CertLogicTimeUnit.YEAR,
+          '1986-03-01T00:00:00.000Z');
+      check('2004-02-29', -2, CertLogicTimeUnit.YEAR,
+          '2002-03-01T00:00:00.000Z');
     });
   });
 
@@ -260,4 +317,81 @@ void main() {
       expect(CertLogicInternals.extractFromUVCI(uvci, 5), 'f');
     });
   });
+
+  group('perform data access', () {
+    void check(dynamic data, String path, dynamic expected) {
+      expect(CertLogicInternals.access(data, path), expected);
+      // expect does a deep-equals, apparently?
+    }
+
+    test('empty string ~ \'it\'', () {
+      check({}, "", {});
+      check([], "", []);
+      check('', '', '');
+      check(null, "", null);
+    });
+
+    test('null stays null', () {
+      check(null, 'x', null);
+      check(null, '10', null);
+      check(null, 'x.y', null);
+      check(null, 'x.0.z', null);
+    });
+
+    test('array access', () {
+      const array = [0, 1, 1, 2, 3, 5];
+      check(array, '5', 5);
+      check(array, '-1', null);
+      check(array, '42', null);
+    });
+
+    test('access on non-objects/arrays -> null', () {
+      check('foo', 'x', null);
+      check(42, 'x', null);
+      check(true, 'x', null);
+    });
+
+    test('object access', () {
+      const object = { 'x': 'foo' };
+      check(object, 'x', 'foo');
+    });
+
+    test('nested object access', () {
+      const object = { 'x': [ { 'z': 'foo' } ] };
+      check(object, 'x.0.z', 'foo');
+    });
+  });
+
+  group('dccDateOfBirth', () {
+    void check(String dob, String expected) {
+      expect(CertLogicInternals.dccDateOfBirth(dob).toUtc(),
+          DateTime.parse(expected).toUtc());
+    }
+
+    test('works for YYYY', () {
+      check('2004', '2004-12-31T00:00:00.000Z');
+      check('2021', '2021-12-31T00:00:00.000Z');
+    });
+
+    test('works for YYYY-MM', () {
+      check('2004-01', '2004-01-31T00:00:00.000Z');
+      check('2004-02', '2004-02-29T00:00:00.000Z');
+      check('2003-02', '2003-02-28T00:00:00.000Z');
+      check('2004-03', '2004-03-31T00:00:00.000Z');
+      check('2004-04', '2004-04-30T00:00:00.000Z');
+      check('2004-05', '2004-05-31T00:00:00.000Z');
+      check('2004-06', '2004-06-30T00:00:00.000Z');
+      check('2004-07', '2004-07-31T00:00:00.000Z');
+      check('2004-08', '2004-08-31T00:00:00.000Z');
+      check('2004-09', '2004-09-30T00:00:00.000Z');
+      check('2004-10', '2004-10-31T00:00:00.000Z');
+      check('2004-11', '2004-11-30T00:00:00.000Z');
+      check('2004-12', '2004-12-31T00:00:00.000Z');
+    });
+
+    test('works for YYYY-MM-DD', () {
+      check('2021-05-04', '2021-05-04T00:00:00.000Z');
+    });
+  });
+
 }

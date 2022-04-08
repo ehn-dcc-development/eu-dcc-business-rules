@@ -1,6 +1,8 @@
 import 'package:certlogic_dart/src/typings.dart';
+import 'package:certlogic_dart/src/evaluate.dart';
 
 class CertLogicInternals {
+
   static bool isFalsy(dynamic value) =>
       value == false ||
       value == null ||
@@ -9,7 +11,23 @@ class CertLogicInternals {
       (value is Iterable && value.isEmpty) ||
       (value is Map && value.isEmpty);
 
-  static bool isTruthy(dynamic value) => !isFalsy(value);
+  static bool isTruthy(dynamic value) =>
+      value == true ||
+      (value is String && !value.isEmpty) ||
+      (value is num && value != 0) ||
+      (value is Iterable && !value.isEmpty) ||
+      (value is Map && !value.isEmpty);
+
+  static bool? boolsiness(dynamic value) {
+    if (isTruthy(value)) {
+      return true;
+    }
+    if (isFalsy(value)) {
+      return false;
+    }
+    return null;
+  }
+
 
   /// NOTE:
   /// Effectively, any date is always converted to the corresponding ms-precise date-time
@@ -31,6 +49,7 @@ class CertLogicInternals {
     return DateTime.utc(dateTime.year, dateTime.month, dateTime.day,
         dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
   }
+
 
   static DateTime plusTime(
       String dateTimeLikeStr, int amount, CertLogicTimeUnit unit) {
@@ -84,6 +103,7 @@ class CertLogicInternals {
     }
   }
 
+
   static const optionalPrefix = "URN:UVCI:";
 
   /// returns The fragment with given index from the UVCI string
@@ -99,4 +119,52 @@ class CertLogicInternals {
     final fragments = prefixlessUvci.split(RegExp(r'[/#:]'));
     return index < fragments.length ? fragments[index] : null;
   }
+
+
+  static dynamic access(dynamic data, String path) {
+    if (path == '') return data;
+    var returnData = data;
+    path.split('.').forEach((fragment) {
+      if (returnData == null) return;
+      if (returnData is Iterable) {
+        try {
+          final index = int.parse(fragment);
+          if (index > (returnData as Iterable).length - 1) {
+            returnData = null;
+            return;
+          }
+          returnData = returnData[index];
+          return;
+        } catch (e) {
+          return;
+        }
+      }
+      if (returnData is Map) {
+        returnData = returnData[fragment];
+        return;
+      }
+    });
+    return returnData;
+  }
+
+  static final yyyyRegExp = new RegExp(r'^\d{4}$');
+  static final yyyymmRegExp = new RegExp(r'^\d{4}-\d{2}$');
+  static final yyyymmddRegExp = new RegExp(r'^\d{4}-\d{2}-\d{2}$');
+
+  /// returns A JavaScript {@see Date} representing the given date that may be partial (YYYY[-MM[-DD]]).
+  ///   See [the CertLogic specification](https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md) for details.
+  static DateTime dccDateOfBirth(String str) {
+    if (yyyyRegExp.hasMatch(str)) {
+      return dateFromString('${str}-12-31');
+    }
+    if (yyyymmRegExp.hasMatch(str)) {
+      final dateTime = dateFromString('${str}-01');
+      return DateTime.utc(dateTime.year, dateTime.month + 1, dateTime.day - 1, dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
+    }
+    if (yyyymmddRegExp.hasMatch(str)) {
+      return dateFromString(str);
+    }
+    throw CertLogicException('can\'t parse "${str}" as an EU DCC date-of-birth');
+  }
+
 }

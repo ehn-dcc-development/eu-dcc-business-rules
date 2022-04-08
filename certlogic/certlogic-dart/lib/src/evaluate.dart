@@ -16,29 +16,7 @@ class CertLogic {
     if (value is! String) {
       throw CertLogicException("not of the form { 'var': '<path>' }");
     }
-    if (value == '') return data;
-    var returnData = data;
-    value.split('.').forEach((fragment) {
-      if (returnData == null) return;
-      if (returnData is Iterable) {
-        try {
-          final index = int.parse(fragment);
-          if (index > (returnData as Iterable).length - 1) {
-            returnData = null;
-            return;
-          }
-          returnData = returnData[index];
-          return;
-        } catch (e) {
-          return;
-        }
-      }
-      if (returnData is Map) {
-        returnData = returnData[fragment];
-        return;
-      }
-    });
-    return returnData;
+    return CertLogicInternals.access(data, value);
   }
 
   static dynamic _evaluateIf(
@@ -59,6 +37,16 @@ class CertLogic {
           '"UVCI" argument (#1) of "extractFromUVCI" must be either a string or null');
     }
     return CertLogicInternals.extractFromUVCI(evalOperand, index);
+  }
+
+  static DateTime _evaluateDccDateOfBirth(
+      dynamic operand, dynamic data) {
+    final evalOperand = evaluate(operand, data);
+    if (evalOperand is! String) {
+      throw CertLogicException(
+          'operand of "dccDateOfBirth" must be a string');
+    }
+    return CertLogicInternals.dccDateOfBirth(evalOperand);
   }
 
   static bool Function(dynamic l, dynamic r) _compareFunctionFor(
@@ -152,6 +140,29 @@ class CertLogic {
               "an operation with operator '$operatorAsString' must have 2 operands");
         break;
     }
+    // [NOTE] This is an attempt to sync with a change in certlogic-js in 1.2.1;
+    //    commented-out for now, because it's compiling but not working properly yet.
+    // if (operatorAsString == 'and') {
+    //   dynamic acc = true;
+    //   values.forEach((dynamic current) {
+    //     switch (CertLogicInternals.boolsiness(acc)) {
+    //       case false:
+    //         return acc;
+    //       case true:
+    //         {
+    //           final evalCurrent = evaluate(current, data);
+    //           // check (immediately) if the evaluated operand is truthy or falsy:
+    //           if (CertLogicInternals.boolsiness(evalCurrent) == null) {
+    //             throw CertLogicException(
+    //                 'all operands of an "and" operation must be either truthy or falsy');
+    //           }
+    //           return evalCurrent;
+    //           // (evalCurrent -> acc, so its boolsiness is recomputed next iteration)
+    //         }
+    //     }
+    //   });
+    //   return acc;
+    // }
     final evalArgs = values.map<dynamic>((dynamic arg) => evaluate(arg, data));
     switch (operatorAsString) {
       case '===':
@@ -233,7 +244,7 @@ class CertLogic {
     }
     final dynamic dateTimeStr = evaluate(dateOperand, data);
     if (dateTimeStr is! String) {
-      throw CertLogicException("date argument of 'plusTime' must be a string");
+      throw CertLogicException("date argument (#1) of 'plusTime' must be a string");
     }
     return CertLogicInternals.plusTime(
         dateTimeStr, amount.toInt(), CertLogicTimeUnits.fromString(unit));
@@ -321,6 +332,10 @@ class CertLogic {
           operatorAsString == 'extractFromUCI') {
         return _evaluateExtractFromUVCI(
             values.elementAt(0), values.elementAt(1), data);
+      }
+      if (operatorAsString == 'dccDateOfBirth') {
+        return _evaluateDccDateOfBirth(
+            values.elementAt(0), data);
       }
       throw CertLogicException("unrecognised operator: '$operatorAsString'");
     }
