@@ -129,7 +129,7 @@ class CertLogicInternals {
       if (returnData is Iterable) {
         try {
           final index = int.parse(fragment);
-          if (index > (returnData as Iterable).length - 1) {
+          if (index < 0 || index > (returnData as Iterable).length - 1) {
             returnData = null;
             return;
           }
@@ -143,6 +143,7 @@ class CertLogicInternals {
         returnData = returnData[fragment];
         return;
       }
+      returnData = null;
     });
     return returnData;
   }
