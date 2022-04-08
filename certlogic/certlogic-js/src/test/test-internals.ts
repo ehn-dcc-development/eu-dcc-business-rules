@@ -37,10 +37,10 @@ describe("truthy and falsy", () => {
         isFalse(isTruthy(null))
         isFalse(isTruthy(false))
         isTrue(isTruthy(true))
-        isFalse(isTruthy([]), "empty array")
-        isTrue(isTruthy([ "foo" ]), "non-empty array")
-        isFalse(isTruthy({}), "empty object")
-        isTrue(isTruthy({ foo: "bar" }), "non-empty object")
+        isFalse(isTruthy([]))
+        isTrue(isTruthy([ "foo" ]))
+        isFalse(isTruthy({}))
+        isTrue(isTruthy({ foo: "bar" }))
         isTrue(isTruthy("foo"))
         isFalse(isTruthy(""))
         isTrue(isTruthy(42))
@@ -52,10 +52,10 @@ describe("truthy and falsy", () => {
         isTrue(isFalsy(null))
         isTrue(isFalsy(false))
         isFalse(isFalsy(true))
-        isTrue(isFalsy([]), "empty array")
-        isFalse(isFalsy([ "foo" ]), "non-empty array")
-        isTrue(isFalsy({}), "empty object")
-        isFalse(isFalsy({ foo: "bar" }), "non-empty object")
+        isTrue(isFalsy([]))
+        isFalse(isFalsy([ "foo" ]))
+        isTrue(isFalsy({}))
+        isFalse(isFalsy({ foo: "bar" }))
         isFalse(isFalsy("foo"))
         isTrue(isFalsy(""))
         isFalse(isFalsy(42))
@@ -147,7 +147,7 @@ describe("parsing of dates/date-times", () => {
         check("2021-06-29T14:02:07Z", "2021-06-29T14:02:07.000Z", "BE")
     })
 
-    it("should work for partial dates and empty strings", () => {
+    it("should fail on partial dates and empty strings", () => {
         const shouldFail = (str: string) => {
             throws(() => dateFromString(str), Error, `not an allowed date or date-time format: ${str}`)
         }
@@ -285,45 +285,45 @@ describe("extractFromUVCI", () => {
 
 describe("perform data access", () => {
 
-    const assert = (data: any, path: string, expected: any) =>
+    const check = (data: any, path: string, expected: any) =>
         deepEqual(access(data, path), expected)
 
     it("empty string ~ 'it'", () => {
-        assert({}, "", {})
-        assert([], "", [])
-        assert("", "", "")
-        assert(null, "", null)
-        assert(undefined, "", undefined)
+        check({}, "", {})
+        check([], "", [])
+        check("", "", "")
+        check(null, "", null)
+        check(undefined, "", undefined)
     })
 
     it("null stays null", () => {
-        assert(null, "x", null)
-        assert(null, "10", null)
-        assert(null, "x.y", null)
-        assert(null, "x.0.z", null)
+        check(null, "x", null)
+        check(null, "10", null)
+        check(null, "x.y", null)
+        check(null, "x.0.z", null)
     })
 
     it("array access", () => {
         const array = [0, 1, 1, 2, 3, 5]
-        assert(array, "5", 5)
-        assert(array, "-1", null)
-        assert(array, "42", null)
+        check(array, "5", 5)
+        check(array, "-1", null)
+        check(array, "42", null)
     })
 
     it("access on non-objects/arrays -> null", () => {
-        assert("foo", "x", null)
-        assert(42, "x", null)
-        assert(true, "x", null)
+        check("foo", "x", null)
+        check(42, "x", null)
+        check(true, "x", null)
     })
 
     it("object access", () => {
         const object = { x: "foo" }
-        assert(object, "x", "foo")
+        check(object, "x", "foo")
     })
 
     it("nested object access", () => {
         const object = { x: [ { z: "foo" } ] }
-        assert(object, "x.0.z", "foo")
+        check(object, "x.0.z", "foo")
     })
 
 })

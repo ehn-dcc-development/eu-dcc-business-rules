@@ -1,7 +1,9 @@
 import 'dart:core';
 import 'dart:io';
+
 import 'package:certlogic_dart/certlogic_dart.dart';
 import 'package:test/test.dart';
+
 import 'models.dart';
 
 void main() {
@@ -28,8 +30,8 @@ void main() {
         if (testCase.directive == TestDirective.SKIP) return;
         testCase.assertions.forEach((assertion) {
           if (assertion.directive == TestDirective.SKIP) return;
+          var result;
           try {
-            var result;
             try {
               result = CertLogic.evaluate(
                   assertion.certLogicExpression ?? testCase.certLogicExpression,
@@ -44,7 +46,8 @@ void main() {
             expect(result, assertion.expected);
             success++;
           } catch (e) {
-            failedNames.add('${testCase.name} - ${assertion.message}');
+            failedNames.add(
+                '${testCase.name} - ${assertion.message}, (${assertion.expected} != ${result})');
           }
         });
       });

@@ -16,29 +16,7 @@ class CertLogic {
     if (value is! String) {
       throw CertLogicException("not of the form { 'var': '<path>' }");
     }
-    if (value == '') return data;
-    var returnData = data;
-    value.split('.').forEach((fragment) {
-      if (returnData == null) return;
-      if (returnData is Iterable) {
-        try {
-          final index = int.parse(fragment);
-          if (index > (returnData as Iterable).length - 1) {
-            returnData = null;
-            return;
-          }
-          returnData = returnData[index];
-          return;
-        } catch (e) {
-          return;
-        }
-      }
-      if (returnData is Map) {
-        returnData = returnData[fragment];
-        return;
-      }
-    });
-    return returnData;
+    return CertLogicInternals.access(data, value);
   }
 
   static dynamic _evaluateIf(
@@ -59,6 +37,14 @@ class CertLogic {
           '"UVCI" argument (#1) of "extractFromUVCI" must be either a string or null');
     }
     return CertLogicInternals.extractFromUVCI(evalOperand, index);
+  }
+
+  static DateTime _evaluateDccDateOfBirth(dynamic operand, dynamic data) {
+    final evalOperand = evaluate(operand, data);
+    if (evalOperand is! String) {
+      throw CertLogicException('operand of "dccDateOfBirth" must be a string');
+    }
+    return CertLogicInternals.dccDateOfBirth(evalOperand);
   }
 
   static bool Function(dynamic l, dynamic r) _compareFunctionFor(
@@ -125,15 +111,28 @@ class CertLogic {
     }
   }
 
+  static dynamic _evaluateAnd(Iterable values, dynamic data) {
+    if (values.length < 2) {
+      throw CertLogicException(
+          "an 'and' operation must have at least 2 operands");
+    }
+    dynamic evaluated;
+    for (final current in values) {
+      evaluated = evaluate(current, data);
+      final evaluatedBool = CertLogicInternals.boolsiness(evaluated);
+      if (evaluatedBool == false) {
+        return evaluated;
+      } else if (evaluatedBool == null) {
+        throw CertLogicException(
+            'all operands of an "and" operation must be either truthy or falsy');
+      }
+    }
+    return evaluated;
+  }
+
   static dynamic _evaluateInfix(
       String operatorAsString, Iterable values, dynamic data) {
     switch (operatorAsString) {
-      case 'and':
-        if (values.length < 2) {
-          throw CertLogicException(
-              "an 'and' operation must have at least 2 operands");
-        }
-        break;
       case '<':
       case '>':
       case '<=':
@@ -176,9 +175,6 @@ class CertLogic {
           }
           return l + r;
         }
-      case 'and':
-        if (!evalArgs.any(CertLogicInternals.isFalsy)) return evalArgs.last;
-        return evalArgs.toList().firstWhere(CertLogicInternals.isFalsy);
       case '<':
       case '>':
       case '<=':
@@ -233,7 +229,8 @@ class CertLogic {
     }
     final dynamic dateTimeStr = evaluate(dateOperand, data);
     if (dateTimeStr is! String) {
-      throw CertLogicException("date argument of 'plusTime' must be a string");
+      throw CertLogicException(
+          "date argument (#1) of 'plusTime' must be a string");
     }
     return CertLogicInternals.plusTime(
         dateTimeStr, amount.toInt(), CertLogicTimeUnits.fromString(unit));
@@ -291,9 +288,11 @@ class CertLogic {
         final dynamic elseDo = values[2];
         return _evaluateIf(guard, then, elseDo, data);
       }
+      if (operatorAsString == 'and') {
+        return _evaluateAnd(values, data);
+      }
       if ([
         '===',
-        'and',
         '>',
         '<',
         '>=',
@@ -321,6 +320,9 @@ class CertLogic {
           operatorAsString == 'extractFromUCI') {
         return _evaluateExtractFromUVCI(
             values.elementAt(0), values.elementAt(1), data);
+      }
+      if (operatorAsString == 'dccDateOfBirth') {
+        return _evaluateDccDateOfBirth(values.elementAt(0), data);
       }
       throw CertLogicException("unrecognised operator: '$operatorAsString'");
     }

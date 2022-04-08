@@ -1,3 +1,4 @@
+import 'package:certlogic_dart/src/evaluate.dart';
 import 'package:certlogic_dart/src/typings.dart';
 
 class CertLogicInternals {
@@ -9,7 +10,22 @@ class CertLogicInternals {
       (value is Iterable && value.isEmpty) ||
       (value is Map && value.isEmpty);
 
-  static bool isTruthy(dynamic value) => !isFalsy(value);
+  static bool isTruthy(dynamic value) =>
+      value == true ||
+      (value is String && value.isNotEmpty) ||
+      (value is num && value != 0) ||
+      (value is Iterable && value.isNotEmpty) ||
+      (value is Map && value.isNotEmpty);
+
+  static bool? boolsiness(dynamic value) {
+    if (isTruthy(value)) {
+      return true;
+    }
+    if (isFalsy(value)) {
+      return false;
+    }
+    return null;
+  }
 
   /// NOTE:
   /// Effectively, any date is always converted to the corresponding ms-precise date-time
@@ -28,8 +44,15 @@ class CertLogicInternals {
     str = str.replaceAllMapped(
         RegExp(regex), (match) => '${match.group(1)}0${match.group(2)}');
     dateTime ??= DateTime.parse(str);
-    return DateTime.utc(dateTime.year, dateTime.month, dateTime.day,
-        dateTime.hour, dateTime.minute, dateTime.second, dateTime.millisecond);
+    return DateTime.utc(
+      dateTime.year,
+      dateTime.month,
+      dateTime.day,
+      dateTime.hour,
+      dateTime.minute,
+      dateTime.second,
+      dateTime.millisecond,
+    );
   }
 
   static DateTime plusTime(
@@ -38,49 +61,44 @@ class CertLogicInternals {
     switch (unit) {
       case CertLogicTimeUnit.HOUR:
         return DateTime.utc(
-            dateTime.year,
-            dateTime.month,
-            dateTime.day,
-            dateTime.hour + amount,
-            dateTime.minute,
-            dateTime.second,
-            dateTime.millisecond);
+          dateTime.year,
+          dateTime.month,
+          dateTime.day,
+          dateTime.hour + amount,
+          dateTime.minute,
+          dateTime.second,
+          dateTime.millisecond,
+        );
       case CertLogicTimeUnit.DAY:
         return DateTime.utc(
-            dateTime.year,
-            dateTime.month,
-            dateTime.day + amount,
-            dateTime.hour,
-            dateTime.minute,
-            dateTime.second,
-            dateTime.millisecond);
+          dateTime.year,
+          dateTime.month,
+          dateTime.day + amount,
+          dateTime.hour,
+          dateTime.minute,
+          dateTime.second,
+          dateTime.millisecond,
+        );
       case CertLogicTimeUnit.MONTH:
         return DateTime.utc(
-            dateTime.year,
-            dateTime.month + amount,
-            dateTime.day,
-            dateTime.hour,
-            dateTime.minute,
-            dateTime.second,
-            dateTime.millisecond);
+          dateTime.year,
+          dateTime.month + amount,
+          dateTime.day,
+          dateTime.hour,
+          dateTime.minute,
+          dateTime.second,
+          dateTime.millisecond,
+        );
       case CertLogicTimeUnit.YEAR:
-        if (dateTime.month == DateTime.february && dateTime.day == 29)
-          return DateTime.utc(
-              dateTime.year + amount,
-              dateTime.month,
-              dateTime.day - 1,
-              dateTime.hour,
-              dateTime.minute,
-              dateTime.second,
-              dateTime.millisecond);
         return DateTime.utc(
-            dateTime.year + amount,
-            dateTime.month,
-            dateTime.day,
-            dateTime.hour,
-            dateTime.minute,
-            dateTime.second,
-            dateTime.millisecond);
+          dateTime.year + amount,
+          dateTime.month,
+          dateTime.day,
+          dateTime.hour,
+          dateTime.minute,
+          dateTime.second,
+          dateTime.millisecond,
+        );
     }
   }
 
@@ -98,5 +116,60 @@ class CertLogicInternals {
         : uvci;
     final fragments = prefixlessUvci.split(RegExp(r'[/#:]'));
     return index < fragments.length ? fragments[index] : null;
+  }
+
+  static dynamic access(dynamic data, String path) {
+    if (path == '') return data;
+    var returnData = data;
+    path.split('.').forEach((fragment) {
+      if (returnData == null) return;
+      if (returnData is Iterable) {
+        try {
+          final index = int.parse(fragment);
+          if (index < 0 || index > (returnData as Iterable).length - 1) {
+            returnData = null;
+            return;
+          }
+          returnData = returnData[index];
+          return;
+        } catch (e) {
+          return;
+        }
+      }
+      if (returnData is Map) {
+        returnData = returnData[fragment];
+        return;
+      }
+      returnData = null;
+    });
+    return returnData;
+  }
+
+  static final yyyyRegExp = new RegExp(r'^\d{4}$');
+  static final yyyymmRegExp = new RegExp(r'^\d{4}-\d{2}$');
+  static final yyyymmddRegExp = new RegExp(r'^\d{4}-\d{2}-\d{2}$');
+
+  /// returns A Dart [DateTime] representing the given date that may be partial (YYYY[-MM[-DD]]).
+  ///   See [the CertLogic specification](https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md) for details.
+  static DateTime dccDateOfBirth(String str) {
+    if (yyyyRegExp.hasMatch(str)) {
+      return dateFromString('${str}-12-31');
+    }
+    if (yyyymmRegExp.hasMatch(str)) {
+      final dateTime = dateFromString('${str}-01');
+      return DateTime.utc(
+          dateTime.year,
+          dateTime.month + 1,
+          dateTime.day - 1,
+          dateTime.hour,
+          dateTime.minute,
+          dateTime.second,
+          dateTime.millisecond);
+    }
+    if (yyyymmddRegExp.hasMatch(str)) {
+      return dateFromString(str);
+    }
+    throw CertLogicException(
+        'can\'t parse "${str}" as an EU DCC date-of-birth');
   }
 }
