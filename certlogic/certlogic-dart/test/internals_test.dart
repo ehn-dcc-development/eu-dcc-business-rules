@@ -2,7 +2,6 @@ import 'package:certlogic_dart/certlogic_dart.dart';
 import 'package:test/test.dart';
 
 void main() {
-
   group('truthy and falsy', () {
     test('truthy', () {
       expect(CertLogicInternals.isTruthy(null), false);
@@ -49,9 +48,11 @@ void main() {
 
   group('parsing of dates/date-times', () {
     void check(String dateTimeLike, String expected, [String? message]) {
-      expect(CertLogicInternals.dateFromString(dateTimeLike).toUtc(),
-          DateTime.parse(expected).toUtc(),
-          reason: message);
+      expect(
+        CertLogicInternals.dateFromString(dateTimeLike).toUtc(),
+        DateTime.parse(expected).toUtc(),
+        reason: message,
+      );
     }
 
     test(
@@ -108,17 +109,14 @@ void main() {
 
     test('should fail on partial dates and empty strings', () {
       void shouldFail(String str) {
-        expect(
-          () => CertLogicInternals.dateFromString(str),
-          throwsException,
-          reason: 'not an allowed date or date-time format: ${str}'
-        );
+        expect(() => CertLogicInternals.dateFromString(str), throwsException,
+            reason: 'not an allowed date or date-time format: ${str}');
       }
+
       shouldFail('');
       shouldFail('1997');
       shouldFail('1997-04');
     });
-
   });
 
   group('plusTime', () {
@@ -242,30 +240,29 @@ void main() {
     });
 
     test('works for leap days', () {
-      check('2020-02-29', 1, CertLogicTimeUnit.DAY,
-          '2020-03-01T00:00:00.000Z');
-      check('2020-03-01', -1, CertLogicTimeUnit.DAY,
-          '2020-02-29T00:00:00.000Z');
-      check('2020-02-29', 1, CertLogicTimeUnit.MONTH,
-          '2020-03-29T00:00:00.000Z');
+      check('2020-02-29', 1, CertLogicTimeUnit.DAY, '2020-03-01T00:00:00.000Z');
+      check(
+          '2020-03-01', -1, CertLogicTimeUnit.DAY, '2020-02-29T00:00:00.000Z');
+      check(
+          '2020-02-29', 1, CertLogicTimeUnit.MONTH, '2020-03-29T00:00:00.000Z');
       check('2020-03-29', -1, CertLogicTimeUnit.MONTH,
           '2020-02-29T00:00:00.000Z');
-      check('2020-02-29', 1, CertLogicTimeUnit.YEAR,
-          '2021-03-01T00:00:00.000Z');
-      check('2021-03-01', -1, CertLogicTimeUnit.YEAR,
-          '2020-03-01T00:00:00.000Z');
-      check('2020-02-29', -1, CertLogicTimeUnit.YEAR,
-          '2019-03-01T00:00:00.000Z');
-      check('2020-02-29', 4, CertLogicTimeUnit.YEAR,
-          '2024-02-29T00:00:00.000Z');
-      check('2020-02-29', -4, CertLogicTimeUnit.YEAR,
-          '2016-02-29T00:00:00.000Z');
-      check('2004-02-29', 18, CertLogicTimeUnit.YEAR,
-          '2022-03-01T00:00:00.000Z');
+      check(
+          '2020-02-29', 1, CertLogicTimeUnit.YEAR, '2021-03-01T00:00:00.000Z');
+      check(
+          '2021-03-01', -1, CertLogicTimeUnit.YEAR, '2020-03-01T00:00:00.000Z');
+      check(
+          '2020-02-29', -1, CertLogicTimeUnit.YEAR, '2019-03-01T00:00:00.000Z');
+      check(
+          '2020-02-29', 4, CertLogicTimeUnit.YEAR, '2024-02-29T00:00:00.000Z');
+      check(
+          '2020-02-29', -4, CertLogicTimeUnit.YEAR, '2016-02-29T00:00:00.000Z');
+      check(
+          '2004-02-29', 18, CertLogicTimeUnit.YEAR, '2022-03-01T00:00:00.000Z');
       check('2004-02-29', -18, CertLogicTimeUnit.YEAR,
           '1986-03-01T00:00:00.000Z');
-      check('2004-02-29', -2, CertLogicTimeUnit.YEAR,
-          '2002-03-01T00:00:00.000Z');
+      check(
+          '2004-02-29', -2, CertLogicTimeUnit.YEAR, '2002-03-01T00:00:00.000Z');
     });
   });
 
@@ -352,12 +349,16 @@ void main() {
     });
 
     test('object access', () {
-      const object = { 'x': 'foo' };
+      const object = {'x': 'foo'};
       check(object, 'x', 'foo');
     });
 
     test('nested object access', () {
-      const object = { 'x': [ { 'z': 'foo' } ] };
+      const object = {
+        'x': [
+          {'z': 'foo'}
+        ]
+      };
       check(object, 'x.0.z', 'foo');
     });
   });
@@ -393,5 +394,4 @@ void main() {
       check('2021-05-04', '2021-05-04T00:00:00.000Z');
     });
   });
-
 }

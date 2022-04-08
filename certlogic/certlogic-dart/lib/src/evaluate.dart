@@ -39,12 +39,10 @@ class CertLogic {
     return CertLogicInternals.extractFromUVCI(evalOperand, index);
   }
 
-  static DateTime _evaluateDccDateOfBirth(
-      dynamic operand, dynamic data) {
+  static DateTime _evaluateDccDateOfBirth(dynamic operand, dynamic data) {
     final evalOperand = evaluate(operand, data);
     if (evalOperand is! String) {
-      throw CertLogicException(
-          'operand of "dccDateOfBirth" must be a string');
+      throw CertLogicException('operand of "dccDateOfBirth" must be a string');
     }
     return CertLogicInternals.dccDateOfBirth(evalOperand);
   }
@@ -113,15 +111,28 @@ class CertLogic {
     }
   }
 
+  static dynamic _evaluateAnd(Iterable values, dynamic data) {
+    if (values.length < 2) {
+      throw CertLogicException(
+          "an 'and' operation must have at least 2 operands");
+    }
+    dynamic evaluated;
+    for (final current in values) {
+      evaluated = evaluate(current, data);
+      final evaluatedBool = CertLogicInternals.boolsiness(evaluated);
+      if (evaluatedBool == false) {
+        return evaluated;
+      } else if (evaluatedBool == null) {
+        throw CertLogicException(
+            'all operands of an "and" operation must be either truthy or falsy');
+      }
+    }
+    return evaluated;
+  }
+
   static dynamic _evaluateInfix(
       String operatorAsString, Iterable values, dynamic data) {
     switch (operatorAsString) {
-      case 'and':
-        if (values.length < 2) {
-          throw CertLogicException(
-              "an 'and' operation must have at least 2 operands");
-        }
-        break;
       case '<':
       case '>':
       case '<=':
@@ -140,29 +151,6 @@ class CertLogic {
               "an operation with operator '$operatorAsString' must have 2 operands");
         break;
     }
-    // [NOTE] This is an attempt to sync with a change in certlogic-js in 1.2.1;
-    //    commented-out for now, because it's compiling but not working properly yet.
-    // if (operatorAsString == 'and') {
-    //   dynamic acc = true;
-    //   values.forEach((dynamic current) {
-    //     switch (CertLogicInternals.boolsiness(acc)) {
-    //       case false:
-    //         return acc;
-    //       case true:
-    //         {
-    //           final evalCurrent = evaluate(current, data);
-    //           // check (immediately) if the evaluated operand is truthy or falsy:
-    //           if (CertLogicInternals.boolsiness(evalCurrent) == null) {
-    //             throw CertLogicException(
-    //                 'all operands of an "and" operation must be either truthy or falsy');
-    //           }
-    //           return evalCurrent;
-    //           // (evalCurrent -> acc, so its boolsiness is recomputed next iteration)
-    //         }
-    //     }
-    //   });
-    //   return acc;
-    // }
     final evalArgs = values.map<dynamic>((dynamic arg) => evaluate(arg, data));
     switch (operatorAsString) {
       case '===':
@@ -187,9 +175,6 @@ class CertLogic {
           }
           return l + r;
         }
-      case 'and':
-        if (!evalArgs.any(CertLogicInternals.isFalsy)) return evalArgs.last;
-        return evalArgs.toList().firstWhere(CertLogicInternals.isFalsy);
       case '<':
       case '>':
       case '<=':
@@ -244,7 +229,8 @@ class CertLogic {
     }
     final dynamic dateTimeStr = evaluate(dateOperand, data);
     if (dateTimeStr is! String) {
-      throw CertLogicException("date argument (#1) of 'plusTime' must be a string");
+      throw CertLogicException(
+          "date argument (#1) of 'plusTime' must be a string");
     }
     return CertLogicInternals.plusTime(
         dateTimeStr, amount.toInt(), CertLogicTimeUnits.fromString(unit));
@@ -302,9 +288,11 @@ class CertLogic {
         final dynamic elseDo = values[2];
         return _evaluateIf(guard, then, elseDo, data);
       }
+      if (operatorAsString == 'and') {
+        return _evaluateAnd(values, data);
+      }
       if ([
         '===',
-        'and',
         '>',
         '<',
         '>=',
@@ -334,8 +322,7 @@ class CertLogic {
             values.elementAt(0), values.elementAt(1), data);
       }
       if (operatorAsString == 'dccDateOfBirth') {
-        return _evaluateDccDateOfBirth(
-            values.elementAt(0), data);
+        return _evaluateDccDateOfBirth(values.elementAt(0), data);
       }
       throw CertLogicException("unrecognised operator: '$operatorAsString'");
     }
