@@ -1,0 +1,29 @@
+{
+  "name": "basic literals - should recognise valid basic literals",
+  "cases": [
+    {
+      "certLogicExpression": "",
+      "issues": []
+    },
+    {
+      "certLogicExpression": "foo",
+      "issues": []
+    },
+    {
+      "certLogicExpression": 0,
+      "issues": []
+    },
+    {
+      "certLogicExpression": 42,
+      "issues": []
+    },
+    {
+      "certLogicExpression": false,
+      "issues": []
+    },
+    {
+      "certLogicExpression": true,
+      "issues": []
+    }
+  ]
+}

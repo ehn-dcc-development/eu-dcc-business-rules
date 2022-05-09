@@ -49,7 +49,9 @@
         {
           "data": {
             "x": null,
-            "y": [ null ]
+            "y": [
+              null
+            ]
           },
           "expected": true
         }

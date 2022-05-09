@@ -6,32 +6,40 @@
   Such DOBs may be “partial dates” of the form YYYY or YYYY-MM.
   See [the specification](../specification/README.md#) for more details.
 
+
 ## 0.0.6 2021-12-28
 
-* Implemented extractFromUVCI with alias extractFromUCI
+* Implemented `extractFromUVCI` with alias `extractFromUCI`
+
 
 ## 0.0.5
 
 * Invalid data access (`var` operation) on `null` now also throws
-* Cleanup reduce function data
+* Cleanup `reduce` function data
+
 
 ## 0.0.4
 
 * Fixed bugs for `and`, `reduce` and Dates
 * Added tests
 
+
 ## 0.0.3
 
 * Fixed bug where year and month only add one
+
 
 ## 0.0.2
 
 * Fixed bug where year and month throw errors
 
+
 ## 0.0.1+1
 
 * Fixed incorrect example in readme
 
+
 ## 0.0.1
 
-* Added certLogic implementation
+* Implemented CertLogic in Dart
+

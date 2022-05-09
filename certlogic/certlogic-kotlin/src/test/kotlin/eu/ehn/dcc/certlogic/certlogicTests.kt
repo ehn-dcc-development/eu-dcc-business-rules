@@ -8,6 +8,10 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
 import java.io.File
 
+/**
+ * Runs the test suite in the CertLogic specification against the Type-/JavaScript implementation of the CertLogic semantics
+ *  - i.e., its interpreter/evaluator.
+ */
 internal class CertLogicTests {
 
     @Test

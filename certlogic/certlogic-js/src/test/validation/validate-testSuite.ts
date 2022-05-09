@@ -1,3 +1,7 @@
+/*
+ * Validates the CertLogic expressions in the test suite in the CertLogic specification using the validator of the Type-/JavaScript implementation of CertLogic.
+ */
+
 import { join } from "path"
 import { readdirSync, readFileSync } from "fs"
 
