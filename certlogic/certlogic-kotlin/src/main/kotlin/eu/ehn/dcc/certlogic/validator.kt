@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node.*
 import kotlin.math.min
 
 
-data class ValidationError(val expr: JsonNode, val message: String) {}
+data class ValidationError(val expr: JsonNode, val message: String)
 
 
 internal fun validateVar(expr: JsonNode, values: JsonNode): List<ValidationError> {
@@ -72,7 +72,9 @@ internal fun validatePlusTime(expr: JsonNode, values: ArrayNode): List<Validatio
     ) +
     (
         if (values.has(2) && !TimeUnit.isTimeUnitName(values[2].asText()))
-            listOf(ValidationError(expr, "\"unit\" argument (#3) of \"plusTime\" must be a string equal to one of ${TimeUnit.values().map { it.name }.joinToString(", ")}, but it is: ${values[2]}"))
+            listOf(ValidationError(expr, "\"unit\" argument (#3) of \"plusTime\" must be a string equal to one of ${
+                TimeUnit.values().joinToString(", ") { it.name }
+            }, but it is: ${values[2]}"))
         else
             emptyList()
     )
@@ -155,4 +157,7 @@ fun validate(expr: JsonNode): List<ValidationError> {
         else -> withError("invalid CertLogic expression")
     }
 }
+
+fun isCertLogicExpression(expr: JsonNode): Boolean =
+    validate(expr).isEmpty()
 

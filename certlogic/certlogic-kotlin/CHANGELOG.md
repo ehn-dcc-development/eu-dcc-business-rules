@@ -1,5 +1,13 @@
 # Change log
 
+# 0.11.2
+
+* Implemented runner for validation test suite, replacing existing unit tests for validator.
+* Replaced use of deprecated `ObjectNode.put`.
+
+(Only impacts test code.)
+
+
 # 0.11.1
 
 * Align implementation of `and` operation with the specification: operands are evaluated lazily.

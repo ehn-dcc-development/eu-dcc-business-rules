@@ -1,5 +1,11 @@
 # Change log
 
+## 1.2.2
+
+* Implemented runner for validation test suite, replacing most of existing unit tests for validator.
+(Only impacts test code.)
+
+
 ## 1.2.1
 
 * Align implementation of `and` operation with the specification: operands are evaluated lazily.

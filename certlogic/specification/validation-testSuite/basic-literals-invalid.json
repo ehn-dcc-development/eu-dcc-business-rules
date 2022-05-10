@@ -1,0 +1,23 @@
+{
+  "name": "basic literals - should recognise invalid basic literals",
+  "cases": [
+    {
+      "certLogicExpression": null,
+      "issues": [
+        {
+          "expr": null,
+          "message": "invalid CertLogic expression"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": 3.14,
+      "issues": [
+        {
+          "expr": 3.14,
+          "message": "3.14 is a non-integer number"
+        }
+      ]
+    }
+  ]
+}

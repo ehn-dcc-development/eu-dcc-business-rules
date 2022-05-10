@@ -11,7 +11,7 @@ private val nodeFactory = JsonNodeFactory.instance
 
 fun jsonObject(vararg pairs: Pair<String, JsonNode>) = nodeFactory.objectNode().apply {
     for ((key, value) in pairs) {
-        put(key, value)
+        set<JsonNode>(key, value)
     }
 }
 

@@ -15,7 +15,7 @@ void main() {
     dataDir = Directory(dirPath);
   });
 
-  test('validate test suite', () async {
+  test('run test suite', () async {
     final entries = dataDir.listSync(recursive: true).toList();
     final files = entries
         .where((element) => element.path.endsWith('.json'))

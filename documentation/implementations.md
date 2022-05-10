@@ -56,4 +56,5 @@ or the equivalent ES6- statement
 ## Dart
 
 * [`certlogic-dart`](../certlogic/certlogic-dart): a Dart implementation of CertLogic.
+  Published at: https://pub.dev/packages/certlogic_dart
 

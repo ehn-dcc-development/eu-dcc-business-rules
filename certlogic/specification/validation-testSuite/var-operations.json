@@ -1,0 +1,62 @@
+{
+  "name": "var operations",
+  "cases": [
+    {
+      "certLogicExpression": {
+        "var": 0
+      },
+      "issues": [
+        {
+          "expr": {
+            "var": 0
+          },
+          "message": "not of the form { \"var\": \"<path>\" }"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "var": null
+      },
+      "issues": [
+        {
+          "expr": {
+            "var": null
+          },
+          "message": "not of the form { \"var\": \"<path>\" }"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "var": "x"
+      },
+      "issues": []
+    },
+    {
+      "certLogicExpression": {
+        "var": "x.0.y"
+      },
+      "issues": []
+    },
+    {
+      "certLogicExpression": {
+        "var": "1"
+      },
+      "issues": []
+    },
+    {
+      "certLogicExpression": {
+        "var": "x."
+      },
+      "issues": [
+        {
+          "expr": {
+            "var": "x."
+          },
+          "message": "data access path doesn't have a valid format: x."
+        }
+      ]
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 {
-  "$id": "https://dcc.ehn.eu/schemas/CertLogic/testSuite",
+  "$id": "https://dcc.ehn.eu/schemas/CertLogic/validation-testSuite",
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "EU CertLogic test suite",
+  "title": "EU CertLogic validation test suite",
   "type": "object",
   "properties": {
     "name": {
@@ -10,7 +10,7 @@
     "cases": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/TestCase"
+        "$ref": "#/definitions/ValidationTestCase"
       }
     },
     "directive": {
@@ -22,49 +22,40 @@
     "cases"
   ],
   "definitions": {
-    "TestCase": {
+    "ValidationTestCase": {
       "type": "object",
       "properties": {
         "name": {
           "type": "string"
         },
-        "certLogicExpression": {
-          "$ref": "https://dcc.ehn.eu/schemas/CertLogic/expression"
-        },
         "directive": {
           "$ref": "#/definitions/TestDirective"
         },
-        "assertions": {
+        "certLogicExpression": {},
+        "issues": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/Assertion"
+            "$ref": "#/definitions/Issue"
           }
         }
       },
       "required": [
-        "name",
-        "assertions"
+        "certLogicExpression",
+        "issues"
       ],
       "additionalProperties": false
     },
-    "Assertion": {
+    "Issue": {
       "type": "object",
       "properties": {
-        "certLogicExpression": {
-          "$ref": "https://dcc.ehn.eu/schemas/CertLogic/expression"
-        },
-        "data": {},
-        "expected": {},
-        "directive": {
-          "$ref": "#/definitions/TestDirective"
-        },
+        "expr": {},
         "message": {
           "type": "string"
         }
       },
       "required": [
-        "data",
-        "expected"
+        "expr",
+        "message"
       ]
     },
     "TestDirective": {

@@ -1,0 +1,124 @@
+{
+  "name": "operation objects",
+  "cases": [
+    {
+      "certLogicExpression": {},
+      "issues": [
+        {
+          "expr": {},
+          "message": "expression object must have exactly one key, but it has 0"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "foo": "bar",
+        "alice": "bob"
+      },
+      "issues": [
+        {
+          "expr": {
+            "foo": "bar",
+            "alice": "bob"
+          },
+          "message": "expression object must have exactly one key, but it has 2"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "all": "foo"
+      },
+      "issues": [
+        {
+          "expr": {
+            "all": "foo"
+          },
+          "message": "operation not of the form { \"<operator>\": [ <values...> ] }"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "all": 42.0
+      },
+      "issues": [
+        {
+          "expr": {
+            "all": 42.0
+          },
+          "message": "operation not of the form { \"<operator>\": [ <values...> ] }"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "all": true
+      },
+      "issues": [
+        {
+          "expr": {
+            "all": true
+          },
+          "message": "operation not of the form { \"<operator>\": [ <values...> ] }"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "all": false
+      },
+      "issues": [
+        {
+          "expr": {
+            "all": false
+          },
+          "message": "operation not of the form { \"<operator>\": [ <values...> ] }"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "all": null
+      },
+      "issues": [
+        {
+          "expr": {
+            "all": null
+          },
+          "message": "operation not of the form { \"<operator>\": [ <values...> ] }"
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "all": []
+      },
+      "issues": [
+        {
+          "expr": {
+            "all": []
+          },
+          "message": "unrecognised operator: \"all\""
+        }
+      ]
+    },
+    {
+      "certLogicExpression": {
+        "all": [
+          null
+        ]
+      },
+      "issues": [
+        {
+          "expr": {
+            "all": [
+              null
+            ]
+          },
+          "message": "unrecognised operator: \"all\""
+        }
+      ]
+    }
+  ]
+}

@@ -1,53 +1,59 @@
 {
-  "id": "https://dcc.ehn.eu/schemas/CertLogic-expression.json",
+  "$id": "https://dcc.ehn.eu/schemas/CertLogic/expression",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "title": "EU CertLogic expression",
-  "$ref": "#/definitions/CertLogicExpression",
-  "definitions": {
-    "CertLogicExpression": {
-      "oneOf": [
-        {
-          "$ref": "#/definitions/AndOperation"
-        },
-        {
-          "$ref": "#/definitions/Array"
-        },
-        {
-          "$ref": "#/definitions/ComparisonOperation"
-        },
-        {
-          "$ref": "#/definitions/DataAccess"
-        },
-        {
-          "$ref": "#/definitions/IfThenElse"
-        },
-        {
-          "$ref": "#/definitions/Integer"
-        },
-        {
-          "$ref": "#/definitions/Not"
-        },
-        {
-          "$ref": "#/definitions/PlusTime"
-        },
-        {
-          "$ref": "#/definitions/Reduce"
-        },
-        {
-          "$ref": "#/definitions/String"
-        },
-        {
-          "$ref": "#/definitions/TrueBinaryOperation"
-        }
-      ]
+  "oneOf": [
+    {
+      "type": "boolean"
     },
+    {
+      "type": "integer"
+    },
+    {
+      "type": "string"
+    },
+    {
+      "$ref": "#/definitions/Array"
+    },
+    {
+      "$ref": "#/definitions/AndOperation"
+    },
+    {
+      "$ref": "#/definitions/ComparisonOperation"
+    },
+    {
+      "$ref": "#/definitions/DataAccess"
+    },
+    {
+      "$ref": "#/definitions/IfThenElse"
+    },
+    {
+      "$ref": "#/definitions/Not"
+    },
+    {
+      "$ref": "#/definitions/PlusTime"
+    },
+    {
+      "$ref": "#/definitions/Reduce"
+    },
+    {
+      "$ref": "#/definitions/TrueBinaryOperation"
+    },
+    {
+      "$ref": "#/definitions/ExtractFromUVCI"
+    },
+    {
+      "$ref": "#/definitions/DCCDateOfBirth"
+    }
+  ],
+  "definitions": {
     "AndOperation": {
       "type": "object",
       "properties": {
         "and": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/CertLogicExpression"
+            "$ref": "#"
           },
           "minItems": 2
         }
@@ -60,18 +66,18 @@
     "Array": {
       "type": "array",
       "items": {
-        "$ref": "#/definitions/CertLogicExpression"
+        "$ref": "#"
       }
     },
     "ComparisonOperation": {
       "type": "object",
       "patternProperties": {
-        "<|>|<=|>=": {
+        "<|>|<=|>=|after|before|not-after|not-before": {
           "type": "array",
+          "minItems": 2,
+          "maxItems": 3,
           "items": {
-            "$ref": "#/definitions/CertLogicExpression",
-            "minItems": 2,
-            "maxItems": 3
+            "$ref": "#"
           }
         }
       },
@@ -97,7 +103,7 @@
           "minItems": 3,
           "maxItems": 3,
           "items": {
-            "$ref": "#/definitions/CertLogicExpression"
+            "$ref": "#"
           }
         }
       },
@@ -105,9 +111,6 @@
         "if"
       ],
       "additionalProperties": false
-    },
-    "Integer": {
-      "type": "integer"
     },
     "Not": {
       "type": "object",
@@ -118,7 +121,7 @@
           "maxItems": 1,
           "items": [
             {
-              "$ref": "#/definitions/CertLogicExpression"
+              "$ref": "#"
             }
           ]
         }
@@ -133,15 +136,19 @@
       "properties": {
         "plusTime": {
           "type": "array",
+          "minItems": 3,
+          "maxItems": 3,
           "items": [
             {
-              "$ref": "#/definitions/CertLogicExpression"
+              "$ref": "#"
             },
             {
               "type": "integer"
             },
             {
               "enum": [
+                "year",
+                "month",
                 "day",
                 "hour"
               ]
@@ -162,13 +169,14 @@
           "minItems": 3,
           "maxItems": 3,
           "items": {
-            "$ref": "#/definitions/CertLogicExpression"
+            "$ref": "#"
           }
         }
-      }
-    },
-    "String": {
-      "type": "string"
+      },
+      "required": [
+        "reduce"
+      ],
+      "additionalProperties": false
     },
     "TrueBinaryOperation": {
       "type": "object",
@@ -176,15 +184,55 @@
         "===|in|\\+": {
           "type": "array",
           "items": {
-            "$ref": "#/definitions/CertLogicExpression"
+            "$ref": "#"
           },
           "minItems": 2,
-          "maxItems": 2,
-          "additionalItems": false
+          "maxItems": 2
         }
       },
       "minProperties": 1,
       "maxProperties": 1,
+      "additionalProperties": false
+    },
+    "ExtractFromUVCI": {
+      "type": "object",
+      "properties": {
+        "extractFromUVCI": {
+          "type": "array",
+          "minItems": 2,
+          "maxItems": 2,
+          "items": [
+            {
+              "$ref": "#"
+            },
+            {
+              "type": "integer"
+            }
+          ]
+        }
+      },
+      "required": [
+        "extractFromUVCI"
+      ],
+      "additionalProperties": false
+    },
+    "DCCDateOfBirth": {
+      "type": "object",
+      "properties": {
+        "dccDateOfBirth": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "items": [
+            {
+              "$ref": "#"
+            }
+          ]
+        }
+      },
+      "required": [
+        "dccDateOfBirth"
+      ],
       "additionalProperties": false
     }
   }

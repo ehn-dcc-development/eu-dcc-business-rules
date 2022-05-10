@@ -1,13 +1,17 @@
+/*
+ * Runs the test suite in the CertLogic specification against the Type-/JavaScript implementation of the CertLogic semantics
+ *  - i.e., its interpreter/evaluator.
+ */
+
 import { readdirSync, readFileSync } from "fs"
 import { join } from "path"
-import { evaluate } from "../evaluator"
 
 const { deepEqual } = require("chai").assert
 
-import { TestDirective, TestSuite } from "./test-types"
+import { testDirective2MochaFunc } from "./mocha-utils"
+import { TestSuite } from "./test-types"
+import { evaluate } from "../evaluator"
 
-
-const testDirective2MochaFunc = (testDirective: TestDirective, mochaFunc: any) => testDirective === undefined ? mochaFunc : mochaFunc[testDirective]
 
 const runTestsOn = (testSuite: TestSuite) => {
     testDirective2MochaFunc(testSuite.directive, describe)(testSuite.name, () => {
@@ -41,9 +45,9 @@ const runTestsOn = (testSuite: TestSuite) => {
 }
 
 
-const testSuitesPath = join(__dirname, "../../../specification/testSuite")
+const testSuitePath = join(__dirname, "../../../specification/testSuite")
 
-readdirSync(testSuitesPath)
+readdirSync(testSuitePath)
     .filter((path) => path.endsWith(".json"))
-    .forEach((path) => runTestsOn(JSON.parse(readFileSync(join(testSuitesPath, path), "utf8"))))
+    .forEach((path) => runTestsOn(JSON.parse(readFileSync(join(testSuitePath, path), "utf8"))))
 

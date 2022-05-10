@@ -681,6 +681,50 @@
       ]
     },
     {
+      "name": "Arrays with logic",
+      "assertions": [
+        {
+          "certLogicExpression": [
+            1,
+            {
+              "var": "x"
+            },
+            3
+          ],
+          "data": {
+            "x": 2
+          },
+          "expected": [
+            1,
+            2,
+            3
+          ]
+        },
+        {
+          "certLogicExpression": {
+            "if": [
+              {
+                "var": "x"
+              },
+              [
+                {
+                  "var": "y"
+                }
+              ],
+              99
+            ]
+          },
+          "data": {
+            "x": true,
+            "y": 42
+          },
+          "expected": [
+            42
+          ]
+        }
+      ]
+    },
+    {
       "name": "# Compound Tests",
       "assertions": [
         {

@@ -75,7 +75,7 @@ internal class BoolsinessTests {
  */
 internal class ExtractFromUVCITests {
 
-    internal fun checkForThat(uvci: String?, assertions: List<Pair<Int, String?>>): Unit =
+    private fun checkForThat(uvci: String?, assertions: List<Pair<Int, String?>>): Unit =
         assertions.forEach {
             assertEquals(it.second, extractFromUVCI(uvci, it.first))
         }

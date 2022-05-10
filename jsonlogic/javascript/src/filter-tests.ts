@@ -77,7 +77,7 @@ tests.forEach((line, itemNo) => {
                 expected,
                 directive: undefined
             })
-        } catch (e) {
+        } catch (e: any) {
             nFail++
             console.error(`evaluation doesn't succeed, due to: ${e.message}`)
             console.error(JSON.stringify(expr, null, 2))
@@ -94,7 +94,7 @@ console.log(`${nNoMatch} of ${nAssertions} assertions fail (no-match)`)
 console.log(`${nFail} of ${nAssertions} assertions fail due to errors during evaluation`)
 
 
-writeFileSync(join(__dirname, "../../specification/testSuite/JsonLogic-testSuite.json"), JSON.stringify(testSuite, null, 2), "utf8")
+writeFileSync(join(__dirname, "../../../certlogic/specification/testSuite/JsonLogic-testSuite.json"), JSON.stringify(testSuite, null, 2), "utf8")
 
 console.log(`wrote ${nMatch} assertions to a test suite`)
 
