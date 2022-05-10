@@ -820,9 +820,9 @@
     "is-plain-obj" "^2.1.0"
 
 "yargs@^17.1.1":
-  "integrity" "sha512-WSZD9jgobAg3ZKuCQZSa3g9QOJeCCqLoLAykiWgmXnDo9EPnn4RPf5qVTtzgOx66o6/oqhcA5tHtJXpG8pMt3g=="
-  "resolved" "https://registry.npmjs.org/yargs/-/yargs-17.4.1.tgz"
-  "version" "17.4.1"
+  "integrity" "sha512-3sLxVhbAB5OC8qvVRebCLWuouhwh/rswsiDYx3WGxajUk/l4G20SKfrKKFeNIHboUFt2JFgv2yfn+5cgOr/t5A=="
+  "resolved" "https://registry.npmjs.org/yargs/-/yargs-17.5.0.tgz"
+  "version" "17.5.0"
   dependencies:
     "cliui" "^7.0.2"
     "escalade" "^3.1.1"

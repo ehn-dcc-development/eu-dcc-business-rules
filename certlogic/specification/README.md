@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.3.1**.
+The semantic version identification of this specification is: **1.3.2**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -204,6 +204,8 @@ Example:
 
 The following date and date-time formats are allowed:
 
+    YYYY
+    YYYY-MM
     YYYY-MM-DD
     YYYY-MM-DDThh:mm:ss
     YYYY-MM-DDThh:mm:ssZ
@@ -224,14 +226,16 @@ The following date and date-time formats are allowed:
 
 The following items describe this conversion for the `plustime` operation in more detail:
 
-* A missing time part (so for dates), it is assumed to be `00:00:00.000`.
+* A *partial date* (`YYYY` or `YYYY-MM`) is parsed as it would be by the `dccDateOfBirth` operation - see below.
+  The parsing behaviours of `plusTime` and `dccDateBirth` coincide on dates in the format `YYYY-MM-DD`.
+* A missing time part (so for dates) is assumed to be `00:00:00.000`.
 * When a timezone offset is missing, the offset `Z` is assumed (including in the previous case).
 * The last eight formats specify sub-second time info, with any number of decimals being accepted.
   Any date(-time) is always normalised to milliseconds, with 3 places behind the decimal dot.
   All decimals beyond the 3rd one are ignored, effectively rounding _down_ to the nearest millisecond.
 * Offsetting a date-time isn't affected by daylight saving time (DST transitions), nor by leap days or leap seconds.
 
-Note that `plusTime` does not permit other date-time values: expressions such as `plusTime(plusTime("...", 0, "hour")`, 10, "day") are not valid.
+Note that `plusTime` does not permit anything other than a string in one of the formats above such as date-time values: expressions such as `plusTime(plusTime("...", 0, "hour")`, 10, "day") are not valid.
 
 
 #### Leap days
@@ -262,6 +266,35 @@ dateTime.setUTC<postfix>(dateTime.getUTC<postfix> + amount)
 where `dateTime` is the given date-time string converted to a `Date` object, `amount` is the given integer amount, and `<postfix>` can be read off from the table above.
 
 See [the (most recent) ECMA specification of the `Date` class](https://tc39.es/ecma262/#sec-date-objects) for more details.
+
+
+### DCC Date of birth (`dccDateOfBirth`)
+
+A DCC represents the date of birth of the DCC's holder in the `dob` field as a string in one of the following formats:
+
+    YYYY
+    YYYY-MM
+    YYYY-MM-DD
+
+The `dccDateOfBirth` operation performs a conversion of a string value in any of these formats to a date-time, as follows:
+
+* `YYYY` is converted to `YYYY-12-31T00:00:00.000Z`.
+* `YYYY-MM` is converted to `YYYY-MM-DDT00:00:00.000Z`, with `DD` = last day of the month `YYYY-MM`.
+* `YYYY-MM-DD` is converted to `YYYY-MM-DDT00:00:00.000Z` the same way that `{ "plusTime": [ "<YYYY-MM-DD>", 0, "<any time unit>" ] }` does.
+
+As a mnemonic: `dccDateOfBirth` returns the last date consistent with the provided data.
+
+The primary use case for this operation is to check whether the DCC's holder is a minor, i.e. less than 18 years old.
+This can be achieved as follows:
+
+    {
+        "after": [
+            { "dccDateOfBirth": [ { "var": "payload.dob" } ] },
+            { "plusTime": [ { "var": "external.validationClock" }, -18, "year" ] }
+        ]
+    }
+
+This CertLogic expression yields `true` if the DCC's holder is deemed to be a minor, and `false` otherwise.
 
 
 ### Reduction (`reduce`)
@@ -321,35 +354,6 @@ The string is split on separator characters (`/`, `#`, `:`) into string fragment
 The operation returns the string fragment with the given `<index>` (0-based), or `null` if no fragment with that index exists.
 The `URN:UVCI:` prefix is optional, and initial fragments `[ "URN", "UVCI" ]` will be ignored.
 The string `"a::c/#/f"` contains 6 fragments: `"a"`, `""`, `"c"`, `""`, `""`, `"f"`.
-
-
-### DCC Date of birth (`dccDateOfBirth`)
-
-A DCC represents the date of birth of the DCC's holder in the `dob` field as a string in one of the following formats:
-
-    YYYY
-    YYYY-MM
-    YYYY-MM-DD
-
-The `dccDateOfBirth` operation performs a conversion of a string value in any of these formats to a date-time, as follows:
-
-* `YYYY` is converted to `YYYY-12-31T00:00:00.000Z`.
-* `YYYY-MM` is converted to `YYYY-MM-DDT00:00:00.000Z`, with `DD` = last day of the month `YYYY-MM`.
-* `YYYY-MM-DD` is converted to `YYYY-MM-DDT00:00:00.000Z` the same way that `{ "plusTime": [ "<YYYY-MM-DD>", 0, "<any time unit>" ] }` does.
-
-As a mnemonic: `dccDateOfBirth` returns the last date consistent with the provided data.
-
-The primary use case for this operation is to check whether the DCC's holder is a minor, i.e. less than 18 years old.
-This can be achieved as follows:
-
-    {
-        "after": [
-            { "dccDateOfBirth": [ { "var": "payload.dob" } ] },
-            { "plusTime": [ { "var": "external.validationClock" }, -18, "year" ] }
-        ]
-    }
-
-This CertLogic expression yields `true` if the DCC's holder is deemed to be a minor, and `false` otherwise.
 
 
 ## Other aspects
