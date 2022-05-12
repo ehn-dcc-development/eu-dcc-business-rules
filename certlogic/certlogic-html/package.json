@@ -10,13 +10,13 @@
     "HTML",
     "rendering"
   ],
-  "homepage": "https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/certlogic",
+  "homepage": "https://github.com/ehn-dcc-development/eu-dcc-business-rules/tree/main/certlogic",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ehn-dcc-development/dgc-business-rules.git"
+    "url": "git+https://github.com/ehn-dcc-development/eu-dcc-business-rules.git"
   },
   "bugs": {
-    "url": "https://github.com/ehn-dcc-development/dgc-business-rules/issues"
+    "url": "https://github.com/ehn-dcc-development/eu-dcc-business-rules/issues"
   },
   "main": "dist/index.js",
   "scripts": {

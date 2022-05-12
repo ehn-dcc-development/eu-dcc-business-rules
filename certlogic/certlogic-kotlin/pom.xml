@@ -13,7 +13,7 @@
         <kotlin.version>1.5.0</kotlin.version>
         <jackson.version>2.12.3</jackson.version>
         <github.organization>ehn-dcc-development</github.organization>
-        <github.project>dgc-business-rules</github.project>
+        <github.project>eu-dcc-business-rules</github.project>
     </properties>
     <distributionManagement>
         <repository>
