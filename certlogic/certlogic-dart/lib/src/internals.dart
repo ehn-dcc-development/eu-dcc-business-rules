@@ -2,6 +2,7 @@ import 'package:certlogic_dart/src/evaluate.dart';
 import 'package:certlogic_dart/src/typings.dart';
 
 class CertLogicInternals {
+
   static bool isFalsy(dynamic value) =>
       value == false ||
       value == null ||
@@ -26,6 +27,7 @@ class CertLogicInternals {
     }
     return null;
   }
+
 
   /// NOTE:
   /// Effectively, any date is always converted to the corresponding ms-precise date-time
@@ -55,9 +57,33 @@ class CertLogicInternals {
     );
   }
 
+
+  static final yyyyRegExp = new RegExp(r'^\d{4}$');
+  static final yyyymmRegExp = new RegExp(r'^\d{4}-\d{2}$');
+  static final yyyymmddRegExp = new RegExp(r'^\d{4}-\d{2}-\d{2}$');
+
+  static DateTime? roundUpPartialDate(String str) {
+    if (yyyyRegExp.hasMatch(str)) {
+      return dateFromString('${str}-12-31');
+    }
+    if (yyyymmRegExp.hasMatch(str)) {
+      final dateTime = dateFromString('${str}-01');
+      return DateTime.utc(
+          dateTime.year,
+          dateTime.month + 1,
+          dateTime.day - 1,
+          dateTime.hour,
+          dateTime.minute,
+          dateTime.second,
+          dateTime.millisecond);
+    }
+    return null;
+  }
+
+
   static DateTime plusTime(
       String dateTimeLikeStr, int amount, CertLogicTimeUnit unit) {
-    final dateTime = dateFromString(dateTimeLikeStr);
+    final dateTime = roundUpPartialDate(dateTimeLikeStr) ?? dateFromString(dateTimeLikeStr);
     switch (unit) {
       case CertLogicTimeUnit.HOUR:
         return DateTime.utc(
@@ -102,6 +128,22 @@ class CertLogicInternals {
     }
   }
 
+
+  /// returns A Dart [DateTime] representing the given date that may be partial (YYYY[-MM[-DD]]).
+  ///   See [the CertLogic specification](https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md) for details.
+  static DateTime dccDateOfBirth(String str) {
+    final forPartialDate = roundUpPartialDate(str);
+    if (forPartialDate != null) {
+      return forPartialDate;
+    }
+    if (yyyymmddRegExp.hasMatch(str)) {
+      return dateFromString(str);
+    }
+    throw CertLogicException(
+        'can\'t parse "${str}" as an EU DCC date-of-birth');
+  }
+
+
   static const optionalPrefix = "URN:UVCI:";
 
   /// returns The fragment with given index from the UVCI string
@@ -117,6 +159,7 @@ class CertLogicInternals {
     final fragments = prefixlessUvci.split(RegExp(r'[/#:]'));
     return index < fragments.length ? fragments[index] : null;
   }
+
 
   static dynamic access(dynamic data, String path) {
     if (path == '') return data;
@@ -145,31 +188,5 @@ class CertLogicInternals {
     return returnData;
   }
 
-  static final yyyyRegExp = new RegExp(r'^\d{4}$');
-  static final yyyymmRegExp = new RegExp(r'^\d{4}-\d{2}$');
-  static final yyyymmddRegExp = new RegExp(r'^\d{4}-\d{2}-\d{2}$');
-
-  /// returns A Dart [DateTime] representing the given date that may be partial (YYYY[-MM[-DD]]).
-  ///   See [the CertLogic specification](https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md) for details.
-  static DateTime dccDateOfBirth(String str) {
-    if (yyyyRegExp.hasMatch(str)) {
-      return dateFromString('${str}-12-31');
-    }
-    if (yyyymmRegExp.hasMatch(str)) {
-      final dateTime = dateFromString('${str}-01');
-      return DateTime.utc(
-          dateTime.year,
-          dateTime.month + 1,
-          dateTime.day - 1,
-          dateTime.hour,
-          dateTime.minute,
-          dateTime.second,
-          dateTime.millisecond);
-    }
-    if (yyyymmddRegExp.hasMatch(str)) {
-      return dateFromString(str);
-    }
-    throw CertLogicException(
-        'can\'t parse "${str}" as an EU DCC date-of-birth');
-  }
 }
+
