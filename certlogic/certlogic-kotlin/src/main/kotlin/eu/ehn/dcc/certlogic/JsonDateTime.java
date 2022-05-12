@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -31,6 +32,10 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
      * @return a {@link JsonDateTime JSON date-time} of the given date/date-time
      */
     public static JsonDateTime fromString(String str) {
+        final JsonDateTime forPartialDate = roundUpPartialDate(str);
+        if (forPartialDate != null) {
+            return forPartialDate;
+        }
         if (str.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
             return JsonDateTime.fromStringInternal(str + "T00:00:00Z");
         }
@@ -64,19 +69,27 @@ public class JsonDateTime extends ValueNode implements Comparable<JsonDateTime> 
         }
     }
 
-    public static JsonDateTime dccDateOfBirth(String dobString) {
-        if (dobString.matches("^\\d{4}$")) {
-            int year = Integer.parseInt(dobString);
+    private static JsonDateTime roundUpPartialDate(String str) {
+        if (str.matches("^\\d{4}$")) {
+            int year = Integer.parseInt(str);
             return fromString(String.format("%04d-12-31", year));
         }
-        if (dobString.matches("^\\d{4}-\\d{2}$")) {
-            int year = Integer.parseInt(dobString.substring(0, 4));
-            int month = Integer.parseInt(dobString.substring(5, 7)) + 1;
+        if (str.matches("^\\d{4}-\\d{2}$")) {
+            int year = Integer.parseInt(str.substring(0, 4));
+            int month = Integer.parseInt(str.substring(5, 7)) + 1;
             if (month > 12) {
                 year++;
                 month = 1;
             }
             return fromString(String.format("%04d-%02d-%02d", year, month, 1)).plusTime(-1, TimeUnit.day);
+        }
+        return null;
+    }
+
+    public static JsonDateTime dccDateOfBirth(String dobString) {
+        final JsonDateTime forPartialDate = roundUpPartialDate(dobString);
+        if (forPartialDate != null) {
+            return forPartialDate;
         }
         if (dobString.matches("^\\d{4}-\\d{2}-\\d{2}$")) {
             return fromString(dobString);

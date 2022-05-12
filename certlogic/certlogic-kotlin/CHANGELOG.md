@@ -2,10 +2,12 @@
 
 # 0.11.2
 
+* Extend `plusTime` operation to coincide with `dccDateOfBirth` on partial dates.
+
+Only impacts test code:
+
 * Implemented runner for validation test suite, replacing existing unit tests for validator.
 * Replaced use of deprecated `ObjectNode.put`.
-
-(Only impacts test code.)
 
 
 # 0.11.1
