@@ -2,6 +2,7 @@ import 'package:certlogic_dart/certlogic_dart.dart';
 import 'package:test/test.dart';
 
 void main() {
+
   group('truthy and falsy', () {
     test('truthy', () {
       expect(CertLogicInternals.isTruthy(null), false);
@@ -45,6 +46,7 @@ void main() {
       expect(CertLogicInternals.boolsiness(0), false);
     });
   });
+
 
   group('parsing of dates/date-times', () {
     void check(String dateTimeLike, String expected, [String? message]) {
@@ -118,6 +120,7 @@ void main() {
       shouldFail('1997-04');
     });
   });
+
 
   group('plusTime', () {
     void check(String dateTimeLike, int amount, CertLogicTimeUnit unit,
@@ -264,7 +267,72 @@ void main() {
       check(
           '2004-02-29', -2, CertLogicTimeUnit.YEAR, '2002-03-01T00:00:00.000Z');
     });
+
+
+    /*
+     * Test with partial dates (in both supported formats), and check whether it coincides with `dccDateOfBirth`.
+     * The tests below have the same partial date strings as for `dccDateOfBirth`, but with a specified offset of 0.
+     */
+
+    test('works for YYYY the same way it does for dccDateOfBirth', () {
+      check('2004', 0, CertLogicTimeUnit.HOUR, '2004-12-31T00:00:00.000Z');
+      check('2021', 0, CertLogicTimeUnit.HOUR, '2021-12-31T00:00:00.000Z');
+    });
+
+    test('works for YYYY-MM the same way it does for dccDateOfBirth', () {
+      check('2004-01', 0, CertLogicTimeUnit.HOUR, '2004-01-31T00:00:00.000Z');
+      check('2004-02', 0, CertLogicTimeUnit.HOUR, '2004-02-29T00:00:00.000Z');
+      check('2003-02', 0, CertLogicTimeUnit.HOUR, '2003-02-28T00:00:00.000Z');
+      check('2004-03', 0, CertLogicTimeUnit.HOUR, '2004-03-31T00:00:00.000Z');
+      check('2004-04', 0, CertLogicTimeUnit.HOUR, '2004-04-30T00:00:00.000Z');
+      check('2004-05', 0, CertLogicTimeUnit.HOUR, '2004-05-31T00:00:00.000Z');
+      check('2004-06', 0, CertLogicTimeUnit.HOUR, '2004-06-30T00:00:00.000Z');
+      check('2004-07', 0, CertLogicTimeUnit.HOUR, '2004-07-31T00:00:00.000Z');
+      check('2004-08', 0, CertLogicTimeUnit.HOUR, '2004-08-31T00:00:00.000Z');
+      check('2004-09', 0, CertLogicTimeUnit.HOUR, '2004-09-30T00:00:00.000Z');
+      check('2004-10', 0, CertLogicTimeUnit.HOUR, '2004-10-31T00:00:00.000Z');
+      check('2004-11', 0, CertLogicTimeUnit.HOUR, '2004-11-30T00:00:00.000Z');
+      check('2004-12', 0, CertLogicTimeUnit.HOUR, '2004-12-31T00:00:00.000Z');
+    });
+
+    test('works for YYYY-MM-DD the same way it does for dccDateOfBirth', () {
+      check('2021-05-04', 0, CertLogicTimeUnit.HOUR, '2021-05-04T00:00:00.000Z');
+    });
   });
+
+
+  group('dccDateOfBirth', () {
+    void check(String dob, String expected) {
+      expect(CertLogicInternals.dccDateOfBirth(dob).toUtc(),
+          DateTime.parse(expected).toUtc());
+    }
+
+    test('works for YYYY', () {
+      check('2004', '2004-12-31T00:00:00.000Z');
+      check('2021', '2021-12-31T00:00:00.000Z');
+    });
+
+    test('works for YYYY-MM', () {
+      check('2004-01', '2004-01-31T00:00:00.000Z');
+      check('2004-02', '2004-02-29T00:00:00.000Z');
+      check('2003-02', '2003-02-28T00:00:00.000Z');
+      check('2004-03', '2004-03-31T00:00:00.000Z');
+      check('2004-04', '2004-04-30T00:00:00.000Z');
+      check('2004-05', '2004-05-31T00:00:00.000Z');
+      check('2004-06', '2004-06-30T00:00:00.000Z');
+      check('2004-07', '2004-07-31T00:00:00.000Z');
+      check('2004-08', '2004-08-31T00:00:00.000Z');
+      check('2004-09', '2004-09-30T00:00:00.000Z');
+      check('2004-10', '2004-10-31T00:00:00.000Z');
+      check('2004-11', '2004-11-30T00:00:00.000Z');
+      check('2004-12', '2004-12-31T00:00:00.000Z');
+    });
+
+    test('works for YYYY-MM-DD', () {
+      check('2021-05-04', '2021-05-04T00:00:00.000Z');
+    });
+  });
+
 
   group('extractFromUVCI', () {
     test('returns null on null operand', () {
@@ -315,6 +383,7 @@ void main() {
     });
   });
 
+
   group('perform data access', () {
     void check(dynamic data, String path, dynamic expected) {
       expect(CertLogicInternals.access(data, path), expected);
@@ -363,35 +432,4 @@ void main() {
     });
   });
 
-  group('dccDateOfBirth', () {
-    void check(String dob, String expected) {
-      expect(CertLogicInternals.dccDateOfBirth(dob).toUtc(),
-          DateTime.parse(expected).toUtc());
-    }
-
-    test('works for YYYY', () {
-      check('2004', '2004-12-31T00:00:00.000Z');
-      check('2021', '2021-12-31T00:00:00.000Z');
-    });
-
-    test('works for YYYY-MM', () {
-      check('2004-01', '2004-01-31T00:00:00.000Z');
-      check('2004-02', '2004-02-29T00:00:00.000Z');
-      check('2003-02', '2003-02-28T00:00:00.000Z');
-      check('2004-03', '2004-03-31T00:00:00.000Z');
-      check('2004-04', '2004-04-30T00:00:00.000Z');
-      check('2004-05', '2004-05-31T00:00:00.000Z');
-      check('2004-06', '2004-06-30T00:00:00.000Z');
-      check('2004-07', '2004-07-31T00:00:00.000Z');
-      check('2004-08', '2004-08-31T00:00:00.000Z');
-      check('2004-09', '2004-09-30T00:00:00.000Z');
-      check('2004-10', '2004-10-31T00:00:00.000Z');
-      check('2004-11', '2004-11-30T00:00:00.000Z');
-      check('2004-12', '2004-12-31T00:00:00.000Z');
-    });
-
-    test('works for YYYY-MM-DD', () {
-      check('2021-05-04', '2021-05-04T00:00:00.000Z');
-    });
-  });
 }

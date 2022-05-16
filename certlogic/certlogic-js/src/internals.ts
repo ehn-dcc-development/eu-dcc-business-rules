@@ -92,13 +92,16 @@ export const isDate = (value: unknown): value is Date =>
 
 const leftPad = (str: string, len: number, char: string): string => char.repeat(len - str.length) + str
 
+
+const timeSuffix = "T00:00:00.000Z"
+
 /**
  * @returns A JavaScript {@see Date} object representing the date or date-time given as a string.
  * @throws An {@see Error} in case the string couldn't be parsed as a date or date-time.
  */
 export const dateFromString = (str: string) => {
     if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        return new Date(str)
+        return new Date(`${str}${timeSuffix}`)
     }
     const matcher = str.match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}):(\d{2})(\.\d+?)?(Z|(([+-])(\d{1,2}):?(\d{2})?))?$/)
     //                                   1      2       3       4       5       6      7        8   910    11          12
@@ -117,13 +120,31 @@ export const dateFromString = (str: string) => {
     throw new Error(`not an allowed date or date-time format: ${str}`)
 }
 
+/**
+ * @returns A {@link Date} that's the result of parsing a partial date `str` given in format `YYYY` or `YYYY-MM`,
+ * and “rounding that up” to (midnight +0 UTC of) the latest day consistent with that data.
+ */
+export const roundUpPartialDate = (str: string): Date | undefined => {
+    if (str.match(/^\d{4}$/)) {
+        return new Date(`${str}-12-31${timeSuffix}`)
+    }
+    if (str.match(/^\d{4}-\d{2}$/)) {
+        const date = new Date(`${str}-01${timeSuffix}`)
+        date.setUTCMonth(date.getUTCMonth() + 1)
+        date.setUTCDate(0)
+        return date
+    }
+    return undefined
+}
 
 /**
  * @returns A {@link Date} that's the result of parsing `dateTimeLikeStr` as an ISO 8601 string using {@link dateFromString},
  * with the indicated number of time units added to it.
+ * This treats partial dates in the format YYYY or YYYY-MM by “rounding up” to (midnight +0 UTC of) the latest day consistent
+ * with that data.
  */
 export const plusTime = (dateTimeLikeStr: string, amount: number, unit: TimeUnit): Date => {
-    const dateTime = dateFromString(dateTimeLikeStr)
+    const dateTime = roundUpPartialDate(dateTimeLikeStr) ?? dateFromString(dateTimeLikeStr)
     if (amount === 0) {
         return dateTime
     }
@@ -139,6 +160,21 @@ export const plusTime = (dateTimeLikeStr: string, amount: number, unit: TimeUnit
         throw new Error(`unknown time unit "${unit}"`)
     }
     return dateTime
+}
+
+/**
+ * @returns: A JavaScript {@see Date} representing the given date that may be partial (YYYY[-MM[-DD]]).
+ * See [the CertLogic specification](https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md) for details.
+ */
+export const dccDateOfBirth = (str: string): Date => {
+    const forPartialDate = roundUpPartialDate(str)
+    if (forPartialDate !== undefined) {
+        return forPartialDate
+    }
+    if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
+        return dateFromString(str)
+    }
+    throw new Error(`can't parse "${str}" as an EU DCC date-of-birth`)
 }
 
 
@@ -173,27 +209,4 @@ export const access = (data: any, path: string): any =>
             const value = isNaN(index) ? acc[fragment] : acc[index]
             return value === undefined ? null : value
         }, data)
-
-
-/**
- * @returns: A JavaScript {@see Date} representing the given date that may be partial (YYYY[-MM[-DD]]).
- * See [the CertLogic specification](https://github.com/ehn-dcc-development/dgc-business-rules/blob/main/certlogic/specification/README.md) for details.
- */
-export const dccDateOfBirth = (str: string): Date => {
-    const timeSuffix = "T00:00:00.000Z"
-    if (str.match(/^\d{4}$/)) {
-        return new Date(`${str}-12-31${timeSuffix}`)
-    }
-    if (str.match(/^\d{4}-\d{2}$/)) {
-        const date = new Date(`${str}-01${timeSuffix}`)
-        date.setUTCMonth(date.getUTCMonth() + 1)
-        date.setUTCDate(0)
-        return date
-    }
-    if (str.match(/^\d{4}-\d{2}-\d{2}$/)) {
-        return new Date(`${str}${timeSuffix}`)
-    }
-
-    throw new Error(`can't parse "${str}" as an EU DCC date-of-birth`)
-}
 

@@ -72,8 +72,15 @@ internal class JsonDateTimeTests {
             assertEquals("not an allowed date or date-time format: $str", exception.message)
         }
         shouldFail("")
-        shouldFail("1997")
-        shouldFail("1997-04")
+        /*
+         * Note: YYYY and YYYY-MM are supported (since specification version 1.3.2) by #fromString.
+         * This is necessary, because of how `plusTime` is invoked from the evaluator, as
+         *
+         *    JsonDateTime.fromString(<operand's value>).plusTime(<amount>, <unit>)
+         *
+         * Other implementations have an “atomic” `plusTime` operation, which parses and offsets at the same time.
+         * Such implementations should check whether inputs such as `"1997"`, and `"1997-04"` fail, but not here.
+         */
     }
 
 }

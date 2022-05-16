@@ -3,4 +3,4 @@ export { isCertLogicExpression, isCertLogicOperation } from "./validation/index"
 export { isInt } from "./internals" // (export other internals only when necessary)
 export { evaluate } from "./evaluator"
 export const implementationVersion: string = require("../package.json").version
-export const specificationVersion: string = "1.3.1"
+export const specificationVersion: string = "1.3.2"

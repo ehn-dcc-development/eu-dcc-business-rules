@@ -1,3 +1,8 @@
+## 0.1.1 2022-05-12
+
+* Extend `plusTime` operation to coincide with `dccDateOfBirth` on partial dates.
+
+
 ## 0.1.0 2022-04-08
 
 * Align implementation of `and` operation with the specification: operands are evaluated lazily.
