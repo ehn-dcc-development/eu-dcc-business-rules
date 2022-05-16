@@ -154,7 +154,7 @@ Note that `<operand 1>` doesn't need to be a string, and nor does `<operand 2>` 
 The types of `<operand 1>` and the it
 
 The `and` operator can be used _variadically_: it can have any number of operands greater than 1.
-All operands must evaluate to either a truthy or falsy value - no “inbetween” values that are neither are allowed, and an error is thrown when that happens.
+All operands must evaluate to either a truthy or falsy value - no “in between” values that are neither are allowed, and an error is thrown when that happens.
 An operation with the `and` operator returns the first of its operand that evaluates to a falsy value, or the evaluation of the last value.
 Operands are evaluated lazily (so until one evaluates to a falsy value, or an error occurs because of the evaluation of one), and in order.
 
@@ -367,9 +367,21 @@ In any case, at least the behaviour of the “allowed”-part of the specificati
 
 ### Test suite
 
-A comprehensive test suite is contained in the [`testSuite` directory](./testSuite), as a collection of JSON files.
+A comprehensive test suite for checking evaluator functions is contained in the [`testSuite` directory](./testSuite), as a collection of JSON files.
 These files conform to a [JSON Schema](./schemas/CertLogic-testSuite.json).
-The test suite is (currently) executed by the [`test-suites` Mocha test](../certlogic-js/src/test/run-testSuite.ts), and the [`CertLogicTests` JUnit/Kotlin ](../certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/certlogicTests.kt).
+The evaluator test suite is validated and executed by the following automated tests in this repository:
+* [a Mocha test](../certlogic-js/src/test/run-testSuite.ts) for JavaScript
+* [`EvaluatorTests` JUnit/Kotlin ](../certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/evaluatorTests.kt) for Kotlin
+* [a Dart unit test](../certlogic-dart/test/test_suite_test.dart)
+
+A test suite for checking validation functions is contained in the [`validation-testSuite` directory](./testSuite), as a collection of JSON files.
+These files conform to a [JSON Schema](./schemas/CertLogic-validation-testSuite.json).
+The validation test suite is executed by the following automated tests in this repository:
+* [a Mocha test](../certlogic-js/src/test/run-validation-testSuite.ts) for JavaScript
+* [`ValidatorTests` JUnit/Kotlin ](../certlogic-kotlin/src/test/kotlin/eu/ehn/dcc/certlogic/validatorTests.kt) for Kotlin
+* (the Dart implementation doesn't cater for separate validation, outside of evaluation)
+
+Both collections of JSON files can be checked against their JSON Schemas by running the [`check-jsons.sh` script](./check-jsons.sh), which requires Node with NPM.
 
 
 ### Schemas

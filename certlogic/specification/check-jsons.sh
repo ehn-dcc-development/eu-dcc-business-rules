@@ -1,6 +1,6 @@
-yarn add --dev ajv
-yarn add --dev ajv-cli
-yarn add --dev ajv-formats
+npm add --save-dev ajv
+npm add --save-dev ajv-cli
+npm add --save-dev ajv-formats
 
 echo "Checking JSON Schema for: CertLogic expression..."
 npx ajv-cli compile --strict=true --all-errors -s schemas/CertLogic-expression.json
