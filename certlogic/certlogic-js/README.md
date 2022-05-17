@@ -40,7 +40,7 @@ Finally, it also exposes a sub package `certlogic-js/misc` which contains additi
 * `desugar`: a function to "desugar" "extended CertLogic expression" to proper CertLogic expressions.
     At the moment, this only pertains to an additional `or` expression, which is desugared using [De Morgan's laws](https://en.wikipedia.org/wiki/De_Morgan%27s_laws).
     Note that *no specification is provided* for the "extended CertLogic expressions".
-* `asCompactText`: a function to render a CertLogic expression in a compact, textual notation - certainly more compact than the JSON format.
+* `renderAsCompactText`: a function to render a CertLogic expression in a compact, textual notation - certainly more compact than the JSON format.
     Note that this notation isn't specified (at this time).
 
 Note that documentation is...sparse outside of the [CertLogic specification](../specification/README.md), and the [overall documentation](https://github.com/ehn-dcc-development/dgc-business-rules/tree/main/documentation) around CertLogic and DCC business/validation rules.
