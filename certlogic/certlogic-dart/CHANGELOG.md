@@ -1,6 +1,11 @@
+## 0.1.2 2022-05-17
+
+* Fix incorrect specification number (1.3.1 &rarr; 1.3.2)
+
+
 ## 0.1.1 2022-05-12
 
-* Extend `plusTime` operation to coincide with `dccDateOfBirth` on partial dates.
+* Extend `plusTime` operation to coincide with `dccDateOfBirth` on partial dates
 
 
 ## 0.1.0 2022-04-08
@@ -41,7 +46,7 @@
 
 ## 0.0.1+1
 
-* Fixed incorrect example in readme
+* Fixed incorrect example in README
 
 
 ## 0.0.1
