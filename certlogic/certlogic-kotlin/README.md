@@ -1,7 +1,7 @@
 # CertLogic in Kotlin
 
 This module contains the reference implementation of CertLogic, written in Kotlin/Java.
-It's compatible with version **1.3.1** of the CertLogic specification.
+It's compatible with version **1.3.2** of the CertLogic specification.
 
 Apart from test sources, it consists of the following files:
 
