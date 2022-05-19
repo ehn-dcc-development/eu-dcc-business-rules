@@ -231,4 +231,5 @@ Ideally, this would be an editor that's easy to integrate in Web apps, for maxim
 ## Infrastructure
 
 * Publish Kotlin module to Maven Central - this was [issue #79](https://github.com/ehn-dcc-development/eu-dcc-business-rules/issues/79).
+* (how-to:) Publish [the Dart package](https://pub.dev/packages/certlogic_dart).
 
