@@ -12,7 +12,7 @@ That includes:
 * Factory functions
 * Desugaring
 * Reflection/inspection, e.g. the `dataAccesses` function
-* Compilation
+* [&#10003;] Compilation
 * Type system
 * etc.
 
