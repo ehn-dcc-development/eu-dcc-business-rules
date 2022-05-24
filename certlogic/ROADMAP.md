@@ -173,15 +173,17 @@ This reduces the need to:
 * replace certain sub expressions with constant values - e.g., regarding detection/exemption of minors;
 * run the partial evaluation with many variations of the input data - e.g. with many combination of values for the `dn`/`sd` fields.
 
-It's not entirely unthinkable that partial evaluation wouldn't end up being used in verifier apps, so it could go in the core packages.
+It's not entirely unthinkable that partial evaluation wouldn't end up being used in verifier apps, so it could go (eventually) in the core packages.
 
 
 ### Implement a compiler
 
 For performance reasons, it might be advantageous to be able to compile CertLogic expressions into something that's able to execute a lot faster than dynamic interpretation.
+(This was [issue #97](https://github.com/ehn-dcc-development/eu-dcc-business-rules/issues/97).)
+
 A compiler/transpiler targeting TypeScript has already been implemented experimentally, showing a performance improvement on the order of 10 times.
 This is achieved by compiling an expression from its JSON form into a tree of objects which can be effectively JIT-ed by the executing VM.
-(This was [issue #97](https://github.com/ehn-dcc-development/eu-dcc-business-rules/issues/97).)
+This work can be found [in the `certlogic-utils-js` package](./certlogic-utils-js/src/compiler).
 
 
 ### Implement a type system
