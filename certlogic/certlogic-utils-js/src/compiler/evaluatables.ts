@@ -45,7 +45,7 @@ export const literalValue = (value: boolean | string | number | Date | any[]) =>
         console.log(`[ERROR] unexpected literal value (typeof = "${typeof value}": ${value}`)
     }
      */
-    // value must be either a Date, or an array ==> pass-through without trying to memois:
+    // value must be either a Date, or an array ==> pass-through without trying to memoise:
     return new LiteralValue(value)
 }
 
