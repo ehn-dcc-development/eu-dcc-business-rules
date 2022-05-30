@@ -1,11 +1,11 @@
-import { ErrorObject } from "ajv"
-import { specificationVersion } from "certlogic-js"
-import { dateFromString } from "certlogic-js/dist/internals"
-import { dataAccesses, validateFormat, ValidationError } from "certlogic-js/dist/validation"
-import { gt } from "semver"
+import {ErrorObject} from "ajv"
+import {specificationVersion} from "certlogic-js"
+import {dateFromString} from "certlogic-js/dist/internals"
+import {dataAccesses, validateFormat, ValidationError} from "certlogic-js/dist/validation"
+import {gt} from "semver"
 
-import { createJsonValidatorForSchema } from "./json-validator"
-import { CertificateType, Rule } from "./rule"
+import {createJsonValidatorForSchema} from "./json-validator"
+import {CertificateType, Rule} from "./rule"
 
 
 const ruleSchemaValidator = createJsonValidatorForSchema(require("./validation-rule.schema.json"))
@@ -62,8 +62,12 @@ const validateMetaData = (rule: Rule): string[] => {
             }
         }
     }
-    const fieldPrefix = `${rule.CertificateType.charAt(0).toLowerCase()}.`
-    if (rule.CertificateType !== "General" && !rule.AffectedFields.every((fieldName) => fieldName.startsWith(fieldPrefix))) {
+    const fieldPrefix = `${rule.CertificateType.charAt(0).toLowerCase()}.`  // == 'r' | 't' | 'v'
+    const isDOBOrMatchesType = (fieldName: string) => fieldName === "dob" || fieldName.startsWith(`${fieldPrefix}.`)
+    if (
+            rule.CertificateType !== "General"
+        && !rule.AffectedFields.every(isDOBOrMatchesType)
+    ) {
         errors.push(`CertificateType ${rule.CertificateType} doesn't match with its AffectedFields [ ${joinWrapped(rule.AffectedFields)} ]`)
     }
 

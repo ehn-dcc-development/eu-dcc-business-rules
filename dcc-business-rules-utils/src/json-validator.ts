@@ -1,5 +1,5 @@
 import Ajv from "ajv"
-import { ErrorObject } from "ajv"
+import {ErrorObject} from "ajv"
 const ajv = new Ajv({
     allErrors: true,        // don't stop after 1st error
     strict: true,
