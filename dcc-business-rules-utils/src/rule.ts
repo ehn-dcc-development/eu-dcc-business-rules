@@ -1,4 +1,4 @@
-import { CertLogicExpression } from "certlogic-js"
+import {CertLogicExpression} from "certlogic-js"
 
 
 export type RuleType = "Acceptance" | "Invalidation"

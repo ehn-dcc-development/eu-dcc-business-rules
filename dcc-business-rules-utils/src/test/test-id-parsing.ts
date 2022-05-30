@@ -1,6 +1,6 @@
-const { deepEqual, throws } = require("chai").assert
+const {deepEqual, throws} = require("chai").assert
 
-import { parseRuleId } from "../index"
+import {parseRuleId} from "../index"
 
 
 describe("parseRuleId", () => {

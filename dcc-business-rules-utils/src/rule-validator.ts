@@ -1,11 +1,11 @@
-import { ErrorObject } from "ajv"
-import { specificationVersion } from "certlogic-js"
-import { dateFromString } from "certlogic-js/dist/internals"
-import { dataAccesses, validateFormat, ValidationError } from "certlogic-js/dist/validation"
-import { gt } from "semver"
+import {ErrorObject} from "ajv"
+import {specificationVersion} from "certlogic-js"
+import {dateFromString} from "certlogic-js/dist/internals"
+import {dataAccesses, validateFormat, ValidationError} from "certlogic-js/dist/validation"
+import {gt} from "semver"
 
-import { createJsonValidatorForSchema } from "./json-validator"
-import { CertificateType, Rule } from "./rule"
+import {createJsonValidatorForSchema} from "./json-validator"
+import {CertificateType, Rule} from "./rule"
 
 
 const ruleSchemaValidator = createJsonValidatorForSchema(require("./validation-rule.schema.json"))
