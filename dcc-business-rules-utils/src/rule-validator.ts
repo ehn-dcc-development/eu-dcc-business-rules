@@ -62,8 +62,12 @@ const validateMetaData = (rule: Rule): string[] => {
             }
         }
     }
-    const fieldPrefix = `${rule.CertificateType.charAt(0).toLowerCase()}.`
-    if (rule.CertificateType !== "General" && !rule.AffectedFields.every((fieldName) => fieldName.startsWith(fieldPrefix))) {
+    const fieldPrefix = `${rule.CertificateType.charAt(0).toLowerCase()}.`  // == 'r' | 't' | 'v'
+    const isDOBOrMatchesType = (fieldName: string) => fieldName === "dob" || fieldName.startsWith(`${fieldPrefix}.`)
+    if (
+            rule.CertificateType !== "General"
+        && !rule.AffectedFields.every(isDOBOrMatchesType)
+    ) {
         errors.push(`CertificateType ${rule.CertificateType} doesn't match with its AffectedFields [ ${joinWrapped(rule.AffectedFields)} ]`)
     }
 

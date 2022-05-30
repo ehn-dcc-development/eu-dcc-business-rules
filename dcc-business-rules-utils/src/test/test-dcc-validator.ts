@@ -1,7 +1,14 @@
-const {equal, isFalse} = require("chai").assert
+const {deepEqual, equal, isFalse, isTrue} = require("chai").assert
 import {CertLogicExpression} from "certlogic-js"
+import {if_, var_} from "certlogic-js/dist/factories"
 
-import {applicableRuleVersions, validateDcc, Rule, parseRuleId} from "../index"
+import {
+    applicableRuleVersions, CertificateType,
+    parseRuleId,
+    Rule,
+    validateDcc,
+    validateRule
+} from "../index"
 
 
 type Versioning = {
@@ -10,7 +17,7 @@ type Versioning = {
     validTo: string
 }
 
-const rule = (id: string, { version, validFrom, validTo }: Versioning, expr: CertLogicExpression): Rule => {
+const rule = (id: string, { version, validFrom, validTo }: Versioning, expr: CertLogicExpression, certificateType?: CertificateType): Rule => {
     const {type, country} = parseRuleId(id)
     return {
         Identifier: id,
@@ -20,7 +27,7 @@ const rule = (id: string, { version, validFrom, validTo }: Versioning, expr: Cer
         SchemaVersion: "1.3.0",
         Engine: "CERTLOGIC",
         EngineVersion: "1.1.2",
-        CertificateType: "General",
+        CertificateType: certificateType ?? "General",
         Description: [],
         ValidFrom: validFrom,
         ValidTo: validTo,
@@ -60,6 +67,41 @@ describe("validateDcc (DCC validator)", () => {
         ]
         isFalse(validateDcc(rules, { validationTime: "2022-02-01", CoA: "YY", CoI: "XX" }, {}, {}))
     })
+
+})
+
+
+describe("check data accesses against CertificateType", () => {
+
+    const ruleWithLogicAndFields = (logic: CertLogicExpression, fields: string[]): Rule => {
+        const aRule = rule("VR-XX-0001", versioning("1.0.0", "2022-01-01", "2030-01-01"), logic, "Vaccination")
+        aRule.AffectedFields = fields
+        return aRule
+    }
+
+    it("disregards dob", () => {
+        const validationResult = validateRule(ruleWithLogicAndFields(if_(var_("payload.dob"), true, false), [ "dob" ]))
+        deepEqual(validationResult.metaDataErrors, [])
+        isTrue(null === validationResult.affectedFields)
+    })
+
+    it(`triggers on top-level access of "nam"`, () => {
+        const validationResult = validateRule(ruleWithLogicAndFields(if_(var_("payload.nam"), true, false), [ "nam" ]))
+        deepEqual(validationResult.metaDataErrors, [
+            `CertificateType Vaccination doesn't match with its AffectedFields [ "nam" ]`
+        ])
+        isTrue(null === validationResult.affectedFields)
+    })
+
+    it(`triggers on top-level access of "ver"`, () => {     // (despite the field's name starting with 'v')
+        const validationResult = validateRule(ruleWithLogicAndFields(if_(var_("payload.ver"), true, false), [ "ver" ]))
+        deepEqual(validationResult.metaDataErrors, [
+            `CertificateType Vaccination doesn't match with its AffectedFields [ "ver" ]`
+        ])
+        isTrue(null === validationResult.affectedFields)
+    })
+
+    // TODO  check regular validations
 
 })
 

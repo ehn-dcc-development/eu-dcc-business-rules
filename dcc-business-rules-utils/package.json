@@ -1,6 +1,6 @@
 {
   "name": "dcc-business-rules-utils",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Various utils for working with DCC business/validation rules",
   "keywords": [
     "json",
