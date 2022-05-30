@@ -74,7 +74,16 @@ describe("validateDcc (DCC validator)", () => {
 describe("check data accesses against CertificateType", () => {
 
     const ruleWithLogicAndFields = (logic: CertLogicExpression, fields: string[]): Rule => {
-        const aRule = rule("VR-XX-0001", versioning("1.0.0", "2022-01-01", "2030-01-01"), logic, "Vaccination")
+        const ruleId = "VR-XX-0001"
+        const certificateType: CertificateType = (() => {
+            switch (parseRuleId(ruleId).type) {
+                case "RR": return "Recovery"
+                case "TR": return "Test"
+                case "VR": return "Vaccination"
+                default: return "General"
+            }
+        })()
+        const aRule = rule(ruleId, versioning("1.0.0", "2022-01-01", "2030-01-01"), logic, certificateType)
         aRule.AffectedFields = fields
         return aRule
     }
@@ -101,7 +110,13 @@ describe("check data accesses against CertificateType", () => {
         isTrue(null === validationResult.affectedFields)
     })
 
-    // TODO  check regular validations
+    it("works for Vaccination-type rule", () => {
+        const validationResult = validateRule(ruleWithLogicAndFields(if_(var_("payload.v.0.dt"), true, false), [ "v.0.dt" ]))
+        deepEqual(validationResult.metaDataErrors, [])
+        isTrue(null === validationResult.affectedFields)
+    })
+
+    // TODO  test other certificate types?
 
 })
 

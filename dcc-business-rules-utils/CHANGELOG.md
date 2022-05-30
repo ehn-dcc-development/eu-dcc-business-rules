@@ -1,5 +1,10 @@
 # Change log
 
+## 0.5.1
+
+* Fix bug w.r.t. rule validation w.r.t. data accesses vs. `CertificateType`
+
+
 ## 0.5.0
 
 * Make validation on rule that checks data accesses against `CertificateType` less strict by disregarding access to the EU DCC's `dob` (date-of-birth) field - this was [issue #112](https://github.com/ehn-dcc-development/eu-dcc-business-rules/issues/112)
