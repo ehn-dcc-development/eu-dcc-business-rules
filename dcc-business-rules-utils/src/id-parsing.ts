@@ -41,4 +41,5 @@ export const parseRuleId = (ruleId: string): ParsedRuleIdentifier => {
         number: match[3]
     }
 }
+// TODO  rename -> parsedRuleId (breaking API change => increase major version)
 
