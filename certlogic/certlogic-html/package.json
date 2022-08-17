@@ -1,6 +1,6 @@
 {
   "name": "certlogic-html",
-  "version": "0.3.0",
+  "version": "0.3.1",
   "description": "HTML renderer(s) for CertLogic expressions.",
   "keywords": [
     "json",
@@ -20,22 +20,20 @@
   },
   "main": "dist/index.js",
   "scripts": {
-    "postinstall": "mkdir -p dist",
-    "build": "cp src/styling.css dist/ ; tsc",
+    "build": "mkdir -p dist && cp src/styling.css dist/ && tsc",
     "watch-build": "tsc --watch --incremental",
     "clean": "rm -rf dist/ && rm -rf node_modules/"
   },
   "author": "Meinte Boersma <meinte.boersma@gmail.com>",
   "license": "Apache-2.0",
   "dependencies": {
-    "certlogic-js": "^1.2.0",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "certlogic-js": "1.2.2",
+    "react": "17.0.2",
+    "react-dom": "17.0.2"
   },
   "devDependencies": {
-    "@types/node": "^17.0.23",
-    "@types/react": "^17.0.43",
-    "@types/react-dom": "^17.0.14",
-    "typescript": "^4.6.3"
+    "@types/react": "17.0.48",
+    "@types/react-dom": "17.0.17",
+    "typescript": "4.7.4"
   }
 }
