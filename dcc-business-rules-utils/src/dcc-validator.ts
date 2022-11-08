@@ -86,7 +86,7 @@ export const validateDcc = (
             rules: Rule[],
             parameters: ValidationParameters,
             valueSets: CompressedValueSets,
-            dccPayload: any
+            dccPayload: unknown
         ): boolean => {
 
     const dateTime = new Date(parameters.validationTime)

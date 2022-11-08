@@ -1,7 +1,11 @@
 import {ErrorObject} from "ajv"
-import {specificationVersion} from "certlogic-js"
+import {CertLogicExpression, specificationVersion} from "certlogic-js"
 import {dateFromString} from "certlogic-js/dist/internals"
-import {dataAccesses, validateFormat, ValidationError} from "certlogic-js/dist/validation"
+import {
+    dataAccesses,
+    validateFormat,
+    ValidationError
+} from "certlogic-js/dist/validation"
 import {gt} from "semver"
 
 import {createJsonValidatorForSchema} from "./json-validator"
@@ -14,14 +18,21 @@ const ruleSchemaValidator = createJsonValidatorForSchema(require("./validation-r
 const areEqual = (leftSet: string[], rightSet: string[]): boolean =>
     leftSet.length === rightSet.length && leftSet.every((item) => rightSet.indexOf(item) > -1)
 
+
+const withoutPrefix = (prefix: string): (str: string) => string =>
+    (str: string) => str.startsWith(prefix) ? str.substring(prefix.length) : str
+
+const dataAccessesPrefixed = (expr: CertLogicExpression, prefix: string): string[] =>
+    dataAccesses(expr)
+        .filter((fieldName) => fieldName.startsWith(prefix))
+        .map(withoutPrefix(prefix))
+
+
 export type AffectedFieldsValidationResult = null | { actual: string[], computed: string[] }
 
 const validateAffectedFields = (rule: any): AffectedFieldsValidationResult => {
-    const payloadPrefix = "payload."
     const actual = rule.AffectedFields
-    const computed = dataAccesses(rule.Logic)
-        .filter((fieldName) => fieldName.startsWith(payloadPrefix))
-        .map((fieldName) => fieldName.substring(payloadPrefix.length))
+    const computed = dataAccessesPrefixed(rule.Logic, "payload.")
     return areEqual(actual, computed)
         ? null
         : { actual, computed }
@@ -84,12 +95,33 @@ export type RuleValidationResult = {
     metaDataErrors: string[]
 }
 
+
+const supportedValueSets = [
+    "country-2-codes",
+    "disease-agent-targeted",
+    "covid-19-lab-test-manufacturer-and-name",  // test-manf.json
+    "covid-19-lab-result",  // test-result.json
+    "covid-19-lab-test-type",   // test-type.json
+    "vaccines-covid-19-auth-holders",   // vaccine-mah-manf.json
+    "vaccines-covid-19-names",  // vaccine-medicinal-product.json
+    "sct-vaccines-covid-19",    // vaccine-prophylaxis.json
+]
+
+
 /**
  * Validates the given JSON value as a DCC business rule.
  */
 export const validateRule = (rule: any): RuleValidationResult => {
     const schemaValidationsErrors = ruleSchemaValidator(rule)
     const logicValidationErrors = validateFormat(rule.Logic)
+    const valueSetsAccessed = [...new Set(dataAccessesPrefixed(rule.Logic, "external.valueSets."))]
+    const unsupportedValueSets = valueSetsAccessed.filter((valueSet) => supportedValueSets.indexOf(valueSet) === -1)
+    if (unsupportedValueSets.length > 0) {
+        logicValidationErrors.push({
+            expr: rule.Logic,
+            message: `value set(s) not supported: ${unsupportedValueSets}`
+        })
+    }
     const affectedFields = validateAffectedFields(rule)
     const metaDataErrors = validateMetaData(rule)
     return {
