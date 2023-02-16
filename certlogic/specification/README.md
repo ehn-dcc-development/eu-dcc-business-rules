@@ -3,7 +3,7 @@
 
 ## Version
 
-The semantic version identification of this specification is: **1.3.2**.
+The semantic version identification of this specification is: **1.3.3**.
 
 The version identification of implementations don't have to be in sync.
 Rather, implementations should specify with which version of the specification they're compatible.
@@ -223,6 +223,15 @@ The following date and date-time formats are allowed:
     YYYY-MM-DDThh:mm:ss.S[+-]hhmm
     YYYY-MM-DDThh:mm:ss.S[+-]h:mm
     YYYY-MM-DDThh:mm:ss.S[+-]hh:mm
+
+These constitute a subset of the [ISO 8601 standard](https://en.wikipedia.org/wiki/ISO_8601).
+The `"date"` and `"date-time"` JSON Schema formats are specified through [RFC 3339, section 5.6](https://tools.ietf.org/html/rfc3339#section-5.6).
+(The [RFC 3339 protocol](https://www.rfc-editor.org/rfc/rfc3339) “defines a date and time format for use in Internet protocols that is a profile of the ISO 8601 standard for
+representation of dates and times using the Gregorian calendar”.)
+
+The date(-time) string supplied to `plusTime` is *assumed* to represent a valid ISO 8601-compliant date(-time).
+If it isn't, the behaviour of `plusTime` (and of the whole expression) is *undefined*.
+An example of invalid dates are: `"2021-09-99"` and `"2022-13"`.
 
 The following items describe this conversion for the `plustime` operation in more detail:
 

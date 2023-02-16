@@ -54,5 +54,20 @@ describe("JavaScript Date", () => {
         throws(() => date.toISOString(), /Invalid time value/)
     })
 
+    it("detect dates that look like ISO 8601-dates but are not", () => {
+        const dInvalid = new Date("2021-09-99")
+        isTrue(isNaN(dInvalid as unknown as number))
+        /*
+         * Using isNaN to check for an invalid is a typical JavaScript-“trick”,
+         * which is not actually (currently) used in this codebase.
+         *
+         * The double cast Date --> unknown --> number is necessary to appease TypeScript
+         * enough to not raise a compiler error because a Date can't ever be a number.
+         */
+
+        const dValid = new Date("2021-12-31")
+        isFalse(isNaN(dValid as unknown as number))
+    })
+
 })
 
