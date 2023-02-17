@@ -15,7 +15,7 @@ const testDirective2MochaFunc = (testDirective: any, mochaFunc: any) =>
 
 
 const runTestsOn = (testSuite: any) => {
-    testDirective2MochaFunc(testSuite.directive, describe)(testSuite.name, () => {
+    testDirective2MochaFunc(testSuite.directive, describe)(`[compiler.testSuite] ${testSuite.name}`, () => {
         testSuite.cases
             .forEach((testCase: any) => {
                 testDirective2MochaFunc(testCase.directive, it)(testCase.name, () => {

@@ -5,14 +5,15 @@ This NPM package implements utility functionality for CertLogic, compatible with
 Note that parts of this package may be marked as having _&beta;_-status/being experimental.
 Those parts might also be out-of-sync with either the specification, or the JS implementation (the `certlogic-js` package).
 
-The intention is to move all functionality in `certlogic-js` that's not directly related to/used by the evaluation of CertLogic expressions, in this utility package.
+The intention is to (eventually) move all functionality in `certlogic-js` that's not directly related to/used by the evaluation of CertLogic expressions, in this utility package.
 That includes:
 
 * **Validation** (because CertLogic expressions should be validated as such _before_ they are passed into an evaluator function)
 * Factory functions
 * Desugaring
 * Reflection/inspection, e.g. the `dataAccesses` function
-* [&#10003;] Compilation
+* [&#10003;] [Compilation](./src/compiler/index.ts)
+* [&#10003;] [Partial evaluation](./src/partial-evaluator/README.md)
 * Type system
 * etc.
 
