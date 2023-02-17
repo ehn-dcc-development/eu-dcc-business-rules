@@ -1,5 +1,6 @@
-import {CertLogicExpression} from "certlogic-js"
 import {isDictionary, isInt} from "certlogic-js/dist/internals"
+
+import {CLExtOperation} from "./operations_gen"
 
 
 /**
@@ -12,7 +13,12 @@ import {isDictionary, isInt} from "certlogic-js/dist/internals"
  * An evaluate function on values of this type is actually an endomorphism.
  */
 export type CLExtExpr =
-    | CertLogicExpression
+    | CLExtExpr[]
+    | CLExtOperation
+    // literals:
+    | boolean
+    | number    // ...which should be an integer...
+    | string
     | CLWrapped
     | CLUnknown
 

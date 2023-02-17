@@ -1,5 +1,10 @@
 # Change log
 
+## 0.2.1
+
+* Generate “extended type” operations from a specification
+
+
 ## 0.2.0
 
 * Upgrade dependencies

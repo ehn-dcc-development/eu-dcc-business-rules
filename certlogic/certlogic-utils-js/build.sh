@@ -6,6 +6,7 @@ npm run clean
 npm install
 npm dedupe # also deduplicate dependencies
 npm run build
+node dist/partial-evaluator/make/operations-generator.js
 npm test
 
 # check for circular dependencies, and exit in case one's present:
