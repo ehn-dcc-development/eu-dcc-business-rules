@@ -2,6 +2,7 @@
 
 | Version | Date | Changes |
 |---|------|---|
+| 1.3.3 | 20230217 | Clarify `plusTime` w.r.t. behaviour on invalid date(-times).
 | 1.3.2 | 20220512 | Define `plusTime` on partial dates using the DCC DOB operation.
 | 1.3.1 | 20220405 | Add a reference on precise behaviour of `plusTime` w.r.t. leap days.
 | 1.3.0 | 20220330 | Add a `dccDateOfBirth` operation to convert date of birth (DOB) values of the form `YYYY[-MM[-DD]]` in the EU DCC to dates. Also clarify documentation of `plusTime` (again).

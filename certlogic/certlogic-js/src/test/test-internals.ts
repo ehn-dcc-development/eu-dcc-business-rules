@@ -230,6 +230,16 @@ describe("plusTime", () => {
         check("2004-02-29", -2, "year", "2002-03-01T00:00:00.000Z")
     })
 
+    /*
+     * Unit test is skipped because it doesn't succeed.
+     * Currently, the behaviour of `plusTime` on invalid dates like "2021-09-99" is _undefined_.
+     * The specification of CertLogic would have to be expanded to define behavior.
+     */
+    it.skip("doesn't work for invalid dates that only look to be ISO 8601-compliant", () => {
+        throws(() => plusTime("2021-09-99", 0, "day"))
+        throws(() => plusTime("2022-13", 0, "day"))
+    })
+
 
     /*
      * Test with partial dates (in both supported formats), and check whether it coincides with `dccDateOfBirth`.
