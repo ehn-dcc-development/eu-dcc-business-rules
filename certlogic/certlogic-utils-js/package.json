@@ -1,6 +1,6 @@
 {
   "name": "certlogic-utils-js",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Utility package for anything that's CertLogic but not (direct) evaluation",
   "keywords": [
     "json",

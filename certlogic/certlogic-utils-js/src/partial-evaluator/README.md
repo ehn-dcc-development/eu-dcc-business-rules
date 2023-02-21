@@ -115,7 +115,7 @@ However, more complicated expressions -especially when they access the same valu
 Such a reduction is often relatively easy to rewrite as a simple condition.
 
 
-## Extending CertLogic expressions
+## Extending CertLogic expression types
 
 Both the CertLogic expression and input data are plain JSON, although the expression is strictly typed through the following type definition, as well as additional validations:
 
@@ -182,11 +182,27 @@ This means that the part of type definition for the `reduce` operation should be
     // ...
 ```
 
-There are ways to formalise this in a way that allows for proper encoding in TypeScript, using so-called _object algebras_.
-Unfortunately, using object algebras doesn't solve the problem that we can't write down a type definition for `CertLogicExpression` that's extensible.
+**TODO**  continue (?)
 
-TypeScript doesn't allow us to write down a type definition for `CertLogicExpression` that's extensible in the way that we want.
-We're going to deal with that, by not dealing with it.
 
-**TODO**  continue, and finish
+## Implementation details
+
+TypeScript doesn't allow us to write down a type definition for `CertLogicExpression` that we could reuse in `CLExtExpr`, precisely because that type is inherently recursive.
+Instead, we implement `CLExtExpr` as a completely new recursive type.
+As a nod to convenience, we _generate_ the required [operation types](./operations_gen.ts) from [a specification](./meta/certlogic-operation-specs.json) by [a code generator](./meta/operations-generator.ts) which is run before compilation.
+This reduces the amount of manual, error-prone implementation labor somewhat.
+The specification has an undocumented ad-hoc format - please inspect the contents of the [`meta/`](./meta) directory for an idea of how this works.
+
+This specification should be moved to the CertLogic specification (with a proper documentation of its format), so that its implementations can generate type definitions from that specification.
+Provided these generators are properly parametrized (e.g. in the name of the top-level type, such as `CertLogicExpression` or `CLExtExpr`), they could also be used to generate the extended types here.
+
+At the moment, I find it undesirable to change either the CertLogic specification or its TypeScript implementation.
+Either change would necessitate getting reviewed and accepted at a time that this stuff has become much less relevant than before - even if changes only happens at the “meta-level” without either changing the language specification, or any of the TypeScript code that would run in Production.
+That's why I integrated this generation step in this package instead, for now.
+Later on, the specification could be migrated to the CertLogic specification, and the generator to (a generative stage of) its TypeScript implementation.
+
+There _are_ ways to define types in TypeScript (and other statically-typed languages) for CertLogic in a way that make these types extensible (without resorting to a generative stage), using so-called _object algebras_.
+That would mean extending CertLogic with the necessary expression types to make the extended language endomorphic becomes much simpler(/easier/less work).
+Using object algebras would amount to a complete rewrite of its TypeScript implementation, which I will not undertake for the same reason as stated above.
+Instead, that rewrite should come in a new major version of the CertLogic TypeScript implementation.
 

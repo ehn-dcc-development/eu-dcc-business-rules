@@ -1,0 +1,42 @@
+[
+  {
+    "operator": "and",
+    "operands": "expr[]"
+  },
+  {
+    "operator": "if",
+    "operands": "expr[3]"
+  },
+  {
+    "operator": "===",
+    "operands": "expr[2]"
+  },
+  {
+    "operators": ["<", ">", "<=", ">=", "before", "after", "not-after", "not-before"],
+    "operands": "expr[2-3]"
+  },
+  {
+    "operator": "in",
+    "operands": "expr[2]"
+  },
+  {
+    "operator": "+",
+    "operands": "expr[2]"
+  },
+  {
+    "operator": "!",
+    "operands": "expr[1]"
+  },
+  {
+    "operator": "plusTime",
+    "operands": "expr,int,TimeUnit"
+  },
+  {
+    "operator": "reduce",
+    "operands": "expr[3]"
+  },
+  {
+    "operator": "extractFromUVCI",
+    "operands": "expr,int"
+  }
+]
