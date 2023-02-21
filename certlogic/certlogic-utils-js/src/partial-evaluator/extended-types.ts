@@ -39,6 +39,10 @@ export const Unknown = new CLUnknown()
 
 
 export type NeedWrapping = object | null | number
+/**
+ * Represents a value that needs wrapping in order to distinguish it from a JavaScript value
+ * (typically a plain JavaScript object) that could be indistinguishable from the representation of a CertLogic operation.
+ */
 export class CLWrapped {
     readonly value: NeedWrapping
     constructor(value: NeedWrapping) {
@@ -47,6 +51,10 @@ export class CLWrapped {
 }
 
 
+/**
+ * "Wrap" the given data (=a JavaScript value) in an extended CertLogic expression type,
+ * or throw an error if it can't.
+ */
 export const wrapData = (value: unknown): CLExtExpr => {
     if (typeof value === "boolean" || typeof value === "string" || isInt(value)) {
         return value

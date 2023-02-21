@@ -7,9 +7,12 @@ type OperationSpec = {
     operands: string
 }
 
-const operationSpecs: OperationSpec[] = require("../../../src/partial-evaluator/make/certlogic-operation-specs.json")
+const operationSpecs: OperationSpec[] = require("../../../src/partial-evaluator/meta/certlogic-operation-specs.json")
 
 
+/**
+ * @return an array of integers [ 0, 1, &hellip;, n-1 ]
+ */
 const range = (n: number): number[] =>
     [...Array(n).keys()]
 
@@ -54,6 +57,14 @@ const generatedCode = `import {TimeUnit} from "certlogic-js"
 
 import {${extTypeName}} from "./extended-types"
 
+
+/**
+ * Type definition for CertLogic operations which may recursively use the _extended_ CertLogic type.
+ 
+ * This type def. is *generated* from the specification in meta/certlogic-operation-specs.json,
+ * by (running) meta/operations-generator.ts - which is a step in the build.sh script.
+ * *Warning:* don't change this file directly, but change that specification and/or the generator!
+ */
 export type CLExtOperation =
     | { "var": string }
 ${indent(operationSpecs.flatMap(genOperationSpec))}
