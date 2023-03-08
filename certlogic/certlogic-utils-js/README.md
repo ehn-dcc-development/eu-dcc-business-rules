@@ -17,7 +17,7 @@ That includes:
 * Type system
 * etc.
 
-For more information: have a look at [the CertLogic roadmap](../ROADMAP.md).
+For more information: have a look at [the overall CertLogic roadmap](../ROADMAP.md), and the [package-specific roadmap](./ROADMAP.md).
 
 
 ## Licensing
