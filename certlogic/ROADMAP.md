@@ -1,11 +1,12 @@
 # Roadmap
 
-Because the EU DCC project is winding down at the time of writing (2022-05-17), it doesn't make sense to make large changes to CertLogic.
-That doesn't mean, however, that no opportunities exist to improve CertLogic.
-I'm writing down this roadmap as a record of insights we gained the past year, but weren't able to execute on due to time or other constraints.
+Because the EU DCC project is winding down at the time of writing (2023-03-07), it doesn't make sense to make any changes to CertLogic.
+That doesn't mean, however, that CertLogic (and its implementations) couldn't be improved.
+I'm writing down this roadmap as a record of insights we gained the past years, but weren't able to execute on due to time or other constraints.
+(At several points, I reference issues on this repo that I've closed as “Won't Do” for these same reasons.)
 
 Pertains to:
-* Specification version 1.3.2
+* Specification version 1.3.3
 * JS implementation version 1.2.2
 * Kotlin implementation version 0.11.2
 
@@ -37,7 +38,7 @@ Doing so has the following advantages:
 ### Implement tree mappers
 
 Most API functions on CertLogic expressions are *tree (flat) maps*: they follow the tree structure of the CertLogic expression, and do something per node of the tree, but usually only after mapping children of that node in the same way.
-This pattern is also called a *depth-first tree traversal*, a **DFTT**.
+This pattern is also called a *depth-first tree traversal*, or **DFTT** for short.
 In particular, evaluation is a DFTT, as well as functions such as determining data accesses.
 (Format-validation is a DFTT, but not on the CertLogic expression type, since we don't know yet if it's valid.)
 
@@ -45,7 +46,7 @@ It'd be good to implement a mapper type, and higher-order function to transform 
 The interface could look something like this in TypeScript:
 
 ```typescript
-type CLExpr = CertLogicExpression       // (short alias)
+type CLExpr = CertLogicExpression       // (abbreviating alias)
 export interface CertLogicMapper<RT> {  // RT ~ Return Type
     literal(value: CertLogicLiteral): RT
     array(values: CLExpr[]): RT
@@ -65,16 +66,18 @@ export interface CertLogicMapper<RT> {  // RT ~ Return Type
 }
 ```
 
+It could even be beneficial to make a split in this and similar interfaces between binary and trinary comparisons.
+
 Various higher-order functions could be implemented, such as:
-* tree map
-* tree flat map
-* tree walk
-* Any of the above but with lazy evaluation of operands.
+* Tree map
+* Tree flat map
+* Tree walk (which is a tree map with a `void`-returning function)
+* Any of the above but with lazy evaluation of operands
 
 The advantage of this is that it becomes easier, and more convenient to write DFTTs, using less and simultaneously more type-safe code.
 
-(This approach “sneakily“ points to the concept of an *object algebra*.
- There's probably also some opportunity to phrase things in terms of [hylomorphisms](https://en.wikipedia.org/wiki/Hylomorphism_(computer_science)) and related concepts as well, to help even more with the recursive nature.)
+This approach “sneakily“ points to the concept of an *object algebra* - see [the section on those in the roadmap specific to the `certlogic-utils-js` package](./certlogic-utils-js/ROADMAP.md#object-algebras).
+There's probably some opportunity to phrase things in terms of [hylomorphisms](https://en.wikipedia.org/wiki/Hylomorphism_(computer_science)) and related concepts as well, to help even more with the recursive nature.
 
 
 ### Meta generation for operations
@@ -92,6 +95,8 @@ These operation specifications should be precise enough to generate the followin
 4. Potentially: format-validation for operations.
 
 The advantage of implementing meta generation is that it becomes easier to expand/extend CertLogic.
+This is already done in the `certlogic-utils-js` package: see [the specification there](./certlogic-utils-js/src/partial-evaluator/meta/certlogic-operation-specs.json), and the corresponding [code generator](./certlogic-utils-js/src/partial-evaluator/meta/operations-generator.ts) which then generates [this source file](./certlogic-utils-js/src/partial-evaluator/operations_gen.ts).
+The format of that specification should be formally specified, both specifications should be moved to the CertLogic language specification, and the code generator should be sufficiently parametrized for use in both `certlogic-js`, and `certlogic-utils-js`.
 
 
 ### Miscellaneous changes to CertLogic
@@ -118,11 +123,11 @@ This keeps CertLogic small, targeted, and devoid of unnecessary complexity.
 
 Currently, only “happy paths” are tested: CertLogic expressions that are valid, evaluate to a value, and don't throw an error.
 Automated tests should be implemented that explicitly test situations where an error (due to a runtime type mismatch) is thrown.
-This ensures that changes of the evaluator function don't break anything, and match the specification.
+This ensures that changes of the evaluator function keep matching all aspects of the specification.
 (This was [issue #104](https://github.com/ehn-dcc-development/eu-dcc-business-rules/issues/104).)
 
 
-### TODOs w.r.t. testing of format-validation
+### Testing of format-validation
 
 (The following TODOs were [issue #121](https://github.com/ehn-dcc-development/eu-dcc-business-rules/issues/121).)
 
@@ -160,20 +165,8 @@ Such relocations constitute breaking interface changes, so major version numbers
 ### Implement partial evaluation
 
 It's useful to be able to evaluate CertLogic expressions partially against input data in which some parts have been explicitly marked as **unknown** (which is different from `undefined`/`null`).
-Partial evaluation has already been implemented to analyse business rules pertaining to vaccination in an efficient manner: see [this repository](https://github.com/ehn-dcc-development/eu-dcc-business-rules-analysis) - and specifically [this part of that](https://github.com/ehn-dcc-development/eu-dcc-business-rules-analysis/tree/main/src/reducer).
-This implementation should be made more generally available, through the following steps:
-
-1. Move it to the util packages.
-2. (Clean it up where necessary.)
-3. Finish its documentation.
-4. Make use of the parametrised meta generation described above to have type-safe code, with an extended base type for CertLogic expressions that makes partial evaluation an endomorphism.
-
-After these steps, partial evaluation could be improved, e.g. by parametrising the **unknown** value with predicates such as `dob before 2004` or `dn > sd`.
-This reduces the need to:
-* replace certain sub expressions with constant values - e.g., regarding detection/exemption of minors;
-* run the partial evaluation with many variations of the input data - e.g. with many combination of values for the `dn`/`sd` fields.
-
-It's not entirely unthinkable that partial evaluation wouldn't end up being used in verifier apps, so it could go (eventually) in the core packages.
+Partial evaluation has already been implemented to [analyse business rules](https://github.com/ehn-dcc-development/eu-dcc-business-rules-analysis) pertaining to vaccination in an efficient manner.
+This implementation can be found in the `certlogic-utils-js` package in this repository - see specifically [here](./certlogic-utils-js/src/partial-evaluator), including its own, separate [roadmap](./certlogic-utils-js/ROADMAP.md).
 
 
 ### Implement a compiler
@@ -183,7 +176,7 @@ For performance reasons, it might be advantageous to be able to compile CertLogi
 
 A compiler/transpiler targeting TypeScript has already been implemented experimentally, showing a performance improvement on the order of 10 times.
 This is achieved by compiling an expression from its JSON form into a tree of objects which can be effectively JIT-ed by the executing VM.
-This work can be found [in the `certlogic-utils-js` package](./certlogic-utils-js/src/compiler).
+This work can also be found in the `certlogic-utils-js` package in this repository - see specifically [here](./certlogic-utils-js/src/compiler).
 
 
 ### Implement a type system
