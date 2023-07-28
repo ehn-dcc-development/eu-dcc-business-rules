@@ -11,6 +11,14 @@
 </p>
 
 
+## IMPORTANT NOTICE
+
+As of July 1st 2023, the EU DCC project has been handed over to the [WHO](https://github.com/WorldHealthOrganization/smart-trust-network-gateway).
+The project has therefore been frozen.
+This repository will be placed into archival mode.
+It will remain available for the foreseeable future - however, it will no longer be actively maintained.
+
+
 ## About
 
 The [Digital COVID Certificate (DCC)](https://ec.europa.eu/info/live-work-travel-eu/coronavirus-response/safe-covid-19-vaccines-europeans/eu-digital-covid-certificate_en) allows to determine whether a person is deemed fit-for-travel into a country-of-arrival (CoA) based on their vaccination, test, and recovery status.
