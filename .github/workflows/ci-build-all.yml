@@ -10,12 +10,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        node-version: [15.x]
+        node-version: [16.x]
     steps:
      - uses: actions/checkout@v2
      - name: Install Node
        uses: actions/setup-node@v1
        with:
-          node-version: '15.x'
+          node-version: "16.x"
      - name: Run build script
        run:  sh build.sh
